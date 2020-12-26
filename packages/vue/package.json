@@ -1,0 +1,32 @@
+{
+	"name": "@pvtnbr/eslint-config-vue",
+	"version": "0.0.0",
+	"description": "Vue ESLint configuration",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/privatenumber/eslint-config.git",
+		"directory": "packages/vue"
+	},
+	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
+	"author": {
+		"name": "Hiroki Osame",
+		"email": "hiroki.osame@gmail.com"
+	},
+	"files": [
+		"index.js"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"test": "jest"
+	},
+	"peerDependencies": {
+		"eslint": "^7.15.0"
+	},
+	"dependencies": {
+		"@pvtnbr/eslint-config-base": "^0.0.0",
+		"eslint-plugin-vue": "^7.3.0"
+	}
+}
