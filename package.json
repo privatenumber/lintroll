@@ -13,7 +13,8 @@
 		"access": "public"
 	},
 	"scripts": {
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"test": "pnpm run -r test"
 	},
 	"husky": {
 		"hooks": {
