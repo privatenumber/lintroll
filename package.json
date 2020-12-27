@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"lint": "eslint .",
-		"test": "pnpm run -r test && :"
+		"test": "pnpm test --parallel"
 	},
 	"husky": {
 		"hooks": {
