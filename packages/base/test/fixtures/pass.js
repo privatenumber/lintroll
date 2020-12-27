@@ -14,6 +14,12 @@ const ternaryValue = (
 		: 2
 );
 
+for (let i = 0; i < 10; i += 1) {
+	if (i < 5) {
+		continue;
+	}
+}
+
 // Promise
 const sleep = ms => new Promise((resolve) => {
 	setTimeout(resolve, ms);

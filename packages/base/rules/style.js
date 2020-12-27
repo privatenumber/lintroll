@@ -230,10 +230,6 @@ module.exports = {
 		// https://eslint.org/docs/rules/no-bitwise
 		'no-bitwise': 'error',
 
-		// disallow use of the continue statement
-		// https://eslint.org/docs/rules/no-continue
-		'no-continue': 'error',
-
 		// disallow comments inline after code
 		'no-inline-comments': 'off',
 
