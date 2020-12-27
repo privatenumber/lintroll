@@ -1,9 +1,5 @@
 module.exports = {
 	rules: {
-
-		// babel inserts `'use strict';` for us
-		strict: ['error', 'never'],
-
 		// Enforce “for” loop update clause moving the counter in the right direction
 		// https://eslint.org/docs/rules/for-direction
 		'for-direction': 'error',
