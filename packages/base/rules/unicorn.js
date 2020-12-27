@@ -24,6 +24,12 @@ module.exports = {
 			replacements: {
 				dev: false,
 			},
+
+			// exact-match
+			whitelist: {
+				// for-loop index
+				i: true,
+			},
 		}],
 	},
 };
