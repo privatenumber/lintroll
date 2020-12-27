@@ -13,7 +13,8 @@
 		"access": "public"
 	},
 	"scripts": {
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"test": "pnpm run -r test"
 	},
 	"husky": {
 		"hooks": {
@@ -35,6 +36,8 @@
 	},
 	"eslintConfig": {
 		"extends": "./packages/base",
-		"ignorePatterns": ["packages/*/test/fixtures/*"]
+		"ignorePatterns": [
+			"packages/*/test/fixtures/*"
+		]
 	}
 }
