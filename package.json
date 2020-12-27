@@ -36,6 +36,8 @@
 	},
 	"eslintConfig": {
 		"extends": "./packages/base",
-		"ignorePatterns": ["packages/*/test/fixtures/*"]
+		"ignorePatterns": [
+			"packages/*/test/fixtures/*"
+		]
 	}
 }
