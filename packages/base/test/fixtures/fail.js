@@ -14,3 +14,8 @@ import http2 from 'http2'
 console.log ("hello world")
 
 console.log(new Buffer(5));
+
+// iife
+(function () {
+
+}());

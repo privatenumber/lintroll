@@ -20,6 +20,14 @@ for (let i = 0; i < 10; i += 1) {
 	}
 }
 
+// iife
+(function named() {
+
+})();
+(() => {
+
+})();
+
 // Promise
 const sleep = ms => new Promise((resolve) => {
 	setTimeout(resolve, ms);
