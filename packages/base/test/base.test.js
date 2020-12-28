@@ -80,4 +80,14 @@ test('Fail cases', async () => {
 		ruleId: 'func-call-spacing',
 		messageId: 'unexpectedWhitespace',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'wrap-iife',
+		messageId: 'wrapExpression',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'func-names',
+		messageId: 'unnamed',
+	});
 });
