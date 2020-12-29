@@ -64,20 +64,8 @@ module.exports = {
 				'test.{js,jsx}', // repos with a single test file
 				'test-*.{js,jsx}', // repos with multiple top-level test files
 				'**/*{.,_}{test,spec}.{js,jsx}', // tests where the extension or filename suffix denotes that it is a test
-				'**/jest.config.js', // jest config
-				'**/jest.setup.js', // jest setup
-				'**/vue.config.js', // vue-cli config
-				'**/webpack.config.js', // webpack config
-				'**/webpack.config.*.js', // webpack config
-				'**/rollup.config.js', // rollup config
-				'**/rollup.config.*.js', // rollup config
-				'**/gulpfile.js', // gulp config
-				'**/gulpfile.*.js', // gulp config
-				'**/Gruntfile{,.js}', // grunt config
-				'**/protractor.conf.js', // protractor config
-				'**/protractor.conf.*.js', // protractor config
-				'**/karma.conf.js', // karma config
-				'**/.eslintrc.js', // eslint config
+				'**/*.config.js', // any config (eg. jest, webpack, rollup, postcss, vue)
+				'**/.*.js', // invisible config files
 			],
 			optionalDependencies: false,
 		}],
