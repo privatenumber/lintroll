@@ -19,3 +19,6 @@ console.log(new Buffer(5));
 (function () {
 
 }());
+
+isNaN(1121);
+isFinite(1121);

@@ -90,4 +90,19 @@ test('Fail cases', async () => {
 		ruleId: 'func-names',
 		messageId: 'unnamed',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isFinite()` over `isFinite()`.',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isFinite()` over `isFinite()`.',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isNaN()` over `isNaN()`.',
+	});
 });
