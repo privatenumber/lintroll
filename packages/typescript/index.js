@@ -12,7 +12,7 @@ module.exports = {
 		// Setting as an override allows .ts files to be
 		// linted without specifying it on the user-end
 		{
-			files: ['*.ts'],
+			files: '*.ts',
 			extends: [
 				'plugin:@typescript-eslint/recommended',
 			],
@@ -59,7 +59,7 @@ module.exports = {
 			},
 		},
 		{
-			files: ['*.d.ts'],
+			files: '*.d.ts',
 			rules: {
 				'import/prefer-default-export': 'off',
 			},

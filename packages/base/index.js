@@ -1,3 +1,5 @@
+const confusingBrowserGlobals = require('confusing-browser-globals');
+
 module.exports = {
 	extends: [
 		'./rules/best-practices',
@@ -29,9 +31,21 @@ module.exports = {
 	],
 	overrides: [
 		{
-			files: ['**/test/*'],
+			files: '**/test/*',
 			env: {
 				jest: true,
+			},
+		},
+		{
+			files: '*.sw.js',
+			env: {
+				serviceworker: true,
+			},
+			rules: {
+				'no-restricted-globals': [
+					'error',
+					...confusingBrowserGlobals.filter(g => g !== 'self'),
+				],
 			},
 		},
 	],

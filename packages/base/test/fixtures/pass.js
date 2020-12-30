@@ -20,6 +20,10 @@ for (let i = 0; i < 10; i += 1) {
 	}
 }
 
+for (const element of []) {
+	Math.random(element);
+}
+
 // iife
 (function named() {
 

@@ -15,20 +15,10 @@ module.exports = {
 		// https://eslint.org/docs/rules/no-label-var
 		'no-label-var': 'error',
 
-		// disallow specific globals
 		'no-restricted-globals': [
 			'error',
-			{
-				name: 'isFinite',
-				message:
-          'Use Number.isFinite instead https://github.com/airbnb/javascript#standard-library--isfinite',
-			},
-			{
-				name: 'isNaN',
-				message:
-          'Use Number.isNaN instead https://github.com/airbnb/javascript#standard-library--isnan',
-			},
-		].concat(confusingBrowserGlobals),
+			...confusingBrowserGlobals,
+		],
 
 		// disallow declaration of variables already declared in the outer scope
 		'no-shadow': 'error',

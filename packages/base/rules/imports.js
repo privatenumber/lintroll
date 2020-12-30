@@ -56,14 +56,12 @@ module.exports = {
 		// paths are treated both as absolute paths, and relative to process.cwd()
 		'import/no-extraneous-dependencies': ['error', {
 			devDependencies: [
-				'test/**', // tape, common npm pattern
-				'tests/**', // also common npm pattern
-				'spec/**', // mocha, rspec-like pattern
-				'**/__tests__/**', // jest pattern
-				'**/__mocks__/**', // jest pattern
-				'test.{js,jsx}', // repos with a single test file
-				'test-*.{js,jsx}', // repos with multiple top-level test files
-				'**/*{.,_}{test,spec}.{js,jsx}', // tests where the extension or filename suffix denotes that it is a test
+				'scripts/**', // build scripts
+				'test/**', // tests
+				'**/__{tests,mocks}__/**', // jest pattern
+				'test.js', // repos with a single test file
+				'test-*.js', // repos with multiple top-level test files
+				'**/*{.,_}{test,spec}.js', // tests where the extension or filename suffix denotes that it is a test
 				'**/*.config.js', // any config (eg. jest, webpack, rollup, postcss, vue)
 				'**/.*.js', // invisible config files
 			],

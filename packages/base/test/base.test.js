@@ -4,6 +4,8 @@ require('../../../test/jest-setup');
 
 const passFixture = path.join(__dirname, 'fixtures/pass.js');
 const failFixture = path.join(__dirname, 'fixtures/fail.js');
+const swFixture = path.join(__dirname, 'fixtures/service-worker.sw.js');
+
 const eslint = new ESLint({
 	useEslintrc: false,
 	baseConfig: {
@@ -89,5 +91,33 @@ test('Fail cases', async () => {
 	expect(messages).toContainObject({
 		ruleId: 'func-names',
 		messageId: 'unnamed',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isFinite()` over `isFinite()`.',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isFinite()` over `isFinite()`.',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'unicorn/prefer-number-properties',
+		message: 'Prefer `Number.isNaN()` over `isNaN()`.',
+	});
+});
+
+test('Service worker', async () => {
+	const results = await eslint.lintFiles([swFixture]);
+	const [result] = results;
+
+	expect(result.errorCount).toBe(0);
+	expect(result.warningCount).toBe(0);
+
+	expect(result.messages).not.toContainObject({
+		ruleId: 'no-restricted-globals',
+		message: "Unexpected use of 'self'.",
 	});
 });
