@@ -6,7 +6,7 @@ module.exports = {
 		// Setting as an override allows .vue files to be
 		// linted without specifying it on the user-end
 		{
-			files: ['*.vue'],
+			files: '*.vue',
 			extends: [
 				'plugin:vue/vue3-recommended',
 			],
