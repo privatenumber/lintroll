@@ -58,6 +58,7 @@ module.exports = {
 			devDependencies: [
 				'scripts/**', // build scripts
 				'test/**', // tests
+				'src/**', // Implies bundled
 				'**/__{tests,mocks}__/**', // jest pattern
 				'test.js', // repos with a single test file
 				'test-*.js', // repos with multiple top-level test files
