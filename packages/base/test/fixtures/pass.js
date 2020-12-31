@@ -2,6 +2,7 @@
 
 import './some-file.js';
 import path from 'path';
+import someModule from 'http://some.module/module.js';
 
 // require('./some-file');
 
@@ -48,6 +49,7 @@ async function someAsync() {
 // eslint-disable-next-line no-console
 console.log(
 	path,
+	someModule,
 	message,
 	ternaryValue,
 );
