@@ -24,6 +24,9 @@ module.exports = {
 		'import/no-unresolved': ['error', {
 			commonjs: true,
 			caseSensitive: true,
+			ignore: [
+				'^https?://',
+			],
 		}],
 
 		// ensure named imports coupled with named exports
