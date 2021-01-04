@@ -19,6 +19,11 @@ module.exports = {
 		// Too many cases where 3rd party library expects null
 		'unicorn/no-null': 'off',
 
+		'unicorn/import-index': ['error', {
+			// Don't check import statements
+			ignoreImports: true,
+		}],
+
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/898fcb4/docs/rules/prevent-abbreviations.md
 		'unicorn/prevent-abbreviations': ['error', {
 			replacements: {
