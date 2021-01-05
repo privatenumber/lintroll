@@ -8,8 +8,8 @@ module.exports = {
 		// treat var statements as if they were block scoped
 		'block-scoped-var': 'error',
 
-		// specify the maximum cyclomatic complexity allowed in a program
-		complexity: ['error', 5],
+		// https://eslint.org/docs/rules/complexity
+		complexity: ['warn', 10],
 
 		'consistent-return': 'error',
 
