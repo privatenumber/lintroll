@@ -37,7 +37,7 @@ importers:
     devDependencies:
       typescript: 4.1.3
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.6
+      '@pvtnbr/eslint-config-base': ^0.1.7
       '@typescript-eslint/eslint-plugin': ^4.10.0
       '@typescript-eslint/parser': ^4.10.0
       typescript: ^4.1.3
@@ -46,7 +46,7 @@ importers:
       '@pvtnbr/eslint-config-base': 'link:../base'
       eslint-plugin-vue: 7.3.0
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.6
+      '@pvtnbr/eslint-config-base': ^0.1.7
       eslint-plugin-vue: ^7.3.0
 lockfileVersion: 5.2
 packages:
