@@ -12,10 +12,6 @@ module.exports = {
 		// https://eslint.org/docs/rules/no-async-promise-executor
 		'no-async-promise-executor': 'error',
 
-		// Disallow await inside of loops
-		// https://eslint.org/docs/rules/no-await-in-loop
-		'no-await-in-loop': 'error',
-
 		// Disallow comparisons to negative zero
 		// https://eslint.org/docs/rules/no-compare-neg-zero
 		'no-compare-neg-zero': 'error',

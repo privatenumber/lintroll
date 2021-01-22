@@ -44,6 +44,10 @@ async function someAsync() {
 
 (async () => {
 	await someAsync();
+
+	for (let i = 0; i < 10; i += 1) {
+		await someAsync();
+	}
 })();
 
 // eslint-disable-next-line no-console
