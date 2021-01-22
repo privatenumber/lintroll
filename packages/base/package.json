@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-base",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"description": "Base ESLint configuration",
 	"license": "MIT",
 	"repository": {
