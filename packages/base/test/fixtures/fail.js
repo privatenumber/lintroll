@@ -1,8 +1,12 @@
 'some-directive';
 import fs from 'fs'
 import path from 'path'
+import stream from 'stream'
+import os from 'os'
 import util from 'util'
 import net from 'net'
+import dns from 'dns'
+import cluster from 'cluster'
 import url from 'url'
 import querystring from 'querystring'
 import crypto from 'crypto'
@@ -10,6 +14,7 @@ import http from 'http'
 import './some-file'
 import events from 'events'
 import http2 from 'http2'
+import zlib from 'zlib'
 
 console.log ("hello world")
 
