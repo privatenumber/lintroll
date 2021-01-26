@@ -25,6 +25,13 @@ for (const element of []) {
 	Math.random(element);
 }
 
+// function
+function someFunction(objectValue, sourceValue) {
+	if (Array.isArray(objectValue) && Array.isArray(sourceValue)) {
+		return objectValue.concat(sourceValue);
+	}
+}
+
 // iife
 (function named() {
 
@@ -56,4 +63,5 @@ console.log(
 	someModule,
 	message,
 	ternaryValue,
+	someFunction,
 );
