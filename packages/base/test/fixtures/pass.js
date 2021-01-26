@@ -36,6 +36,7 @@ function someFunction(objectValue, sourceValue) {
 	if (Array.isArray(objectValue) && Array.isArray(sourceValue)) {
 		return objectValue.concat(sourceValue);
 	}
+	Math.random(arguments);
 }
 
 // iife
