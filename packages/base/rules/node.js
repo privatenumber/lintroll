@@ -9,6 +9,7 @@ module.exports = {
 
 	rules: {
 
+		// require require() calls to be placed at top-level module scope
 		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80/docs/rules/global-require.md
 		'node/global-require': 'error',
 
