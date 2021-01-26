@@ -102,15 +102,11 @@ module.exports = {
 
 		// Forbid modules to have too many dependencies
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/max-dependencies.md
-		'import/max-dependencies': ['warn', { max: 10 }],
+		'import/max-dependencies': ['warn', { max: 15 }],
 
 		// Forbid import of modules using absolute paths
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-absolute-path.md
 		'import/no-absolute-path': 'error',
-
-		// Forbid require() calls with expressions
-		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
-		'import/no-dynamic-require': 'error',
 
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-webpack-loader-syntax.md
 		'import/no-webpack-loader-syntax': 'error',
@@ -152,4 +148,14 @@ module.exports = {
 			webpackChunknameFormat: '[0-9a-zA-Z-_/.]+',
 		}],
 	},
+	overrides: [
+		{
+			files: 'src/',
+			rules: {
+				// Disallow dynamic imports if compiled
+				// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
+				'import/no-dynamic-require': 'error',
+			},
+		},
+	],
 };

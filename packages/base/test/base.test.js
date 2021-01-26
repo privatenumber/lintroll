@@ -70,7 +70,7 @@ test('Fail cases', async () => {
 	expect(messages).toContainObject({
 		ruleId: 'import/max-dependencies',
 		severity: 1,
-		message: 'Maximum number of dependencies (10) exceeded.',
+		message: 'Maximum number of dependencies (15) exceeded.',
 	});
 
 	expect(messages).toContainObject({

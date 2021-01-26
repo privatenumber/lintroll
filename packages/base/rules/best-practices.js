@@ -11,7 +11,7 @@ module.exports = {
 		// https://eslint.org/docs/rules/complexity
 		complexity: ['warn', 10],
 
-		'consistent-return': 'error',
+		'consistent-return': 'off',
 
 		curly: ['error', 'multi-line'],
 
