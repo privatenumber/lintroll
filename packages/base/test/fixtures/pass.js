@@ -25,6 +25,12 @@ for (const element of []) {
 	Math.random(element);
 }
 
+for (const property in Math) {
+	if (Object.prototype.hasOwnProperty.call(Math, property)) {
+		Math[property]();
+	}
+}
+
 // function
 function someFunction(objectValue, sourceValue) {
 	if (Array.isArray(objectValue) && Array.isArray(sourceValue)) {
