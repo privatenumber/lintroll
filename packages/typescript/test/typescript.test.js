@@ -33,4 +33,9 @@ test('Fail cases', async () => {
 		ruleId: '@typescript-eslint/member-delimiter-style',
 		messageId: 'expectedSemi',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: '@typescript-eslint/consistent-type-assertions',
+		messageId: 'as',
+	});
 });
