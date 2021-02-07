@@ -28,4 +28,9 @@ test('Fail cases', async () => {
 		ruleId: '@typescript-eslint/return-await',
 		messageId: 'requiredPromiseAwait',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: '@typescript-eslint/member-delimiter-style',
+		messageId: 'expectedSemi',
+	});
 });

@@ -7,6 +7,11 @@ async function someAsyncFunction() {
 	return sleep(100);
 }
 
+type SomeObject = {
+	propertyA: number,
+	propertyB: number,
+};
+
 (async () => {
 	await someAsyncFunction();
 })();
