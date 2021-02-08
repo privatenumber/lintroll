@@ -40,12 +40,8 @@ function someFunction(objectValue, sourceValue) {
 }
 
 // iife
-(function named() {
-
-})();
-(() => {
-
-})();
+(function named() {})();
+(() => {})();
 
 // Promise
 const sleep = ms => new Promise((resolve) => {

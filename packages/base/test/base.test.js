@@ -28,7 +28,7 @@ test('Fail cases', async () => {
 
 	expect(messages).toContainObject({
 		ruleId: 'unicorn/no-new-buffer',
-		messageId: 'no-new-buffer',
+		messageId: 'error',
 	});
 
 	expect(messages).toContainObject({
