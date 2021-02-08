@@ -56,6 +56,10 @@ module.exports = {
 				'import/extensions': ['error', 'ignorePackages', {
 					ts: 'never',
 				}],
+
+				'@typescript-eslint/member-delimiter-style': 'error',
+
+				'@typescript-eslint/consistent-type-assertions': 'error',
 			},
 		},
 		{

@@ -7,9 +7,17 @@ async function someAsyncFunction() {
 	return sleep(100);
 }
 
+type SomeObject = {
+	propertyA: number,
+	propertyB: number,
+};
+
 (async () => {
 	await someAsyncFunction();
 })();
+
+const someNumber = 1;
+console.log(<string>someNumber);
 
 // eslint-disable-next-line no-console
 console.log(
