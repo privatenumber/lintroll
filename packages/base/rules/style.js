@@ -427,8 +427,7 @@ module.exports = {
 		'space-unary-ops': ['error', {
 			words: true,
 			nonwords: false,
-			overrides: {
-			},
+			overrides: {},
 		}],
 
 		// require or disallow a space immediately following the // or /* in a comment
