@@ -107,6 +107,11 @@ test('Fail cases', async () => {
 		ruleId: 'unicorn/prefer-number-properties',
 		message: 'Prefer `Number.isNaN()` over `isNaN()`.',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'curly',
+		messageId: 'missingCurlyAfterCondition',
+	});
 });
 
 test('Service worker', async () => {
