@@ -27,3 +27,5 @@ console.log(new Buffer(5));
 
 isNaN(1121);
 isFinite(1121);
+
+if (true) console.log(1);

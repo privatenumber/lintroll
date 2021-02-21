@@ -13,7 +13,7 @@ module.exports = {
 
 		'consistent-return': 'off',
 
-		curly: ['error', 'multi-line'],
+		curly: 'error',
 
 		// require default case in switch statements
 		'default-case': ['error', { commentPattern: '^no default$' }],
