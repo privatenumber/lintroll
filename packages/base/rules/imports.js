@@ -60,7 +60,7 @@ module.exports = {
 		'import/no-extraneous-dependencies': ['error', {
 			devDependencies: [
 				'scripts/**', // build scripts
-				'test/**', // tests
+				'{test,tests}/**', // tests
 				'src/**', // Implies bundled
 				'**/__{tests,mocks}__/**', // jest pattern
 				'test.js', // repos with a single test file
