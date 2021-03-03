@@ -25,8 +25,9 @@ module.exports = {
 			},
 		],
 
-		// Might conflict with import plugin & typescript
+		// Conflicts with import plugin, typescript, and Node.js export maps
 		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/file-extension-in-import.md
+		// exports map: https://github.com/mysticatea/eslint-plugin-node/issues/258
 		'node/file-extension-in-import': ['error', 'always', {
 			// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
 			'.ts': 'never',
