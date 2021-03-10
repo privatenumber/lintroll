@@ -13,6 +13,7 @@ module.exports = {
 		'./rules/unicorn',
 		'./rules/no-use-extend-native',
 		'./rules/eslint-comments',
+		'./rules/package-json',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
 		ecmaVersion: 2021,
