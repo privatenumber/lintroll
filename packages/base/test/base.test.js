@@ -5,6 +5,7 @@ require('../../../test/jest-setup');
 const passFixture = path.join(__dirname, 'fixtures/pass.js');
 const failFixture = path.join(__dirname, 'fixtures/fail.js');
 const swFixture = path.join(__dirname, 'fixtures/service-worker.sw.js');
+const packageJsonFixture = path.join(__dirname, 'fixtures/package.json');
 
 const eslint = new ESLint({
 	useEslintrc: false,
@@ -129,5 +130,15 @@ test('Service worker', async () => {
 	expect(result.messages).not.toContainObject({
 		ruleId: 'no-restricted-globals',
 		message: "Unexpected use of 'self'.",
+	});
+});
+
+test('package.json', async () => {
+	const results = await eslint.lintFiles([packageJsonFixture]);
+	const { messages } = results[0];
+
+	expect(messages).toContainObject({
+		ruleId: 'jsonc/indent',
+		messageId: 'wrongIndentation',
 	});
 });
