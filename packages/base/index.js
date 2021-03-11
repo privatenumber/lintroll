@@ -14,6 +14,7 @@ module.exports = {
 		'./rules/no-use-extend-native',
 		'./rules/eslint-comments',
 		'./rules/package-json',
+		'./rules/regexp',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
 		ecmaVersion: 2021,

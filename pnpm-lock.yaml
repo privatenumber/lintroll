@@ -21,6 +21,7 @@ importers:
       eslint-plugin-no-use-extend-native: 0.5.0
       eslint-plugin-node: 11.1.0
       eslint-plugin-promise: 4.2.1
+      eslint-plugin-regexp: 0.3.1
       eslint-plugin-unicorn: 27.0.0
     specifiers:
       confusing-browser-globals: ^1.0.10
@@ -30,6 +31,7 @@ importers:
       eslint-plugin-no-use-extend-native: ^0.5.0
       eslint-plugin-node: ^11.1.0
       eslint-plugin-promise: ^4.2.1
+      eslint-plugin-regexp: ^0.3.1
       eslint-plugin-unicorn: ^27.0.0
   packages/typescript:
     dependencies:
@@ -2562,6 +2564,12 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
+  /comment-parser/1.1.2:
+    dev: false
+    engines:
+      node: '>= 10.0.0'
+    resolution:
+      integrity: sha512-AOdq0i8ghZudnYv8RUnHrhTgafUGs61Rdz9jemU5x2lnZwAWyOq7vySo626K59e1fVKH1xSRorJwPVRLSWOoAQ==
   /compare-func/2.0.0:
     dependencies:
       array-ify: 1.0.0
@@ -3292,6 +3300,17 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-VoM09vT7bfA7D+upt+FjeBO5eHIJQBUWki1aPvB+vbNiHS3+oGIJGIeyBtKQTME6UPXXy3vV07OL1tHd3ANuDw==
+  /eslint-plugin-regexp/0.3.1:
+    dependencies:
+      comment-parser: 1.1.2
+      eslint-utils: 2.1.0
+      jsdoctypeparser: 9.0.0
+      regexpp: 3.1.0
+    dev: false
+    peerDependencies:
+      eslint: '>=6.0.0'
+    resolution:
+      integrity: sha512-82Ynk5W8Iq/Fb31LiaMYAdt3qjwmc1+z7YCvaU2xe802qpLQX0q3YGrARBmp655wAbTWTvkbTHBaicO2kYSP9Q==
   /eslint-plugin-unicorn/27.0.0:
     dependencies:
       ci-info: 2.0.0
@@ -5232,6 +5251,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
+  /jsdoctypeparser/9.0.0:
+    dev: false
+    engines:
+      node: '>=10'
+    hasBin: true
+    resolution:
+      integrity: sha512-jrTA2jJIL6/DAEILBEh2/w9QxCuwmvNXIry39Ay/HVfhE3o2yVV0U44blYkqdHA/OKloJEqvJy0xU+GSdE2SIw==
   /jsdom/16.4.0:
     dependencies:
       abab: 2.0.5

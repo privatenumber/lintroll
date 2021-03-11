@@ -112,6 +112,11 @@ test('Fail cases', async () => {
 		ruleId: 'curly',
 		messageId: 'missingCurlyAfterCondition',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'regexp/prefer-d',
+		messageId: 'unexpected',
+	});
 });
 
 test('Service worker', async () => {
