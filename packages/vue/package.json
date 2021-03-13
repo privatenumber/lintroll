@@ -27,6 +27,6 @@
 	},
 	"dependencies": {
 		"@pvtnbr/eslint-config-base": "^0.1.11",
-		"eslint-plugin-vue": "^7.3.0"
+		"eslint-plugin-vue": "^7.7.0"
 	}
 }
