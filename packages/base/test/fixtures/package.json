@@ -1,3 +1,5 @@
 {
-  "name": "some-package-json"
+  "name": "some-package-json",
+  "description": "",
+  "version": ""
 }

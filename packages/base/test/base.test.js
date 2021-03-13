@@ -141,4 +141,9 @@ test('package.json', async () => {
 		ruleId: 'jsonc/indent',
 		messageId: 'wrongIndentation',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'jsonc/sort-keys',
+		messageId: 'sortKeys',
+	});
 });
