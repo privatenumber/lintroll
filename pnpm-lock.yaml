@@ -17,7 +17,7 @@ importers:
       confusing-browser-globals: 1.0.10
       eslint-plugin-eslint-comments: 3.2.0
       eslint-plugin-import: 2.22.1
-      eslint-plugin-jsonc: 1.2.0
+      eslint-plugin-jsonc: 1.2.1
       eslint-plugin-no-use-extend-native: 0.5.0
       eslint-plugin-node: 11.1.0
       eslint-plugin-promise: 4.3.1
@@ -27,7 +27,7 @@ importers:
       confusing-browser-globals: ^1.0.10
       eslint-plugin-eslint-comments: ^3.2.0
       eslint-plugin-import: ^2.22.1
-      eslint-plugin-jsonc: ^1.2.0
+      eslint-plugin-jsonc: ^1.2.1
       eslint-plugin-no-use-extend-native: ^0.5.0
       eslint-plugin-node: ^11.1.0
       eslint-plugin-promise: ^4.3.1
@@ -3471,7 +3471,7 @@ packages:
       eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0
     resolution:
       integrity: sha512-8K7JjINHOpH64ozkAhpT3sd+FswIZTfMZTjdx052pnWrgRCVfp8op9tbjpAk3DdUeI/Ba4C8OjdC0r90erHEOw==
-  /eslint-plugin-jsonc/1.2.0:
+  /eslint-plugin-jsonc/1.2.1:
     dependencies:
       eslint-utils: 2.1.0
       jsonc-eslint-parser: 1.0.1
@@ -3480,7 +3480,7 @@ packages:
     peerDependencies:
       eslint: ^5.0.0 || >=6.0.0
     resolution:
-      integrity: sha512-8VSwIXrCsrP5dbqioj2ylfYmSJl4pKQsA/ItpfUpdXiXZ8VcB+2A5pXeZHExUZXgwPTs8lww2KuKM6+3KaP/+Q==
+      integrity: sha512-m7o4gaNKojSwRJDNP0/7HK1vGfGgynX6DeTHTXhYGxWn2DB8E2RU5jeK95CYw1/mwej4ku2Xd9Tevn6WOlI6Dg==
   /eslint-plugin-no-use-extend-native/0.5.0:
     dependencies:
       is-get-set-prop: 1.0.0
