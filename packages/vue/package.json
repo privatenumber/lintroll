@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-vue",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"description": "Vue ESLint configuration",
 	"license": "MIT",
 	"repository": {
@@ -26,7 +26,7 @@
 		"eslint": "^7.15.0"
 	},
 	"dependencies": {
-		"@pvtnbr/eslint-config-base": "^0.1.11",
+		"@pvtnbr/eslint-config-base": "^0.1.12",
 		"eslint-plugin-vue": "^7.7.0"
 	}
 }
