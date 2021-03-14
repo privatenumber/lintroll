@@ -13,6 +13,8 @@ module.exports = {
 		'./rules/unicorn',
 		'./rules/no-use-extend-native',
 		'./rules/eslint-comments',
+		'./rules/package-json',
+		'./rules/regexp',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
 		ecmaVersion: 2021,
@@ -31,7 +33,7 @@ module.exports = {
 	],
 	overrides: [
 		{
-			files: '**/test/*',
+			files: '**/{test,tests}/*',
 			env: {
 				jest: true,
 			},
