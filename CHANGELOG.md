@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.1.13 (2021-03-28)
+
+**Note:** Version bump only for package @pvtnbr/eslint-config
+
+
+
+
+
 ## 0.1.12 (2021-03-14)
 
 **Note:** Version bump only for package @pvtnbr/eslint-config
