@@ -98,7 +98,6 @@ module.exports = {
 		// https://eslint.org/docs/rules/object-shorthand
 		'object-shorthand': ['error', 'always', {
 			ignoreConstructors: false,
-			avoidQuotes: true,
 		}],
 
 		// suggest using arrow functions as callbacks
