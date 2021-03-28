@@ -8,6 +8,15 @@ import someModule from 'http://some.module/module.js';
 
 const message = 'hello world';
 
+const objectMethods = {
+	method() {
+		return true;
+	},
+	'method-a'() {
+		return true;
+	},
+};
+
 // Ternary
 const ternaryValue = (
 	Math.random() > 0.5
@@ -63,6 +72,7 @@ async function someAsync() {
 // eslint-disable-next-line no-console
 console.log(
 	path,
+	objectMethods,
 	someModule,
 	message,
 	ternaryValue,

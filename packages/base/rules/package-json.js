@@ -28,6 +28,7 @@ module.exports = {
 						'main',
 						'module',
 						'unpkg',
+						'types',
 						'bin',
 						'scripts',
 						'husky',
