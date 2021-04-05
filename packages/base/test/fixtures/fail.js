@@ -31,3 +31,5 @@ isFinite(1121);
 if (true) console.log(1);
 
 /[0-9]+/.test('1111');
+
+process.exit();

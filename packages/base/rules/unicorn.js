@@ -25,6 +25,9 @@ module.exports = {
 			ignoreImports: true,
 		}],
 
+		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-process-exit.md
+		'unicorn/no-process-exit': 'off',
+
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/898fcb4/docs/rules/prevent-abbreviations.md
 		'unicorn/prevent-abbreviations': ['error', {
 			replacements: {
@@ -38,4 +41,12 @@ module.exports = {
 			},
 		}],
 	},
+	overrides: [
+		{
+			files: '!index.{js,ts}',
+			rules: {
+				'unicorn/no-process-exit': 'error',
+			},
+		},
+	],
 };
