@@ -60,6 +60,9 @@ module.exports = {
 				'@typescript-eslint/member-delimiter-style': 'error',
 
 				'@typescript-eslint/consistent-type-assertions': 'error',
+
+				// Allow functions to be passed in only in TS because it's easy to see their types
+				'unicorn/no-array-callback-reference': 'off',
 			},
 		},
 		{
