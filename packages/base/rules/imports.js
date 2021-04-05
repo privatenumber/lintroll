@@ -98,7 +98,8 @@ module.exports = {
 		'import/newline-after-import': 'error',
 
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/prefer-default-export.md
-		'import/prefer-default-export': 'error',
+		// Excessive. Also, named exports help enforce readable imports.
+		'import/prefer-default-export': 'off',
 
 		// Forbid modules to have too many dependencies
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/max-dependencies.md
@@ -129,7 +130,7 @@ module.exports = {
 		'import/exports-last': 'error',
 
 		// https://githubis.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/group-exports.md
-		// Too much. Also, not suppored in TS w/ isolatedModules:
+		// Excessive. Also, not suppored in TS w/ isolatedModules:
 		// Re-exporting a type when the 'isolatedModules' flag is provided requires using 'export type'
 		'import/group-exports': 'off',
 
