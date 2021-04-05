@@ -128,8 +128,10 @@ module.exports = {
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/exports-last.md
 		'import/exports-last': 'error',
 
-		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/group-exports.md
-		'import/group-exports': 'error',
+		// https://githubis.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/group-exports.md
+		// Too much. Also, not suppored in TS w/ isolatedModules:
+		// Re-exporting a type when the 'isolatedModules' flag is provided requires using 'export type'
+		'import/group-exports': 'off',
 
 		// Forbid a module from importing itself
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-self-import.md
