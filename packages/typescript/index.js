@@ -63,6 +63,9 @@ module.exports = {
 
 				// Allow functions to be passed in only in TS because it's easy to see their types
 				'unicorn/no-array-callback-reference': 'off',
+
+				// Not always possible to destructue at top-level when the variable is ambigious
+				'unicorn/consistent-destructuring': 'off',
 			},
 		},
 		{
