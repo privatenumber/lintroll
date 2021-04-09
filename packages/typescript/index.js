@@ -66,6 +66,10 @@ module.exports = {
 
 				// Not always possible to destructue at top-level when the variable is ambigious
 				'unicorn/consistent-destructuring': 'off',
+
+				// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
+				'no-shadow': 'off',
+				'@typescript-eslint/no-shadow': 'error',
 			},
 		},
 		{

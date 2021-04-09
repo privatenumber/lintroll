@@ -126,13 +126,15 @@ module.exports = {
 			allowObject: false,
 		}],
 
-		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/exports-last.md
-		'import/exports-last': 'error',
-
 		// https://githubis.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/group-exports.md
 		// Excessive. Also, not suppored in TS w/ isolatedModules:
 		// Re-exporting a type when the 'isolatedModules' flag is provided requires using 'export type'
 		'import/group-exports': 'off',
+
+		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/exports-last.md
+		// Hard to expect this when the grouped exports can't be enabled.
+		// In TS, if a type needs to be exported inline, it's dependent types should be right above it
+		'import/exports-last': 'off',
 
 		// Forbid a module from importing itself
 		// https://github.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/no-self-import.md
