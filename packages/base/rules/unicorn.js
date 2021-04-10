@@ -1,3 +1,8 @@
+const path = require('path');
+
+const packageJson = require(path.resolve('package.json'));
+const isCli = 'bin' in packageJson;
+
 module.exports = {
 	plugins: [
 		'unicorn',
@@ -39,11 +44,15 @@ module.exports = {
 		}],
 	},
 	overrides: [
-		{
-			files: 'index.{js,ts}',
-			rules: {
-				'unicorn/no-process-exit': 'off',
-			},
-		},
+		...(
+			isCli
+				? [{
+					files: 'index.{js,ts}',
+					rules: {
+						'unicorn/no-process-exit': 'off',
+					},
+				}]
+				: []
+		),
 	],
 };
