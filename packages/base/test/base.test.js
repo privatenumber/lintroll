@@ -28,6 +28,11 @@ test('Fail cases', async () => {
 	const { messages } = results[0];
 
 	expect(messages).toContainObject({
+		ruleId: 'unicorn/no-process-exit',
+		messageId: 'no-process-exit',
+	});
+
+	expect(messages).toContainObject({
 		ruleId: 'unicorn/no-new-buffer',
 		messageId: 'error',
 	});
