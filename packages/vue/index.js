@@ -1,15 +1,14 @@
-module.exports = {
-	extends: [
-		'@pvtnbr/eslint-config-base',
-	],
+/** @typedef { import('eslint').Linter.Config } ESLintConfig */
+
+/** @type { ESLintConfig } */
+const config = {
+	extends: '@pvtnbr/eslint-config-base',
 	overrides: [
 		// Setting as an override allows .vue files to be
 		// linted without specifying it on the user-end
 		{
 			files: '*.vue',
-			extends: [
-				'plugin:vue/vue3-recommended',
-			],
+			extends: 'plugin:vue/vue3-recommended',
 			rules: {
 				'vue/html-indent': ['error', 'tab'],
 
@@ -38,3 +37,5 @@ module.exports = {
 		},
 	],
 };
+
+module.exports = config;

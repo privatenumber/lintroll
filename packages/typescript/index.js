@@ -4,7 +4,10 @@
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
 
-module.exports = {
+/** @typedef { import('eslint').Linter.Config } ESLintConfig */
+
+/** @type { ESLintConfig } */
+const config = {
 	extends: [
 		'@pvtnbr/eslint-config-base',
 	],
@@ -63,16 +66,7 @@ module.exports = {
 				'import/prefer-default-export': 'off',
 			},
 		},
-		{
-			files: '*.tsx',
-			rules: {
-				'unicorn/filename-case': ['error', {
-					case: 'pascalCase',
-					ignore: [
-						'\\.spec\\.tsx$',
-					],
-				}],
-			},
-		},
 	],
 };
+
+module.exports = config;
