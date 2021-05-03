@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputComponent = () => (
+const InputComponent = (): JSX.Element => (
 	<input
 		title="value"
 		disabled
