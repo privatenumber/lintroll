@@ -63,5 +63,16 @@ module.exports = {
 				'import/prefer-default-export': 'off',
 			},
 		},
+		{
+			files: '*.tsx',
+			rules: {
+				'unicorn/filename-case': ['error', {
+					case: 'pascalCase',
+					ignore: [
+						'\\.spec\\.tsx$',
+					],
+				}],
+			},
+		},
 	],
 };
