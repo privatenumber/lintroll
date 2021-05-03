@@ -12,9 +12,12 @@ module.exports = {
 		// Setting as an override allows .ts files to be
 		// linted without specifying it on the user-end
 		{
-			files: '*.ts',
+			files: '*.{ts,tsx}',
 			extends: [
 				'plugin:@typescript-eslint/recommended',
+
+				// https://github.com/benmosher/eslint-plugin-import/blob/6c8981d/config/typescript.js
+				'plugin:import/typescript',
 			],
 
 			parserOptions: {
@@ -22,39 +25,21 @@ module.exports = {
 				project: '**/tsconfig.json',
 			},
 
-			settings: {
-				// Doesn't seem to help
-				// 'import/extensions': extensions,
-
-				'import/external-module-folders': ['node_modules', 'node_modules/@types'],
-
-				'import/parsers': {
-					'@typescript-eslint/parser': ['.ts', '.d.ts'],
-				},
-
-				'import/resolver': {
-					node: {
-						extensions: [
-							'.js',
-							'.ts',
-							'.d.ts',
-						],
-					},
-				},
-			},
-
 			rules: {
 				// Always require await when returning promise
 				// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
 				'@typescript-eslint/return-await': ['error', 'always'],
 
-				// TypeScript compilation already ensures that named imports exist in the referenced module
-				'import/named': 'off',
-
 				// TS disallows .ts extension
 				// https://github.com/Microsoft/TypeScript/issues/27481
 				'import/extensions': ['error', 'ignorePackages', {
 					ts: 'never',
+					tsx: 'never',
+				}],
+
+				'node/file-extension-in-import': ['error', 'always', {
+					'.ts': 'never',
+					'.tsx': 'never',
 				}],
 
 				'@typescript-eslint/member-delimiter-style': 'error',
