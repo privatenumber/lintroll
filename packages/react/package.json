@@ -1,0 +1,37 @@
+{
+	"name": "@pvtnbr/eslint-config-react",
+	"version": "0.1.13",
+	"description": "React ESLint configuration",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/privatenumber/eslint-config.git",
+		"directory": "packages/react"
+	},
+	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
+	"author": {
+		"name": "Hiroki Osame",
+		"email": "hiroki.osame@gmail.com"
+	},
+	"files": [
+		"index.js"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"test": "jest"
+	},
+	"peerDependencies": {
+		"eslint": "^7.15.0"
+	},
+	"dependencies": {
+		"@pvtnbr/eslint-config-typescript": "^0.1.13",
+		"eslint-plugin-react-hooks": "4.2.0",
+		"eslint-plugin-react": "^7.23.2"
+	},
+	"devDependencies": {
+		"react": "^17.0.2",
+		"@types/react": "^16.8.24"
+	}
+}

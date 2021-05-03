@@ -1,6 +1,9 @@
+/** @typedef { import('eslint').Linter.Config } ESLintConfig */
+
 const confusingBrowserGlobals = require('confusing-browser-globals');
 
-module.exports = {
+/** @type { ESLintConfig } */
+const config = {
 	extends: [
 		'./rules/best-practices',
 		'./rules/errors',
@@ -52,3 +55,5 @@ module.exports = {
 		},
 	],
 };
+
+module.exports = config;
