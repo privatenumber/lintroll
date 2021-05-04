@@ -44,7 +44,7 @@ importers:
 
   packages/react:
     specifiers:
-      '@pvtnbr/eslint-config-typescript': ^0.1.13
+      '@pvtnbr/eslint-config-typescript': ^0.1.15
       '@types/react': ^16.8.24
       eslint-plugin-react: ^7.23.2
       eslint-plugin-react-hooks: 4.2.0
@@ -59,7 +59,7 @@ importers:
 
   packages/typescript:
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.14
+      '@pvtnbr/eslint-config-base': ^0.1.15
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
       typescript: ^4.2.3
@@ -72,7 +72,7 @@ importers:
 
   packages/vue:
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.14
+      '@pvtnbr/eslint-config-base': ^0.1.15
       eslint-plugin-vue: ^7.7.0
     dependencies:
       '@pvtnbr/eslint-config-base': link:../base
