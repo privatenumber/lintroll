@@ -121,8 +121,28 @@ module.exports = {
 			ObjectExpression: 1,
 			ImportDeclaration: 1,
 			flatTernaryExpressions: false,
-			// list derived from https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
-			ignoredNodes: ['JSXElement', 'JSXElement > *', 'JSXAttribute', 'JSXIdentifier', 'JSXNamespacedName', 'JSXMemberExpression', 'JSXSpreadAttribute', 'JSXExpressionContainer', 'JSXOpeningElement', 'JSXClosingElement', 'JSXFragment', 'JSXOpeningFragment', 'JSXClosingFragment', 'JSXText', 'JSXEmptyExpression', 'JSXSpreadChild'],
+			ignoredNodes: [
+				// Don't fix indentations in template literals
+				'TemplateLiteral > *',
+
+				// From https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
+				'JSXElement',
+				'JSXElement > *',
+				'JSXAttribute',
+				'JSXIdentifier',
+				'JSXNamespacedName',
+				'JSXMemberExpression',
+				'JSXSpreadAttribute',
+				'JSXExpressionContainer',
+				'JSXOpeningElement',
+				'JSXClosingElement',
+				'JSXFragment',
+				'JSXOpeningFragment',
+				'JSXClosingFragment',
+				'JSXText',
+				'JSXEmptyExpression',
+				'JSXSpreadChild',
+			],
 			ignoreComments: false,
 		}],
 
