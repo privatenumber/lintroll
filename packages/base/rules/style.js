@@ -370,7 +370,11 @@ module.exports = {
 
 		// Requires operator at the beginning of the line in multiline statements
 		// https://eslint.org/docs/rules/operator-linebreak
-		'operator-linebreak': ['error', 'before', { overrides: { '=': 'none' } }],
+		'operator-linebreak': ['error', 'before', {
+			overrides: {
+				'=': 'none',
+			},
+		}],
 
 		// disallow padding within blocks
 		'padded-blocks': ['error', {
