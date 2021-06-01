@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-react",
-	"version": "0.1.16",
+	"version": "0.1.17",
 	"description": "React ESLint configuration",
 	"license": "MIT",
 	"repository": {
@@ -26,7 +26,7 @@
 		"eslint": "^7.15.0"
 	},
 	"dependencies": {
-		"@pvtnbr/eslint-config-typescript": "^0.1.16",
+		"@pvtnbr/eslint-config-typescript": "^0.1.17",
 		"eslint-plugin-react": "^7.23.2",
 		"eslint-plugin-react-hooks": "4.2.0"
 	},
