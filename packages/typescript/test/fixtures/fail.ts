@@ -18,9 +18,3 @@ type SomeObject = {
 
 const someNumber = 1;
 console.log(<string>someNumber);
-
-// eslint-disable-next-line no-console
-console.log(
-	message,
-	ternaryValue,
-);

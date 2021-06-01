@@ -33,3 +33,9 @@ if (true) console.log(1);
 /[0-9]+/.test('1111');
 
 process.exit();
+
+const ternary = true ? 1 : 2;
+
+const ternary2 = true ?
+	1 :
+	2;

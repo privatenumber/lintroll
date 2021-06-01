@@ -123,6 +123,11 @@ test('Fail cases', async () => {
 		ruleId: 'regexp/prefer-d',
 		messageId: 'unexpected',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'operator-linebreak',
+		messageId: 'operatorAtBeginning',
+	});
 });
 
 test('Service worker', async () => {
