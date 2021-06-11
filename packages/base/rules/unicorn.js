@@ -32,8 +32,11 @@ module.exports = {
 
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/898fcb4/docs/rules/prevent-abbreviations.md
 		'unicorn/prevent-abbreviations': ['error', {
+			// case insensitive and matches substrings
 			replacements: {
 				dev: false,
+				prop: false,
+				props: false,
 			},
 
 			// exact-match
