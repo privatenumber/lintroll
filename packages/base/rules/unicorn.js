@@ -43,6 +43,7 @@ module.exports = {
 			whitelist: {
 				// for-loop index
 				i: true,
+				j: true,
 			},
 		}],
 	},
