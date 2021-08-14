@@ -44,7 +44,7 @@ importers:
 
   packages/react:
     specifiers:
-      '@pvtnbr/eslint-config-typescript': ^0.1.20
+      '@pvtnbr/eslint-config-typescript': ^0.1.21
       '@types/react': ^16.8.24
       eslint-plugin-react: ^7.23.2
       eslint-plugin-react-hooks: 4.2.0
@@ -59,13 +59,13 @@ importers:
 
   packages/typescript:
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.20
+      '@pvtnbr/eslint-config-base': ^0.1.21
       '@typescript-eslint/eslint-plugin': ^4.17.0
       '@typescript-eslint/parser': ^4.17.0
       eslint-import-resolver-typescript: ^2.4.0
       typescript: ^4.2.3
     dependencies:
-      '@pvtnbr/eslint-config-base': 0.1.21_eslint@7.32.0
+      '@pvtnbr/eslint-config-base': link:../base
       '@typescript-eslint/eslint-plugin': 4.21.0_353b940b01d11ec8e192d294a771aee9
       '@typescript-eslint/parser': 4.21.0_eslint@7.32.0+typescript@4.2.4
       eslint-import-resolver-typescript: 2.4.0_eslint@7.32.0
@@ -74,7 +74,7 @@ importers:
 
   packages/vue:
     specifiers:
-      '@pvtnbr/eslint-config-base': ^0.1.20
+      '@pvtnbr/eslint-config-base': ^0.1.21
       eslint-plugin-vue: ^7.7.0
     dependencies:
       '@pvtnbr/eslint-config-base': link:../base
@@ -1515,25 +1515,6 @@ packages:
     dependencies:
       '@octokit/openapi-types': 6.0.0
     dev: true
-
-  /@pvtnbr/eslint-config-base/0.1.21_eslint@7.32.0:
-    resolution: {integrity: sha512-Sr56khCbDyK/4JegpdnIhktg2020s6Dt7I8DIUX9kMH6+2fmOxoUjEa65N3hWbPOaqatxVPFWgEP+hzgXaWdNA==}
-    peerDependencies:
-      eslint: ^7.15.0
-    dependencies:
-      confusing-browser-globals: 1.0.10
-      eslint: 7.32.0
-      eslint-plugin-eslint-comments: 3.2.0_eslint@7.32.0
-      eslint-plugin-import: 2.22.1_eslint@7.32.0
-      eslint-plugin-jsonc: 1.2.1_eslint@7.32.0
-      eslint-plugin-no-use-extend-native: 0.5.0
-      eslint-plugin-node: 11.1.0_eslint@7.32.0
-      eslint-plugin-promise: 4.3.1
-      eslint-plugin-regexp: 0.4.3_eslint@7.32.0
-      eslint-plugin-unicorn: 28.0.2_eslint@7.32.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@sinonjs/commons/1.8.3:
     resolution: {integrity: sha512-xkNcLAn/wZaX14RPlwizcKicDk9G3F8m2nU3L7Ukm5zBgTwiT0wsoFAHx9Jq56fJA1z/7uKGtCRu16sOUCLIHQ==}
