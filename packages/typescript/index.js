@@ -20,12 +20,19 @@ const config = {
 		// linted without specifying it on the user-end
 		{
 			files: '*.{ts,tsx}',
+
 			extends: [
 				'plugin:@typescript-eslint/recommended',
 
 				// https://github.com/benmosher/eslint-plugin-import/blob/6c8981d/config/typescript.js
 				'plugin:import/typescript',
 			],
+
+			settings: {
+				'import/resolver': {
+					typescript: {},
+				},
+			},
 
 			parserOptions: {
 				// Gets closest tsconfig.json
