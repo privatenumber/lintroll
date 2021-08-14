@@ -4,6 +4,10 @@
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
 
+const baseImports = require('@pvtnbr/eslint-config-base/rules/imports');
+
+const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
+
 /** @typedef { import('eslint').Linter.Config } ESLintConfig */
 
 /** @type { ESLintConfig } */
@@ -32,6 +36,15 @@ const config = {
 				// Always require await when returning promise
 				// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
 				'@typescript-eslint/return-await': ['error', 'always'],
+
+				'import/no-extraneous-dependencies': ['error', {
+					...noExtraneousDependenciesConfig,
+					devDependencies: [
+						...noExtraneousDependenciesConfig.devDependencies.map(
+							pattern => pattern.replace('.js', '.{js,ts}'),
+						),
+					],
+				}],
 
 				// TS disallows .ts extension
 				// https://github.com/Microsoft/TypeScript/issues/27481
