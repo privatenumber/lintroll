@@ -12,10 +12,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Configure git author
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
@@ -30,8 +26,5 @@ jobs:
       run: pnpm run -r test
     - name: Release
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-        npm whoami
-        npx lerna publish --yes
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: pnpm -r exec -- npx --no-install semantic-release -e semantic-release-monorepo

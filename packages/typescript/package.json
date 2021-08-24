@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-typescript",
-	"version": "0.1.21",
+	"version": "0.0.0-semantic-release",
 	"description": "TypeScript ESLint configuration",
 	"license": "MIT",
 	"repository": {

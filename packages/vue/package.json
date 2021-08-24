@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-vue",
-	"version": "0.1.21",
+	"version": "0.0.0-semantic-release",
 	"description": "Vue ESLint configuration",
 	"license": "MIT",
 	"repository": {
