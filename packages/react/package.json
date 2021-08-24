@@ -1,6 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config-react",
-	"version": "0.1.21",
+	"version": "0.0.0-semantic-release",
 	"description": "React ESLint configuration",
 	"license": "MIT",
 	"repository": {
