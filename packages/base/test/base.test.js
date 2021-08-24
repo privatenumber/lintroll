@@ -157,3 +157,13 @@ test('package.json', async () => {
 		messageId: 'sortKeys',
 	});
 });
+
+test('random.json', async () => {
+	const results = await eslint.lintFiles([packageJsonFixture]);
+	const { messages } = results[0];
+
+	expect(messages).toContainObject({
+		ruleId: 'jsonc/indent',
+		messageId: 'wrongIndentation',
+	});
+});

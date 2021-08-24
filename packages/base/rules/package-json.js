@@ -1,16 +1,20 @@
 module.exports = {
 	overrides: [
 		{
-			files: 'package.json',
+			files: '*.json',
 
 			parser: require.resolve('jsonc-eslint-parser'),
 
-			plugins: [
-				'jsonc',
-			],
+			plugins: ['jsonc'],
 
 			rules: {
 				'jsonc/indent': ['error', 'tab'],
+			},
+		},
+		{
+			files: 'package.json',
+
+			rules: {
 				'jsonc/sort-keys': ['error', {
 					pathPattern: '.*',
 					order: [
