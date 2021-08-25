@@ -27,4 +27,5 @@ jobs:
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: pnpm -r exec -- npx --no-install semantic-release -e semantic-release-monorepo
