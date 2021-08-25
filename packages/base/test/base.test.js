@@ -6,6 +6,7 @@ const passFixture = path.join(__dirname, 'fixtures/pass.js');
 const failFixture = path.join(__dirname, 'fixtures/fail.js');
 const swFixture = path.join(__dirname, 'fixtures/service-worker.sw.js');
 const packageJsonFixture = path.join(__dirname, 'fixtures/package.json');
+const jsonFixture = path.join(__dirname, 'fixtures/random.json');
 
 const eslint = new ESLint({
 	useEslintrc: false,
@@ -155,5 +156,15 @@ test('package.json', async () => {
 	expect(messages).toContainObject({
 		ruleId: 'jsonc/sort-keys',
 		messageId: 'sortKeys',
+	});
+});
+
+test('random.json', async () => {
+	const results = await eslint.lintFiles([jsonFixture]);
+	const { messages } = results[0];
+
+	expect(messages).toContainObject({
+		ruleId: 'jsonc/indent',
+		messageId: 'wrongIndentation',
 	});
 });
