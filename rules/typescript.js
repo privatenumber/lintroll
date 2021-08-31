@@ -4,7 +4,7 @@
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
 
-const baseImports = require('@pvtnbr/eslint-config-base/rules/imports');
+const baseImports = require('./imports.js');
 
 const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
@@ -12,9 +12,6 @@ const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-d
 
 /** @type { ESLintConfig } */
 const config = {
-	extends: [
-		'@pvtnbr/eslint-config-base',
-	],
 	overrides: [
 		// Setting as an override allows .ts files to be
 		// linted without specifying it on the user-end

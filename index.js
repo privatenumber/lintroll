@@ -18,6 +18,9 @@ const config = {
 		'./rules/eslint-comments',
 		'./rules/package-json',
 		'./rules/regexp',
+		'./rules/typescript',
+		'./rules/vue',
+		'./rules/react',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
 		ecmaVersion: 2021,

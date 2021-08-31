@@ -1,9 +1,9 @@
 const path = require('path');
 const { ESLint } = require('eslint');
-require('../../../test/jest-setup.js');
+require('./jest-setup.js');
 
-const passFixture = path.join(__dirname, 'fixtures/Pass.vue');
-const failFixture = path.join(__dirname, 'fixtures/fail.vue');
+const passFixture = path.join(__dirname, 'fixtures/pass.ts');
+const failFixture = path.join(__dirname, 'fixtures/fail.ts');
 const eslint = new ESLint({
 	useEslintrc: false,
 	baseConfig: {
@@ -25,17 +25,17 @@ test('Fail cases', async () => {
 	const { messages } = results[0];
 
 	expect(messages).toContainObject({
-		ruleId: 'unicorn/filename-case',
-		message: 'Filename is not in pascal case. Rename it to `Fail.vue`.',
+		ruleId: '@typescript-eslint/return-await',
+		messageId: 'requiredPromiseAwait',
 	});
 
 	expect(messages).toContainObject({
-		ruleId: 'vue/html-quotes',
-		message: 'Expected to be enclosed by double quotes.',
+		ruleId: '@typescript-eslint/member-delimiter-style',
+		messageId: 'expectedSemi',
 	});
 
 	expect(messages).toContainObject({
-		ruleId: 'eol-last',
-		messageId: 'missing',
+		ruleId: '@typescript-eslint/consistent-type-assertions',
+		messageId: 'as',
 	});
 });
