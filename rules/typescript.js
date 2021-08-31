@@ -80,12 +80,6 @@ const config = {
 				'@typescript-eslint/no-shadow': 'error',
 			},
 		},
-		{
-			files: '*.d.ts',
-			rules: {
-				'import/prefer-default-export': 'off',
-			},
-		},
 	],
 };
 

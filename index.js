@@ -16,7 +16,7 @@ const config = {
 		'./rules/unicorn',
 		'./rules/no-use-extend-native',
 		'./rules/eslint-comments',
-		'./rules/package-json',
+		'./rules/json',
 		'./rules/regexp',
 		'./rules/typescript',
 		'./rules/vue',
