@@ -1,6 +1,6 @@
 const path = require('path');
 const { ESLint } = require('eslint');
-require('../../../test/jest-setup');
+require('../../../test/jest-setup.js');
 
 const passFixture = path.join(__dirname, 'fixtures/Pass.vue');
 const failFixture = path.join(__dirname, 'fixtures/fail.vue');
