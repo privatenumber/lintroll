@@ -30,7 +30,7 @@ importers:
       eslint-plugin-jsonc: ^1.6.0
       eslint-plugin-no-use-extend-native: ^0.5.0
       eslint-plugin-node: ^11.1.0
-      eslint-plugin-promise: ^4.3.1
+      eslint-plugin-promise: ^5.1.0
       eslint-plugin-regexp: ^1.0.0
       eslint-plugin-unicorn: ^28.0.2
     dependencies:
@@ -40,7 +40,7 @@ importers:
       eslint-plugin-jsonc: 1.6.0_eslint@7.32.0
       eslint-plugin-no-use-extend-native: 0.5.0
       eslint-plugin-node: 11.1.0_eslint@7.32.0
-      eslint-plugin-promise: 4.3.1
+      eslint-plugin-promise: 5.1.0_eslint@7.32.0
       eslint-plugin-regexp: 1.0.0_eslint@7.32.0
       eslint-plugin-unicorn: 28.0.2_eslint@7.32.0
 
@@ -2382,6 +2382,15 @@ packages:
   /eslint-plugin-promise/4.3.1:
     resolution: {integrity: sha512-bY2sGqyptzFBDLh/GMbAxfdJC+b0f23ME63FOE4+Jao0oZ3E1LEwFtWJX/1pGMJLiTtrSSern2CRM/g+dfc0eQ==}
     engines: {node: '>=6'}
+    dev: false
+
+  /eslint-plugin-promise/5.1.0_eslint@7.32.0:
+    resolution: {integrity: sha512-NGmI6BH5L12pl7ScQHbg7tvtk4wPxxj8yPHH47NvSmMtFneC077PSeY3huFj06ZWZvtbfxSPt3RuOQD5XcR4ng==}
+    engines: {node: ^10.12.0 || >=12.0.0}
+    peerDependencies:
+      eslint: ^7.0.0
+    dependencies:
+      eslint: 7.32.0
     dev: false
 
   /eslint-plugin-react-hooks/4.2.0_eslint@7.32.0:
