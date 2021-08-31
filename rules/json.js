@@ -3,7 +3,7 @@ module.exports = {
 		{
 			files: '*.json',
 
-			parser: require.resolve('jsonc-eslint-parser'),
+			parser: 'jsonc-eslint-parser',
 
 			plugins: ['jsonc'],
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const { ESLint } = require('eslint');
-require('../../../test/jest-setup.js');
+require('./jest-setup.js');
 
 const passFixture = path.join(__dirname, 'fixtures/InputComponent.tsx');
 const failFixture = path.join(__dirname, 'fixtures/fail.tsx');
@@ -8,6 +8,9 @@ const eslint = new ESLint({
 	useEslintrc: false,
 	baseConfig: {
 		extends: path.join(__dirname, '../index.js'),
+		rules: {
+			'import/no-extraneous-dependencies': 'off',
+		},
 	},
 });
 
@@ -31,7 +34,7 @@ test('Fail cases', async () => {
 
 	expect(messages).toContainObject({
 		ruleId: 'unicorn/filename-case',
-		messageId: 'renameToCase',
+		messageId: 'filename-case',
 	});
 
 	expect(messages).toContainObject({

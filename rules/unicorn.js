@@ -8,9 +8,7 @@ module.exports = {
 		'unicorn',
 	],
 
-	extends: [
-		'plugin:unicorn/recommended',
-	],
+	extends: 'plugin:unicorn/recommended',
 
 	rules: {
 		// Good rule and would like warning but no autofix
@@ -40,12 +38,16 @@ module.exports = {
 			},
 
 			// exact-match
-			whitelist: {
+			allowList: {
 				// for-loop index
 				i: true,
 				j: true,
 			},
 		}],
+
+		'unicorn/prefer-node-protocol': 'off',
+
+		'unicorn/prefer-module': 'off',
 	},
 	overrides: [
 		...(

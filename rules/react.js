@@ -2,9 +2,6 @@
 
 /** @type { ESLintConfig } */
 const config = {
-
-	extends: '@pvtnbr/eslint-config-typescript',
-
 	overrides: [
 		{
 			files: '*.{jsx,tsx}',
