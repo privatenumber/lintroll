@@ -3,7 +3,5 @@ module.exports = {
 		'no-use-extend-native',
 	],
 
-	extends: [
-		'plugin:no-use-extend-native/recommended',
-	],
+	extends: 'plugin:no-use-extend-native/recommended',
 };

@@ -2,7 +2,6 @@
 
 /** @type { ESLintConfig } */
 const config = {
-	extends: '@pvtnbr/eslint-config-base',
 	overrides: [
 		// Setting as an override allows .vue files to be
 		// linted without specifying it on the user-end
