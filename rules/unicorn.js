@@ -48,6 +48,9 @@ module.exports = {
 		'unicorn/prefer-node-protocol': 'off',
 
 		'unicorn/prefer-module': 'off',
+
+		// Disable in favor of eslint-plugin-regexp
+		'unicorn/better-regex': 'off',
 	},
 	overrides: [
 		...(

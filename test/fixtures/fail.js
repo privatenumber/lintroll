@@ -39,3 +39,5 @@ const ternary = true ? 1 : 2;
 const ternary2 = true ?
 	1 :
 	2;
+
+const regex = /[0-9]\.[a-zA-Z0-9_]\-[^0-9]/i;
