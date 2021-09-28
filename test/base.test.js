@@ -129,6 +129,15 @@ test('Fail cases', async () => {
 		ruleId: 'operator-linebreak',
 		messageId: 'operatorAtBeginning',
 	});
+
+	expect(messages).toContainObject({
+		ruleId: 'regexp/prefer-d',
+		message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
+	});
+
+	expect(messages).toContainObject({
+		ruleId: 'regexp/prefer-w',
+	});
 });
 
 test('Service worker', async () => {

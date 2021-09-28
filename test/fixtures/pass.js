@@ -73,6 +73,8 @@ async function someAsync() {
 	}
 })();
 
+const someRegexp = /\[placeholder\]/;
+
 // eslint-disable-next-line no-console
 console.log(
 	path,
@@ -81,4 +83,5 @@ console.log(
 	message,
 	ternaryValue,
 	someFunction,
+	someRegexp,
 );
