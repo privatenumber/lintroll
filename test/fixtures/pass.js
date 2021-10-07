@@ -75,6 +75,10 @@ async function someAsync() {
 
 const someRegexp = /\[placeholder\]/;
 
+try {
+	throw new Error('some error');
+} catch {}
+
 // eslint-disable-next-line no-console
 console.log(
 	path,
