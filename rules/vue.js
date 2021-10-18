@@ -7,7 +7,26 @@ const config = {
 		// linted without specifying it on the user-end
 		{
 			files: '*.vue',
+
 			extends: 'plugin:vue/vue3-recommended',
+
+			// Compiler macros
+			// https://github.com/vuejs/eslint-plugin-vue/blob/eaf6584/docs/user-guide/README.md#compiler-macros-such-as-defineprops-and-defineemits-are-warned-by-no-undef-rule
+			globals: {
+				defineProps: 'readonly',
+				defineEmits: 'readonly',
+				defineExpose: 'readonly',
+				withDefaults: 'readonly',
+			},
+
+			parserOptions: {
+				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
+				parser: {
+					js: 'espree',
+					ts: '@typescript-eslint/parser',
+				},
+			},
+
 			rules: {
 				'vue/html-indent': ['error', 'tab'],
 
