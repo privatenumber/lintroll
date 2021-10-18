@@ -3,6 +3,7 @@ const { ESLint } = require('eslint');
 require('./jest-setup.js');
 
 const passFixture = path.join(__dirname, 'fixtures/Pass.vue');
+const passSetupFixture = path.join(__dirname, 'fixtures/PassSetup.vue');
 const failFixture = path.join(__dirname, 'fixtures/fail.vue');
 const eslint = new ESLint({
 	useEslintrc: false,
@@ -12,7 +13,10 @@ const eslint = new ESLint({
 });
 
 test('Pass cases', async () => {
-	const results = await eslint.lintFiles([passFixture]);
+	const results = await eslint.lintFiles([
+		passFixture,
+		passSetupFixture,
+	]);
 	const [result] = results;
 
 	expect(result.errorCount).toBe(0);
