@@ -22,7 +22,6 @@ const config = {
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
 				parser: {
-					js: 'espree',
 					ts: '@typescript-eslint/parser',
 				},
 			},
