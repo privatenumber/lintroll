@@ -1,4 +1,9 @@
 module.exports = {
+
+	ignorePatterns: [
+		'package-lock.json',
+	],
+
 	overrides: [
 		{
 			files: '*.json',
