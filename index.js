@@ -28,14 +28,11 @@ const config = {
 	},
 	ignorePatterns: [
 		'**/node_modules/**',
-		'**/bower_components/**',
-		'flow-typed/**',
 		'coverage/**',
 		'{tmp,temp}/**',
 		'**/*.min.js',
-		'vendor/**',
-		'dist/**',
-		'tap-snapshots/*.{cjs,js}',
+		'**/vendor/**',
+		'**/dist/**',
 	],
 	overrides: [
 		{
