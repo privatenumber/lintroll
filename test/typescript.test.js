@@ -25,6 +25,12 @@ test('Fail cases', async () => {
 	const { messages } = results[0];
 
 	expect(messages).toContainObject({
+		ruleId: '@typescript-eslint/no-unused-vars',
+		messageId: 'unusedVar',
+		severity: 2,
+	});
+
+	expect(messages).toContainObject({
 		ruleId: '@typescript-eslint/return-await',
 		messageId: 'requiredPromiseAwait',
 	});
