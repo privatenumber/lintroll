@@ -5,6 +5,7 @@
  */
 
 const baseImports = require('./imports.js');
+const baseVariables = require('./variables.js');
 
 const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
@@ -49,6 +50,8 @@ const config = (
 					},
 
 					rules: {
+						'@typescript-eslint/no-unused-vars': baseVariables.rules['no-unused-vars'],
+
 						// Always require await when returning promise
 						// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
 						'@typescript-eslint/return-await': ['error', 'always'],
