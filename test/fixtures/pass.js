@@ -71,6 +71,12 @@ async function someAsync() {
 	for (let i = 0; i < 10; i += 1) {
 		await someAsync();
 	}
+
+	if (someAsync()) {
+		await someAsync();
+	} else {
+		await someAsync();
+	}
 })();
 
 sleep().then(

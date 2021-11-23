@@ -51,6 +51,8 @@ module.exports = {
 
 		// Disable in favor of eslint-plugin-regexp
 		'unicorn/better-regex': 'off',
+
+		'unicorn/prefer-ternary': 'off',
 	},
 	overrides: [
 		...(
