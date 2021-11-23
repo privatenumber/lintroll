@@ -73,6 +73,15 @@ async function someAsync() {
 	}
 })();
 
+sleep().then(
+	() => {
+		someAsync();
+	},
+	(error) => {
+		throw error;
+	},
+);
+
 const someRegexp = /\[placeholder\]/;
 
 try {
