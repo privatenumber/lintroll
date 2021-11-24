@@ -2,11 +2,11 @@ const path = require('path');
 const { ESLint } = require('eslint');
 require('./jest-setup.js');
 
-const passFixture = path.join(__dirname, 'fixtures/pass.js');
-const failFixture = path.join(__dirname, 'fixtures/fail.js');
-const swFixture = path.join(__dirname, 'fixtures/service-worker.sw.js');
-const packageJsonFixture = path.join(__dirname, 'fixtures/package.json');
-const jsonFixture = path.join(__dirname, 'fixtures/random.json');
+const passFixture = path.join(__dirname, 'fixtures/base/pass.js');
+const failFixture = path.join(__dirname, 'fixtures/base/fail.js');
+const swFixture = path.join(__dirname, 'fixtures/base/service-worker.sw.js');
+const packageJsonFixture = path.join(__dirname, 'fixtures/base/package.json');
+const jsonFixture = path.join(__dirname, 'fixtures/base/random.json');
 
 const eslint = new ESLint({
 	useEslintrc: false,

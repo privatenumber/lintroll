@@ -2,8 +2,8 @@ const path = require('path');
 const { ESLint } = require('eslint');
 require('./jest-setup.js');
 
-const passFixture = path.join(__dirname, 'fixtures/pass.ts');
-const failFixture = path.join(__dirname, 'fixtures/fail.ts');
+const passFixture = path.join(__dirname, 'fixtures/typescript/pass.ts');
+const failFixture = path.join(__dirname, 'fixtures/typescript/fail.ts');
 const eslint = new ESLint({
 	useEslintrc: false,
 	baseConfig: {
