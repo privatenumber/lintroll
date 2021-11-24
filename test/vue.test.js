@@ -2,9 +2,9 @@ const path = require('path');
 const { ESLint } = require('eslint');
 require('./jest-setup.js');
 
-const passFixture = path.join(__dirname, 'fixtures/Pass.vue');
-const passSetupFixture = path.join(__dirname, 'fixtures/PassSetup.vue');
-const failFixture = path.join(__dirname, 'fixtures/fail.vue');
+const passFixture = path.join(__dirname, 'fixtures/vue/PassingComponent.vue');
+const passSetupFixture = path.join(__dirname, 'fixtures/vue/PassSetup.vue');
+const failFixture = path.join(__dirname, 'fixtures/vue/fail.vue');
 const eslint = new ESLint({
 	useEslintrc: false,
 	baseConfig: {

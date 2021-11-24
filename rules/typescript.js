@@ -97,9 +97,7 @@ const config = (
 				},
 			],
 		}
-		: {
-			ignorePatterns: ['*.ts'],
-		}
+		: {}
 );
 
 module.exports = config;
