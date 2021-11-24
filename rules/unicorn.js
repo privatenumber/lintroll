@@ -53,6 +53,10 @@ module.exports = {
 		'unicorn/better-regex': 'off',
 
 		'unicorn/prefer-ternary': 'off',
+
+		'unicorn/prefer-export-from': ['error', {
+			ignoreUsedVariables: true,
+		}],
 	},
 	overrides: [
 		...(
