@@ -59,7 +59,9 @@ module.exports = {
 		// https://eslint.org/docs/rules/no-restricted-exports
 		'no-restricted-exports': ['error', {
 			restrictedNamedExports: [
-				'default', // use `export default` to provide a default export
+				// use `export default` to provide a default export
+				// For export { default } from './foo';
+				// 'default',
 				'then', // this will cause tons of confusion when your module is dynamically `import()`ed
 			],
 		}],
