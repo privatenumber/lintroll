@@ -14,6 +14,15 @@ module.exports = {
 
 			rules: {
 				'jsonc/indent': ['error', 'tab'],
+				'jsonc/key-spacing': [
+					'error',
+					{
+						beforeColon: false,
+						afterColon: true,
+						mode: 'strict',
+					},
+				],
+				'jsonc/object-property-newline': 'error',
 			},
 		},
 		{
