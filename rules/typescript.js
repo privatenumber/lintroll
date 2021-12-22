@@ -44,17 +44,25 @@ const config = (
 						},
 					},
 
-					parserOptions: {
-						// Gets closest tsconfig.json
-						project: '**/tsconfig.json',
-					},
+					/**
+					 * Slow and cant disable for markdown files
+					 * Was only using for @typescript-eslint/return-await
+					 *
+					 * Let's see if:
+					 *  - We can detect tsconfig.json and only enable this for the files in `include`
+					 *  - We can generate a fallback tsconfig.json that just has strict mode enabled
+					 */
+					// parserOptions: {
+					// 	// Gets closest tsconfig.json
+					// 	project: '**/tsconfig.json',
+					// },
 
 					rules: {
 						'@typescript-eslint/no-unused-vars': baseVariables.rules['no-unused-vars'],
 
 						// Always require await when returning promise
 						// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
-						'@typescript-eslint/return-await': ['error', 'always'],
+						// '@typescript-eslint/return-await': ['error', 'always'],
 
 						'import/no-extraneous-dependencies': ['error', {
 							...noExtraneousDependenciesConfig,
