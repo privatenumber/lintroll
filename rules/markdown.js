@@ -6,7 +6,7 @@ module.exports = {
 			processor: 'markdown/markdown',
 		},
 		{
-			files: ['**/*.md/*.js'],
+			files: ['**/*.md/*.{js,ts}'],
 			rules: {
 				'unicorn/filename-case': 'off',
 				'import/no-unresolved': 'off',

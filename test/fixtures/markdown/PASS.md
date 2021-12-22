@@ -11,7 +11,6 @@ const data = A({
 console.log(data)
 ```
 
-<!-- eslint-skip -->
 ```ts
 import A from 'b'
 
