@@ -9,7 +9,7 @@ importers:
       '@types/react': ^17.0.37
       '@typescript-eslint/eslint-plugin': ^5.8.0
       '@typescript-eslint/parser': ^5.8.0
-      confusing-browser-globals: ^1.0.10
+      confusing-browser-globals: ^1.0.11
       eslint: ^7.32.0
       eslint-import-resolver-typescript: ^2.5.0
       eslint-plugin-eslint-comments: ^3.2.0
@@ -32,7 +32,7 @@ importers:
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.8.0_da4c6df71e3dc18e6a1d96f4f9a2567d
       '@typescript-eslint/parser': 5.8.0_eslint@7.32.0+typescript@4.5.4
-      confusing-browser-globals: 1.0.10
+      confusing-browser-globals: 1.0.11
       eslint-import-resolver-typescript: 2.5.0_a820dc868cc8cd66d8297be6779b9035
       eslint-plugin-eslint-comments: 3.2.0_eslint@7.32.0
       eslint-plugin-import: 2.25.3_eslint@7.32.0
@@ -1989,6 +1989,10 @@ packages:
 
   /confusing-browser-globals/1.0.10:
     resolution: {integrity: sha512-gNld/3lySHwuhaVluJUKLePYirM3QNCKzVxqAdhJII9/WXKVX5PURzMVJspS1jTslSqjeuG4KMVTSouit5YPHA==}
+    dev: false
+
+  /confusing-browser-globals/1.0.11:
+    resolution: {integrity: sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==}
     dev: false
 
   /conventional-changelog-angular/5.0.13:
