@@ -19,6 +19,7 @@ const config = {
 		'./rules/json',
 		'./rules/regexp',
 		'./rules/typescript',
+		'./rules/markdown',
 		'./rules/vue',
 		'./rules/react',
 	].map(rulePath => require.resolve(rulePath)),
