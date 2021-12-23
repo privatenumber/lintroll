@@ -65,6 +65,13 @@ module.exports = {
 		 * Given this cost, it doesn't make sense to use instead of for-loops yet
 		 */
 		'unicorn/no-for-loop': 'off',
+
+		/**
+		 * Too many false positives.
+		 *
+		 * It changed the formatting of inline snapshots in tests
+		 */
+		'unicorn/template-indent': 'off',
 	},
 	overrides: [
 		...(
