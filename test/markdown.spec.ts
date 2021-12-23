@@ -1,16 +1,10 @@
-const path = require('path');
-const { ESLint } = require('eslint');
-require('./jest-setup.js');
+import path from 'path';
+import { test, expect } from 'vitest';
+import { eslint } from './utils/eslint';
+import './utils/chai-contain-object';
 
 const fixturePass = path.join(__dirname, 'fixtures/markdown/PASS.md');
 const fixtureFail = path.join(__dirname, 'fixtures/markdown/fail.md');
-
-const eslint = new ESLint({
-	useEslintrc: false,
-	baseConfig: {
-		extends: path.join(__dirname, '../index.js'),
-	},
-});
 
 test('Pass', async () => {
 	const results = await eslint.lintFiles([fixturePass]);
@@ -23,17 +17,17 @@ test('Fail', async () => {
 	const results = await eslint.lintFiles([fixtureFail]);
 	const { messages } = results[0];
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'semi',
 		messageId: 'extraSemi',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'comma-dangle',
 		messageId: 'unexpected',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'no-multiple-empty-lines',
 		messageId: 'blankEndOfFile',
 	});
