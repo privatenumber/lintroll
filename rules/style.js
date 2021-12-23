@@ -312,10 +312,6 @@ module.exports = {
 			},
 		],
 
-		'no-tabs': ['error', {
-			allowIndentationTabs: true,
-		}],
-
 		// disallow trailing whitespace at the end of lines
 		'no-trailing-spaces': ['error', {
 			skipBlankLines: false,

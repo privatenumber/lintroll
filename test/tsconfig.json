@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"strict": true,
+		"typeRoots": ["../node_modules/@types", "./@types"],
+	}
+}

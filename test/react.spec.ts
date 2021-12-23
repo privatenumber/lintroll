@@ -1,18 +1,16 @@
-const path = require('path');
-const { ESLint } = require('eslint');
-require('./jest-setup.js');
+import path from 'path';
+import { test, expect } from 'vitest';
+import { createEslint } from './utils/eslint';
+import './utils/chai-contain-object';
+
+const eslint = createEslint({
+	rules: {
+		'import/no-extraneous-dependencies': 'off',
+	},
+});
 
 const passFixture = path.join(__dirname, 'fixtures/react/InputComponent.tsx');
 const failFixture = path.join(__dirname, 'fixtures/react/fail.tsx');
-const eslint = new ESLint({
-	useEslintrc: false,
-	baseConfig: {
-		extends: path.join(__dirname, '../index.js'),
-		rules: {
-			'import/no-extraneous-dependencies': 'off',
-		},
-	},
-});
 
 test('Pass cases', async () => {
 	const results = await eslint.lintFiles([passFixture]);
@@ -27,27 +25,27 @@ test('Fail cases', async () => {
 	const results = await eslint.lintFiles([failFixture]);
 	const { messages } = results[0];
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'jsx-quotes',
 		messageId: 'unexpected',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'unicorn/filename-case',
 		messageId: 'filename-case',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'react/react-in-jsx-scope',
 		messageId: 'notInScope',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'react/prop-types',
 		messageId: 'missingPropType',
 	});
 
-	expect(messages).toContainObject({
+	expect(messages).to.containObject({
 		ruleId: 'react/jsx-max-props-per-line',
 		messageId: 'newLine',
 	});
