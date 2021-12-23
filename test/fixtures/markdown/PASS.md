@@ -4,8 +4,8 @@
 import A from 'b'
 
 const data = A({
-	a: 1,
-	b: 2
+    a: 1,
+    b: 2
 })
 
 console.log(data)
@@ -15,8 +15,8 @@ console.log(data)
 import A from 'b'
 
 const data = A({
-	a: 1,
-	b: 2
+    a: 1,
+    b: 2
 })
 
 console.log(data)

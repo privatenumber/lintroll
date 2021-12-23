@@ -28,6 +28,11 @@ test('Fail', async () => {
 	});
 
 	expect(messages).to.containObject({
+		ruleId: 'indent',
+		messageId: 'wrongIndentation',
+	});
+
+	expect(messages).to.containObject({
 		ruleId: 'no-multiple-empty-lines',
 		messageId: 'blankEndOfFile',
 	});
