@@ -57,6 +57,14 @@ module.exports = {
 		'unicorn/prefer-export-from': ['error', {
 			ignoreUsedVariables: true,
 		}],
+
+		/**
+		 * For-of + iterators currently requires transpilation:
+		 * https://www.typescriptlang.org/tsconfig#downlevelIteration
+		 *
+		 * Given this cost, it doesn't make sense to use instead of for-loops yet
+		 */
+		'unicorn/no-for-loop': 'off',
 	},
 	overrides: [
 		...(
