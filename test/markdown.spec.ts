@@ -36,4 +36,14 @@ test('Fail', async () => {
 		ruleId: 'no-multiple-empty-lines',
 		messageId: 'blankEndOfFile',
 	});
+
+	expect(messages).to.containObject({
+		ruleId: '@typescript-eslint/indent',
+		messageId: 'wrongIndentation',
+	});
+
+	expect(messages).to.containObject({
+		ruleId: '@typescript-eslint/semi',
+		messageId: 'extraSemi',
+	});
 });
