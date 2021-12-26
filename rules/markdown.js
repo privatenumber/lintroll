@@ -17,8 +17,13 @@ module.exports = {
 
 				// Style
 				indent: ['error', 4],
+				'@typescript-eslint/indent': ['error', 4],
+
 				semi: ['error', 'never'],
+				'@typescript-eslint/semi': ['error', 'never'],
+
 				'comma-dangle': ['error', 'never'],
+				'@typescript-eslint/comma-dangle': ['error', 'never'],
 			},
 		},
 	],
