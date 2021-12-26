@@ -20,7 +20,7 @@ type SomeType = {
 	paddingRight?: number;
 	paddingLeft?: number;
 	paddingTop?: number;
-	paddingBottom?: number;
+	paddingBottom?: number
 };
 
 const data = A({
