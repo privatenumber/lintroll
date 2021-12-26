@@ -24,6 +24,23 @@ module.exports = {
 
 				'comma-dangle': ['error', 'never'],
 				'@typescript-eslint/comma-dangle': ['error', 'never'],
+
+				'@typescript-eslint/member-delimiter-style': [
+					'error',
+					{
+						multiline: {
+							delimiter: 'none',
+							requireLast: false,
+						},
+						singleline: {
+							delimiter: 'semi',
+							requireLast: false,
+						},
+						multilineDetection: 'brackets',
+					},
+				],
+
+				'@typescript-eslint/no-unused-vars': 'off',
 			},
 		},
 	],
