@@ -59,15 +59,25 @@ module.exports = {
 		// paths are treated both as absolute paths, and relative to process.cwd()
 		'import/no-extraneous-dependencies': ['error', {
 			devDependencies: [
-				'scripts/**', // build scripts
-				'{test,tests}/**', // tests
-				'src/**', // Implies bundled
-				'**/__{tests,mocks}__/**', // jest pattern
-				'test.js', // repos with a single test file
-				'test-*.js', // repos with multiple top-level test files
+				// Source directory - implies bundled
+				'src/**',
+
+				// Scripts
+				'scripts/**',
+
+				// Tests
+				'{test,tests}/**',
+				'test.js',
+				'test-*.js',
 				'**/*{.,_}{test,spec}.js', // tests where the extension or filename suffix denotes that it is a test
+				'**/__{tests,mocks}__/**', // jest pattern
+
+				// Config files
 				'**/*.config.js', // any config (eg. jest, webpack, rollup, postcss, vue)
 				'**/.*.js', // invisible config files
+
+				// Example snippets
+				'examples/**',
 			],
 			optionalDependencies: false,
 		}],
