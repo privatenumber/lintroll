@@ -20,3 +20,5 @@ type SomeObject = {
 
 const someNumber = 1;
 console.log(<string>someNumber);
+
+export {};
