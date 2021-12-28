@@ -11,6 +11,8 @@ type SomeObject = {
 	ms: number;
 };
 
+type _AllowUnused = number;
+
 const isNumber = (n): n is number => typeof n === 'number';
 
 const filtered = [1, '2'].filter(isNumber);
@@ -25,3 +27,5 @@ const filtered = [1, '2'].filter(isNumber);
 console.log(
 	filtered,
 );
+
+export {};

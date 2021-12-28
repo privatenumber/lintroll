@@ -58,7 +58,20 @@ const config = (
 					// },
 
 					rules: {
-						'@typescript-eslint/no-unused-vars': baseVariables.rules['no-unused-vars'],
+						'@typescript-eslint/no-unused-vars': [
+							'error',
+							{
+								...baseVariables.rules['no-unused-vars'][1],
+
+								/**
+								 * TypeScript ignores any variables that are prefixed with _
+								 * https://github.com/microsoft/TypeScript/pull/9464
+								 */
+								varsIgnorePattern: '^_',
+								argsIgnorePattern: '^_',
+								caughtErrorsIgnorePattern: '^_',
+							},
+						],
 
 						// Always require await when returning promise
 						// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
