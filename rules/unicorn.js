@@ -56,7 +56,8 @@ module.exports = {
 
 		// ts-node can't load TypeScript's compliation of export-from
 		// https://github.com/privatenumber/esbuild-loader/issues/232#issuecomment-998487005
-		'unicorn/prefer-export-from': ['warn', {
+		// Disable even warnings because of autofix
+		'unicorn/prefer-export-from': ['off', {
 			ignoreUsedVariables: true,
 		}],
 
