@@ -41,6 +41,9 @@ module.exports = {
 				],
 
 				'@typescript-eslint/no-unused-vars': 'off',
+
+				// Allow unused expressions like: argv.command // => "install" (string)
+				'no-unused-expressions': 'off',
 			},
 		},
 	],
