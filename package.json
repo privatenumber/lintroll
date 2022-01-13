@@ -21,16 +21,17 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged && vitest run"
+			"pre-commit": "lint-staged"
 		}
 	},
 	"lint-staged": {
 		"*.{js,ts}": [
-			"eslint"
+			"eslint",
+			"vitest related"
 		]
 	},
 	"peerDependencies": {
-		"eslint": "^7.15.0"
+		"eslint": "^7.15.0 || ^8.0.0"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.8.0",
@@ -60,8 +61,8 @@
 		"react": "^17.0.2",
 		"semantic-release": "^18.0.1",
 		"typescript": "^4.5.4",
-		"vite": "^2.7.6",
-		"vitest": "^0.0.108"
+		"vite": "^2.7.10",
+		"vitest": "^0.0.133"
 	},
 	"eslintConfig": {
 		"extends": ".",

@@ -44,6 +44,10 @@ module.exports = {
 
 				// Allow unused expressions like: argv.command // => "install" (string)
 				'no-unused-expressions': 'off',
+
+				// Loose on example code
+				'unicorn/no-array-reduce': 'off',
+				'unicorn/prefer-object-from-entries': 'off',
 			},
 		},
 	],
