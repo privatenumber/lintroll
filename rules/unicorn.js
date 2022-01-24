@@ -80,7 +80,10 @@ module.exports = {
 		...(
 			isCli
 				? [{
-					files: 'cli.{js,ts}',
+					files: [
+						'cli.{js,ts}',
+						'**/cli/**/*.{js,ts}',
+					],
 					rules: {
 						'unicorn/no-process-exit': 'off',
 					},
