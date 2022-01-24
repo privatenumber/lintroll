@@ -82,7 +82,7 @@ module.exports = {
 				? [{
 					files: [
 						'cli.{js,ts}',
-						'**/{bin,cli}/**/*.{js,ts}',
+						'**/cli/**/*.{js,ts}',
 					],
 					rules: {
 						'unicorn/no-process-exit': 'off',
