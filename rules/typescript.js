@@ -29,7 +29,7 @@ const config = (
 				// Setting as an override allows .ts files to be
 				// linted without specifying it on the user-end
 				{
-					files: '*.{ts,tsx}',
+					files: '*.{ts,tsx,mts,cts}',
 
 					extends: [
 						'plugin:@typescript-eslint/recommended',
