@@ -32,7 +32,7 @@ const config = {
 				// Defaults to PascalCase
 				'vue/component-name-in-template-casing': ['error', 'kebab-case'],
 
-				'vue/no-unregistered-components': ['error', {
+				'vue/no-undef-components': ['error', {
 					ignorePatterns: [
 						'router-view',
 						'router-link',
