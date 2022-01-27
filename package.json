@@ -17,7 +17,7 @@
 	],
 	"scripts": {
 		"lint": "eslint .",
-		"test": "vitest run"
+		"test": "vitest"
 	},
 	"husky": {
 		"hooks": {

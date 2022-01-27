@@ -36,8 +36,11 @@ module.exports = {
 			files: ['**/*.md/*.ts'],
 			rules: {
 				// Style
+				indent: 'off',
 				'@typescript-eslint/indent': ['error', 4],
+				semi: 'off',
 				'@typescript-eslint/semi': ['error', 'never'],
+				'comma-dangle': 'off',
 				'@typescript-eslint/comma-dangle': ['error', 'never'],
 				'@typescript-eslint/member-delimiter-style': [
 					'error',
