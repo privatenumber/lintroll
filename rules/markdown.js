@@ -15,16 +15,30 @@ module.exports = {
 				'no-undef': 'off',
 				'import/no-unresolved': 'off',
 
+				// Allow unused expressions like: argv.command // => "install" (string)
+				'no-unused-expressions': 'off',
+
+				// Loose on example code
+				'unicorn/no-array-reduce': 'off',
+				'unicorn/prefer-object-from-entries': 'off',
+			},
+		},
+		{
+			files: ['**/*.md/*.js'],
+			rules: {
 				// Style
 				indent: ['error', 4],
-				'@typescript-eslint/indent': ['error', 4],
-
 				semi: ['error', 'never'],
-				'@typescript-eslint/semi': ['error', 'never'],
-
 				'comma-dangle': ['error', 'never'],
+			},
+		},
+		{
+			files: ['**/*.md/*.ts'],
+			rules: {
+				// Style
+				'@typescript-eslint/indent': ['error', 4],
+				'@typescript-eslint/semi': ['error', 'never'],
 				'@typescript-eslint/comma-dangle': ['error', 'never'],
-
 				'@typescript-eslint/member-delimiter-style': [
 					'error',
 					{
@@ -39,15 +53,7 @@ module.exports = {
 						multilineDetection: 'brackets',
 					},
 				],
-
 				'@typescript-eslint/no-unused-vars': 'off',
-
-				// Allow unused expressions like: argv.command // => "install" (string)
-				'no-unused-expressions': 'off',
-
-				// Loose on example code
-				'unicorn/no-array-reduce': 'off',
-				'unicorn/prefer-object-from-entries': 'off',
 			},
 		},
 	],
