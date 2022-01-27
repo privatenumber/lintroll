@@ -78,6 +78,9 @@ module.exports = {
 
 				// Example snippets
 				'examples/**',
+
+				// Code snippets
+				'README.md',
 			],
 			optionalDependencies: false,
 		}],
