@@ -45,9 +45,9 @@ for (const property in Math) {
 }
 
 // function
-function someFunction(objectValue, sourceValue) {
+function someFunction(objectValue, sourceValue, ...args) {
 	if (Array.isArray(objectValue) && Array.isArray(sourceValue)) {
-		return objectValue.concat(sourceValue);
+		return objectValue.concat(sourceValue, args);
 	}
 	Math.random(arguments);
 }
