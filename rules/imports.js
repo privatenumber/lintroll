@@ -156,7 +156,10 @@ module.exports = {
 		'import/no-self-import': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-cycle.md
-		'import/no-cycle': ['error', { maxDepth: '∞' }],
+		'import/no-cycle': ['error', {
+			maxDepth: '∞',
+			ignoreExternal: true,
+		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-useless-path-segments.md
 		'import/no-useless-path-segments': ['error', { commonjs: true }],
