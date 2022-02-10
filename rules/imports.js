@@ -52,7 +52,9 @@ module.exports = {
 		'import/no-named-as-default-member': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-deprecated.md
-		'import/no-deprecated': 'error',
+		// Very slow based on TIMING=ALL npx eslint .
+		// High cost, low value
+		// 'import/no-deprecated': 'error',
 
 		// Forbid the use of extraneous packages
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-extraneous-dependencies.md
