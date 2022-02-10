@@ -1,6 +1,6 @@
 /**
  * References:
- * - https://github.com/benmosher/eslint-plugin-import/blob/master/config/typescript.js
+ * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
 
@@ -34,7 +34,7 @@ const config = (
 					extends: [
 						'plugin:@typescript-eslint/recommended',
 
-						// https://github.com/benmosher/eslint-plugin-import/blob/6c8981d/config/typescript.js
+						// https://github.com/import-js/eslint-plugin-import/blob/6c8981d/config/typescript.js
 						'plugin:import/typescript',
 					],
 
