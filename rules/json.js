@@ -6,7 +6,7 @@ module.exports = {
 
 	overrides: [
 		{
-			files: '*.json',
+			files: '*.{json,json5,jsonc}',
 
 			parser: 'jsonc-eslint-parser',
 

@@ -28,3 +28,9 @@ const data = A({
 
 console.log(data)
 ```
+
+```json5
+{
+    "name": "test"
+}
+```

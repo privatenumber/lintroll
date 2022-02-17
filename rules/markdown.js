@@ -6,7 +6,7 @@ module.exports = {
 			processor: 'markdown/markdown',
 		},
 		{
-			files: ['**/*.md/*.{js,ts}'],
+			files: '**/*.md/*.{js,ts}',
 			rules: {
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
@@ -24,7 +24,7 @@ module.exports = {
 			},
 		},
 		{
-			files: ['**/*.md/*.js'],
+			files: '**/*.md/*.js',
 			rules: {
 				// Style
 				indent: ['error', 4],
@@ -33,7 +33,7 @@ module.exports = {
 			},
 		},
 		{
-			files: ['**/*.md/*.ts'],
+			files: '**/*.md/*.ts',
 			rules: {
 				// Style
 				indent: 'off',
@@ -57,6 +57,13 @@ module.exports = {
 					},
 				],
 				'@typescript-eslint/no-unused-vars': 'off',
+			},
+		},
+		{
+			files: '**/*.md/*.{json,json5}',
+			rules: {
+				'unicorn/filename-case': 'off',
+				'jsonc/indent': ['error', 4],
 			},
 		},
 	],
