@@ -14,6 +14,7 @@ module.exports = {
 				// Can be snippets that don't fully work
 				'no-undef': 'off',
 				'import/no-unresolved': 'off',
+				'import/extensions': 'off',
 
 				// Allow unused expressions like: argv.command // => "install" (string)
 				'no-unused-expressions': 'off',
