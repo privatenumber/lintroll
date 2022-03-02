@@ -24,7 +24,7 @@ const config = {
 		'./rules/react',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
-		ecmaVersion: 2021,
+		ecmaVersion: 2022,
 		sourceType: 'module',
 	},
 	ignorePatterns: [
