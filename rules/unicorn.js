@@ -76,6 +76,8 @@ module.exports = {
 		 * It changed the formatting of inline snapshots in tests
 		 */
 		'unicorn/template-indent': 'off',
+
+		'unicorn/no-array-for-each': 'off',
 	},
 	overrides: [
 		...(
