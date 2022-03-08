@@ -11,30 +11,34 @@ function isInstalled(specifier) {
 	return false;
 }
 
+function autoImportIfInstalled(
+	autoImportedEntries,
+	moduleName,
+) {
+	if (!isInstalled(moduleName)) {
+		return;
+	}
+
+	autoImportedEntries.push(
+		// eslint-disable-next-line node/global-require
+		...Object.keys(require(moduleName)).map(
+			exportName => [exportName, 'readonly'],
+		),
+	);
+}
+
 function detectAutoImport() {
 	if (!isInstalled('unplugin-auto-import')) {
 		return {};
 	}
 
-	const globalEntries = [];
+	const autoImportedEntries = [];
 
-	globalEntries.push(
-		// eslint-disable-next-line node/global-require,import/no-unresolved
-		...Object.keys(require('vue')).map(
-			exportName => [exportName, 'readonly'],
-		),
+	['vue', 'vue-router', '@vueuse/core'].forEach(
+		moduleName => autoImportIfInstalled(autoImportedEntries, moduleName),
 	);
 
-	if (isInstalled('@vueuse/core')) {
-		globalEntries.push(
-			// eslint-disable-next-line node/global-require,import/no-unresolved
-			...Object.keys(require('@vueuse/core')).map(
-				exportName => [exportName, 'readonly'],
-			),
-		);
-	}
-
-	return Object.fromEntries(globalEntries);
+	return Object.fromEntries(autoImportedEntries);
 }
 
 function detectAutoImportComponents() {
