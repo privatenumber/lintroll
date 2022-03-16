@@ -78,6 +78,9 @@ module.exports = {
 		'unicorn/template-indent': 'off',
 
 		'unicorn/no-array-for-each': 'off',
+
+		// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1273#issuecomment-1069506684
+		'unicorn/prefer-json-parse-buffer': 'off',
 	},
 	overrides: [
 		...(
