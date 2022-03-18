@@ -42,19 +42,29 @@ function detectAutoImport() {
 }
 
 function detectAutoImportComponents() {
+	const components = [];
+
+	if (isInstalled('vitepress')) {
+		components.push(
+			'content',
+			'client-only',
+			'outbound-link',
+		);
+	}
+
 	const componentsPath = './src/components';
 
 	if (
-		!fs.existsSync(componentsPath)
-		|| !isInstalled('unplugin-vue-components')
+		isInstalled('unplugin-vue-components')
+		&& fs.existsSync(componentsPath)
 	) {
-		return [];
-	}
+		const files = fs.readdirSync(componentsPath);
+		const componentFiles = files
+			.filter(filename => filename.endsWith('.vue'))
+			.map(filename => filename.replace('.vue', ''));
 
-	const files = fs.readdirSync(componentsPath);
-	const components = files
-		.filter(filename => filename.endsWith('.vue'))
-		.map(filename => filename.replace('.vue', ''));
+		components.push(...componentFiles);
+	}
 
 	if (isInstalled('unplugin-icons')) {
 		components.push('icon-*');
