@@ -36,6 +36,8 @@ module.exports = {
 				prop: false,
 				props: false,
 				args: false,
+				src: false,
+				dist: false,
 			},
 
 			// exact-match
