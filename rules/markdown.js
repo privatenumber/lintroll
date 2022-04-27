@@ -25,6 +25,12 @@ module.exports = {
 			},
 		},
 		{
+			files: '**/*.md/*.{jsx,tsx}',
+			rules: {
+				'react/jsx-indent-props': ['error', 4],
+			},
+		},
+		{
 			files: '**/*.md/*.js',
 			rules: {
 				// Style

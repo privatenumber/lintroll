@@ -19,9 +19,9 @@ const config = {
 		'./rules/json',
 		'./rules/regexp',
 		'./rules/typescript',
-		'./rules/markdown',
 		'./rules/vue',
 		'./rules/react',
+		'./rules/markdown',
 	].map(rulePath => require.resolve(rulePath)),
 	parserOptions: {
 		ecmaVersion: 2022,
