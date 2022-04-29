@@ -38,6 +38,8 @@ module.exports = {
 				args: false,
 				src: false,
 				dist: false,
+				env: false,
+				pkg: false,
 			},
 
 			// exact-match
