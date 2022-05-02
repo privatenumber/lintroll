@@ -1,3 +1,5 @@
+const baseVariables = require('./variables.js');
+
 module.exports = {
 	overrides: [
 		{
@@ -10,6 +12,11 @@ module.exports = {
 			rules: {
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
+
+				'no-unused-vars': [
+					'warn',
+					baseVariables.rules['no-unused-vars'][1],
+				],
 
 				// Can be snippets that don't fully work
 				'no-undef': 'off',
@@ -63,7 +70,7 @@ module.exports = {
 						multilineDetection: 'brackets',
 					},
 				],
-				'@typescript-eslint/no-unused-vars': 'off',
+				'@typescript-eslint/no-unused-vars': 'warn',
 			},
 		},
 		{
