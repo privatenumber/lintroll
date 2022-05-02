@@ -1,5 +1,3 @@
-const baseVariables = require('./variables.js');
-
 module.exports = {
 	overrides: [
 		{
@@ -12,11 +10,7 @@ module.exports = {
 			rules: {
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
-
-				'no-unused-vars': [
-					'warn',
-					baseVariables.rules['no-unused-vars'][1],
-				],
+				'no-unused-vars': 'warn',
 
 				// Can be snippets that don't fully work
 				'no-undef': 'off',
