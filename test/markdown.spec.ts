@@ -10,7 +10,17 @@ test('Pass', async () => {
 	const results = await eslint.lintFiles([fixturePass]);
 	const { messages } = results[0];
 
-	expect(messages.length).toBe(0);
+	expect(messages.length).toBe(2);
+
+	expect(messages).to.containObject({
+		ruleId: '@typescript-eslint/no-unused-vars',
+		severity: 1,
+	});
+
+	expect(messages).to.containObject({
+		ruleId: 'no-unused-vars',
+		severity: 1,
+	});
 });
 
 test('Fail', async () => {
