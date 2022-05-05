@@ -34,7 +34,12 @@ function detectAutoImport() {
 
 	const autoImportedEntries = [];
 
-	['vue', 'vue-router', '@vueuse/core'].forEach(
+	[
+		'vue',
+		'vue-router',
+		'@vueuse/core',
+		'@vueuse/head',
+	].forEach(
 		moduleName => autoImportIfInstalled(autoImportedEntries, moduleName),
 	);
 
