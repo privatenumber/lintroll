@@ -1,15 +1,15 @@
 {
 	"name": "@pvtnbr/eslint-config",
 	"version": "0.0.0-semantic-release",
+	"publishConfig": {
+		"access": "public"
+	},
 	"license": "MIT",
 	"repository": "privatenumber/eslint-config",
 	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
 	"author": {
 		"name": "Hiroki Osame",
 		"email": "hiroki.osame@gmail.com"
-	},
-	"publishConfig": {
-		"access": "public"
 	},
 	"files": [
 		"index.js",
