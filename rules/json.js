@@ -36,6 +36,8 @@ module.exports = {
 						order: [
 							'name',
 							'version',
+							'private',
+							'publishConfig',
 							'description',
 							'keywords',
 							'license',
