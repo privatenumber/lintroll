@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"esModuleInterop": true,
+		"target": "ESNext",
 		"jsx": "react"
 	},
 	"include": ["."]
