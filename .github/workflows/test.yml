@@ -11,14 +11,14 @@ jobs:
     timeout-minutes: 10
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
-    - name: Use Node.js 14.x
-      uses: actions/setup-node@v1
+      uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
       with:
-        node-version: 14.x
+        node-version-file: '.nvmrc'
     - name: Install dependencies
       run: npx ci
     - name: Lint
       run: npm run lint
     - name: Test
-      run: npm run test
+      run: npm test
