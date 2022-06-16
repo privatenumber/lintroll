@@ -3,8 +3,8 @@ const sleep = (ms: number) => new Promise((resolve) => {
 	setTimeout(resolve, ms);
 });
 
-async function someAsyncFunction(duration) {
-	return await sleep(duration);
+async function someAsyncFunction(_duration: number) {
+	return await Reflect.apply(sleep, this, arguments);
 }
 
 type SomeObject = {

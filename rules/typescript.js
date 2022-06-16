@@ -117,6 +117,8 @@ const config = (
 
 						// Function expression can be used to type a function
 						'func-style': 'off',
+
+						'prefer-rest-params': 'off',
 					},
 				},
 			],
