@@ -16,7 +16,7 @@
 		"rules"
 	],
 	"scripts": {
-		"lint": "eslint .",
+		"lint": "eslint --cache .",
 		"test": "vitest"
 	},
 	"peerDependencies": {
