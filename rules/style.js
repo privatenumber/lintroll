@@ -160,9 +160,8 @@ module.exports = {
 			},
 		}],
 
-		// enforce consistent 'LF' or 'CRLF' as linebreaks
 		// https://eslint.org/docs/rules/linebreak-style
-		'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
+		'linebreak-style': ['error', 'unix'],
 
 		// require or disallow an empty line between class members
 		// https://eslint.org/docs/rules/lines-between-class-members
