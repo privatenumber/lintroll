@@ -68,7 +68,7 @@ module.exports = {
 				'scripts/**',
 
 				// Tests
-				'{test,tests}/**',
+				'{test,tests,test-d}/**',
 				'test.js',
 				'test-*.js',
 				'**/*{.,_}{test,spec}.js', // tests where the extension or filename suffix denotes that it is a test
