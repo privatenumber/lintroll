@@ -1,15 +1,7 @@
 const fs = require('fs');
+const { isInstalled } = require('./utils');
 
 /** @typedef { import('eslint').Linter.Config } ESLintConfig */
-
-function isInstalled(specifier) {
-	try {
-		require.resolve(specifier);
-		return true;
-	} catch {}
-
-	return false;
-}
 
 function autoImportIfInstalled(
 	autoImportedEntries,
