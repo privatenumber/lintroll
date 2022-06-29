@@ -45,7 +45,6 @@ module.exports = {
 			files: '**/*.md/*.ts',
 			rules: {
 				// Style
-				'linebreak-style': 'off',
 				indent: 'off',
 				'@typescript-eslint/indent': ['error', 4],
 				semi: 'off',
@@ -72,6 +71,7 @@ module.exports = {
 		{
 			files: '**/*.md/*.{json,json5}',
 			rules: {
+				'linebreak-style': 'off',
 				'unicorn/filename-case': 'off',
 				'jsonc/indent': ['error', 4],
 			},
