@@ -8,6 +8,7 @@ module.exports = {
 		{
 			files: '**/*.md/*.{js,jsx,ts,tsx}',
 			rules: {
+				'linebreak-style': 'off',
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
 				'no-unused-vars': 'warn',
@@ -23,8 +24,6 @@ module.exports = {
 				// Loose on example code
 				'unicorn/no-array-reduce': 'off',
 				'unicorn/prefer-object-from-entries': 'off',
-
-				'linebreak-style': 'off',
 			},
 		},
 		{
@@ -46,6 +45,7 @@ module.exports = {
 			files: '**/*.md/*.ts',
 			rules: {
 				// Style
+				'linebreak-style': 'off',
 				indent: 'off',
 				'@typescript-eslint/indent': ['error', 4],
 				semi: 'off',
