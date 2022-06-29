@@ -23,6 +23,8 @@ module.exports = {
 				// Loose on example code
 				'unicorn/no-array-reduce': 'off',
 				'unicorn/prefer-object-from-entries': 'off',
+
+				'linebreak-style': 'off',
 			},
 		},
 		{
