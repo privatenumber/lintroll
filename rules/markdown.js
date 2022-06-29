@@ -8,6 +8,7 @@ module.exports = {
 		{
 			files: '**/*.md/*.{js,jsx,ts,tsx}',
 			rules: {
+				'linebreak-style': 'off',
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
 				'no-unused-vars': 'warn',
@@ -70,6 +71,7 @@ module.exports = {
 		{
 			files: '**/*.md/*.{json,json5}',
 			rules: {
+				'linebreak-style': 'off',
 				'unicorn/filename-case': 'off',
 				'jsonc/indent': ['error', 4],
 			},
