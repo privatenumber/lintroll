@@ -11,6 +11,8 @@ export default testSuite(({ describe }) => {
 			const results = await eslint.lintFiles([fixturePass]);
 			const { messages } = results[0];
 
+			console.log(messages);
+
 			expect(messages.length).toBe(2);
 			expect(messages).toEqual(
 				expect.arrayContaining([
