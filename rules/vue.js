@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { isInstalled } = require('./utils');
+const { isInstalled } = require('./utils.js');
 
 /** @typedef { import('eslint').Linter.Config } ESLintConfig */
 

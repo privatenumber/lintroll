@@ -5,6 +5,4 @@ exports.isInstalled = function isInstalled(specifier) {
 	} catch {}
 
 	return false;
-}
-
-
+};
