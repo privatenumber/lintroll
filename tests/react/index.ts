@@ -16,16 +16,16 @@ export default testSuite(({ describe }) => {
 		test('Pass cases', async () => {
 			const results = await eslint.lintFiles([passFixture]);
 			const [result] = results;
-		
+
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
 			expect(result.usedDeprecatedRules.length).toBe(0);
 		});
-		
+
 		test('Fail cases', async () => {
 			const results = await eslint.lintFiles([failFixture]);
 			const { messages } = results[0];
-		
+
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({

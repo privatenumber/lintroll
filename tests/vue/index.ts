@@ -14,7 +14,7 @@ export default testSuite(({ describe }) => {
 				passSetupFixture,
 			]);
 			const [result] = results;
-		
+
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
 			expect(result.usedDeprecatedRules.length).toBe(0);
@@ -43,4 +43,3 @@ export default testSuite(({ describe }) => {
 		});
 	});
 });
-

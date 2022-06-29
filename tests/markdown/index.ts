@@ -25,44 +25,44 @@ export default testSuite(({ describe }) => {
 				]),
 			);
 		});
-		
+
 		test('Fail', async () => {
 			const results = await eslint.lintFiles([fixtureFail]);
 			const { messages } = results[0];
-		
+
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
 						ruleId: 'semi',
 						messageId: 'extraSemi',
 					}),
-					
+
 					expect.objectContaining({
 						ruleId: 'comma-dangle',
 						messageId: 'unexpected',
 					}),
-					
+
 					expect.objectContaining({
 						ruleId: 'indent',
 						messageId: 'wrongIndentation',
 					}),
-					
+
 					expect.objectContaining({
 						ruleId: 'no-multiple-empty-lines',
 						messageId: 'blankEndOfFile',
 					}),
-					
+
 					expect.objectContaining({
 						ruleId: '@typescript-eslint/indent',
 						messageId: 'wrongIndentation',
 					}),
-					
+
 					expect.objectContaining({
 						ruleId: '@typescript-eslint/semi',
 						messageId: 'extraSemi',
-					}),		
+					}),
 				]),
 			);
-		});	
+		});
 	});
 });

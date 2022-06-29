@@ -54,7 +54,7 @@
 	"eslintConfig": {
 		"extends": ".",
 		"ignorePatterns": [
-			"test/fixtures/*"
+			"tests/*/fixtures"
 		]
 	}
 }
