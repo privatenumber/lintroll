@@ -1,5 +1,5 @@
 const confusingBrowserGlobals = require('confusing-browser-globals');
-const { isInstalled } = require('./utils');
+const { isInstalled } = require('./utils.js');
 
 module.exports = {
 	rules: {
