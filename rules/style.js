@@ -168,7 +168,7 @@ module.exports = {
 				(process.env.CI && process.platform === 'win32')
 					? 'windows'
 					: 'unix'
-				),
+			),
 		],
 
 		// require or disallow an empty line between class members
