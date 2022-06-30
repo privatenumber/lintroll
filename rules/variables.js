@@ -25,7 +25,7 @@ module.exports = {
 		'no-shadow': ['error', {
 			allow: [
 				...(isInstalled('manten')
-					? ['test', 'describe']
+					? ['test', 'describe', 'runTestSuite']
 					: []
 				),
 				...(isInstalled('tasuku')
