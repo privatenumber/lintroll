@@ -29,7 +29,7 @@ module.exports = {
 					: []
 				),
 				...(isInstalled('tasuku')
-					? ['task']
+					? ['task', 'setTitle', 'setError', 'setWarning', 'setStatus', 'setOutput']
 					: []
 				),
 			],
