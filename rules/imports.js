@@ -66,6 +66,7 @@ module.exports = {
 
 				// Build configuration related files
 				'build/**',
+				'build.{js,ts}',
 
 				// Scripts
 				'**/scripts/**',
@@ -78,7 +79,7 @@ module.exports = {
 				'**/__{tests,mocks}__/**', // jest pattern
 
 				// Config files
-				'**/*.config.js', // any config (eg. jest, webpack, rollup, postcss, vue)
+				'**/*.config.{js,ts}', // any config (eg. jest, webpack, rollup, postcss, vue)
 				'**/.*.js', // invisible config files
 
 				// Example snippets
