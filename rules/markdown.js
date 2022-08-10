@@ -6,7 +6,7 @@ module.exports = {
 			processor: 'markdown/markdown',
 		},
 		{
-			files: '**/*.md/*.{js,jsx,ts,tsx}',
+			files: '**/*.md/*.{js,jsx,ts,tsx,vue}',
 			rules: {
 				'unicorn/filename-case': 'off',
 				'no-console': 'off',
@@ -32,7 +32,7 @@ module.exports = {
 			},
 		},
 		{
-			files: '**/*.md/*.js',
+			files: '**/*.md/*.{js,vue}',
 			rules: {
 				// Style
 				indent: ['error', 4],

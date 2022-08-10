@@ -34,3 +34,15 @@ console.log(data)
     "name": "test"
 }
 ```
+
+```vue
+import A from 'b'
+
+console.log(A)
+
+export default {
+    components: {
+        A
+    }
+}
+```
