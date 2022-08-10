@@ -35,6 +35,7 @@ module.exports = {
 				dev: false,
 				prop: false,
 				props: false,
+				ref: false,
 				args: false,
 				src: false,
 				dist: false,
