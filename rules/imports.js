@@ -64,8 +64,11 @@ module.exports = {
 				// Source directory - implies bundled
 				'src/**',
 
+				// Build configuration related files
+				'build/**',
+
 				// Scripts
-				'scripts/**',
+				'**/scripts/**',
 
 				// Tests
 				'{test,tests,test-d}/**',
