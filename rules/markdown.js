@@ -28,11 +28,13 @@ module.exports = {
 		{
 			files: '**/*.md/*.{jsx,tsx}',
 			rules: {
+				'react/react-in-jsx-scope': 'off',
+				'react/jsx-no-undef': 'off',
 				'react/jsx-indent-props': ['error', 4],
 			},
 		},
 		{
-			files: '**/*.md/*.{js,vue}',
+			files: '**/*.md/*.{js,jsx,vue}',
 			rules: {
 				// Style
 				indent: ['error', 4],
@@ -41,7 +43,7 @@ module.exports = {
 			},
 		},
 		{
-			files: '**/*.md/*.ts',
+			files: '**/*.md/*.{ts,tsx}',
 			rules: {
 				// Style
 				indent: 'off',

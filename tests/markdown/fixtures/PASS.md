@@ -46,3 +46,7 @@ export default {
     }
 }
 ```
+
+```jsx
+<CheckIcon style="fill: red" />
+```
