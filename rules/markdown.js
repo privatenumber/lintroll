@@ -14,6 +14,7 @@ module.exports = {
 
 				// Can be snippets that don't fully work
 				'no-undef': 'off',
+				'no-new': 'off',
 				'import/no-unresolved': 'off',
 				'import/extensions': 'off',
 
