@@ -78,8 +78,9 @@ module.exports = {
 		// https://eslint.org/docs/rules/no-import-assign
 		'no-import-assign': 'error',
 
-		// disallow function or variable declarations in nested blocks
-		'no-inner-declarations': 'error',
+		// https://eslint.org/docs/latest/rules/no-inner-declarations
+		// Function declarations were only allowed at the root pre-ES6. Now, it's fine.
+		'no-inner-declarations': 'off',
 
 		// disallow invalid regular expression strings in the RegExp constructor
 		'no-invalid-regexp': 'error',
