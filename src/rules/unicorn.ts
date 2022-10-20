@@ -23,11 +23,6 @@ export = createConfig({
 		// Too many cases where 3rd party library expects null
 		'unicorn/no-null': 'off',
 
-		'unicorn/import-index': ['error', {
-			// Don't check import statements
-			ignoreImports: true,
-		}],
-
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/898fcb4/docs/rules/prevent-abbreviations.md
 		'unicorn/prevent-abbreviations': ['error', {
 			// case insensitive and matches substrings
@@ -86,6 +81,8 @@ export = createConfig({
 
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1273#issuecomment-1069506684
 		'unicorn/prefer-json-parse-buffer': 'off',
+
+		'unicorn/prefer-top-level-await': 'off',
 	},
 
 	overrides: (

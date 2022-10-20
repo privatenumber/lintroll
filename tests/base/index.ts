@@ -85,15 +85,11 @@ export default testSuite(({ describe }) => {
 					}),
 					expect.objectContaining({
 						ruleId: 'unicorn/prefer-number-properties',
-						message: 'Prefer `Number.isFinite()` over `isFinite()`.',
+						message: 'Prefer `Number.isFinite` over `isFinite`.',
 					}),
 					expect.objectContaining({
 						ruleId: 'unicorn/prefer-number-properties',
-						message: 'Prefer `Number.isFinite()` over `isFinite()`.',
-					}),
-					expect.objectContaining({
-						ruleId: 'unicorn/prefer-number-properties',
-						message: 'Prefer `Number.isNaN()` over `isNaN()`.',
+						message: 'Prefer `Number.isNaN` over `isNaN`.',
 					}),
 					expect.objectContaining({
 						ruleId: 'curly',
