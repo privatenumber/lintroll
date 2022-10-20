@@ -6,7 +6,7 @@ export const createEslint = (
 ) => new ESLint({
 	useEslintrc: false,
 	baseConfig: {
-		extends: path.join(__dirname, '../../index.js'),
+		extends: path.join(__dirname, '../../dist/index.js'),
 		...config,
 	},
 });

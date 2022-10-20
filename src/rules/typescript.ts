@@ -3,27 +3,15 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-
-const baseImports = require('./imports.js');
-const baseVariables = require('./variables.js');
+import { createConfig } from '../utils/create-config';
+import { isInstalled } from '../utils/is-installed';
+import baseImports from './imports';
+import baseVariables from './variables';
 
 const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
-/** @typedef { import('eslint').Linter.Config } ESLintConfig */
-
-const hasTypeScript = () => {
-	try {
-		// eslint-disable-next-line node/no-unpublished-require
-		require.resolve('typescript');
-		return true;
-	} catch {
-		return false;
-	}
-};
-
-/** @type { ESLintConfig } */
-const config = (
-	hasTypeScript()
+export = createConfig(
+	isInstalled('typescript')
 		? {
 			overrides: [
 				// Setting as an override allows .ts files to be
@@ -123,7 +111,5 @@ const config = (
 				},
 			],
 		}
-		: {}
+		: {},
 );
-
-module.exports = config;

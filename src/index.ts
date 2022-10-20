@@ -1,9 +1,7 @@
-/** @typedef { import('eslint').Linter.Config } ESLintConfig */
+import confusingBrowserGlobals from 'confusing-browser-globals';
+import { createConfig } from './utils/create-config';
 
-const confusingBrowserGlobals = require('confusing-browser-globals');
-
-/** @type { ESLintConfig } */
-const config = {
+export = createConfig({
 	extends: [
 		'./rules/best-practices',
 		'./rules/errors',
@@ -23,10 +21,12 @@ const config = {
 		'./rules/react',
 		'./rules/markdown',
 	].map(rulePath => require.resolve(rulePath)),
+
 	parserOptions: {
 		ecmaVersion: 2022,
 		sourceType: 'module',
 	},
+
 	ignorePatterns: [
 		'**/node_modules/**',
 		'coverage/**',
@@ -35,6 +35,7 @@ const config = {
 		'**/vendor/**',
 		'**/dist/**',
 	],
+
 	overrides: [
 		{
 			files: '**/{test,tests}/*',
@@ -42,6 +43,8 @@ const config = {
 				jest: true,
 			},
 		},
+
+		// Service Workers
 		{
 			files: '*.sw.js',
 			env: {
@@ -50,11 +53,9 @@ const config = {
 			rules: {
 				'no-restricted-globals': [
 					'error',
-					...confusingBrowserGlobals.filter(g => g !== 'self'),
+					...confusingBrowserGlobals.filter(variable => variable !== 'self'),
 				],
 			},
 		},
 	],
-};
-
-module.exports = config;
+});

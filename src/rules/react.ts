@@ -1,7 +1,6 @@
-/** @typedef { import('eslint').Linter.Config } ESLintConfig */
+import { createConfig } from '../utils/create-config';
 
-/** @type { ESLintConfig } */
-const config = {
+export = createConfig({
 	overrides: [
 		{
 			files: '*.{jsx,tsx}',
@@ -38,6 +37,4 @@ const config = {
 			},
 		},
 	],
-};
-
-module.exports = config;
+});

@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	rules: {
 		'accessor-pairs': 'error',
 
@@ -314,4 +316,4 @@ module.exports = {
 		// require or disallow Yoda conditions
 		yoda: 'error',
 	},
-};
+});

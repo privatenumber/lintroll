@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	env: {
 		es6: true,
 	},
@@ -8,9 +10,7 @@ module.exports = {
 		sourceType: 'module',
 	},
 
-	plugins: [
-		'import',
-	],
+	plugins: ['import'],
 
 	settings: {
 		'import/ignore': [
@@ -185,4 +185,4 @@ module.exports = {
 			},
 		},
 	],
-};
+});

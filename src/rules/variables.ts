@@ -1,7 +1,8 @@
-const confusingBrowserGlobals = require('confusing-browser-globals');
-const { isInstalled } = require('./utils.js');
+import confusingBrowserGlobals from 'confusing-browser-globals';
+import { createConfig } from '../utils/create-config';
+import { isInstalled } from '../utils/is-installed';
 
-module.exports = {
+export = createConfig({
 	rules: {
 		// enforce or disallow variable initializations at definition
 		'init-declarations': 'off',
@@ -54,4 +55,4 @@ module.exports = {
 		// not always possible for inter-dependent functions
 		'no-use-before-define': 'off',
 	},
-};
+});

@@ -1,12 +1,12 @@
-const path = require('path');
+import path from 'path';
+import { createConfig } from '../utils/create-config';
 
-const packageJson = require(path.resolve('package.json'));
-const isCli = 'bin' in packageJson;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const currentPackageJson = require(path.resolve('package.json'));
+const isCli = 'bin' in currentPackageJson;
 
-module.exports = {
-	plugins: [
-		'unicorn',
-	],
+export = createConfig({
+	plugins: ['unicorn'],
 
 	extends: 'plugin:unicorn/recommended',
 
@@ -87,19 +87,18 @@ module.exports = {
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1273#issuecomment-1069506684
 		'unicorn/prefer-json-parse-buffer': 'off',
 	},
-	overrides: [
-		...(
-			isCli
-				? [{
-					files: [
-						'cli.{js,ts}',
-						'**/cli/**/*.{js,ts}',
-					],
-					rules: {
-						'unicorn/no-process-exit': 'off',
-					},
-				}]
-				: []
-		),
-	],
-};
+
+	overrides: (
+		isCli
+			? [{
+				files: [
+					'cli.{js,ts}',
+					'**/cli/**/*.{js,ts}',
+				],
+				rules: {
+					'unicorn/no-process-exit': 'off',
+				},
+			}]
+			: []
+	),
+});

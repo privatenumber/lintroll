@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	plugins: [
 		'eslint-comments',
 	],
@@ -14,4 +16,4 @@ module.exports = {
 		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/c137daa/index.js#L33
 		'eslint-comments/no-unlimited-disable': 'off',
 	},
-};
+});

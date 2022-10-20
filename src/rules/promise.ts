@@ -1,8 +1,6 @@
-module.exports = {
-	plugins: [
-		'promise',
-	],
+import { createConfig } from '../utils/create-config';
 
+export = createConfig({
 	extends: [
 		'plugin:promise/recommended',
 	],
@@ -13,4 +11,4 @@ module.exports = {
 			allowThen: true,
 		}],
 	},
-};
+});

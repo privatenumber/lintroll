@@ -1,41 +1,33 @@
-const fs = require('fs');
-const { isInstalled } = require('./utils.js');
+import fs from 'fs';
+import { createConfig } from '../utils/create-config';
+import { isInstalled } from '../utils/is-installed';
 
-/** @typedef { import('eslint').Linter.Config } ESLintConfig */
-
-function autoImportIfInstalled(
-	autoImportedEntries,
-	moduleName,
-) {
-	if (!isInstalled(moduleName)) {
-		return;
-	}
-
-	autoImportedEntries.push(
-		// eslint-disable-next-line node/global-require
-		...Object.keys(require(moduleName)).map(
-			exportName => [exportName, 'readonly'],
-		),
-	);
-}
+const getModuleExports = (
+	moduleName: string,
+) => Object.keys(
+	// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
+	require(moduleName),
+);
 
 function detectAutoImport() {
 	if (!isInstalled('unplugin-auto-import')) {
 		return {};
 	}
 
-	const autoImportedEntries = [];
-
-	[
-		'vue',
-		'vue-router',
-		'@vueuse/core',
-		'@vueuse/head',
-	].forEach(
-		moduleName => autoImportIfInstalled(autoImportedEntries, moduleName),
+	return Object.fromEntries(
+		[
+			'vue',
+			'vue-router',
+			'@vueuse/core',
+			'@vueuse/head',
+		].flatMap(moduleName => (
+			isInstalled(moduleName)
+				? getModuleExports(moduleName).map(
+					exportName => [exportName, 'readonly'] as const,
+				)
+				: []
+		)),
 	);
-
-	return Object.fromEntries(autoImportedEntries);
 }
 
 function detectAutoImportComponents() {
@@ -70,8 +62,7 @@ function detectAutoImportComponents() {
 	return components;
 }
 
-/** @type { ESLintConfig } */
-const config = {
+export = createConfig({
 	overrides: [
 		// Setting as an override allows .vue files to be
 		// linted without specifying it on the user-end
@@ -117,6 +108,4 @@ const config = {
 			},
 		},
 	],
-};
-
-module.exports = config;
+});
