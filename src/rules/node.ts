@@ -1,11 +1,11 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	env: {
 		node: true,
 	},
 
-	plugins: [
-		'node',
-	],
+	plugins: ['node'],
 
 	rules: {
 
@@ -83,4 +83,4 @@ module.exports = {
 		'node/prefer-promises/dns': 'error',
 		'node/prefer-promises/fs': 'error',
 	},
-};
+});

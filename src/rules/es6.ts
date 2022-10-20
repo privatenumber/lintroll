@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	env: {
 		es6: true,
 	},
@@ -177,4 +179,4 @@ module.exports = {
 		// https://eslint.org/docs/rules/yield-star-spacing
 		'yield-star-spacing': ['error', 'after'],
 	},
-};
+});

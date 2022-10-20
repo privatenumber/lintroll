@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	overrides: [
 		{
 			files: '*.md',
@@ -78,4 +80,4 @@ module.exports = {
 			},
 		},
 	],
-};
+});

@@ -1,4 +1,4 @@
-exports.isInstalled = function isInstalled(specifier) {
+export const isInstalled = (specifier: string) => {
 	try {
 		require.resolve(specifier);
 		return true;

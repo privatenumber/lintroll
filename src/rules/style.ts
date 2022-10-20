@@ -1,4 +1,6 @@
-module.exports = {
+import { createConfig } from '../utils/create-config';
+
+export = createConfig({
 	rules: {
 		// https://eslint.org/docs/rules/array-bracket-newline
 		'array-bracket-newline': ['error', 'consistent'],
@@ -473,4 +475,4 @@ module.exports = {
 		// https://eslint.org/docs/rules/unicode-bom
 		'unicode-bom': ['error', 'never'],
 	},
-};
+});
