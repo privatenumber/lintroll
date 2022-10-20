@@ -21,7 +21,7 @@ jobs:
         node-version-file: '.nvmrc'
     - name: Install dependencies
       run: npx ci
-    - name: Lint
-      run: npm run lint
     - name: Test
       run: npm test
+    - name: Lint
+      run: npm run lint
