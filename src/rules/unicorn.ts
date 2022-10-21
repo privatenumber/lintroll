@@ -6,8 +6,6 @@ const currentPackageJson = require(path.resolve('package.json'));
 const isCli = 'bin' in currentPackageJson;
 
 export = createConfig({
-	plugins: ['unicorn'],
-
 	extends: 'plugin:unicorn/recommended',
 
 	rules: {
