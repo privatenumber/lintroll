@@ -8,11 +8,7 @@ export = createConfig({
 	overrides: [
 		{
 			files: '*.{json,json5,jsonc}',
-
-			parser: 'jsonc-eslint-parser',
-
-			plugins: ['jsonc'],
-
+			extends: ['plugin:jsonc/base'],
 			rules: {
 				'jsonc/indent': ['error', 'tab'],
 				'jsonc/key-spacing': [
@@ -28,7 +24,6 @@ export = createConfig({
 		},
 		{
 			files: 'package.json',
-
 			rules: {
 				'jsonc/sort-keys': [
 					'error',
@@ -51,10 +46,12 @@ export = createConfig({
 							'module',
 							'types',
 							'exports',
+							'imports',
 							'bin',
 							'unpkg',
 							'scripts',
 							'husky',
+							'simple-git-hooks',
 							'lint-staged',
 							'peerDependencies',
 							'peerDependenciesMeta',
@@ -73,6 +70,10 @@ export = createConfig({
 					},
 				],
 			},
+		},
+		{
+			files: 'tsconfig.json',
+			extends: ['plugin:jsonc/recommended-with-jsonc'],
 		},
 	],
 });

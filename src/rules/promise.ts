@@ -1,9 +1,7 @@
 import { createConfig } from '../utils/create-config';
 
 export = createConfig({
-	extends: [
-		'plugin:promise/recommended',
-	],
+	extends: ['plugin:promise/recommended'],
 
 	rules: {
 		'promise/always-return': 'off',
