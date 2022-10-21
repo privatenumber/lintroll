@@ -1,5 +1,6 @@
 import confusingBrowserGlobals from 'confusing-browser-globals';
 import { createConfig } from './utils/create-config';
+import { isInstalled } from './utils/is-installed';
 
 export = createConfig({
 	extends: [
@@ -29,7 +30,6 @@ export = createConfig({
 
 	ignorePatterns: [
 		'**/node_modules/**',
-		'coverage/**',
 		'{tmp,temp}/**',
 		'**/*.min.js',
 		'**/vendor/**',
@@ -37,12 +37,16 @@ export = createConfig({
 	],
 
 	overrides: [
-		{
-			files: '**/{test,tests}/*',
-			env: {
-				jest: true,
-			},
-		},
+		...(
+			isInstalled('jest')
+				? [{
+					files: '**/{test,tests}/*',
+					env: {
+						jest: true,
+					},
+				}]
+				: []
+		),
 
 		// Service Workers
 		{
