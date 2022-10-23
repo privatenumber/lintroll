@@ -7,7 +7,9 @@ export = createConfig({
 	},
 
 	ignorePatterns: [
+		// Nested node_modules
 		'**/node_modules/**',
+
 		'{tmp,temp}/**',
 		'**/*.min.js',
 		'**/vendor/**',
