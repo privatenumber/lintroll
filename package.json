@@ -16,7 +16,8 @@
 	],
 	"main": "./dist/index.js",
 	"scripts": {
-		"build": "tsc",
+		"build": "esbuild src/**/*.ts --format=cjs --outdir=dist",
+		"type-check": "tsc --noEmit",
 		"lint": "eslint --cache .",
 		"test": "pnpm build && tsx tests",
 		"prepack": "pnpm build && clean-pkg-json"
@@ -48,6 +49,7 @@
 		"@types/node": "^17.0.45",
 		"@types/react": "^17.0.50",
 		"clean-pkg-json": "^1.2.0",
+		"esbuild": "^0.15.12",
 		"eslint": "^8.25.0",
 		"manten": "^0.4.0",
 		"react": "^17.0.2",
