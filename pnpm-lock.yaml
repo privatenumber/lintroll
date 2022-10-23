@@ -9,6 +9,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.40.1
   clean-pkg-json: ^1.2.0
   confusing-browser-globals: ^1.0.11
+  esbuild: ^0.15.12
   eslint: ^8.25.0
   eslint-import-resolver-typescript: ^3.5.2
   eslint-plugin-eslint-comments: ^3.2.0
@@ -52,6 +53,7 @@ devDependencies:
   '@types/node': 17.0.45
   '@types/react': 17.0.50
   clean-pkg-json: 1.2.0
+  esbuild: 0.15.12
   eslint: 8.25.0
   manten: 0.4.0
   react: 17.0.2
