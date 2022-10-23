@@ -16,7 +16,7 @@
 	],
 	"main": "./dist/index.js",
 	"scripts": {
-		"build": "echo src/**/*.ts; esbuild src/**/*.ts --format=cjs --outdir=dist",
+		"build": "esbuild src/**/*.ts --format=cjs --outdir=dist",
 		"type-check": "tsc --noEmit",
 		"lint": "eslint --cache .",
 		"test": "pnpm build && tsx tests",
