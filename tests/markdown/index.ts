@@ -8,7 +8,7 @@ const fixtureFail = path.join(__dirname, 'fixtures/fail.md');
 export default testSuite(({ describe }) => {
 	describe('markdown', ({ test }) => {
 		test('Pass', async () => {
-			const results = await eslint.lintFiles([fixturePass]);
+			const results = await eslint.lintFiles(fixturePass);
 			const { messages } = results[0];
 
 			expect(messages.length).toBe(2);
@@ -27,7 +27,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail', async () => {
-			const results = await eslint.lintFiles([fixtureFail]);
+			const results = await eslint.lintFiles(fixtureFail);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(

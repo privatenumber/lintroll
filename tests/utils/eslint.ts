@@ -1,8 +1,8 @@
 import path from 'path';
-import { ESLint } from 'eslint';
+import { ESLint, type Linter } from 'eslint';
 
 export const createEslint = (
-	config?: Record<string, unknown>,
+	config?: Linter.Config,
 ) => new ESLint({
 	useEslintrc: false,
 	baseConfig: {

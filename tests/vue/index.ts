@@ -21,7 +21,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles([failFixture]);
+			const results = await eslint.lintFiles(failFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(

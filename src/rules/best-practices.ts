@@ -114,7 +114,11 @@ export = createConfig({
 
 		'no-iterator': 'error',
 
-		'no-labels': ['error', { allowLoop: false, allowSwitch: false }],
+		'no-labels': ['error', {
+			// Necessary for breaking multi-level loops
+			allowLoop: true,
+			allowSwitch: false,
+		}],
 
 		// disallow unnecessary nested blocks
 		'no-lone-blocks': 'error',

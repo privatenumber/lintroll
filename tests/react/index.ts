@@ -14,7 +14,7 @@ const failFixture = path.join(__dirname, 'fixtures/fail.tsx');
 export default testSuite(({ describe }) => {
 	describe('react', ({ test }) => {
 		test('Pass cases', async () => {
-			const results = await eslint.lintFiles([passFixture]);
+			const results = await eslint.lintFiles(passFixture);
 			const [result] = results;
 
 			expect(result.errorCount).toBe(0);
@@ -23,7 +23,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles([failFixture]);
+			const results = await eslint.lintFiles(failFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(

@@ -9,7 +9,7 @@ const failFixture = path.join(__dirname, 'fixtures/fail.ts');
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {
 		test('Pass ts', async () => {
-			const results = await eslint.lintFiles([passFixtureTs]);
+			const results = await eslint.lintFiles(passFixtureTs);
 			const [result] = results;
 
 			expect(result.errorCount).toBe(0);
@@ -18,7 +18,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Pass mts', async () => {
-			const results = await eslint.lintFiles([passFixtureMts]);
+			const results = await eslint.lintFiles(passFixtureMts);
 			const [result] = results;
 
 			expect(result.errorCount).toBe(0);
@@ -27,7 +27,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles([failFixture]);
+			const results = await eslint.lintFiles(failFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(

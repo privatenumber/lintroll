@@ -10,9 +10,13 @@ const jsonFixture = path.join(__dirname, 'fixtures/random.json');
 
 export default testSuite(({ describe }) => {
 	describe('base', ({ test }) => {
-		test('Pass cases', async () => {
-			const results = await eslint.lintFiles([passFixture]);
+		test('Pass cases', async ({ onTestFail }) => {
+			const results = await eslint.lintFiles(passFixture);
 			const [result] = results;
+
+			onTestFail(() => {
+				console.log(result);
+			});
 
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
@@ -20,7 +24,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles([failFixture]);
+			const results = await eslint.lintFiles(failFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(
@@ -115,7 +119,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Service worker', async () => {
-			const results = await eslint.lintFiles([swFixture]);
+			const results = await eslint.lintFiles(swFixture);
 			const [result] = results;
 
 			expect(result.errorCount).toBe(0);
@@ -134,7 +138,7 @@ export default testSuite(({ describe }) => {
 
 	describe('json', ({ test }) => {
 		test('package.json', async () => {
-			const results = await eslint.lintFiles([packageJsonFixture]);
+			const results = await eslint.lintFiles(packageJsonFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(
@@ -152,7 +156,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('random.json', async () => {
-			const results = await eslint.lintFiles([jsonFixture]);
+			const results = await eslint.lintFiles(jsonFixture);
 			const { messages } = results[0];
 
 			expect(messages).toEqual(
