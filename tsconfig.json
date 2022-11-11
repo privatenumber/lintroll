@@ -3,12 +3,6 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"isolatedModules": true,
-		"outDir": "dist",
-
-		// Target Node v12
-		"lib": ["ES2019"],
-		"module": "commonjs",
-		"target": "ES2019"
+		"module": "Node16",
 	},
-	"include": ["src"]
 }
