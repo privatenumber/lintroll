@@ -1,4 +1,4 @@
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/create-config.js';
 
 export = createConfig({
 	ignorePatterns: [
@@ -53,6 +53,7 @@ export = createConfig({
 							'husky',
 							'simple-git-hooks',
 							'lint-staged',
+							'engines',
 							'peerDependencies',
 							'peerDependenciesMeta',
 							'dependencies',

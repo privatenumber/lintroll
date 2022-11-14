@@ -1,86 +1,59 @@
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/create-config.js';
 
 export = createConfig({
-	env: {
-		node: true,
-	},
-
-	plugins: ['node'],
+	extends: 'plugin:n/recommended',
 
 	rules: {
 
-		// require require() calls to be placed at top-level module scope
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80/docs/rules/global-require.md
-		'node/global-require': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/global-require.md
+		'n/global-require': 'error',
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-unpublished-bin.md
-		'node/no-unpublished-bin': 'error',
-
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-mixed-requires.md
-		'node/no-mixed-requires': [
-			'error',
-			{
-				grouping: true,
-				allowCall: true,
-			},
-		],
-
-		// Conflicts with import plugin, typescript, and Node.js export maps
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/file-extension-in-import.md
-		// exports map: https://github.com/mysticatea/eslint-plugin-node/issues/258
-		'node/file-extension-in-import': ['error', 'always', {
-			// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
-			'.ts': 'never',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-mixed-requires.md
+		'n/no-mixed-requires': ['error', {
+			grouping: true,
+			allowCall: true,
 		}],
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-new-require.md
-		'node/no-new-require': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
+		'n/file-extension-in-import': ['error', 'always', {
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-path-concat.md
-		'node/no-path-concat': 'error',
+			// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
+			// Use .js instead
+			'.ts': 'never',
+			'.tsx': 'never',
+		}],
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-unpublished-import.md
-		'node/no-unpublished-import': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-new-require.md
+		'n/no-new-require': 'error',
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-unpublished-require.md
-		'node/no-unpublished-require': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-path-concat.md
+		'n/no-path-concat': 'error',
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/process-exit-as-throw.md
-		'node/process-exit-as-throw': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/buffer.md
+		'n/prefer-global/buffer': ['error', 'always'],
 
-		// https://github.com/mysticatea/eslint-plugin-node/blob/7dc8f80a5e/docs/rules/no-deprecated-api.md
-		'node/no-deprecated-api': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/console.md
+		'n/prefer-global/console': ['error', 'always'],
 
-		'node/prefer-global/buffer': [
-			'error',
-			'always',
-		],
-		'node/prefer-global/console': [
-			'error',
-			'always',
-		],
-		'node/prefer-global/process': [
-			'error',
-			'always',
-		],
-		'node/prefer-global/text-decoder': [
-			'error',
-			'always',
-		],
-		'node/prefer-global/text-encoder': [
-			'error',
-			'always',
-		],
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/process.md
+		'n/prefer-global/process': ['error', 'always'],
 
-		'node/prefer-global/url-search-params': [
-			'error',
-			'always',
-		],
-		'node/prefer-global/url': [
-			'error',
-			'always',
-		],
-		'node/prefer-promises/dns': 'error',
-		'node/prefer-promises/fs': 'error',
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/text-decoder.md
+		'n/prefer-global/text-decoder': ['error', 'always'],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/text-encoder.md
+		'n/prefer-global/text-encoder': ['error', 'always'],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url-search-params.md
+		'n/prefer-global/url-search-params': ['error', 'always'],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url.md
+		'n/prefer-global/url': ['error', 'always'],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/dns.md
+		'n/prefer-promises/dns': 'error',
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
+		'n/prefer-promises/fs': 'error',
 	},
 });

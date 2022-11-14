@@ -1,6 +1,6 @@
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { createConfig } from '../utils/create-config';
-import { isInstalled } from '../utils/is-installed';
+import { createConfig } from '../utils/create-config.js';
+import { isInstalled } from '../utils/is-installed.js';
 
 export = createConfig({
 	rules: {

@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { createConfig } from '../utils/create-config';
-import { isInstalled } from '../utils/is-installed';
+import { createConfig } from '../utils/create-config.js';
+import { isInstalled } from '../utils/is-installed.js';
 
 const getModuleExports = (
 	moduleName: string,
 ) => Object.keys(
-	// eslint-disable-next-line node/global-require,@typescript-eslint/no-var-requires
+	// eslint-disable-next-line n/global-require,@typescript-eslint/no-var-requires
 	require(moduleName),
 );
 

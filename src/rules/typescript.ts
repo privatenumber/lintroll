@@ -3,10 +3,10 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-import { createConfig } from '../utils/create-config';
-import { isInstalled } from '../utils/is-installed';
-import baseImports from './imports';
-import baseVariables from './variables';
+import { createConfig } from '../utils/create-config.js';
+import { isInstalled } from '../utils/is-installed.js';
+import baseImports from './imports.js';
+import baseVariables from './variables.js';
 
 const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
@@ -79,11 +79,6 @@ export = createConfig(
 						'import/extensions': ['error', 'ignorePackages', {
 							ts: 'never',
 							tsx: 'never',
-						}],
-
-						'node/file-extension-in-import': ['error', 'always', {
-							'.ts': 'never',
-							'.tsx': 'never',
 						}],
 
 						'@typescript-eslint/member-delimiter-style': 'error',

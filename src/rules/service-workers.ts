@@ -1,5 +1,5 @@
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/create-config.js';
 
 export = createConfig({
 	overrides: [

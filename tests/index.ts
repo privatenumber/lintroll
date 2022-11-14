@@ -1,9 +1,9 @@
 import { describe } from 'manten';
 
 describe('eslint config', ({ runTestSuite }) => {
-	runTestSuite(import('./base'));
-	runTestSuite(import('./typescript'));
-	runTestSuite(import('./markdown'));
-	runTestSuite(import('./vue'));
-	runTestSuite(import('./react'));
+	runTestSuite(import('./base/index.js'));
+	runTestSuite(import('./typescript/index.js'));
+	runTestSuite(import('./markdown/index.js'));
+	runTestSuite(import('./vue/index.js'));
+	runTestSuite(import('./react/index.js'));
 });

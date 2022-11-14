@@ -1,6 +1,6 @@
 import path from 'path';
 import { testSuite, expect } from 'manten';
-import { eslint } from '../utils/eslint';
+import { eslint } from '../utils/eslint.js';
 
 const passFixture = path.join(__dirname, 'fixtures/PassingComponent.vue');
 const passSetupFixture = path.join(__dirname, 'fixtures/PassSetup.vue');

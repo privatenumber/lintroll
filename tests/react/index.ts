@@ -1,6 +1,6 @@
 import path from 'path';
 import { testSuite, expect } from 'manten';
-import { createEslint } from '../utils/eslint';
+import { createEslint } from '../utils/eslint.js';
 
 const eslint = createEslint({
 	rules: {

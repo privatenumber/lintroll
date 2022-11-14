@@ -1,6 +1,6 @@
 import path from 'path';
 import { testSuite, expect } from 'manten';
-import { eslint } from '../utils/eslint';
+import { eslint } from '../utils/eslint.js';
 
 const passFixture = path.join(__dirname, 'fixtures/pass.js');
 const failFixture = path.join(__dirname, 'fixtures/fail.js');
