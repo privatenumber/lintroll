@@ -1,9 +1,4 @@
-import path from 'path';
 import { createConfig } from '../utils/create-config.js';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const currentPackageJson = require(path.resolve('package.json'));
-const isCli = 'bin' in currentPackageJson;
 
 export = createConfig({
 	extends: 'plugin:unicorn/recommended',
@@ -81,19 +76,13 @@ export = createConfig({
 		'unicorn/prefer-json-parse-buffer': 'off',
 
 		'unicorn/prefer-top-level-await': 'off',
-	},
 
-	overrides: (
-		isCli
-			? [{
-				files: [
-					'cli.{js,ts}',
-					'**/cli/**/*.{js,ts}',
-				],
-				rules: {
-					'unicorn/no-process-exit': 'off',
-				},
-			}]
-			: []
-	),
+		// Conflicts with eslint-plugin-n/no-process-exit
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-process-exit.md
+		'unicorn/no-process-exit': 'off',
+
+		// Conflicts with eslint-plugin-n/no-deprecated-api
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-deprecated-api.md
+		'unicorn/no-new-buffer': 'off',
+	},
 });

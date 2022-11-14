@@ -17,20 +17,24 @@ export default testSuite(({ describe }) => {
 			expect(result.usedDeprecatedRules.length).toBe(0);
 		});
 
-		test('Fail cases', async () => {
+		test('Fail cases', async ({ onTestFail }) => {
 			const fixturePath = path.join(__dirname, 'fixtures/fail.js');
 			const [result] = await eslint.lintFiles(fixturePath);
-			const { messages } = result;
 
-			expect(messages).toEqual(
+			onTestFail(() => {
+				console.log(result);
+			});
+
+			expect(result.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'unicorn/no-process-exit',
-						messageId: 'no-process-exit',
+						ruleId: 'n/no-process-exit',
+						messageId: 'noProcessExit',
 					}),
 					expect.objectContaining({
-						ruleId: 'unicorn/no-new-buffer',
-						messageId: 'error',
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+						message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
 					}),
 					expect.objectContaining({
 						ruleId: 'n/no-deprecated-api',

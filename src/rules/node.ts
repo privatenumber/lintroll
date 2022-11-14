@@ -1,4 +1,9 @@
+import path from 'path';
 import { createConfig } from '../utils/create-config.js';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const currentPackageJson = require(path.resolve('package.json'));
+const isCli = 'bin' in currentPackageJson;
 
 export = createConfig({
 	extends: 'plugin:n/recommended',
@@ -56,4 +61,18 @@ export = createConfig({
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
 		'n/prefer-promises/fs': 'error',
 	},
+
+	overrides: (
+		isCli
+			? [{
+				files: [
+					'cli.{js,ts}',
+					'**/cli/**/*.{js,ts}',
+				],
+				rules: {
+					'n/no-process-exit': 'off',
+				},
+			}]
+			: []
+	),
 });

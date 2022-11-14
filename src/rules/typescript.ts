@@ -3,6 +3,10 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
+// @ts-expect-error no types
+import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js';
+// @ts-expect-error no types
+import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
 import { createConfig } from '../utils/create-config.js';
 import { isInstalled } from '../utils/is-installed.js';
 import baseImports from './imports.js';
@@ -103,6 +107,14 @@ export = createConfig(
 
 						'prefer-rest-params': 'off',
 					},
+				},
+				{
+					files: '*.cts',
+					...recommendedScript,
+				},
+				{
+					files: '*.mts',
+					...recommendedModule,
 				},
 			],
 		}
