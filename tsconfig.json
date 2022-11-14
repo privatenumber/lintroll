@@ -3,6 +3,7 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"isolatedModules": true,
+		"jsx": "react-jsx",
 		"module": "Node16",
 	},
 }

@@ -13,9 +13,12 @@ const failFixture = path.join(__dirname, 'fixtures/fail.tsx');
 
 export default testSuite(({ describe }) => {
 	describe('react', ({ test }) => {
-		test('Pass cases', async () => {
-			const results = await eslint.lintFiles(passFixture);
-			const [result] = results;
+		test('Pass cases', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(passFixture);
+
+			onTestFail(() => {
+				console.log(result);
+			});
 
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
@@ -35,10 +38,6 @@ export default testSuite(({ describe }) => {
 					expect.objectContaining({
 						ruleId: 'unicorn/filename-case',
 						messageId: 'filename-case',
-					}),
-					expect.objectContaining({
-						ruleId: 'react/react-in-jsx-scope',
-						messageId: 'notInScope',
 					}),
 					expect.objectContaining({
 						ruleId: 'react/prop-types',

@@ -38,7 +38,7 @@ export default testSuite(({ describe }) => {
 						messageId: 'error',
 					}),
 					expect.objectContaining({
-						ruleId: 'node/no-deprecated-api',
+						ruleId: 'n/no-deprecated-api',
 						message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
 					}),
 					expect.objectContaining({
@@ -63,7 +63,7 @@ export default testSuite(({ describe }) => {
 						messageId: 'missing',
 					}),
 					expect.objectContaining({
-						ruleId: 'node/file-extension-in-import',
+						ruleId: 'n/file-extension-in-import',
 						messageId: 'requireExt',
 					}),
 					expect.objectContaining({

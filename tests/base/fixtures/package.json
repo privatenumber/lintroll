@@ -1,5 +1,8 @@
 {
-  "name": "some-package-json",
-  "description": "",
-  "version": ""
+    "name": "some-package-json",
+    "description": "",
+    "version": "",
+    "engines": {
+        "node": ">=16.18.0"
+    }
 }

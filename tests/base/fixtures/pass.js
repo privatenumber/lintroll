@@ -2,7 +2,6 @@
 
 import './some-file.js';
 import path from 'path';
-import someModule from 'http://some.module/module.js';
 
 // require('./some-file');
 
@@ -101,7 +100,6 @@ try {
 console.log(
 	path,
 	objectMethods,
-	someModule,
 	message,
 	ternaryValue,
 	someFunction,
