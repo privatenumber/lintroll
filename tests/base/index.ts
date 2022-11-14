@@ -2,17 +2,11 @@ import path from 'path';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const passFixture = path.join(__dirname, 'fixtures/pass.js');
-const failFixture = path.join(__dirname, 'fixtures/fail.js');
-const swFixture = path.join(__dirname, 'fixtures/service-worker.sw.js');
-const packageJsonFixture = path.join(__dirname, 'fixtures/package.json');
-const jsonFixture = path.join(__dirname, 'fixtures/random.json');
-
 export default testSuite(({ describe }) => {
 	describe('base', ({ test }) => {
 		test('Pass cases', async ({ onTestFail }) => {
-			const results = await eslint.lintFiles(passFixture);
-			const [result] = results;
+			const fixturePath = path.join(__dirname, 'fixtures/pass.js');
+			const [result] = await eslint.lintFiles(fixturePath);
 
 			onTestFail(() => {
 				console.log(result);
@@ -24,8 +18,9 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles(failFixture);
-			const { messages } = results[0];
+			const fixturePath = path.join(__dirname, 'fixtures/fail.js');
+			const [result] = await eslint.lintFiles(fixturePath);
+			const { messages } = result;
 
 			expect(messages).toEqual(
 				expect.arrayContaining([
@@ -119,51 +114,16 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Service worker', async () => {
-			const results = await eslint.lintFiles(swFixture);
-			const [result] = results;
+			const fixturePath = path.join(__dirname, 'fixtures/service-worker.sw.js');
+			const [result] = await eslint.lintFiles(fixturePath);
 
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
-
 			expect(result.messages).not.toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
 						ruleId: 'no-restricted-globals',
 						message: "Unexpected use of 'self'.",
-					}),
-				]),
-			);
-		});
-	});
-
-	describe('json', ({ test }) => {
-		test('package.json', async () => {
-			const results = await eslint.lintFiles(packageJsonFixture);
-			const { messages } = results[0];
-
-			expect(messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'jsonc/indent',
-						messageId: 'wrongIndentation',
-					}),
-					expect.objectContaining({
-						ruleId: 'jsonc/sort-keys',
-						messageId: 'sortKeys',
-					}),
-				]),
-			);
-		});
-
-		test('random.json', async () => {
-			const results = await eslint.lintFiles(jsonFixture);
-			const { messages } = results[0];
-
-			expect(messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'jsonc/indent',
-						messageId: 'wrongIndentation',
 					}),
 				]),
 			);
