@@ -50,6 +50,7 @@ export = createConfig({
 			files: '**/*.md/*.vue',
 			rules: {
 				'vue/html-indent': ['error', 4],
+				'vue/no-undef-components': 'warn',
 			},
 		},
 		{

@@ -39,6 +39,7 @@ console.log(data)
 <template>
     <SomeComponent>
         Hello world
+        <undefined-component />
     </SomeComponent>
 </template>
 

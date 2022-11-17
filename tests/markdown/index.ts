@@ -15,7 +15,7 @@ export default testSuite(({ describe }) => {
 				console.log(messages);
 			});
 
-			expect(messages.length).toBe(2);
+			expect(messages.length).toBe(3);
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
@@ -24,6 +24,10 @@ export default testSuite(({ describe }) => {
 					}),
 					expect.objectContaining({
 						ruleId: 'no-unused-vars',
+						severity: 1,
+					}),
+					expect.objectContaining({
+						ruleId: 'vue/no-undef-components',
 						severity: 1,
 					}),
 				]),
