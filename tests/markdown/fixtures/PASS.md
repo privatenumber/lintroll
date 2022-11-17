@@ -36,15 +36,23 @@ console.log(data)
 ```
 
 ```vue
-import A from 'b'
+<template>
+    <SomeComponent>
+        Hello world
+    </SomeComponent>
+</template>
 
-console.log(A)
+<script>
+import SomeComponent from 'b'
+
+console.log(SomeComponent)
 
 export default {
     components: {
-        A
+        SomeComponent
     }
 }
+</script>
 ```
 
 ```jsx

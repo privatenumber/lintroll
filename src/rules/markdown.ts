@@ -47,6 +47,12 @@ export = createConfig({
 			},
 		},
 		{
+			files: '**/*.md/*.vue',
+			rules: {
+				'vue/html-indent': ['error', 4],
+			},
+		},
+		{
 			files: '**/*.md/*.{ts,tsx}',
 			rules: {
 				// Style
