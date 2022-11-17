@@ -2,18 +2,16 @@ import { createConfig } from '../utils/create-config.js';
 
 export = createConfig({
 	rules: {
-		// https://eslint.org/docs/rules/array-bracket-newline
+		// https://eslint.org/docs/latest/rules/array-bracket-newline
 		'array-bracket-newline': ['error', 'consistent'],
 
-		// enforce line breaks between array elements
-		// https://eslint.org/docs/rules/array-element-newline
+		// https://eslint.org/docs/latest/rules/array-element-newline
 		'array-element-newline': ['error', 'consistent'],
 
-		// enforce spacing inside array brackets
+		// https://eslint.org/docs/latest/rules/array-bracket-spacing
 		'array-bracket-spacing': ['error', 'never'],
 
-		// enforce spacing inside single-line blocks
-		// https://eslint.org/docs/rules/block-spacing
+		// https://eslint.org/docs/latest/rules/block-spacing
 		'block-spacing': ['error', 'always'],
 
 		// enforce one true brace style
