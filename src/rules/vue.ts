@@ -5,7 +5,7 @@ import { isInstalled } from '../utils/is-installed.js';
 const getModuleExports = (
 	moduleName: string,
 ) => Object.keys(
-	// eslint-disable-next-line n/global-require,@typescript-eslint/no-var-requires
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	require(moduleName),
 );
 

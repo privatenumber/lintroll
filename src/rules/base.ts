@@ -16,7 +16,7 @@ export = createConfig({
 		 * Globals shared across Node.js and Browser
 		 * https://github.com/sindresorhus/globals/blob/main/globals.json#LL1710C3-L1710C24
 		 */
-		 'shared-node-browser': true,
+		'shared-node-browser': true,
 	},
 
 	// parserOptions: {
@@ -347,7 +347,7 @@ export = createConfig({
 		// require or disallow Yoda conditions
 		yoda: 'error',
 
-			// Enforce “for” loop update clause moving the counter in the right direction
+		// Enforce “for” loop update clause moving the counter in the right direction
 		// https://eslint.org/docs/rules/for-direction
 		'for-direction': 'error',
 
