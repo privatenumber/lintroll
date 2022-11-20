@@ -22,7 +22,7 @@ export = createConfig({
 		'./rules/style',
 		'./rules/variables',
 		'./rules/es6',
-		'./rules/node',
+		// './rules/node',
 		'./rules/regexp',
 		'./rules/imports',
 		'./rules/promise',

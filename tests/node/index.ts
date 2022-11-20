@@ -31,15 +31,15 @@ export default testSuite(({ describe }) => {
 								message: "'__dirname' is not defined.",
 							}),
 
-							expect.objectContaining({
-								ruleId: 'n/prefer-promises/fs',
-								messageId: 'preferPromises',
-							}),
+							// expect.objectContaining({
+							// 	ruleId: 'n/prefer-promises/fs',
+							// 	messageId: 'preferPromises',
+							// }),
 
-							expect.objectContaining({
-								ruleId: 'n/no-deprecated-api',
-								messageId: 'deprecated',
-							}),
+							// expect.objectContaining({
+							// 	ruleId: 'n/no-deprecated-api',
+							// 	messageId: 'deprecated',
+							// }),
 						]),
 					);
 				});
@@ -62,15 +62,15 @@ export default testSuite(({ describe }) => {
 							// 	message: "'__dirname' is not defined.",
 							// }),
 
-							expect.objectContaining({
-								ruleId: 'n/prefer-promises/fs',
-								messageId: 'preferPromises',
-							}),
+							// expect.objectContaining({
+							// 	ruleId: 'n/prefer-promises/fs',
+							// 	messageId: 'preferPromises',
+							// }),
 
-							expect.objectContaining({
-								ruleId: 'n/no-deprecated-api',
-								messageId: 'deprecated',
-							}),
+							// expect.objectContaining({
+							// 	ruleId: 'n/no-deprecated-api',
+							// 	messageId: 'deprecated',
+							// }),
 						]),
 					);
 				});

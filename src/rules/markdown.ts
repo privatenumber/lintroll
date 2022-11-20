@@ -19,7 +19,7 @@ export = createConfig({
 				'no-new': 'off',
 				'import/no-unresolved': 'off',
 				'import/extensions': 'off',
-				'n/no-missing-import': 'off',
+				// 'n/no-missing-import': 'off',
 
 				// Allow unused expressions like: argv.command // => "install" (string)
 				'no-unused-expressions': 'off',

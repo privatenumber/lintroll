@@ -27,19 +27,19 @@ export default testSuite(({ describe }) => {
 
 			expect(result.messages).toEqual(
 				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'n/no-process-exit',
-						messageId: 'noProcessExit',
-					}),
-					expect.objectContaining({
-						ruleId: 'n/no-deprecated-api',
-						messageId: 'deprecated',
-						message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-					}),
-					expect.objectContaining({
-						ruleId: 'n/no-deprecated-api',
-						message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-					}),
+					// expect.objectContaining({
+					// 	ruleId: 'n/no-process-exit',
+					// 	messageId: 'noProcessExit',
+					// }),
+					// expect.objectContaining({
+					// 	ruleId: 'n/no-deprecated-api',
+					// 	messageId: 'deprecated',
+					// 	message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
+					// }),
+					// expect.objectContaining({
+					// 	ruleId: 'n/no-deprecated-api',
+					// 	message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
+					// }),
 					expect.objectContaining({
 						ruleId: 'padding-line-between-statements',
 						message: 'Expected blank line before this statement.',
@@ -61,10 +61,10 @@ export default testSuite(({ describe }) => {
 						ruleId: 'eol-last',
 						messageId: 'missing',
 					}),
-					expect.objectContaining({
-						ruleId: 'n/file-extension-in-import',
-						messageId: 'requireExt',
-					}),
+					// expect.objectContaining({
+					// 	ruleId: 'n/file-extension-in-import',
+					// 	messageId: 'requireExt',
+					// }),
 					expect.objectContaining({
 						ruleId: 'import/max-dependencies',
 						severity: 1,
