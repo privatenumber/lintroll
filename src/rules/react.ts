@@ -20,6 +20,12 @@ export = createConfig({
 				'plugin:react-hooks/recommended',
 			],
 
+			settings: {
+				react: {
+					version: 'detect',
+				},
+			},
+
 			rules: {
 				// https://eslint.org/docs/rules/jsx-quotes
 				'jsx-quotes': ['error', 'prefer-double'],
@@ -36,12 +42,6 @@ export = createConfig({
 						'\\.spec\\.tsx$',
 					],
 				}],
-			},
-
-			settings: {
-				react: {
-					version: 'detect',
-				},
 			},
 		},
 	],

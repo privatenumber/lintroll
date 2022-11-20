@@ -30,6 +30,12 @@ export = createConfig(
 						'plugin:import/typescript',
 					],
 
+					settings: {
+						'import/resolver': {
+							typescript: {},
+						},
+					},
+
 					/**
 					 * Slow and cant disable for markdown files
 					 * Was only using for @typescript-eslint/return-await
@@ -100,12 +106,6 @@ export = createConfig(
 
 						// Could be used to pass in an explicit `undefined` to a required parameter
 						'unicorn/no-useless-undefined': 'off',
-					},
-
-					settings: {
-						'import/resolver': {
-							typescript: {},
-						},
 					},
 				},
 				{

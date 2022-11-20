@@ -3,7 +3,7 @@ import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
-	describe('node', ({ describe, test }) => {
+	describe('node', ({ test, describe }) => {
 		test('Pass cases', async ({ onTestFail }) => {
 			const fixturePath = path.join(__dirname, 'fixtures/pass.js');
 			const [result] = await eslint.lintFiles(fixturePath);
@@ -26,9 +26,9 @@ export default testSuite(({ describe }) => {
 					expect(result.messages).toEqual(
 						expect.arrayContaining([
 							expect.objectContaining({
-								message: "'__dirname' is not defined.",
-								messageId: 'undef',
 								ruleId: 'no-undef',
+								messageId: 'undef',
+								message: "'__dirname' is not defined.",
 							}),
 
 							// expect.objectContaining({

@@ -5,23 +5,19 @@ export = createConfig({
 		es6: true,
 	},
 
-	overrides: [
-		{
-			files: 'src/',
-			rules: {
-				// Disallow dynamic imports if compiled
-				// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
-				'import/no-dynamic-require': 'error',
-			},
-		},
-	],
-
 	parserOptions: {
 		ecmaVersion: 6,
 		sourceType: 'module',
 	},
 
 	plugins: ['import'],
+
+	settings: {
+		'import/ignore': [
+			'node_modules',
+			'\\.(css|svg|json)$',
+		],
+	},
 
 	rules: {
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
@@ -179,10 +175,15 @@ export = createConfig({
 		// Excessive. Also, named exports help enforce readable imports.
 		'import/prefer-default-export': 'off',
 	},
-	settings: {
-		'import/ignore': [
-			'node_modules',
-			'\\.(css|svg|json)$',
-		],
-	},
+
+	overrides: [
+		{
+			files: 'src/',
+			rules: {
+				// Disallow dynamic imports if compiled
+				// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
+				'import/no-dynamic-require': 'error',
+			},
+		},
+	],
 });
