@@ -3,6 +3,9 @@ import { createConfig } from '../utils/create-config.js';
 import { isInstalled } from '../utils/is-installed.js';
 
 export = createConfig({
+	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
+	extends: 'eslint:recommended',
+
 	env: {
 		/**
 		 * Globals shared across Node.js and Browser
@@ -10,9 +13,6 @@ export = createConfig({
 		 */
 		'shared-node-browser': true,
 	},
-
-	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
-	extends: 'eslint:recommended',
 
 	parserOptions: {
 		ecmaVersion: 2020,
