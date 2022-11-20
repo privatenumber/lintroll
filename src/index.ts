@@ -1,11 +1,6 @@
 import { createConfig } from './utils/create-config.js';
 
 export = createConfig({
-	parserOptions: {
-		ecmaVersion: 2022,
-		sourceType: 'module',
-	},
-
 	ignorePatterns: [
 		// Nested node_modules
 		'**/node_modules/**',
@@ -17,11 +12,7 @@ export = createConfig({
 	],
 
 	extends: [
-		'./rules/best-practices',
-		'./rules/errors',
-		'./rules/style',
-		'./rules/variables',
-		'./rules/es6',
+		'./rules/base',
 		// './rules/node',
 		'./rules/regexp',
 		'./rules/imports',
