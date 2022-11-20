@@ -9,8 +9,8 @@ import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js
 import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
 import { createConfig } from '../utils/create-config.js';
 import { isInstalled } from '../utils/is-installed.js';
+import base from './base.js';
 import baseImports from './imports.js';
-import baseVariables from './variables.js';
 
 const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
@@ -53,7 +53,7 @@ export = createConfig(
 						'@typescript-eslint/no-unused-vars': [
 							'error',
 							{
-								...baseVariables.rules['no-unused-vars'][1],
+								...base.rules['no-unused-vars'][1],
 
 								/**
 								 * TypeScript ignores any variables that are prefixed with _
@@ -100,7 +100,7 @@ export = createConfig(
 
 						// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
 						'no-shadow': 'off',
-						'@typescript-eslint/no-shadow': baseVariables.rules['no-shadow'],
+						'@typescript-eslint/no-shadow': base.rules['no-shadow'],
 
 						// Function expression can be used to type a function
 						'func-style': 'off',

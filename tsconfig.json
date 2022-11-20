@@ -6,4 +6,7 @@
 		"jsx": "react-jsx",
 		"module": "Node16",
 	},
+	"exclude": [
+		"tests/*/fixtures"
+	]
 }
