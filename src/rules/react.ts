@@ -8,8 +8,6 @@ const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 export = createConfig({
 	overrides: [
 		{
-			files: '*.{jsx,tsx}',
-
 			extends: [
 				// https://github.com/yannickcr/eslint-plugin-react/blob/c8917b0/index.js
 				'plugin:react/recommended',
@@ -20,11 +18,7 @@ export = createConfig({
 				'plugin:react-hooks/recommended',
 			],
 
-			settings: {
-				react: {
-					version: 'detect',
-				},
-			},
+			files: '*.{jsx,tsx}',
 
 			rules: {
 				// https://eslint.org/docs/rules/jsx-quotes
@@ -42,6 +36,12 @@ export = createConfig({
 						'\\.spec\\.tsx$',
 					],
 				}],
+			},
+
+			settings: {
+				react: {
+					version: 'detect',
+				},
 			},
 		},
 	],

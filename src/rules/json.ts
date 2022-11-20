@@ -7,15 +7,15 @@ export = createConfig({
 
 	overrides: [
 		{
-			files: '*.{json,json5,jsonc}',
 			extends: 'plugin:jsonc/base',
+			files: '*.{json,json5,jsonc}',
 			rules: {
 				'jsonc/indent': ['error', 'tab'],
 				'jsonc/key-spacing': [
 					'error',
 					{
-						beforeColon: false,
 						afterColon: true,
+						beforeColon: false,
 						mode: 'strict',
 					},
 				],
@@ -28,7 +28,6 @@ export = createConfig({
 				'jsonc/sort-keys': [
 					'error',
 					{
-						pathPattern: '^$',
 						order: [
 							'name',
 							'version',
@@ -64,17 +63,18 @@ export = createConfig({
 							'overrides',
 							'eslintConfig',
 						],
+						pathPattern: '^$',
 					},
 					{
-						pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
 						order: { type: 'asc' },
+						pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
 					},
 				],
 			},
 		},
 		{
-			files: 'tsconfig.json',
 			extends: 'plugin:jsonc/recommended-with-jsonc',
+			files: 'tsconfig.json',
 		},
 	],
 });

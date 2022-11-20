@@ -32,20 +32,20 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'jsx-quotes',
 						messageId: 'unexpected',
+						ruleId: 'jsx-quotes',
 					}),
 					expect.objectContaining({
-						ruleId: 'unicorn/filename-case',
 						messageId: 'filename-case',
+						ruleId: 'unicorn/filename-case',
 					}),
 					expect.objectContaining({
-						ruleId: 'react/prop-types',
 						messageId: 'missingPropType',
+						ruleId: 'react/prop-types',
 					}),
 					expect.objectContaining({
-						ruleId: 'react/jsx-max-props-per-line',
 						messageId: 'newLine',
+						ruleId: 'react/jsx-max-props-per-line',
 					}),
 				]),
 			);

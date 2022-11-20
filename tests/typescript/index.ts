@@ -33,17 +33,17 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: '@typescript-eslint/no-unused-vars',
 						messageId: 'unusedVar',
+						ruleId: '@typescript-eslint/no-unused-vars',
 						severity: 2,
 					}),
 					expect.objectContaining({
-						ruleId: '@typescript-eslint/member-delimiter-style',
 						messageId: 'expectedSemi',
+						ruleId: '@typescript-eslint/member-delimiter-style',
 					}),
 					expect.objectContaining({
-						ruleId: '@typescript-eslint/consistent-type-assertions',
 						messageId: 'as',
+						ruleId: '@typescript-eslint/consistent-type-assertions',
 					}),
 					// expect.objectContaining({
 					// 	ruleId: '@typescript-eslint/return-await',

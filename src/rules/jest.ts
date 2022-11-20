@@ -10,10 +10,10 @@ export = createConfig(
 	isInstalled('jest')
 		? {
 			overrides: [{
-				files: '**/{test,tests}/*',
 				env: {
 					jest: true,
 				},
+				files: '**/{test,tests}/*',
 			}],
 		}
 		: {},
