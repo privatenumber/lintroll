@@ -1,16 +1,6 @@
 import { createConfig } from './utils/create-config.js';
 
 export = createConfig({
-	ignorePatterns: [
-		// Nested node_modules
-		'**/node_modules/**',
-
-		'{tmp,temp}/**',
-		'**/*.min.js',
-		'**/vendor/**',
-		'**/dist/**',
-	],
-
 	extends: [
 		'./rules/base',
 		// './rules/node',
@@ -27,5 +17,15 @@ export = createConfig({
 		'./rules/markdown',
 		'./rules/service-workers',
 		'./rules/jest',
+	],
+
+	ignorePatterns: [
+		// Nested node_modules
+		'**/node_modules/**',
+
+		'{tmp,temp}/**',
+		'**/*.min.js',
+		'**/vendor/**',
+		'**/dist/**',
 	],
 });

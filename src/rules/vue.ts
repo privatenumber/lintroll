@@ -85,18 +85,6 @@ export = createConfig({
 			},
 
 			rules: {
-				'vue/html-indent': ['error', 'tab'],
-
-				'vue/no-undef-components': ['error', {
-					ignorePatterns: [
-						'router-view',
-						'router-link',
-						...detectAutoImportComponents(),
-					],
-				}],
-
-				'vue/multi-word-component-names': 'off',
-
 				// For Vue 2
 				// 'vue/no-deprecated-slot-attribute': ['error'],
 				// 'vue/no-deprecated-slot-scope-attribute': ['error'],
@@ -104,6 +92,18 @@ export = createConfig({
 
 				'unicorn/filename-case': ['error', {
 					case: 'pascalCase',
+				}],
+
+				'vue/html-indent': ['error', 'tab'],
+
+				'vue/multi-word-component-names': 'off',
+
+				'vue/no-undef-components': ['error', {
+					ignorePatterns: [
+						'router-view',
+						'router-link',
+						...detectAutoImportComponents(),
+					],
 				}],
 			},
 		},

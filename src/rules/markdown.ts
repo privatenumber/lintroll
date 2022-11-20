@@ -10,19 +10,19 @@ export = createConfig({
 		{
 			files: '**/*.md/*.{js,jsx,ts,tsx,vue}',
 			rules: {
-				'unicorn/filename-case': 'off',
+				'import/extensions': 'off',
+				'import/no-unresolved': 'off',
 				'no-console': 'off',
-				'no-unused-vars': 'warn',
 
+				'no-new': 'off',
 				// Can be snippets that don't fully work
 				'no-undef': 'off',
-				'no-new': 'off',
-				'import/no-unresolved': 'off',
-				'import/extensions': 'off',
 				// 'n/no-missing-import': 'off',
 
 				// Allow unused expressions like: argv.command // => "install" (string)
 				'no-unused-expressions': 'off',
+				'no-unused-vars': 'warn',
+				'unicorn/filename-case': 'off',
 
 				// Loose on example code
 				'unicorn/no-array-reduce': 'off',
@@ -32,18 +32,18 @@ export = createConfig({
 		{
 			files: '**/*.md/*.{jsx,tsx}',
 			rules: {
-				'react/react-in-jsx-scope': 'off',
-				'react/jsx-no-undef': 'off',
 				'react/jsx-indent-props': ['error', 4],
+				'react/jsx-no-undef': 'off',
+				'react/react-in-jsx-scope': 'off',
 			},
 		},
 		{
 			files: '**/*.md/*.{js,jsx,vue}',
 			rules: {
+				'comma-dangle': ['error', 'never'],
 				// Style
 				indent: ['error', 4],
 				semi: ['error', 'never'],
-				'comma-dangle': ['error', 'never'],
 			},
 		},
 		{
@@ -56,13 +56,8 @@ export = createConfig({
 		{
 			files: '**/*.md/*.{ts,tsx}',
 			rules: {
-				// Style
-				indent: 'off',
-				'@typescript-eslint/indent': ['error', 4],
-				semi: 'off',
-				'@typescript-eslint/semi': ['error', 'never'],
-				'comma-dangle': 'off',
 				'@typescript-eslint/comma-dangle': ['error', 'never'],
+				'@typescript-eslint/indent': ['error', 4],
 				'@typescript-eslint/member-delimiter-style': [
 					'error',
 					{
@@ -70,21 +65,26 @@ export = createConfig({
 							delimiter: 'none',
 							requireLast: false,
 						},
+						multilineDetection: 'brackets',
 						singleline: {
 							delimiter: 'semi',
 							requireLast: false,
 						},
-						multilineDetection: 'brackets',
 					},
 				],
 				'@typescript-eslint/no-unused-vars': 'warn',
+				'@typescript-eslint/semi': ['error', 'never'],
+				'comma-dangle': 'off',
+				// Style
+				indent: 'off',
+				semi: 'off',
 			},
 		},
 		{
 			files: '**/*.md/*.{json,json5}',
 			rules: {
-				'unicorn/filename-case': 'off',
 				'jsonc/indent': ['error', 4],
+				'unicorn/filename-case': 'off',
 			},
 		},
 	],

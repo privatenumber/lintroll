@@ -10,15 +10,6 @@ export = createConfig({
 
 	rules: {
 
-		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/global-require.md
-		'n/global-require': 'error',
-
-		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-mixed-requires.md
-		'n/no-mixed-requires': ['error', {
-			grouping: true,
-			allowCall: true,
-		}],
-
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
 		'n/file-extension-in-import': ['error', 'always', {
 
@@ -26,6 +17,15 @@ export = createConfig({
 			// Use .js instead
 			'.ts': 'never',
 			'.tsx': 'never',
+		}],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/global-require.md
+		'n/global-require': 'error',
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-mixed-requires.md
+		'n/no-mixed-requires': ['error', {
+			allowCall: true,
+			grouping: true,
 		}],
 
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-new-require.md
@@ -49,11 +49,11 @@ export = createConfig({
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/text-encoder.md
 		'n/prefer-global/text-encoder': ['error', 'always'],
 
-		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url-search-params.md
-		'n/prefer-global/url-search-params': ['error', 'always'],
-
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url.md
 		'n/prefer-global/url': ['error', 'always'],
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-global/url-search-params.md
+		'n/prefer-global/url-search-params': ['error', 'always'],
 
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/dns.md
 		'n/prefer-promises/dns': 'error',
