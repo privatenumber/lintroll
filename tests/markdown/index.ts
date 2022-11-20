@@ -41,33 +41,33 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						messageId: 'extraSemi',
 						ruleId: 'semi',
-					}),
-
-					expect.objectContaining({
-						messageId: 'unexpected',
-						ruleId: 'comma-dangle',
-					}),
-
-					expect.objectContaining({
-						messageId: 'wrongIndentation',
-						ruleId: 'indent',
-					}),
-
-					expect.objectContaining({
-						messageId: 'blankEndOfFile',
-						ruleId: 'no-multiple-empty-lines',
-					}),
-
-					expect.objectContaining({
-						messageId: 'wrongIndentation',
-						ruleId: '@typescript-eslint/indent',
-					}),
-
-					expect.objectContaining({
 						messageId: 'extraSemi',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'comma-dangle',
+						messageId: 'unexpected',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'indent',
+						messageId: 'wrongIndentation',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'no-multiple-empty-lines',
+						messageId: 'blankEndOfFile',
+					}),
+
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/indent',
+						messageId: 'wrongIndentation',
+					}),
+
+					expect.objectContaining({
 						ruleId: '@typescript-eslint/semi',
+						messageId: 'extraSemi',
 					}),
 				]),
 			);

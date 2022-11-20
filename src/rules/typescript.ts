@@ -21,14 +21,14 @@ export = createConfig(
 				// Setting as an override allows .ts files to be
 				// linted without specifying it on the user-end
 				{
+					files: '*.{ts,tsx,mts,cts,vue}',
+
 					extends: [
 						'plugin:@typescript-eslint/recommended',
 
 						// https://github.com/import-js/eslint-plugin-import/blob/6c8981d/config/typescript.js
 						'plugin:import/typescript',
 					],
-
-					files: '*.{ts,tsx,mts,cts,vue}',
 
 					/**
 					 * Slow and cant disable for markdown files

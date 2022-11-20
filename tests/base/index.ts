@@ -28,70 +28,70 @@ export default testSuite(({ describe }) => {
 			expect(result.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						line: 2,
-						message: 'Expected blank line before this statement.',
 						ruleId: 'padding-line-between-statements',
+						message: 'Expected blank line before this statement.',
+						line: 2,
 					}),
 					expect.objectContaining({
-						messageId: 'missingSemi',
 						ruleId: 'semi',
+						messageId: 'missingSemi',
 					}),
 					expect.objectContaining({
-						message: 'Strings must use singlequote.',
 						ruleId: 'quotes',
+						message: 'Strings must use singlequote.',
 					}),
 					expect.objectContaining({
-						messageId: 'unexpected',
 						ruleId: 'no-console',
+						messageId: 'unexpected',
 					}),
 					expect.objectContaining({
-						messageId: 'missing',
 						ruleId: 'eol-last',
+						messageId: 'missing',
 					}),
 					expect.objectContaining({
-						message: 'Maximum number of dependencies (15) exceeded.',
 						ruleId: 'import/max-dependencies',
 						severity: 1,
+						message: 'Maximum number of dependencies (15) exceeded.',
 					}),
 					expect.objectContaining({
-						message: 'Missing file extension "js" for "./some-file"',
 						ruleId: 'import/extensions',
+						message: 'Missing file extension "js" for "./some-file"',
 					}),
 					expect.objectContaining({
-						messageId: 'unexpectedWhitespace',
 						ruleId: 'func-call-spacing',
+						messageId: 'unexpectedWhitespace',
 					}),
 					expect.objectContaining({
-						messageId: 'wrapExpression',
 						ruleId: 'wrap-iife',
+						messageId: 'wrapExpression',
 					}),
 					expect.objectContaining({
-						messageId: 'unnamed',
 						ruleId: 'func-names',
+						messageId: 'unnamed',
 					}),
 					expect.objectContaining({
+						ruleId: 'unicorn/prefer-number-properties',
 						message: 'Prefer `Number.isFinite` over `isFinite`.',
-						ruleId: 'unicorn/prefer-number-properties',
 					}),
 					expect.objectContaining({
+						ruleId: 'unicorn/prefer-number-properties',
 						message: 'Prefer `Number.isNaN` over `isNaN`.',
-						ruleId: 'unicorn/prefer-number-properties',
 					}),
 					expect.objectContaining({
-						messageId: 'missingCurlyAfterCondition',
 						ruleId: 'curly',
+						messageId: 'missingCurlyAfterCondition',
 					}),
 					expect.objectContaining({
+						ruleId: 'regexp/prefer-d',
 						messageId: 'unexpected',
-						ruleId: 'regexp/prefer-d',
 					}),
 					expect.objectContaining({
-						messageId: 'operatorAtBeginning',
 						ruleId: 'operator-linebreak',
+						messageId: 'operatorAtBeginning',
 					}),
 					expect.objectContaining({
-						message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
 						ruleId: 'regexp/prefer-d',
+						message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
 					}),
 					expect.objectContaining({
 						ruleId: 'regexp/prefer-w',
@@ -109,8 +109,8 @@ export default testSuite(({ describe }) => {
 			expect(result.messages).not.toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						message: "Unexpected use of 'self'.",
 						ruleId: 'no-restricted-globals',
+						message: "Unexpected use of 'self'.",
 					}),
 				]),
 			);

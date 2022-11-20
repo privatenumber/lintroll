@@ -27,16 +27,16 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						message: 'Filename is not in pascal case. Rename it to `Fail.vue`.',
 						ruleId: 'unicorn/filename-case',
+						message: 'Filename is not in pascal case. Rename it to `Fail.vue`.',
 					}),
 					expect.objectContaining({
-						message: 'Expected to be enclosed by double quotes.',
 						ruleId: 'vue/html-quotes',
+						message: 'Expected to be enclosed by double quotes.',
 					}),
 					expect.objectContaining({
-						messageId: 'missing',
 						ruleId: 'eol-last',
+						messageId: 'missing',
 					}),
 				]),
 			);

@@ -11,12 +11,12 @@ export default testSuite(({ describe }) => {
 			expect(results.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						messageId: 'wrongIndentation',
 						ruleId: 'jsonc/indent',
+						messageId: 'wrongIndentation',
 					}),
 					expect.objectContaining({
-						messageId: 'sortKeys',
 						ruleId: 'jsonc/sort-keys',
+						messageId: 'sortKeys',
 					}),
 				]),
 			);
@@ -29,8 +29,8 @@ export default testSuite(({ describe }) => {
 			expect(results.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						messageId: 'wrongIndentation',
 						ruleId: 'jsonc/indent',
+						messageId: 'wrongIndentation',
 					}),
 				]),
 			);

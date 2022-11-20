@@ -8,20 +8,6 @@ const isCli = 'bin' in currentPackageJson;
 export = createConfig({
 	extends: 'plugin:n/recommended',
 
-	overrides: (
-		isCli
-			? [{
-				files: [
-					'cli.{js,ts}',
-					'**/cli/**/*.{js,ts}',
-				],
-				rules: {
-					'n/no-process-exit': 'off',
-				},
-			}]
-			: []
-	),
-
 	rules: {
 
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
@@ -75,4 +61,18 @@ export = createConfig({
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
 		'n/prefer-promises/fs': 'error',
 	},
+
+	overrides: (
+		isCli
+			? [{
+				files: [
+					'cli.{js,ts}',
+					'**/cli/**/*.{js,ts}',
+				],
+				rules: {
+					'n/no-process-exit': 'off',
+				},
+			}]
+			: []
+	),
 });
