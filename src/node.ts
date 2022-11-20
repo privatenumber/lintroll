@@ -1,5 +1,5 @@
 import path from 'path';
-import { createConfig } from '../utils/create-config.js';
+import { createConfig } from './utils/create-config.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const currentPackageJson = require(path.resolve('package.json'));

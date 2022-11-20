@@ -5,8 +5,11 @@ export const createEslint = (
 	config?: Linter.Config,
 ) => new ESLint({
 	baseConfig: {
-		extends: path.join(__dirname, '../../dist/index.js'),
 		...config,
+		extends: [
+			path.resolve('./dist/index.js'),
+			...config?.extends ?? [],
+		],
 	},
 	useEslintrc: false,
 });
