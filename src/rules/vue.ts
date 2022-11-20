@@ -67,9 +67,9 @@ export = createConfig({
 		// Setting as an override allows .vue files to be
 		// linted without specifying it on the user-end
 		{
-			extends: 'plugin:vue/vue3-recommended',
-
 			files: '*.vue',
+
+			extends: 'plugin:vue/vue3-recommended',
 
 			env: {
 				'vue/setup-compiler-macros': true,
