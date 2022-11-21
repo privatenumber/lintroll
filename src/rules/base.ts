@@ -9,7 +9,7 @@ export = createConfig({
 	env: {
 		/**
 		 * Globals shared across Node.js and Browser
-		 * https://github.com/sindresorhus/globals/blob/main/globals.json#LL1710C3-L1710C24
+		 * https://github.com/sindresorhus/globals/blob/v13.18.0/globals.json#L1711
 		 */
 		'shared-node-browser': true,
 	},
