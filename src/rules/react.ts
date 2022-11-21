@@ -27,7 +27,7 @@ export = createConfig({
 			},
 
 			rules: {
-				// https://eslint.org/docs/rules/jsx-quotes
+				// https://eslint.org/docs/latest/rules/jsx-quotes
 				'jsx-quotes': ['error', 'prefer-double'],
 
 				'react/jsx-indent-props': ['error', 'tab'],

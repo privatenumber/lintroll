@@ -6,7 +6,10 @@ const currentPackageJson = require(path.resolve('package.json'));
 const isCli = 'bin' in currentPackageJson;
 
 export = createConfig({
-	extends: 'plugin:n/recommended',
+	extends: [
+		'./index',
+		'plugin:n/recommended',
+	],
 
 	rules: {
 
