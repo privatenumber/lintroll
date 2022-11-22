@@ -2,39 +2,82 @@ import path from 'path';
 import { testSuite, expect } from 'manten';
 import { createEslint } from '../utils/eslint.js';
 
+const nodeConfigPath = path.resolve('./dist/node.js');
 const eslint = createEslint({
-	extends: [
-		path.resolve('./dist/node.js'),
-	],
+	extends: nodeConfigPath,
 });
 
 export default testSuite(({ describe }) => {
 	describe('node', ({ describe }) => {
-		describe('Pass cases', ({ test }) => {
-			test('CommonJS', async ({ onTestFail }) => {
-				const fixturePath = path.join(__dirname, 'fixtures/pass.js');
-				const [result] = await eslint.lintFiles(fixturePath);
+		describe('Pass cases', ({ describe }) => {
+			describe('CommonJS', ({ test }) => {
+				const eslintCommonjs = createEslint(
+					{
+						extends: nodeConfigPath,
+					},
+					path.join(__dirname, 'fixtures/package-commonjs/'),
+				);
 
-				onTestFail(() => {
-					console.log(result);
+				test('.js file', async ({ onTestFail }) => {
+					const fixturePath = path.join(__dirname, 'fixtures/package-commonjs/pass.js');
+					const [result] = await eslintCommonjs.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
 				});
 
-				expect(result.errorCount).toBe(0);
-				expect(result.warningCount).toBe(0);
-				expect(result.usedDeprecatedRules.length).toBe(0);
+				test('.mjs file', async ({ onTestFail }) => {
+					const fixturePath = path.join(__dirname, 'fixtures/package-commonjs/pass.mjs');
+					const [result] = await eslintCommonjs.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
+				});
 			});
 
-			test('ESM', async ({ onTestFail }) => {
-				const fixturePath = path.join(__dirname, 'fixtures/pass.mjs');
-				const [result] = await eslint.lintFiles(fixturePath);
+			describe('Module', ({ test }) => {
+				const eslintModule = createEslint(
+					{
+						extends: nodeConfigPath,
+					},
+					path.join(__dirname, 'fixtures/package-module/'),
+				);
 
-				onTestFail(() => {
-					console.log(result);
+				test('.js file', async ({ onTestFail }) => {
+					const fixturePath = path.join(__dirname, 'fixtures/package-module/pass.js');
+					const [result] = await eslintModule.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
 				});
 
-				expect(result.errorCount).toBe(0);
-				expect(result.warningCount).toBe(0);
-				expect(result.usedDeprecatedRules.length).toBe(0);
+				test('.cjs file', async ({ onTestFail }) => {
+					const fixturePath = path.join(__dirname, 'fixtures/package-module/pass.cjs');
+					const [result] = await eslintModule.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
+				});
 			});
 		});
 
