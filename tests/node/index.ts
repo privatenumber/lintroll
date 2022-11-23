@@ -83,9 +83,13 @@ export default testSuite(({ describe }) => {
 
 		describe('Fail cases', ({ describe }) => {
 			describe('module', ({ test }) => {
-				test('mjs', async () => {
+				test('mjs', async ({ onTestFail }) => {
 					const fixturePath = path.join(__dirname, 'fixtures/fail.mjs');
 					const [result] = await eslint.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
 
 					expect(result.messages).toEqual(
 						expect.arrayContaining([
@@ -95,15 +99,26 @@ export default testSuite(({ describe }) => {
 								message: "'__dirname' is not defined.",
 							}),
 
-							// expect.objectContaining({
-							// 	ruleId: 'n/prefer-promises/fs',
-							// 	messageId: 'preferPromises',
-							// }),
+							expect.objectContaining({
+								ruleId: 'n/prefer-promises/fs',
+								messageId: 'preferPromises',
+							}),
 
-							// expect.objectContaining({
-							// 	ruleId: 'n/no-deprecated-api',
-							// 	messageId: 'deprecated',
-							// }),
+							expect.objectContaining({
+								ruleId: 'n/no-deprecated-api',
+								messageId: 'deprecated',
+							}),
+
+							expect.objectContaining({
+								ruleId: 'n/no-process-exit',
+								messageId: 'noProcessExit',
+							}),
+
+							expect.objectContaining({
+								ruleId: 'n/no-deprecated-api',
+								messageId: 'deprecated',
+								message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
+							}),
 						]),
 					);
 				});
@@ -126,15 +141,15 @@ export default testSuite(({ describe }) => {
 							// 	message: "'__dirname' is not defined.",
 							// }),
 
-							// expect.objectContaining({
-							// 	ruleId: 'n/prefer-promises/fs',
-							// 	messageId: 'preferPromises',
-							// }),
+							expect.objectContaining({
+								ruleId: 'n/prefer-promises/fs',
+								messageId: 'preferPromises',
+							}),
 
-							// expect.objectContaining({
-							// 	ruleId: 'n/no-deprecated-api',
-							// 	messageId: 'deprecated',
-							// }),
+							expect.objectContaining({
+								ruleId: 'n/no-deprecated-api',
+								messageId: 'deprecated',
+							}),
 						]),
 					);
 				});
@@ -142,22 +157,3 @@ export default testSuite(({ describe }) => {
 		});
 	});
 });
-// expect.objectContaining({
-// 	ruleId: 'n/no-process-exit',
-// 	messageId: 'noProcessExit',
-// }),
-// expect.objectContaining({
-// 	ruleId: 'n/no-deprecated-api',
-// 	messageId: 'deprecated',
-// 	message:
-// "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-// }),
-// expect.objectContaining({
-// 	ruleId: 'n/no-deprecated-api',
-// 	message:
-// "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-// }),
-// expect.objectContaining({
-// 	ruleId: 'n/file-extension-in-import',
-// 	messageId: 'requireExt',
-// }),
