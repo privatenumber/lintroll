@@ -14,8 +14,8 @@ export = createConfig({
 				'jsonc/key-spacing': [
 					'error',
 					{
-						beforeColon: false,
 						afterColon: true,
+						beforeColon: false,
 						mode: 'strict',
 					},
 				],
@@ -28,7 +28,6 @@ export = createConfig({
 				'jsonc/sort-keys': [
 					'error',
 					{
-						pathPattern: '^$',
 						order: [
 							'name',
 							'version',
@@ -64,10 +63,11 @@ export = createConfig({
 							'overrides',
 							'eslintConfig',
 						],
+						pathPattern: '^$',
 					},
 					{
-						pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
 						order: { type: 'asc' },
+						pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
 					},
 				],
 			},
