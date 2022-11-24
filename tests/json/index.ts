@@ -5,7 +5,7 @@ import { eslint } from '../utils/eslint.js';
 export default testSuite(({ describe }) => {
 	describe('json', ({ test }) => {
 		test('package.json', async () => {
-			const fixturePath = path.join(__dirname, 'fixtures/package.json');
+			const fixturePath = path.join(__dirname, 'fixtures/fail/package.json');
 			const [results] = await eslint.lintFiles(fixturePath);
 
 			expect(results.messages).toEqual(
@@ -23,7 +23,7 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('random.json', async () => {
-			const fixturePath = path.join(__dirname, 'fixtures/random.json');
+			const fixturePath = path.join(__dirname, 'fixtures/fail/random.json');
 			const [results] = await eslint.lintFiles(fixturePath);
 
 			expect(results.messages).toEqual(

@@ -74,7 +74,8 @@
 			"./dist/node"
 		],
 		"ignorePatterns": [
-			"tests/*/fixtures/**/fail.*"
+			"tests/*/fixtures/**/fail.*",
+			"tests/*/fixtures/**/fail/**"
 		]
 	}
 }
