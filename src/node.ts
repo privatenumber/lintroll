@@ -7,8 +7,14 @@ const isCli = 'bin' in currentPackageJson;
 
 export = createConfig({
 	extends: [
-		'./index',
 		'plugin:n/recommended',
+
+		/**
+		 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
+		 * because often times, ESM is compiled to CJS at runtime using tools like tsx:
+		 * https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
+		 */
+		'./index',
 	],
 
 	rules: {
@@ -65,17 +71,25 @@ export = createConfig({
 		'n/prefer-promises/fs': 'error',
 	},
 
-	overrides: (
-		isCli
-			? [{
-				files: [
-					'cli.{js,ts}',
-					'**/cli/**/*.{js,ts}',
-				],
-				rules: {
-					'n/no-process-exit': 'off',
-				},
-			}]
-			: []
-	),
+	overrides: [
+		...(
+			isCli
+				? [{
+					files: [
+						'cli.{js,ts}',
+						'**/cli/**/*.{js,ts}',
+					],
+					rules: {
+						'n/no-process-exit': 'off',
+					},
+				}]
+				: []
+		),
+		{
+			files: '**/*.md/*',
+			rules: {
+				'n/no-missing-import': 'off',
+			},
+		},
+	],
 });
