@@ -1,4 +1,5 @@
 import path from 'path';
+import type { Linter } from 'eslint';
 import { createConfig } from './utils/create-config.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -81,7 +82,7 @@ export = createConfig({
 					],
 					rules: {
 						'n/no-process-exit': 'off',
-					},
+					} as Linter.RulesRecord,
 				}]
 				: []
 		),

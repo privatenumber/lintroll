@@ -1,4 +1,4 @@
-import { Linter } from 'eslint';
+import type { Linter } from 'eslint';
 
 type RestrictProperties<Type, AllowList> = Type & {
 	[Key in keyof Type]: (
