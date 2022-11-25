@@ -20,7 +20,7 @@ export = createConfig({
 
 	settings: {
 		node: {
-			version: '>=12.22.12',
+			version: '^12.22.12 || >=13.2.0',
 		},
 	},
 
