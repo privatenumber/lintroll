@@ -47,7 +47,8 @@ module.exports = (0, import_create_config.createConfig)({
       files: "**/*.md/*.vue",
       rules: {
         "vue/html-indent": ["error", 4],
-        "vue/no-undef-components": "warn"
+        "vue/no-undef-components": "warn",
+        "vue/require-v-for-key": "off"
       }
     },
     {
