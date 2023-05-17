@@ -87,11 +87,9 @@ export = createConfig(
 
 						'import/no-extraneous-dependencies': ['error', {
 							...noExtraneousDependenciesConfig,
-							devDependencies: [
-								...noExtraneousDependenciesConfig.devDependencies.map(
-									pattern => pattern.replace('.js', '.{js,ts}'),
-								),
-							],
+							devDependencies: noExtraneousDependenciesConfig.devDependencies.map(
+								pattern => pattern.replace('.js', '.{js,ts}'),
+							),
 						}],
 
 						// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md

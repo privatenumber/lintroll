@@ -29,11 +29,8 @@
 		"dev": "run-p 'dev:*'",
 		"prepack": "pnpm build && clean-pkg-json"
 	},
-	"engines": {
-		"node": ">=16.18.0"
-	},
 	"peerDependencies": {
-		"eslint": "^7.15.0 || ^8.0.0"
+		"eslint": "^8.0.0"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.59.6",
@@ -69,10 +66,7 @@
 		"typescript": "^5.0.4"
 	},
 	"eslintConfig": {
-		"extends": [
-			".",
-			"./dist/node"
-		],
+		"extends": "./dist/node",
 		"ignorePatterns": [
 			"tests/*/fixtures/**/fail.*",
 			"tests/*/fixtures/**/fail/**"

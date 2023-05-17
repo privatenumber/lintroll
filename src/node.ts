@@ -18,6 +18,13 @@ export = createConfig({
 		'./index',
 	],
 
+	settings: {
+		node: {
+			// Should support the latest LTS and above
+			version: '>=18.16.0',
+		},
+	},
+
 	rules: {
 
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
