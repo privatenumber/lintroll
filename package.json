@@ -1,65 +1,39 @@
 {
-	"name": "@pvtnbr/eslint-config",
-	"version": "0.0.0-semantic-release",
-	"publishConfig": {
-		"access": "public"
-	},
-	"license": "MIT",
-	"repository": "privatenumber/eslint-config",
-	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
-	"author": {
-		"name": "Hiroki Osame",
-		"email": "hiroki.osame@gmail.com"
-	},
-	"files": [
-		"dist"
-	],
-	"main": "./dist/index.js",
-	"scripts": {
-		"build": "esbuild src/**/*.ts --format=cjs --outdir=dist",
-		"type-check": "tsc --noEmit",
-		"lint": "eslint --cache .",
-		"test": "pnpm build && tsx tests",
-		"prepack": "pnpm build && clean-pkg-json"
-	},
-	"peerDependencies": {
-		"eslint": "^7.15.0 || ^8.0.0"
-	},
-	"dependencies": {
-		"@typescript-eslint/eslint-plugin": "^5.40.1",
-		"@typescript-eslint/parser": "^5.40.1",
-		"confusing-browser-globals": "^1.0.11",
-		"eslint-import-resolver-typescript": "^3.5.2",
-		"eslint-plugin-eslint-comments": "^3.2.0",
-		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-jsonc": "^2.4.0",
-		"eslint-plugin-markdown": "^3.0.0",
-		"eslint-plugin-no-use-extend-native": "^0.5.0",
-		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-promise": "^6.1.1",
-		"eslint-plugin-react": "^7.31.10",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-regexp": "^1.9.0",
-		"eslint-plugin-unicorn": "^44.0.2",
-		"eslint-plugin-vue": "^9.6.0"
-	},
-	"devDependencies": {
-		"@types/confusing-browser-globals": "^1.0.0",
-		"@types/eslint": "^8.4.7",
-		"@types/node": "^17.0.45",
-		"@types/react": "^17.0.50",
-		"clean-pkg-json": "^1.2.0",
-		"esbuild": "^0.15.12",
-		"eslint": "^8.25.0",
-		"manten": "^0.5.0",
-		"react": "^17.0.2",
-		"tsx": "^3.10.4",
-		"typescript": "^4.8.4"
-	},
-	"eslintConfig": {
-		"extends": ".",
-		"ignorePatterns": [
-			"tests/*/fixtures"
-		]
-	}
+  "name": "@pvtnbr/eslint-config",
+  "version": "0.0.0-semantic-release",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": "privatenumber/eslint-config",
+  "funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
+  "author": {
+    "name": "Hiroki Osame",
+    "email": "hiroki.osame@gmail.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "peerDependencies": {
+    "eslint": "^7.15.0 || ^8.0.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
+    "confusing-browser-globals": "^1.0.11",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsonc": "^2.4.0",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-regexp": "^1.9.0",
+    "eslint-plugin-unicorn": "^44.0.2",
+    "eslint-plugin-vue": "^9.6.0"
+  }
 }
