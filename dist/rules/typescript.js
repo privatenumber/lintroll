@@ -87,11 +87,9 @@ module.exports = (0, import_create_config.createConfig)(
           // '@typescript-eslint/return-await': ['error', 'always'],
           "import/no-extraneous-dependencies": ["error", {
             ...noExtraneousDependenciesConfig,
-            devDependencies: [
-              ...noExtraneousDependenciesConfig.devDependencies.map(
-                (pattern) => pattern.replace(".js", ".{js,ts}")
-              )
-            ]
+            devDependencies: noExtraneousDependenciesConfig.devDependencies.map(
+              (pattern) => pattern.replace(".js", ".{js,ts}")
+            )
           }],
           // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
           "no-shadow": "off",

@@ -35,6 +35,12 @@ module.exports = (0, import_create_config.createConfig)({
      */
     "./index"
   ],
+  settings: {
+    node: {
+      // Should support the latest LTS and above
+      version: ">=18.16.0"
+    }
+  },
   rules: {
     // https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
     "n/file-extension-in-import": ["error", "always", {
