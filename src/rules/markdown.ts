@@ -51,6 +51,7 @@ export = createConfig({
 			rules: {
 				'vue/html-indent': ['error', 4],
 				'vue/no-undef-components': 'warn',
+				'vue/require-v-for-key': 'off',
 			},
 		},
 		{

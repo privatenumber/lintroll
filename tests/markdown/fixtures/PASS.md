@@ -40,6 +40,10 @@ console.log(data)
     <SomeComponent>
         Hello world
         <undefined-component />
+
+        <div v-for="i in 10">
+            {{ i }}
+        </div>
     </SomeComponent>
 </template>
 
