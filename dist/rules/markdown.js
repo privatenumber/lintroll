@@ -14,10 +14,14 @@ module.exports = (0, import_create_config.createConfig)({
         "import/no-unresolved": "off",
         "no-console": "off",
         "no-new": "off",
+        // Can be snippets that don't fully work
         "no-undef": "off",
+        // 'n/no-missing-import': 'off',
+        // Allow unused expressions like: argv.command // => "install" (string)
         "no-unused-expressions": "off",
         "no-unused-vars": "warn",
         "unicorn/filename-case": "off",
+        // Loose on example code
         "unicorn/no-array-reduce": "off",
         "unicorn/prefer-object-from-entries": "off"
       }
@@ -34,6 +38,7 @@ module.exports = (0, import_create_config.createConfig)({
       files: "**/*.md/*.{js,jsx,vue}",
       rules: {
         "comma-dangle": ["error", "never"],
+        // Style
         indent: ["error", 4],
         semi: ["error", "never"]
       }
@@ -67,6 +72,7 @@ module.exports = (0, import_create_config.createConfig)({
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/semi": ["error", "never"],
         "comma-dangle": "off",
+        // Style
         indent: "off",
         semi: "off"
       }

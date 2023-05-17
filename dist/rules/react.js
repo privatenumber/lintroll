@@ -9,7 +9,9 @@ module.exports = (0, import_create_config.createConfig)({
     {
       files: "*.{jsx,tsx}",
       extends: [
+        // https://github.com/yannickcr/eslint-plugin-react/blob/c8917b0/index.js
         "plugin:react/recommended",
+        // React automatically imported in JSX files
         ...autoJsx ? ["plugin:react/jsx-runtime"] : [],
         "plugin:react-hooks/recommended"
       ],
@@ -19,6 +21,7 @@ module.exports = (0, import_create_config.createConfig)({
         }
       },
       rules: {
+        // https://eslint.org/docs/latest/rules/jsx-quotes
         "jsx-quotes": ["error", "prefer-double"],
         "react/jsx-indent-props": ["error", "tab"],
         "react/jsx-max-props-per-line": ["error", {

@@ -18,6 +18,7 @@ module.exports = (0, import_create_config.createConfig)({
     "./rules/jest"
   ],
   ignorePatterns: [
+    // Nested node_modules
     "**/node_modules/**",
     "{tmp,temp}/**",
     "**/*.min.js",
