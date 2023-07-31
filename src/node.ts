@@ -77,6 +77,10 @@ export = createConfig({
 
 		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
 		'n/prefer-promises/fs': 'error',
+
+		// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+		// Currently doesn't work for modules
+		'n/no-missing-import': 'off',
 	},
 
 	overrides: [
