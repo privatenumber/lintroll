@@ -105,6 +105,17 @@ export = createConfig({
 						...detectAutoImportComponents(),
 					],
 				}],
+
+				// Deprecated
+				'vue/component-tags-order': 'off',
+
+				'vue/block-order': ['error', {
+					order: [
+						'script[setup]',
+						['script', 'template'],
+						'style',
+					],
+				}],
 			},
 		},
 	],
