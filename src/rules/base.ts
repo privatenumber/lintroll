@@ -746,7 +746,7 @@ export = createConfig({
 		'no-shadow': ['error', {
 			allow: [
 				...(isInstalled('manten')
-					? ['test', 'describe', 'runTestSuite']
+					? ['test', 'describe', 'runTestSuite', 'onFinish', 'fixture']
 					: []
 				),
 				...(isInstalled('tasuku')
