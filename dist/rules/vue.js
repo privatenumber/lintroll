@@ -96,6 +96,15 @@ module.exports = (0, import_create_config.createConfig)({
             "router-link",
             ...detectAutoImportComponents()
           ]
+        }],
+        // Deprecated
+        "vue/component-tags-order": "off",
+        "vue/block-order": ["error", {
+          order: [
+            "script[setup]",
+            ["script", "template"],
+            "style"
+          ]
         }]
       }
     }

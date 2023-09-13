@@ -58,7 +58,14 @@ module.exports = (0, import_create_config.createConfig)(
         // 	project: '**/tsconfig.json',
         // },
         rules: {
-          "@typescript-eslint/consistent-type-assertions": "error",
+          /**
+           * Suddenly requires parserServices to be generated
+           *   Error while loading rule '@typescript-eslint/consistent-type-assertions':
+           *     You have used a rule which requires parserServices to be generated.
+           *     You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.
+           * https://github.com/typescript-eslint/typescript-eslint/pull/6885#issuecomment-1701892123
+           */
+          // '@typescript-eslint/consistent-type-assertions': 'error',
           "@typescript-eslint/member-delimiter-style": "error",
           "@typescript-eslint/no-shadow": import_base.default.rules["no-shadow"],
           "@typescript-eslint/no-unused-vars": [
@@ -104,11 +111,13 @@ module.exports = (0, import_create_config.createConfig)(
       },
       {
         files: "*.cts",
-        ...import_recommended_script.default
+        globals: import_recommended_script.default.eslintrc.globals,
+        parserOptions: import_recommended_script.default.eslintrc.parserOptions
       },
       {
         files: "*.mts",
-        ...import_recommended_module.default
+        globals: import_recommended_module.default.eslintrc.globals,
+        parserOptions: import_recommended_module.default.eslintrc.parserOptions
       }
     ]
   } : {}
