@@ -87,6 +87,8 @@ export = createConfig(
 						'import/extensions': ['error', 'ignorePackages', {
 							ts: 'never',
 							tsx: 'never',
+							cts: 'never',
+							mts: 'never',
 						}],
 
 						// Always require await when returning promise

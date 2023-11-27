@@ -1,3 +1,6 @@
+import './cts.cjs';
+import './mts.mjs';
+
 // Promise
 const sleep = (ms: number) => new Promise((resolve) => {
 	setTimeout(resolve, ms);
