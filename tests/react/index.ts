@@ -18,6 +18,7 @@ export default testSuite(({ describe }) => {
 
 			onTestFail(() => {
 				console.log(result);
+				console.log(result.usedDeprecatedRules);
 			});
 
 			expect(result.errorCount).toBe(0);
@@ -32,7 +33,7 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'jsx-quotes',
+						ruleId: '@stylistic/jsx-quotes',
 						messageId: 'unexpected',
 					}),
 					expect.objectContaining({

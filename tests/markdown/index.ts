@@ -15,6 +15,7 @@ export default testSuite(({ describe }) => {
 				console.log(messages);
 			});
 
+			expect(result.usedDeprecatedRules.length).toBe(0);
 			expect(messages.length).toBe(3);
 			expect(messages).toEqual(
 				expect.arrayContaining([
@@ -41,22 +42,22 @@ export default testSuite(({ describe }) => {
 			expect(messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'semi',
+						ruleId: '@stylistic/semi',
 						messageId: 'extraSemi',
 					}),
 
 					expect.objectContaining({
-						ruleId: 'comma-dangle',
+						ruleId: '@stylistic/comma-dangle',
 						messageId: 'unexpected',
 					}),
 
 					expect.objectContaining({
-						ruleId: 'indent',
+						ruleId: '@stylistic/indent',
 						messageId: 'wrongIndentation',
 					}),
 
 					expect.objectContaining({
-						ruleId: 'no-multiple-empty-lines',
+						ruleId: '@stylistic/no-multiple-empty-lines',
 						messageId: 'blankEndOfFile',
 					}),
 

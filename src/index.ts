@@ -3,6 +3,7 @@ import { createConfig } from './utils/create-config.js';
 export = createConfig({
 	extends: [
 		'./rules/base',
+		'./rules/stylistic',
 		'./rules/regexp',
 		'./rules/imports',
 		'./rules/promise',

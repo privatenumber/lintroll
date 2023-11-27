@@ -10,6 +10,7 @@ export default testSuite(({ describe }) => {
 
 			onTestFail(() => {
 				console.log(result);
+				console.log(result.usedDeprecatedRules);
 			});
 
 			expect(result.errorCount).toBe(0);
@@ -27,26 +28,48 @@ export default testSuite(({ describe }) => {
 
 			expect(result.messages).toEqual(
 				expect.arrayContaining([
+					// Move to different test file
 					expect.objectContaining({
-						ruleId: 'padding-line-between-statements',
+						ruleId: '@stylistic/padding-line-between-statements',
 						message: 'Expected blank line before this statement.',
 						line: 2,
 					}),
 					expect.objectContaining({
-						ruleId: 'semi',
+						ruleId: '@stylistic/semi',
 						messageId: 'missingSemi',
 					}),
 					expect.objectContaining({
-						ruleId: 'quotes',
+						ruleId: '@stylistic/quotes',
 						message: 'Strings must use singlequote.',
+					}),
+					expect.objectContaining({
+						ruleId: '@stylistic/eol-last',
+						messageId: 'missing',
+					}),
+					expect.objectContaining({
+						ruleId: '@stylistic/func-call-spacing',
+						messageId: 'unexpectedWhitespace',
+					}),
+					expect.objectContaining({
+						ruleId: '@stylistic/wrap-iife',
+						messageId: 'wrapExpression',
+					}),
+					expect.objectContaining({
+						ruleId: '@stylistic/operator-linebreak',
+						messageId: 'operatorAtBeginning',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'curly',
+						messageId: 'missingCurlyAfterCondition',
+					}),
+					expect.objectContaining({
+						ruleId: 'func-names',
+						messageId: 'unnamed',
 					}),
 					expect.objectContaining({
 						ruleId: 'no-console',
 						messageId: 'unexpected',
-					}),
-					expect.objectContaining({
-						ruleId: 'eol-last',
-						messageId: 'missing',
 					}),
 					expect.objectContaining({
 						ruleId: 'import/max-dependencies',
@@ -58,18 +81,6 @@ export default testSuite(({ describe }) => {
 						message: 'Missing file extension "js" for "./some-file"',
 					}),
 					expect.objectContaining({
-						ruleId: 'func-call-spacing',
-						messageId: 'unexpectedWhitespace',
-					}),
-					expect.objectContaining({
-						ruleId: 'wrap-iife',
-						messageId: 'wrapExpression',
-					}),
-					expect.objectContaining({
-						ruleId: 'func-names',
-						messageId: 'unnamed',
-					}),
-					expect.objectContaining({
 						ruleId: 'unicorn/prefer-number-properties',
 						message: 'Prefer `Number.isFinite` over `isFinite`.',
 					}),
@@ -78,16 +89,8 @@ export default testSuite(({ describe }) => {
 						message: 'Prefer `Number.isNaN` over `isNaN`.',
 					}),
 					expect.objectContaining({
-						ruleId: 'curly',
-						messageId: 'missingCurlyAfterCondition',
-					}),
-					expect.objectContaining({
 						ruleId: 'regexp/prefer-d',
 						messageId: 'unexpected',
-					}),
-					expect.objectContaining({
-						ruleId: 'operator-linebreak',
-						messageId: 'operatorAtBeginning',
 					}),
 					expect.objectContaining({
 						ruleId: 'regexp/prefer-d',

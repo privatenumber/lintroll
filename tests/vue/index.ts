@@ -41,7 +41,7 @@ export default testSuite(({ describe }) => {
 						message: 'Expected to be enclosed by double quotes.',
 					}),
 					expect.objectContaining({
-						ruleId: 'eol-last',
+						ruleId: '@stylistic/eol-last',
 						messageId: 'missing',
 					}),
 				]),

@@ -20,77 +20,29 @@ export = createConfig({
 	},
 
 	rules: {
+		/**
+		 * Deprecated in favor of @stylistic
+		 * Disable from recommended
+		 */
+		'no-mixed-spaces-and-tabs': 'off',
+		'no-extra-semi': 'off',
+
 		'accessor-pairs': 'error',
-
-		// https://eslint.org/docs/latest/rules/array-bracket-newline
-		'array-bracket-newline': ['error', 'consistent'],
-
-		// https://eslint.org/docs/latest/rules/array-bracket-spacing
-		'array-bracket-spacing': ['error', 'never'],
 
 		// https://eslint.org/docs/latest/rules/array-callback-return
 		'array-callback-return': ['error', { allowImplicit: true }],
 
-		// https://eslint.org/docs/latest/rules/array-element-newline
-		'array-element-newline': ['error', 'consistent'],
-
 		// https://eslint.org/docs/latest/rules/arrow-body-style
 		'arrow-body-style': ['error', 'as-needed'],
-
-		// require parens in arrow function arguments
-		// https://eslint.org/docs/latest/rules/arrow-parens
-		'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
-
-		// require space before/after arrow function's arrow
-		// https://eslint.org/docs/latest/rules/arrow-spacing
-		'arrow-spacing': ['error', { after: true, before: true }],
 
 		// treat var statements as if they were block scoped
 		'block-scoped-var': 'error',
 
-		// https://eslint.org/docs/latest/rules/block-spacing
-		'block-spacing': ['error', 'always'],
-
-		// enforce one true brace style
-		'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-
 		// require camel case names
 		camelcase: ['error', { ignoreDestructuring: false, properties: 'never' }],
 
-		// require trailing commas in multiline object literals
-		'comma-dangle': ['error', {
-			arrays: 'always-multiline',
-			exports: 'always-multiline',
-			functions: 'always-multiline',
-			imports: 'always-multiline',
-			objects: 'always-multiline',
-		}],
-
-		// enforce spacing before and after comma
-		'comma-spacing': ['error', { after: true, before: false }],
-
-		// enforce one true comma style
-		'comma-style': ['error', 'last', {
-			exceptions: {
-				ArrayExpression: false,
-				ArrayPattern: false,
-				ArrowFunctionExpression: false,
-				CallExpression: false,
-				FunctionDeclaration: false,
-				FunctionExpression: false,
-				ImportDeclaration: false,
-				NewExpression: false,
-				ObjectExpression: false,
-				ObjectPattern: false,
-				VariableDeclaration: false,
-			},
-		}],
-
 		// https://eslint.org/docs/latest/rules/complexity
 		complexity: ['warn', 10],
-
-		// disallow padding inside computed properties
-		'computed-property-spacing': ['error', 'never'],
 
 		'consistent-return': 'off',
 
@@ -108,13 +60,7 @@ export = createConfig({
 		// https://eslint.org/docs/latest/rules/default-param-last
 		'default-param-last': 'error',
 
-		// https://eslint.org/docs/latest/rules/dot-location
-		'dot-location': ['error', 'property'],
-
 		'dot-notation': ['error', { allowKeywords: true }],
-
-		// enforce newline at the end of file, with no multiple empty lines
-		'eol-last': ['error', 'always'],
 
 		// https://eslint.org/docs/latest/rules/eqeqeq
 		eqeqeq: ['error', 'always', { null: 'ignore' }],
@@ -122,10 +68,6 @@ export = createConfig({
 		// Enforce “for” loop update clause moving the counter in the right direction
 		// https://eslint.org/docs/latest/rules/for-direction
 		'for-direction': 'error',
-
-		// enforce spacing between functions and their invocations
-		// https://eslint.org/docs/latest/rules/func-call-spacing
-		'func-call-spacing': ['error', 'never'],
 
 		// requires function names to match the name of the variable or property to which they are
 		// assigned
@@ -141,17 +83,6 @@ export = createConfig({
 
 		// https://eslint.org/docs/latest/rules/func-style
 		'func-style': ['error', 'declaration', { allowArrowFunctions: true }],
-
-		// https://eslint.org/docs/latest/rules/function-call-argument-newline
-		'function-call-argument-newline': ['error', 'consistent'],
-
-		// enforce consistent line breaks inside function parentheses
-		// https://eslint.org/docs/latest/rules/function-paren-newline
-		'function-paren-newline': ['error', 'consistent'],
-
-		// enforce the spacing around the * in generator functions
-		// https://eslint.org/docs/latest/rules/generator-star-spacing
-		'generator-star-spacing': ['error', { after: true, before: false }],
 
 		// Enforces that a return statement is present in property getters
 		// https://eslint.org/docs/latest/rules/getter-return
@@ -177,84 +108,8 @@ export = createConfig({
 		// require identifiers to match the provided regular expression
 		'id-match': 'off',
 
-		// Enforce the location of arrow function bodies with implicit returns
-		// https://eslint.org/docs/latest/rules/implicit-arrow-linebreak
-		'implicit-arrow-linebreak': ['error', 'beside'],
-
-		// this option sets a specific tab width for your code
-		// https://eslint.org/docs/latest/rules/indent
-		indent: ['error', 'tab', {
-			ArrayExpression: 1,
-			CallExpression: {
-				arguments: 1,
-			},
-			flatTernaryExpressions: false,
-			// MemberExpression: null,
-			FunctionDeclaration: {
-				body: 1,
-				parameters: 1,
-			},
-			FunctionExpression: {
-				body: 1,
-				parameters: 1,
-			},
-			ignoreComments: false,
-			ignoredNodes: [
-				// Don't fix indentations in template literals
-				'TemplateLiteral > *',
-
-				// From https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
-				'JSXElement',
-				'JSXElement > *',
-				'JSXAttribute',
-				'JSXIdentifier',
-				'JSXNamespacedName',
-				'JSXMemberExpression',
-				'JSXSpreadAttribute',
-				'JSXExpressionContainer',
-				'JSXOpeningElement',
-				'JSXClosingElement',
-				'JSXFragment',
-				'JSXOpeningFragment',
-				'JSXClosingFragment',
-				'JSXText',
-				'JSXEmptyExpression',
-				'JSXSpreadChild',
-			],
-			ImportDeclaration: 1,
-			ObjectExpression: 1,
-			outerIIFEBody: 1,
-			SwitchCase: 1,
-			VariableDeclarator: 1,
-		}],
-
 		// enforce or disallow variable initializations at definition
 		'init-declarations': 'off',
-
-		// enforces spacing between keys and values in object literal properties
-		'key-spacing': ['error', { afterColon: true, beforeColon: false }],
-
-		// require a space before & after certain keywords
-		'keyword-spacing': ['error', {
-			after: true,
-			before: true,
-			overrides: {
-				case: { after: true },
-				return: { after: true },
-				throw: { after: true },
-			},
-		}],
-
-		// enforce consistent 'LF' or 'CRLF' as linebreaks
-		// https://eslint.org/docs/latest/rules/linebreak-style
-		'linebreak-style': ['error', 'unix'],
-
-		// enforces empty lines around comments
-		'lines-around-comment': 'off',
-
-		// require or disallow an empty line between class members
-		// https://eslint.org/docs/latest/rules/lines-between-class-members
-		'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: false }],
 
 		// enforce a maximum number of classes per file
 		// https://eslint.org/docs/latest/rules/max-classes-per-file
@@ -262,16 +117,6 @@ export = createConfig({
 
 		// specify the maximum depth that blocks can be nested
 		'max-depth': ['off', 4],
-
-		// specify the maximum length of a line in your program
-		// https://eslint.org/docs/latest/rules/max-len
-		'max-len': ['error', 100, 2, {
-			ignoreComments: false,
-			ignoreRegExpLiterals: true,
-			ignoreStrings: true,
-			ignoreTemplateLiterals: true,
-			ignoreUrls: true,
-		}],
 
 		// specify the max number of lines in a file
 		// https://eslint.org/docs/latest/rules/max-lines
@@ -300,12 +145,6 @@ export = createConfig({
 		// Consider test "describe()" containing many tests
 		// 'max-statements': ['warn', 10],
 
-		// https://eslint.org/docs/latest/rules/max-statements-per-line
-		'max-statements-per-line': ['warn', { max: 1 }],
-
-		// https://eslint.org/docs/latest/rules/multiline-ternary
-		'multiline-ternary': ['error', 'always-multiline'],
-
 		// require a capital letter for constructors
 		'new-cap': ['error', {
 			capIsNew: false,
@@ -314,20 +153,11 @@ export = createConfig({
 			newIsCapExceptions: [],
 		}],
 
-		// disallow the omission of parentheses when invoking a constructor with no arguments
-		// https://eslint.org/docs/latest/rules/new-parens
-		'new-parens': 'error',
-
 		// allow/disallow an empty newline after var statement
 		'newline-after-var': 'off',
 
 		// https://eslint.org/docs/latest/rules/newline-before-return
 		'newline-before-return': 'off',
-
-		// enforces new line after each method call in the chain to make it
-		// more readable and easy to maintain
-		// https://eslint.org/docs/latest/rules/newline-per-chained-call
-		'newline-per-chained-call': ['error', { ignoreChainWithDepth: 4 }],
 
 		// disallow the use of alert, confirm, and prompt
 		'no-alert': 'warn',
@@ -363,12 +193,6 @@ export = createConfig({
 
 		// disallow assignment in conditional expressions
 		'no-cond-assign': ['error', 'always'],
-
-		// disallow arrow functions where they could be confused with comparisons
-		// https://eslint.org/docs/latest/rules/no-confusing-arrow
-		'no-confusing-arrow': ['error', {
-			allowParens: true,
-		}],
 
 		// disallow use of console
 		'no-console': 'warn',
@@ -458,25 +282,8 @@ export = createConfig({
 		// https://eslint.org/docs/latest/rules/no-extra-label
 		'no-extra-label': 'error',
 
-		// disallow unnecessary parentheses
-		// https://eslint.org/docs/latest/rules/no-extra-parens
-		'no-extra-parens': ['off', 'all', {
-			conditionalAssign: true,
-			// delegate to eslint-plugin-react
-			enforceForArrowConditionals: false,
-			ignoreJSX: 'all',
-			nestedBinaryExpressions: false,
-			returnAssign: false,
-		}],
-
-		// disallow unnecessary semicolons
-		'no-extra-semi': 'error',
-
 		// disallow fallthrough of case statements
 		'no-fallthrough': 'error',
-
-		// disallow the use of leading or trailing decimal points in numeric literals
-		'no-floating-decimal': 'error',
 
 		// disallow overwriting functions written as function declarations
 		'no-func-assign': 'error',
@@ -553,43 +360,12 @@ export = createConfig({
 		// https://eslint.org/docs/latest/rules/no-misleading-character-class
 		'no-misleading-character-class': 'error',
 
-		// disallow un-paren'd mixes of different operators
-		// https://eslint.org/docs/latest/rules/no-mixed-operators
-		'no-mixed-operators': ['error', {
-			allowSamePrecedence: false,
-			// the list of arithmetic groups disallows mixing `%` and `**`
-			// with other arithmetic operators.
-			groups: [
-				['%', '**'],
-				['%', '+'],
-				['%', '-'],
-				['%', '*'],
-				['%', '/'],
-				['/', '*'],
-				['&', '|', '<<', '>>', '>>>'],
-				['==', '!=', '===', '!=='],
-				['&&', '||'],
-			],
-		}],
-
-		// disallow mixed spaces and tabs for indentation
-		'no-mixed-spaces-and-tabs': 'error',
-
 		// disallow use of chained assignment expressions
 		// https://eslint.org/docs/latest/rules/no-multi-assign
 		'no-multi-assign': ['error'],
 
-		// disallow use of multiple spaces
-		'no-multi-spaces': ['error', {
-			ignoreEOLComments: false,
-		}],
-
 		// disallow use of multiline strings
 		'no-multi-str': 'error',
-
-		// disallow multiple empty lines, only one newline at the end, and no new lines at the beginning
-		// https://eslint.org/docs/latest/rules/no-multiple-empty-lines
-		'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
 
 		// disallow negated conditions
 		// https://eslint.org/docs/latest/rules/no-negated-condition
@@ -605,7 +381,7 @@ export = createConfig({
 		'no-new-func': 'error',
 
 		// disallow use of the Object constructor
-		'no-new-object': 'error',
+		'no-object-constructor': 'error',
 
 		// https://eslint.org/docs/latest/rules/no-new-symbol
 		'no-new-symbol': 'error',
@@ -773,12 +549,6 @@ export = createConfig({
 		// restrict what can be thrown as an exception
 		'no-throw-literal': 'error',
 
-		// disallow trailing whitespace at the end of lines
-		'no-trailing-spaces': ['error', {
-			ignoreComments: false,
-			skipBlankLines: false,
-		}],
-
 		// disallow use of undeclared variables unless mentioned in a /*global */ block
 		'no-undef': 'error',
 
@@ -883,36 +653,8 @@ export = createConfig({
 		// disallow usage of configurable warning terms in comments: e.g. todo
 		'no-warning-comments': ['off', { location: 'start', terms: ['todo', 'fixme', 'xxx'] }],
 
-		// disallow whitespace before properties
-		// https://eslint.org/docs/latest/rules/no-whitespace-before-property
-		'no-whitespace-before-property': 'error',
-
 		// disallow use of the with statement
 		'no-with': 'error',
-
-		// enforce the location of single-line statements
-		// https://eslint.org/docs/latest/rules/nonblock-statement-body-position
-		'nonblock-statement-body-position': ['error', 'beside', {
-			overrides: {},
-		}],
-
-		// enforce line breaks between braces
-		// https://eslint.org/docs/latest/rules/object-curly-newline
-		'object-curly-newline': ['error', {
-			ExportDeclaration: { consistent: true, minProperties: 4, multiline: true },
-			ImportDeclaration: { consistent: true, minProperties: 4, multiline: true },
-			ObjectExpression: { consistent: true, minProperties: 4, multiline: true },
-			ObjectPattern: { consistent: true, minProperties: 4, multiline: true },
-		}],
-
-		// require padding inside curly braces
-		'object-curly-spacing': ['error', 'always'],
-
-		// enforce "same line" or "multiple line" on object properties.
-		// https://eslint.org/docs/latest/rules/object-property-newline
-		'object-property-newline': ['error', {
-			allowAllPropertiesOnSameLine: true,
-		}],
 
 		// require method and property shorthand syntax for object literals
 		// https://eslint.org/docs/latest/rules/object-shorthand
@@ -923,41 +665,9 @@ export = createConfig({
 		// allow just one var statement per function
 		'one-var': ['error', 'never'],
 
-		// require a newline around variable declaration
-		// https://eslint.org/docs/latest/rules/one-var-declaration-per-line
-		'one-var-declaration-per-line': ['error', 'always'],
-
 		// require assignment operator shorthand where possible or prohibit it entirely
 		// https://eslint.org/docs/latest/rules/operator-assignment
 		'operator-assignment': ['error', 'always'],
-
-		// Requires operator at the beginning of the line in multiline statements
-		// https://eslint.org/docs/latest/rules/operator-linebreak
-		'operator-linebreak': ['error', 'before', {
-			overrides: {
-				'=': 'none',
-			},
-		}],
-
-		// disallow padding within blocks
-		'padded-blocks': ['error', {
-			blocks: 'never',
-			classes: 'never',
-			switches: 'never',
-		}, {
-			allowSingleLineBlocks: true,
-		}],
-
-		// Require or disallow padding lines between statements
-		// https://eslint.org/docs/latest/rules/padding-line-between-statements
-		'padding-line-between-statements': [
-			'error',
-			{
-				blankLine: 'always',
-				next: '*',
-				prev: 'directive',
-			},
-		],
 
 		// suggest using arrow functions as callbacks
 		'prefer-arrow-callback': ['error', {
@@ -1025,13 +735,6 @@ export = createConfig({
 		// https://eslint.org/docs/latest/rules/prefer-template
 		'prefer-template': 'error',
 
-		// require quotes around object literal property names
-		// https://eslint.org/docs/latest/rules/quote-props.html
-		'quote-props': ['error', 'as-needed', { keywords: false, numbers: false, unnecessary: true }],
-
-		// specify whether double or single quotes should be used
-		quotes: ['error', 'single', { avoidEscape: true }],
-
 		// require use of the second argument for parseInt()
 		radix: 'error',
 
@@ -1052,20 +755,6 @@ export = createConfig({
 		// https://eslint.org/docs/latest/rules/require-yield
 		'require-yield': 'error',
 
-		// enforce spacing between object rest-spread
-		// https://eslint.org/docs/latest/rules/rest-spread-spacing
-		'rest-spread-spacing': ['error', 'never'],
-
-		// require or disallow use of semicolons instead of ASI
-		semi: ['error', 'always'],
-
-		// enforce spacing before and after semicolons
-		'semi-spacing': ['error', { after: true, before: false }],
-
-		// Enforce location of semicolons
-		// https://eslint.org/docs/latest/rules/semi-style
-		'semi-style': ['error', 'last'],
-
 		// import sorting
 		// https://eslint.org/docs/latest/rules/sort-imports
 		'sort-imports': ['off', {
@@ -1081,61 +770,9 @@ export = createConfig({
 		// sort variables within the same declaration block
 		'sort-vars': 'off',
 
-		// require or disallow space before blocks
-		'space-before-blocks': 'error',
-
-		// require or disallow space before function opening parenthesis
-		// https://eslint.org/docs/latest/rules/space-before-function-paren
-		'space-before-function-paren': ['error', {
-			anonymous: 'always',
-			asyncArrow: 'always',
-			named: 'never',
-		}],
-
-		// require or disallow spaces inside parentheses
-		'space-in-parens': ['error', 'never'],
-
-		// require spaces around operators
-		'space-infix-ops': 'error',
-
-		// Require or disallow spaces before/after unary operators
-		// https://eslint.org/docs/latest/rules/space-unary-ops
-		'space-unary-ops': ['error', {
-			nonwords: false,
-			overrides: {},
-			words: true,
-		}],
-
-		// require or disallow a space immediately following the // or /* in a comment
-		// https://eslint.org/docs/latest/rules/spaced-comment
-		'spaced-comment': ['error', 'always', {
-			block: {
-				// space here to support sprockets directives and flow comment types
-				balanced: true,
-				exceptions: ['-', '+'],
-				markers: ['=', '!', ':', '::'],
-			},
-			line: {
-				exceptions: ['-', '+'],
-				markers: ['=', '!', '/'], // space here to support sprockets directives, slash for TS /// comments
-			},
-		}],
-
-		// Enforce spacing around colons of switch statements
-		// https://eslint.org/docs/latest/rules/switch-colon-spacing
-		'switch-colon-spacing': ['error', { after: true, before: false }],
-
 		// require a Symbol description
 		// https://eslint.org/docs/latest/rules/symbol-description
 		'symbol-description': 'error',
-
-		// enforce usage of spacing in template strings
-		// https://eslint.org/docs/latest/rules/template-curly-spacing
-		'template-curly-spacing': 'error',
-
-		// Require or disallow spacing between template tags and their literals
-		// https://eslint.org/docs/latest/rules/template-tag-spacing
-		'template-tag-spacing': ['error', 'never'],
 
 		// require or disallow the Unicode Byte Order Mark
 		// https://eslint.org/docs/latest/rules/unicode-bom
@@ -1150,14 +787,6 @@ export = createConfig({
 
 		// requires to declare all vars on top of their containing scope
 		'vars-on-top': 'error',
-
-		// require immediate function invocation to be wrapped in parentheses
-		// https://eslint.org/docs/latest/rules/wrap-iife.html
-		'wrap-iife': ['error', 'inside', { functionPrototypeMethods: false }],
-
-		// enforce spacing around the * in yield* expressions
-		// https://eslint.org/docs/latest/rules/yield-star-spacing
-		'yield-star-spacing': ['error', 'after'],
 
 		// require or disallow Yoda conditions
 		yoda: 'error',

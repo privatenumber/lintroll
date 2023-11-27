@@ -40,10 +40,10 @@ export = createConfig({
 		{
 			files: '**/*.md/*.{js,jsx,vue}',
 			rules: {
-				'comma-dangle': ['error', 'never'],
 				// Style
-				indent: ['error', 4],
-				semi: ['error', 'never'],
+				'@stylistic/indent': ['error', 4],
+				'@stylistic/semi': ['error', 'never'],
+				'@stylistic/comma-dangle': ['error', 'never'],
 			},
 		},
 		{
@@ -75,10 +75,11 @@ export = createConfig({
 				],
 				'@typescript-eslint/no-unused-vars': 'warn',
 				'@typescript-eslint/semi': ['error', 'never'],
-				'comma-dangle': 'off',
+
 				// Style
-				indent: 'off',
-				semi: 'off',
+				'@stylistic/indent': 'off',
+				'@stylistic/semi': 'off',
+				'@stylistic/comma-dangle': 'off',
 			},
 		},
 		{
