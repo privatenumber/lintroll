@@ -2,7 +2,7 @@ import { createConfig } from '../utils/create-config.js';
 
 export = createConfig({
 	plugins: [
-		'@stylistic'
+		'@stylistic',
 	],
 
 	rules: {

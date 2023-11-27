@@ -6,10 +6,10 @@ type RestrictProperties<Type, AllowList> = Type & {
 			? Type[Key]
 			: never
 	);
-}
+};
 
 export const createConfig = <
-	Config extends Linter.Config,
+	Config extends Linter.Config
 >(
 		config: RestrictProperties<Config, keyof Linter.Config>,
 	) => config;
