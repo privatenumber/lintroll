@@ -10,6 +10,10 @@ const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 export const react = {
 	files: ['**/*.{jsx,tsx}'],
 
+	languageOptions: {
+		parserOptions: reactPlugin.configs.recommended.parserOptions,
+	},
+
 	plugins: {
 		react: reactPlugin,
 		'react-hooks': reactHooksPlugin,

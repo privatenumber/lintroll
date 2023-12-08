@@ -93,10 +93,13 @@ declare module 'eslint-plugin-unicorn' {
 
 declare module 'eslint-plugin-react' {
 	import type { ESLint } from 'eslint';
+	import type { ParserOptions } from 'eslint-define-config';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			recommended: ESLint.ConfigData;
+			recommended: ESLint.ConfigData & {
+				parserOptions: ParserOptions;
+			};
 			'jsx-runtime': ESLint.ConfigData;
 		};
 	};
