@@ -1,9 +1,14 @@
-import { createConfig } from '../utils/create-config.js';
+import type { FlatESLintConfig } from 'eslint-define-config';
+import unicornPlugin from 'eslint-plugin-unicorn';
 
-export = createConfig({
-	extends: 'plugin:unicorn/recommended',
+export const unicorn = {
+	plugins: {
+		unicorn: unicornPlugin,
+	},
 
 	rules: {
+		...unicornPlugin.configs.recommended.rules,
+
 		// Disable in favor of eslint-plugin-regexp
 		'unicorn/better-regex': 'off',
 
@@ -85,4 +90,4 @@ export = createConfig({
 		 */
 		'unicorn/template-indent': 'off',
 	},
-});
+} satisfies FlatESLintConfig;

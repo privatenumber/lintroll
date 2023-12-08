@@ -3,9 +3,9 @@ import markdownPlugin from 'eslint-plugin-markdown';
 
 // TODO: extend markdownPlugin.configs.recommended.overrides
 
-export const markdown: FlatESLintConfig[] = [
+export const markdown = [
 	{
-		files: ['*.md'],
+		files: ['**/*.md'],
 		plugins: {
 			markdown: markdownPlugin,
 		},
@@ -93,4 +93,4 @@ export const markdown: FlatESLintConfig[] = [
 			'unicorn/filename-case': 'off',
 		},
 	},
-];
+] satisfies FlatESLintConfig[];

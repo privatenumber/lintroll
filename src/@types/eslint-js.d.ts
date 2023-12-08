@@ -71,6 +71,67 @@ declare module 'eslint-plugin-regexp' {
 	};
 }
 
+declare module 'eslint-plugin-no-use-extend-native' {
+	import type { ESLint } from 'eslint';
+
+	export const rules: ESLint.Plugin['rules'];
+	export const configs: ESLint.Plugin['configs'] & {
+		recommended: ESLint.ConfigData;
+	};
+}
+
+declare module 'eslint-plugin-unicorn' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
+
+declare module 'eslint-plugin-react' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: ESLint.ConfigData;
+			'jsx-runtime': ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
+
+declare module '@stylistic/eslint-plugin' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin;
+	export default plugin;
+}
+
+declare module 'eslint-plugin-react-hooks' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
+
+declare module 'eslint-plugin-vue' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			'vue3-recommended': ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
+
 declare module 'eslint-plugin-n/lib/configs/recommended-*.js' {
 	import type { LanguageOptions } from 'eslint-define-config';
 
@@ -79,3 +140,4 @@ declare module 'eslint-plugin-n/lib/configs/recommended-*.js' {
 	};
 	export default recommended;
 }
+

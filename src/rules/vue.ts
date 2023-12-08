@@ -1,5 +1,7 @@
+import type { FlatESLintConfig } from 'eslint-define-config';
+import vuePlugin from 'eslint-plugin-vue';
+import * as vueParser from 'vue-eslint-parser';
 import fs from 'fs';
-import { createConfig } from '../utils/create-config.js';
 import { isInstalled } from '../utils/is-installed.js';
 
 const getModuleExports = (
@@ -62,61 +64,61 @@ function detectAutoImportComponents() {
 	return components;
 }
 
-export = createConfig({
-	overrides: [
-		// Setting as an override allows .vue files to be
-		// linted without specifying it on the user-end
-		{
-			files: '*.vue',
+export const vue = {
+	files: ['**/*.vue'],
 
-			extends: 'plugin:vue/vue3-recommended',
-
-			env: {
-				'vue/setup-compiler-macros': true,
-			},
-
-			globals: detectAutoImport(),
-
-			parserOptions: {
-				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
-				parser: {
-					ts: '@typescript-eslint/parser',
-				},
-			},
-
-			rules: {
-				// For Vue 2
-				// 'vue/no-deprecated-slot-attribute': ['error'],
-				// 'vue/no-deprecated-slot-scope-attribute': ['error'],
-				// 'vue/no-deprecated-scope-attribute': ['error'],
-
-				'unicorn/filename-case': ['error', {
-					case: 'pascalCase',
-				}],
-
-				'vue/html-indent': ['error', 'tab'],
-
-				'vue/multi-word-component-names': 'off',
-
-				'vue/no-undef-components': ['error', {
-					ignorePatterns: [
-						'router-view',
-						'router-link',
-						...detectAutoImportComponents(),
-					],
-				}],
-
-				// Deprecated
-				'vue/component-tags-order': 'off',
-
-				'vue/block-order': ['error', {
-					order: [
-						'script[setup]',
-						['script', 'template'],
-						'style',
-					],
-				}],
+	languageOptions: {
+		globals: {
+			...detectAutoImport(),
+			...vuePlugin.environments!['setup-compiler-macros'].globals,
+		},
+		parser: vueParser,
+		parserOptions: {
+			// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
+			parser: {
+				ts: '@typescript-eslint/parser',
 			},
 		},
-	],
-});
+	},
+
+	plugins: {
+		vue: vuePlugin,
+	},
+
+	rules: {
+		...vuePlugin.configs['vue3-recommended'].rules,
+
+		// For Vue 2
+		// 'vue/no-deprecated-slot-attribute': ['error'],
+		// 'vue/no-deprecated-slot-scope-attribute': ['error'],
+		// 'vue/no-deprecated-scope-attribute': ['error'],
+
+		'unicorn/filename-case': ['error', {
+			case: 'pascalCase',
+		}],
+
+		'vue/html-indent': ['error', 'tab'],
+
+		'vue/multi-word-component-names': 'off',
+
+		'vue/no-undef-components': ['error', {
+			ignorePatterns: [
+				'router-view',
+				'router-link',
+				...detectAutoImportComponents(),
+			],
+		}],
+
+		// Deprecated
+		'vue/component-tags-order': 'off',
+
+		'vue/block-order': ['error', {
+			order: [
+				'script[setup]',
+				['script', 'template'],
+				'style',
+			],
+		}],
+	},
+} satisfies FlatESLintConfig;
+

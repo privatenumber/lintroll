@@ -117,30 +117,31 @@ export const typescript = (
 					'no-shadow': 'off',
 
 					'prefer-rest-params': 'off',
-					// // Not always possible to destructue at top-level when the variable is ambigious
-					// 'unicorn/consistent-destructuring': 'off',
 
-					// // Allow functions to be passed in only in TS because it's easy to see their types
-					// 'unicorn/no-array-callback-reference': 'off',
+					// Not always possible to destructue at top-level when the variable is ambigious
+					'unicorn/consistent-destructuring': 'off',
 
-					// // Could be used to pass in an explicit `undefined` to a required parameter
-					// 'unicorn/no-useless-undefined': 'off',
+					// Allow functions to be passed in only in TS because it's easy to see their types
+					'unicorn/no-array-callback-reference': 'off',
+
+					// Could be used to pass in an explicit `undefined` to a required parameter
+					'unicorn/no-useless-undefined': 'off',
 				},
-			} satisfies FlatESLintConfig,
+			},
 			{
 				files: ['*.cts'],
 				languageOptions: {
 					globals: recommendedScript.eslintrc.globals,
 					parserOptions: recommendedScript.eslintrc.parserOptions,
 				},
-			} satisfies FlatESLintConfig,
+			},
 			{
 				files: ['*.mts'],
 				languageOptions: {
 					globals: recommendedModule.eslintrc.globals,
 					parserOptions: recommendedModule.eslintrc.parserOptions,
 				},
-			} satisfies FlatESLintConfig,
-		]
+			},
+		] satisfies FlatESLintConfig[]
 		: []
 );

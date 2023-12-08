@@ -3,9 +3,10 @@ import type { FlatESLintConfig, Rules } from 'eslint-define-config';
 import jsonc from 'eslint-plugin-jsonc';
 
 // console.log(jsonc);
-const baseConfig: FlatESLintConfig = {
-	files: ['*.{json,json5,jsonc}'],
+const baseConfig = {
+	files: ['**/*.{json,json5,jsonc}'],
 	plugins: {
+		// jsonc comes with own types
 		jsonc: jsonc as unknown as ESLint.Plugin,
 	},
 	languageOptions: {
@@ -24,10 +25,10 @@ const baseConfig: FlatESLintConfig = {
 		],
 		'jsonc/object-property-newline': 'error',
 	},
-};
+} satisfies FlatESLintConfig;
 
-const packageJson: FlatESLintConfig = {
-	files: ['package.json'],
+const packageJson = {
+	files: ['**/package.json'],
 	rules: {
 		'jsonc/sort-keys': [
 			'error',
@@ -75,22 +76,22 @@ const packageJson: FlatESLintConfig = {
 			},
 		],
 	},
-};
+} satisfies FlatESLintConfig;
 
-const tsconfig: FlatESLintConfig = {
-	files: ['tsconfig.json'],
+const tsconfig = {
+	files: ['**/tsconfig.json'],
 	rules: {
 		...(jsonc.configs['recommended-with-jsonc'].rules as unknown as Rules),
 	},
-};
+} satisfies FlatESLintConfig;
 
-export const json: FlatESLintConfig[] = [
+export const json = [
 	{
 		ignores: [
-			'package-lock.json',
+			'**/package-lock.json',
 		],
 	},
 	baseConfig,
 	packageJson,
 	tsconfig,
-];
+] satisfies FlatESLintConfig[];

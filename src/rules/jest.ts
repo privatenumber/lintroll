@@ -7,13 +7,13 @@ import type { FlatESLintConfig } from 'eslint-define-config';
 import globals from 'globals';
 import { isInstalled } from '../utils/is-installed.js';
 
-export const jest: FlatESLintConfig[] = [
+export const jest = (
 	isInstalled('jest')
-	 ? {
+		? {
 			files: ['**/{test,tests}/*'],
 			languageOptions: {
 				globals: globals.jest,
 			},
-		}
-		: {},
-];
+		} satisfies FlatESLintConfig
+		: undefined
+);

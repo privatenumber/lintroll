@@ -11,6 +11,9 @@ import { json } from './rules/json.js';
 import { noUseExtendNative } from './rules/no-use-extend-native.js';
 import { serviceWorkers } from './rules/service-workers.js';
 import { typescript } from './rules/typescript.js';
+import { unicorn } from './rules/unicorn.js';
+import { react } from './rules/react.js';
+import { vue } from './rules/vue.js';
 
 // export = createConfig({
 // 	extends: [
@@ -42,8 +45,7 @@ import { typescript } from './rules/typescript.js';
 // 	],
 // });
 
-console.log('typescript', typescript);
-export const pvtnbr = (): FlatESLintConfig[] => [
+export const pvtnbr = () => [
 	{
 		ignores: [
 			// Nested node_modules
@@ -56,15 +58,18 @@ export const pvtnbr = (): FlatESLintConfig[] => [
 		],
 	},
 	base,
-	...stylistic,
+	stylistic,
 	regexp,
 	imports,
-	...promise,
+	promise,
 	eslintComments,
 	...json,
 	...markdown,
-	...jest,
-	...noUseExtendNative,
-	...serviceWorkers,
+	jest,
+	noUseExtendNative,
+	serviceWorkers,
 	...typescript,
-];
+	unicorn,
+	react,
+	vue,
+].filter(Boolean) satisfies FlatESLintConfig[];

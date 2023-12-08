@@ -65,11 +65,17 @@ dependencies:
   globals:
     specifier: ^13.23.0
     version: 13.23.0
+  vue-eslint-parser:
+    specifier: ^9.3.2
+    version: 9.3.2(eslint@8.54.0)
 
 devDependencies:
   '@eslint-types/import':
     specifier: 2.29.0-1
     version: 2.29.0-1
+  '@total-typescript/ts-reset':
+    specifier: ^0.5.1
+    version: 0.5.1
   '@types/confusing-browser-globals':
     specifier: ^1.0.3
     version: 1.0.3
@@ -695,6 +701,10 @@ packages:
       - supports-color
       - typescript
     dev: false
+
+  /@total-typescript/ts-reset@0.5.1:
+    resolution: {integrity: sha512-AqlrT8YA1o7Ff5wPfMOL0pvL+1X+sw60NN6CcOCqs658emD6RfiXhF7Gu9QcfKBH7ELY2nInLhKSCWVoNL70MQ==}
+    dev: true
 
   /@types/confusing-browser-globals@1.0.3:
     resolution: {integrity: sha512-q+6axdE3RyjrSsy2ONE4UpF89rwOfpoMBP3lqJ+OzLuOeYHwP+o2GITzuleKb1UT3FSYybO8QmeACgyHleu2CA==}

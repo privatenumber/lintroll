@@ -1,10 +1,9 @@
-import type { ESLint } from 'eslint';
 import type { FlatESLintConfig } from 'eslint-define-config';
 import noUseExtendNativePlugin from 'eslint-plugin-no-use-extend-native';
 
-export const noUseExtendNative: FlatESLintConfig[] = [{
+export const noUseExtendNative = {
 	plugins: {
-		'no-use-extend-native': noUseExtendNativePlugin as unknown as ESLint.Plugin,
+		'no-use-extend-native': noUseExtendNativePlugin,
 	},
 	rules: noUseExtendNativePlugin.configs.recommended.rules,
-}];
+} satisfies FlatESLintConfig;
