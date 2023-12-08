@@ -45,7 +45,7 @@ import { vue } from './rules/vue.js';
 // 	],
 // });
 
-export const pvtnbr = () => [
+export const pvtnbr = (): FlatESLintConfig[] => [
 	{
 		ignores: [
 			// Nested node_modules
@@ -62,14 +62,14 @@ export const pvtnbr = () => [
 	regexp,
 	imports,
 	promise,
+	unicorn,
+	noUseExtendNative,
 	eslintComments,
 	...json,
-	...markdown,
-	jest,
-	noUseExtendNative,
-	serviceWorkers,
 	...typescript,
-	unicorn,
-	react,
 	vue,
-].filter(Boolean) satisfies FlatESLintConfig[];
+	react,
+	...markdown,
+	serviceWorkers,
+	jest,
+].filter(Boolean);

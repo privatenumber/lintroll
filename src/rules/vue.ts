@@ -75,9 +75,9 @@ export const vue = {
 		parser: vueParser,
 		parserOptions: {
 			// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
-			parser: {
-				ts: '@typescript-eslint/parser',
-			},
+			// parser: {
+			// 	ts: '@typescript-eslint/parser',
+			// },
 		},
 	},
 

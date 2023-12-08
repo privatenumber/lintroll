@@ -1,6 +1,6 @@
 // @ts-check
 import { defineFlatConfig } from 'eslint-define-config';
-import { pvtnbr } from './src/index';
+import { pvtnbr } from './src/index.ts';
 
 export default defineFlatConfig([
 	{

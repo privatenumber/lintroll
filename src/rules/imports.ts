@@ -1,4 +1,3 @@
-import type { ESLint } from 'eslint';
 import type { FlatESLintConfig } from 'eslint-define-config';
 import * as importPlugin from 'eslint-plugin-import';
 
