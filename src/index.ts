@@ -14,62 +14,43 @@ import { typescript } from './rules/typescript.js';
 import { unicorn } from './rules/unicorn.js';
 import { react } from './rules/react.js';
 import { vue } from './rules/vue.js';
+import { node } from './rules/node.js';
 
-// export = createConfig({
-// 	extends: [
-// 		'./rules/base',
-// 		'./rules/stylistic',
-// 		'./rules/regexp',
-// 		'./rules/imports',
-// 		'./rules/promise',
-// 		'./rules/unicorn',
-// 		'./rules/no-use-extend-native',
-// 		'./rules/eslint-comments',
-// 		'./rules/json',
-// 		'./rules/typescript',
-// 		'./rules/vue',
-// 		'./rules/react',
-// 		'./rules/markdown',
-// 		'./rules/service-workers',
-// 		'./rules/jest',
-// 	],
-
-// 	ignorePatterns: [
-// 		// Nested node_modules
-// 		'**/node_modules/**',
-
-// 		'{tmp,temp}/**',
-// 		'**/*.min.js',
-// 		'**/vendor/**',
-// 		'**/dist/**',
-// 	],
-// });
-
-export const pvtnbr = (): FlatESLintConfig[] => [
-	{
-		ignores: [
-			// Nested node_modules
-			'**/node_modules/**',
-
-			'{tmp,temp}/**',
-			'**/*.min.js',
-			'**/vendor/**',
-			'**/dist/**',
-		],
-	},
-	base,
-	stylistic,
-	regexp,
-	imports,
-	promise,
-	unicorn,
-	noUseExtendNative,
-	eslintComments,
-	...json,
-	...typescript,
-	vue,
-	react,
-	...markdown,
-	serviceWorkers,
-	jest,
-].filter(Boolean);
+type Options = {
+	node?: boolean;
+};
+export const pvtnbr = (
+	options?: Options,
+): FlatESLintConfig[] => {
+	return [
+		{
+			ignores: [
+				// Nested node_modules
+				'**/node_modules/**',
+	
+				'{tmp,temp}/**',
+				'**/*.min.js',
+				'**/vendor/**',
+				'**/dist/**',
+			],
+		},
+		base,
+		stylistic,
+		regexp,
+		imports,
+		promise,
+		unicorn,
+		noUseExtendNative,
+		eslintComments,
+		...json,
+		...typescript,
+		vue,
+		react,
+		...markdown,
+		serviceWorkers,
+		jest,
+		(
+			options?.node ? node : undefined
+		),
+	].filter(Boolean);
+};
