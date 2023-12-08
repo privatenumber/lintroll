@@ -6,11 +6,27 @@ import { defineConfig } from '../utils/define-config.js';
 const currentPackageJson = require(path.resolve('package.json'));
 const isCli = 'bin' in currentPackageJson;
 
-console.dir(nodePlugin.configs['flat/mixed-esm-and-cjs'], {
-	depth: null,
-});
+const [
+	ambiguious,
+	mjs,
+	cjs,
+] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
+
 export const node = [
-	...nodePlugin.configs['flat/mixed-esm-and-cjs'].slice(1),
+	/**
+	 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
+	 * because often times, ESM is compiled to CJS at runtime using tools like tsx:
+	 * https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
+	 */
+	{
+		...ambiguious,
+		languageOptions: {
+			...ambiguious.languageOptions,
+			sourceType: 'module',
+		},
+	},
+	mjs,
+	cjs,
 
 	defineConfig({
 		plugins: {
