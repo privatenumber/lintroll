@@ -42,6 +42,7 @@ import { typescript } from './rules/typescript.js';
 // 	],
 // });
 
+console.log('typescript', typescript);
 export const pvtnbr = (): FlatESLintConfig[] => [
 	{
 		ignores: [
@@ -54,10 +55,10 @@ export const pvtnbr = (): FlatESLintConfig[] => [
 			'**/dist/**',
 		],
 	},
-	...base,
+	base,
 	...stylistic,
 	...regexp,
-	...imports,
+	imports,
 	...promise,
 	...eslintComments,
 	...json,
