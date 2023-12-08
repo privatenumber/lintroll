@@ -1,13 +1,13 @@
-import type { ESLint } from 'eslint';
 import type { FlatESLintConfig } from 'eslint-define-config';
 import markdownPlugin from 'eslint-plugin-markdown';
 
-// console.log(markdownPlugin.configs.recommended.overrides);
+// TODO: extend markdownPlugin.configs.recommended.overrides
+
 export const markdown: FlatESLintConfig[] = [
 	{
 		files: ['*.md'],
 		plugins: {
-			markdown: markdownPlugin as unknown as ESLint.Plugin,
+			markdown: markdownPlugin,
 		},
 		processor: 'markdown/markdown',
 	},

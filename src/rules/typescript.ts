@@ -3,11 +3,8 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-// @ts-expect-error no types
 import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js';
-// @ts-expect-error no types
 import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
-
 import type { FlatESLintConfig } from 'eslint-define-config';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import * as importPlugin from 'eslint-plugin-import';

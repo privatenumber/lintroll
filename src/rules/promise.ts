@@ -1,10 +1,9 @@
-import type { ESLint } from 'eslint';
 import type { FlatESLintConfig } from 'eslint-define-config';
 import promisePlugin from 'eslint-plugin-promise';
 
 export const promise: FlatESLintConfig[] = [{
 	plugins: {
-		promise: promisePlugin as unknown as ESLint.Plugin,
+		promise: promisePlugin,
 	},
 	rules: {
 		...promisePlugin.configs.recommended.rules,
