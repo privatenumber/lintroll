@@ -1,4 +1,4 @@
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 
 export const eslintComments: FlatESLintConfig[] = [{

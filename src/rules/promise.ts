@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import promisePlugin from 'eslint-plugin-promise';
 
 export const promise: FlatESLintConfig[] = [{

@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import markdownPlugin from 'eslint-plugin-markdown';
 
 // console.log(markdownPlugin.configs.recommended.overrides);

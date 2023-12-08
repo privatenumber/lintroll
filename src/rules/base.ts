@@ -1,6 +1,6 @@
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import js from '@eslint/js';
-import globals from 'globals'
+import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
 import { isInstalled } from '../utils/is-installed.js';
 

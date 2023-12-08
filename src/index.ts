@@ -1,4 +1,4 @@
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import { base } from './rules/base.js';
 import { stylistic } from './rules/stylistic.js';
 import { regexp } from './rules/regexp.js';

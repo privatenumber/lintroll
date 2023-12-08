@@ -1,6 +1,5 @@
-
 declare module '@eslint/js' {
-	import type { Rules } from 'eslint-define-config'
+	import type { Rules } from 'eslint-define-config';
 
 	const rules: {
 		configs: {
@@ -12,7 +11,6 @@ declare module '@eslint/js' {
 
 	export default rules;
 }
-
 
 declare module 'eslint-plugin-import' {
 	import type { ESLint } from 'eslint';

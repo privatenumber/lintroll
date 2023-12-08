@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import * as regexpPlugin from 'eslint-plugin-regexp';
 
 export const regexp: FlatESLintConfig[] = [{

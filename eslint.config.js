@@ -4,10 +4,10 @@ import { pvtnbr } from './src/index';
 
 export default defineFlatConfig([
 	{
-		"ignores": [
-			"tests/*/fixtures/**/fail.*",
-			"tests/*/fixtures/**/fail/**"
-		]
+		ignores: [
+			'tests/*/fixtures/**/fail.*',
+			'tests/*/fixtures/**/fail/**',
+		],
 	},
 	...pvtnbr(),
 ]);

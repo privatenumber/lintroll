@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig, Rules } from 'eslint-define-config'
+import type { FlatESLintConfig, Rules } from 'eslint-define-config';
 import jsonc from 'eslint-plugin-jsonc';
 
 // console.log(jsonc);

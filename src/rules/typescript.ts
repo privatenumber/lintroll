@@ -7,16 +7,16 @@
 import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js';
 // @ts-expect-error no types
 import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
-import { isInstalled } from '../utils/is-installed.js';
-import { base } from './base.js';
-import { imports as baseImports } from './imports.js';
-const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import * as importPlugin from 'eslint-plugin-import';
 import * as typescriptParser from '@typescript-eslint/parser';
+import { isInstalled } from '../utils/is-installed.js';
+import { imports as baseImports } from './imports.js';
+import { base } from './base.js';
 
+const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
 
 // console.log(typescriptPlugin.configs);
 // console.log(importPlugin.configs.typescript);
@@ -25,7 +25,7 @@ export const typescript = (
 	isInstalled('typescript')
 		? [
 			{
-				files: ['**/*.{ts,tsx,mts,cts}'],// TODO: add vue
+				files: ['**/*.{ts,tsx,mts,cts}'], // TODO: add vue
 				languageOptions: {
 					parser: typescriptParser,
 					parserOptions: {
@@ -144,6 +144,6 @@ export const typescript = (
 					parserOptions: recommendedModule.eslintrc.parserOptions,
 				},
 			} satisfies FlatESLintConfig,
-	]
-	: []
+		]
+		: []
 );

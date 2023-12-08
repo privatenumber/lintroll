@@ -1,5 +1,5 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig } from 'eslint-define-config'
+import type { FlatESLintConfig } from 'eslint-define-config';
 import * as importPlugin from 'eslint-plugin-import';
 
 // console.log(importPlugin.configs);
@@ -165,7 +165,7 @@ export const imports = {
 		'import/prefer-default-export': 'off',
 	},
 } satisfies FlatESLintConfig;
-	
+
 // 	,
 // 	{
 // 		files: ['src/'],
