@@ -22,7 +22,7 @@
 	"scripts": {
 		"build": "rm -rf dist; esbuild src/**/*.ts --format=cjs --outdir=dist",
 		"type-check": "tsc --noEmit",
-		"lint": "eslint --cache .",
+		"lint": "NODE_OPTIONS='--import tsx' eslint --cache .",
 		"test": "pnpm build && tsx tests",
 		"dev:build": "pnpm build --watch",
 		"dev:test": "tsx watch tests",
@@ -33,6 +33,7 @@
 		"eslint": "^8.0.0"
 	},
 	"dependencies": {
+		"@eslint/js": "^8.55.0",
 		"@stylistic/eslint-plugin": "^1.4.1",
 		"@typescript-eslint/eslint-plugin": "^6.12.0",
 		"@typescript-eslint/parser": "^6.12.0",
@@ -50,7 +51,8 @@
 		"eslint-plugin-regexp": "^2.1.1",
 		"eslint-plugin-unicorn": "^49.0.0",
 		"eslint-plugin-vue": "^9.18.1",
-		"get-tsconfig": "^4.7.2"
+		"get-tsconfig": "^4.7.2",
+		"globals": "^13.23.0"
 	},
 	"devDependencies": {
 		"@types/confusing-browser-globals": "^1.0.3",
@@ -60,17 +62,12 @@
 		"clean-pkg-json": "^1.2.0",
 		"esbuild": "^0.19.8",
 		"eslint": "^8.54.0",
+		"eslint-define-config": "^2.0.0",
+		"jsonc-eslint-parser": "^2.4.0",
 		"manten": "^1.2.0",
 		"npm-run-all": "^4.1.5",
 		"react": "^18.2.0",
 		"tsx": "^4.5.0",
 		"typescript": "^5.3.2"
-	},
-	"eslintConfig": {
-		"extends": "./dist/node",
-		"ignorePatterns": [
-			"tests/*/fixtures/**/fail.*",
-			"tests/*/fixtures/**/fail/**"
-		]
 	}
 }

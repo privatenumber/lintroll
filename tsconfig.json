@@ -4,8 +4,13 @@
 		"esModuleInterop": true,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		"module": "Node16",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
 	},
+	"include": [
+		"src",
+		"tests",
+	],
 	"exclude": [
 		"tests/*/fixtures"
 	]

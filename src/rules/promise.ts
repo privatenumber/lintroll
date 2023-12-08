@@ -1,12 +1,16 @@
-import { createConfig } from '../utils/create-config.js';
+import type { ESLint } from 'eslint';
+import type { FlatESLintConfig } from 'eslint-define-config'
+import promisePlugin from 'eslint-plugin-promise';
 
-export = createConfig({
-	extends: 'plugin:promise/recommended',
-
+export const promise: FlatESLintConfig[] = [{
+	plugins: {
+		promise: promisePlugin as unknown as ESLint.Plugin,
+	},
 	rules: {
+		...promisePlugin.configs.recommended.rules,
 		'promise/always-return': 'off',
 		'promise/catch-or-return': ['error', {
 			allowThen: true,
 		}],
 	},
-});
+}];
