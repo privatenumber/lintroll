@@ -132,6 +132,17 @@ declare module 'eslint-plugin-vue' {
 	export default plugin;
 }
 
+declare module 'eslint-plugin-n' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
+
 declare module 'eslint-plugin-n/lib/configs/recommended-*.js' {
 	import type { LanguageOptions } from 'eslint-define-config';
 

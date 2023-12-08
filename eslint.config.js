@@ -9,5 +9,7 @@ export default defineFlatConfig([
 			'tests/*/fixtures/**/fail/**',
 		],
 	},
-	...pvtnbr(),
+	...pvtnbr({
+		node: true,
+	}),
 ]);

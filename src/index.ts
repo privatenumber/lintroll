@@ -19,6 +19,7 @@ import { node } from './rules/node.js';
 type Options = {
 	node?: boolean;
 };
+
 export const pvtnbr = (
 	options?: Options,
 ): FlatESLintConfig[] => {
@@ -49,8 +50,8 @@ export const pvtnbr = (
 		...markdown,
 		serviceWorkers,
 		jest,
-		(
-			options?.node ? node : undefined
+		...(
+			options?.node ? node : []
 		),
 	].filter(Boolean);
 };
