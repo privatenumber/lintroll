@@ -385,4 +385,3 @@ export const stylistic = {
 		'@stylistic/yield-star-spacing': ['error', 'after'],
 	},
 } satisfies FlatESLintConfig;
-

@@ -140,4 +140,3 @@ declare module 'eslint-plugin-n/lib/configs/recommended-*.js' {
 	};
 	export default recommended;
 }
-

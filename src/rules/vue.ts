@@ -1,7 +1,7 @@
+import fs from 'fs';
 import type { FlatESLintConfig } from 'eslint-define-config';
 import vuePlugin from 'eslint-plugin-vue';
 import * as vueParser from 'vue-eslint-parser';
-import fs from 'fs';
 import { isInstalled } from '../utils/is-installed.js';
 
 const getModuleExports = (
@@ -121,4 +121,3 @@ export const vue = {
 		}],
 	},
 } satisfies FlatESLintConfig;
-
