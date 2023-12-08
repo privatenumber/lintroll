@@ -10,6 +10,8 @@ import { markdown } from './rules/markdown.js';
 import { json } from './rules/json.js';
 import { noUseExtendNative } from './rules/no-use-extend-native.js';
 import { serviceWorkers } from './rules/service-workers.js';
+import { typescript } from './rules/typescript.js';
+
 // export = createConfig({
 // 	extends: [
 // 		'./rules/base',
@@ -63,4 +65,5 @@ export const pvtnbr = (): FlatESLintConfig[] => [
 	...jest,
 	...noUseExtendNative,
 	...serviceWorkers,
+	...typescript,
 ];
