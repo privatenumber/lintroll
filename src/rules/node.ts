@@ -99,7 +99,6 @@ export const node = [
 	},
 ] satisfies FlatESLintConfig[];
 
-
 // export = createConfig({
 // 	extends: [
 // 		'plugin:n/recommended',

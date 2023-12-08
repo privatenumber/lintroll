@@ -22,36 +22,34 @@ type Options = {
 
 export const pvtnbr = (
 	options?: Options,
-): FlatESLintConfig[] => {
-	return [
-		{
-			ignores: [
-				// Nested node_modules
-				'**/node_modules/**',
-	
-				'{tmp,temp}/**',
-				'**/*.min.js',
-				'**/vendor/**',
-				'**/dist/**',
-			],
-		},
-		base,
-		stylistic,
-		regexp,
-		imports,
-		promise,
-		unicorn,
-		noUseExtendNative,
-		eslintComments,
-		...json,
-		...typescript,
-		vue,
-		react,
-		...markdown,
-		serviceWorkers,
-		jest,
-		...(
-			options?.node ? node : []
-		),
-	].filter(Boolean);
-};
+): FlatESLintConfig[] => [
+	{
+		ignores: [
+			// Nested node_modules
+			'**/node_modules/**',
+
+			'{tmp,temp}/**',
+			'**/*.min.js',
+			'**/vendor/**',
+			'**/dist/**',
+		],
+	},
+	base,
+	stylistic,
+	regexp,
+	imports,
+	promise,
+	unicorn,
+	noUseExtendNative,
+	eslintComments,
+	...json,
+	...typescript,
+	vue,
+	react,
+	...markdown,
+	serviceWorkers,
+	jest,
+	...(
+		options?.node ? node : []
+	),
+].filter(Boolean);
