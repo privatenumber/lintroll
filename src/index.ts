@@ -34,6 +34,9 @@ export const pvtnbr = (
 			'**/dist/**',
 		],
 	},
+	...(
+		options?.node ? node : []
+	),
 	base,
 	stylistic,
 	regexp,
@@ -49,7 +52,4 @@ export const pvtnbr = (
 	...markdown,
 	serviceWorkers,
 	jest,
-	...(
-		options?.node ? node : []
-	),
 ].filter(Boolean);

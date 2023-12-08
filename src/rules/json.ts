@@ -1,9 +1,9 @@
 import type { ESLint } from 'eslint';
-import type { FlatESLintConfig, Rules } from 'eslint-define-config';
+import type { Rules } from 'eslint-define-config';
 import jsonc from 'eslint-plugin-jsonc';
+import { defineConfig } from '../utils/define-config.js';
 
-// console.log(jsonc);
-const baseConfig = {
+const baseConfig = defineConfig({
 	files: ['**/*.{json,json5,jsonc}'],
 	plugins: {
 		// jsonc comes with own types
@@ -25,9 +25,9 @@ const baseConfig = {
 		],
 		'jsonc/object-property-newline': 'error',
 	},
-} satisfies FlatESLintConfig;
+});
 
-const packageJson = {
+const packageJson = defineConfig({
 	files: ['**/package.json'],
 	rules: {
 		'jsonc/sort-keys': [
@@ -76,14 +76,14 @@ const packageJson = {
 			},
 		],
 	},
-} satisfies FlatESLintConfig;
+});
 
-const tsconfig = {
+const tsconfig = defineConfig({
 	files: ['**/tsconfig.json'],
 	rules: {
 		...(jsonc.configs['recommended-with-jsonc'].rules as unknown as Rules),
 	},
-} satisfies FlatESLintConfig;
+});
 
 export const json = [
 	{
@@ -94,4 +94,4 @@ export const json = [
 	baseConfig,
 	packageJson,
 	tsconfig,
-] satisfies FlatESLintConfig[];
+];

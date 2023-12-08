@@ -1,13 +1,13 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { getTsconfig } from 'get-tsconfig';
+import { defineConfig } from '../utils/define-config';
 
 const tsconfig = getTsconfig();
 const jsx = tsconfig?.config.compilerOptions?.jsx;
 const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 
-export const react = {
+export const react = defineConfig({
 	files: ['**/*.{jsx,tsx}'],
 
 	languageOptions: {
@@ -51,4 +51,4 @@ export const react = {
 		}],
 	},
 
-} satisfies FlatESLintConfig;
+});

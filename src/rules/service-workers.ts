@@ -1,8 +1,8 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
+import { defineConfig } from '../utils/define-config';
 
-export const serviceWorkers = {
+export const serviceWorkers = defineConfig({
 	files: ['**/*.sw.js'],
 	languageOptions: {
 		globals: globals.serviceworker,
@@ -13,4 +13,4 @@ export const serviceWorkers = {
 			...confusingBrowserGlobals.filter(variable => variable !== 'self'),
 		],
 	},
-} satisfies FlatESLintConfig;
+});

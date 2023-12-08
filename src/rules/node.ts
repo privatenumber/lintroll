@@ -1,13 +1,18 @@
 import path from 'path';
-import type { FlatESLintConfig } from 'eslint-define-config';
 import nodePlugin from 'eslint-plugin-n';
+import { defineConfig } from '../utils/define-config.js';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const currentPackageJson = require(path.resolve('package.json'));
 const isCli = 'bin' in currentPackageJson;
 
+console.dir(nodePlugin.configs['flat/mixed-esm-and-cjs'], {
+	depth: null,
+});
 export const node = [
-	{
+	...nodePlugin.configs['flat/mixed-esm-and-cjs'].slice(1),
+
+	defineConfig({
 		plugins: {
 			n: nodePlugin,
 		},
@@ -20,8 +25,6 @@ export const node = [
 		},
 
 		rules: {
-			...nodePlugin.configs.recommended.rules,
-
 			// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
 			'n/file-extension-in-import': ['error', 'always', {
 
@@ -77,10 +80,10 @@ export const node = [
 			// Currently doesn't work for modules
 			'n/no-missing-import': 'off',
 		},
-	},
+	}),
 	...(
 		isCli
-			? [{
+			? [defineConfig({
 				files: [
 					'**/cli.{js,ts}',
 					'**/cli/**/*.{js,ts}',
@@ -88,16 +91,16 @@ export const node = [
 				rules: {
 					'n/no-process-exit': 'off',
 				},
-			} satisfies FlatESLintConfig]
+			})]
 			: []
 	),
-	{
+	defineConfig({
 		files: ['**/*.md/*'],
 		rules: {
 			'n/no-missing-import': 'off',
 		},
-	},
-] satisfies FlatESLintConfig[];
+	}),
+];
 
 // export = createConfig({
 // 	extends: [

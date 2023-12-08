@@ -1,7 +1,7 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import unicornPlugin from 'eslint-plugin-unicorn';
+import { defineConfig } from '../utils/define-config';
 
-export const unicorn = {
+export const unicorn = defineConfig({
 	plugins: {
 		unicorn: unicornPlugin,
 	},
@@ -90,4 +90,4 @@ export const unicorn = {
 		 */
 		'unicorn/template-indent': 'off',
 	},
-} satisfies FlatESLintConfig;
+});

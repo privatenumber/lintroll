@@ -1,7 +1,7 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import stylisticPlugin from '@stylistic/eslint-plugin';
+import { defineConfig } from '../utils/define-config';
 
-export const stylistic = {
+export const stylistic = defineConfig({
 	plugins: {
 		'@stylistic': stylisticPlugin,
 	},
@@ -384,4 +384,4 @@ export const stylistic = {
 		// https://eslint.org/docs/latest/rules/yield-star-spacing
 		'@stylistic/yield-star-spacing': ['error', 'after'],
 	},
-} satisfies FlatESLintConfig;
+});

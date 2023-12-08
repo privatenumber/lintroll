@@ -5,11 +5,11 @@
  */
 import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js';
 import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
-import type { FlatESLintConfig } from 'eslint-define-config';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import * as importPlugin from 'eslint-plugin-import';
 import * as typescriptParser from '@typescript-eslint/parser';
 import { isInstalled } from '../utils/is-installed.js';
+import { defineConfig } from '../utils/define-config';
 import { imports as baseImports } from './imports.js';
 import { base } from './base.js';
 
@@ -21,7 +21,7 @@ const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-d
 export const typescript = (
 	isInstalled('typescript')
 		? [
-			{
+			defineConfig({
 				files: ['**/*.{ts,tsx,mts,cts}'], // TODO: add vue
 				languageOptions: {
 					parser: typescriptParser,
@@ -127,21 +127,21 @@ export const typescript = (
 					// Could be used to pass in an explicit `undefined` to a required parameter
 					'unicorn/no-useless-undefined': 'off',
 				},
-			},
-			{
+			}),
+			defineConfig({
 				files: ['*.cts'],
 				languageOptions: {
 					globals: recommendedScript.eslintrc.globals,
 					parserOptions: recommendedScript.eslintrc.parserOptions,
 				},
-			},
-			{
+			}),
+			defineConfig({
 				files: ['*.mts'],
 				languageOptions: {
 					globals: recommendedModule.eslintrc.globals,
 					parserOptions: recommendedModule.eslintrc.parserOptions,
 				},
-			},
-		] satisfies FlatESLintConfig[]
+			}),
+		]
 		: []
 );

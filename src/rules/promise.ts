@@ -1,7 +1,7 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import promisePlugin from 'eslint-plugin-promise';
+import { defineConfig } from '../utils/define-config.js';
 
-export const promise = {
+export const promise = defineConfig({
 	plugins: {
 		promise: promisePlugin,
 	},
@@ -12,4 +12,4 @@ export const promise = {
 			allowThen: true,
 		}],
 	},
-} satisfies FlatESLintConfig;
+});

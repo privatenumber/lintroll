@@ -1,10 +1,10 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import js from '@eslint/js';
 import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
 import { isInstalled } from '../utils/is-installed.js';
+import { defineConfig } from '../utils/define-config.js';
 
-export const base = {
+export const base = defineConfig({
 	languageOptions: {
 		globals: {
 			...globals['shared-node-browser'],
@@ -791,4 +791,4 @@ export const base = {
 		// require or disallow Yoda conditions
 		yoda: 'error',
 	},
-} satisfies FlatESLintConfig;
+});

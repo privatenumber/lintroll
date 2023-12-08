@@ -3,6 +3,7 @@ import type { FlatESLintConfig } from 'eslint-define-config';
 import vuePlugin from 'eslint-plugin-vue';
 import * as vueParser from 'vue-eslint-parser';
 import { isInstalled } from '../utils/is-installed.js';
+import { defineConfig } from '../utils/define-config';
 
 const getModuleExports = (
 	moduleName: string,
@@ -64,7 +65,7 @@ function detectAutoImportComponents() {
 	return components;
 }
 
-export const vue = {
+export const vue = defineConfig({
 	files: ['**/*.vue'],
 
 	languageOptions: {
@@ -120,4 +121,4 @@ export const vue = {
 			],
 		}],
 	},
-} satisfies FlatESLintConfig;
+});

@@ -1,9 +1,9 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import * as importPlugin from 'eslint-plugin-import';
+import { defineConfig } from '../utils/define-config.js';
 
 // console.log(importPlugin.configs);
 
-export const imports = {
+export const imports = defineConfig({
 	plugins: {
 		import: importPlugin,
 	},
@@ -163,7 +163,7 @@ export const imports = {
 		// Excessive. Also, named exports help enforce readable imports.
 		'import/prefer-default-export': 'off',
 	},
-} satisfies FlatESLintConfig;
+});
 
 // 	,
 // 	{

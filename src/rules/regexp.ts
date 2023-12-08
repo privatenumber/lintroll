@@ -1,9 +1,9 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import * as regexpPlugin from 'eslint-plugin-regexp';
+import { defineConfig } from '../utils/define-config';
 
-export const regexp = {
+export const regexp = defineConfig({
 	plugins: {
 		regexp: regexpPlugin,
 	},
 	rules: regexpPlugin.configs.recommended.rules,
-} satisfies FlatESLintConfig;
+});

@@ -1,7 +1,7 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
+import { defineConfig } from '../utils/define-config.js';
 
-export const eslintComments = {
+export const eslintComments = defineConfig({
 	plugins: {
 		'eslint-comments': eslintCommentsPlugin,
 	},
@@ -15,4 +15,4 @@ export const eslintComments = {
 		// Disallow disable directives that don't affect any rules
 		'eslint-comments/no-unused-disable': 'error',
 	},
-} satisfies FlatESLintConfig;
+});

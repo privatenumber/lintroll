@@ -1,17 +1,17 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
 import markdownPlugin from 'eslint-plugin-markdown';
+import { defineConfig } from '../utils/define-config.js';
 
 // TODO: extend markdownPlugin.configs.recommended.overrides
 
 export const markdown = [
-	{
+	defineConfig({
 		files: ['**/*.md'],
 		plugins: {
 			markdown: markdownPlugin,
 		},
 		processor: 'markdown/markdown',
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
 		rules: {
 			'import/extensions': 'off',
@@ -32,16 +32,16 @@ export const markdown = [
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/prefer-object-from-entries': 'off',
 		},
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.{jsx,tsx}'],
 		rules: {
 			'react/jsx-indent-props': ['error', 4],
 			'react/jsx-no-undef': 'off',
 			'react/react-in-jsx-scope': 'off',
 		},
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.{js,jsx,vue}'],
 		rules: {
 			// Style
@@ -49,16 +49,16 @@ export const markdown = [
 			'@stylistic/semi': ['error', 'never'],
 			'@stylistic/comma-dangle': ['error', 'never'],
 		},
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.vue'],
 		rules: {
 			'vue/html-indent': ['error', 4],
 			'vue/no-undef-components': 'warn',
 			'vue/require-v-for-key': 'off',
 		},
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.{ts,tsx}'],
 		rules: {
 			'@typescript-eslint/comma-dangle': ['error', 'never'],
@@ -85,12 +85,12 @@ export const markdown = [
 			'@stylistic/semi': 'off',
 			'@stylistic/comma-dangle': 'off',
 		},
-	},
-	{
+	}),
+	defineConfig({
 		files: ['**/*.md/*.{json,json5}'],
 		rules: {
 			'jsonc/indent': ['error', 4],
 			'unicorn/filename-case': 'off',
 		},
-	},
-] satisfies FlatESLintConfig[];
+	}),
+];
