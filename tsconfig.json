@@ -6,6 +6,7 @@
 		"jsx": "react-jsx",
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
+		"skipLibCheck": true,
 	},
 	"include": [
 		"src",

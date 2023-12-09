@@ -91,7 +91,7 @@ export const vue = defineConfig({
 		},
 	},
 
-	processor: vuePlugin.processors['.vue'],
+	processor: vuePlugin.processors!['.vue'],
 
 	plugins: {
 		vue: vuePlugin,

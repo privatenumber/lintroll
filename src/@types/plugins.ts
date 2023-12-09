@@ -24,6 +24,7 @@ declare module 'eslint-plugin-import' {
 
 	export const rules: ESLint.Plugin['rules'];
 	export const configs: ESLint.Plugin['configs'] & {
+		recommended: ESLint.ConfigData;
 		typescript: ESLint.ConfigData;
 	};
 }
@@ -129,6 +130,9 @@ declare module 'eslint-plugin-vue' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
+			'base': ESLint.ConfigData;
+			'vue3-essential': ESLint.ConfigData;
+			'vue3-strongly-recommended': ESLint.ConfigData;
 			'vue3-recommended': ESLint.ConfigData;
 		};
 	};

@@ -1,12 +1,6 @@
 import path from 'path';
 import { testSuite, expect } from 'manten';
-import { createEslint } from '../utils/eslint.js';
-
-const eslint = createEslint({
-	rules: {
-		'import/no-extraneous-dependencies': 'off',
-	},
-});
+import { eslint } from '../utils/eslint.js';
 
 const passFixture = path.join(__dirname, 'fixtures/InputComponent.tsx');
 const failFixture = path.join(__dirname, 'fixtures/fail.tsx');

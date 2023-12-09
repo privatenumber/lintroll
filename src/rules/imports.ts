@@ -1,13 +1,13 @@
 import * as importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config.js';
 
-// console.log(importPlugin.configs);
-
 export const imports = defineConfig({
 	plugins: {
 		import: importPlugin,
 	},
 	rules: {
+		...importPlugin.configs.recommended.rules,
+
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
 		'import/default': 'off',
 
