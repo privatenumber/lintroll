@@ -10,10 +10,10 @@ export const base = defineConfig({
 			...globals['shared-node-browser'],
 		},
 
-		// parserOptions: {
-		// 	ecmaVersion: 2020,
-		// 	sourceType: 'module',
-		// },
+		parserOptions: {
+			ecmaVersion: 2020,
+			sourceType: 'module',
+		},
 	},
 
 	rules: {

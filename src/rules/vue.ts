@@ -1,5 +1,6 @@
 import fs from 'fs';
 import vuePlugin from 'eslint-plugin-vue';
+import globals from 'globals';
 import * as vueParser from 'vue-eslint-parser';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
@@ -64,11 +65,20 @@ function detectAutoImportComponents() {
 	return components;
 }
 
+const vue3Recommended = {
+	...vuePlugin.configs.base.rules,
+	...vuePlugin.configs['vue3-essential'].rules,
+	...vuePlugin.configs['vue3-strongly-recommended'].rules,
+	...vuePlugin.configs['vue3-recommended'].rules,
+};
+
 export const vue = defineConfig({
 	files: ['**/*.vue'],
 
 	languageOptions: {
 		globals: {
+			...globals.browser,
+			...globals.es2015,
 			...detectAutoImport(),
 			...vuePlugin.environments!['setup-compiler-macros'].globals,
 		},
@@ -81,12 +91,14 @@ export const vue = defineConfig({
 		},
 	},
 
+	processor: vuePlugin.processors['.vue'],
+
 	plugins: {
 		vue: vuePlugin,
 	},
 
 	rules: {
-		...vuePlugin.configs['vue3-recommended'].rules,
+		...vue3Recommended,
 
 		// For Vue 2
 		// 'vue/no-deprecated-slot-attribute': ['error'],

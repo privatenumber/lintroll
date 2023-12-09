@@ -1,8 +1,8 @@
 import { FlatESLint } from 'eslint/use-at-your-own-risk';
-import { pvtnbr } from '../../src/index.js';
+import { pvtnbr, type Options } from '../../src/index.js';
 
 export const createEslint = (
-	config?: any,
+	options?: Options,
 	cwd?: string,
 ) => {
 	const originalCwd = process.cwd();
@@ -14,15 +14,11 @@ export const createEslint = (
 
 	const eslint = new FlatESLint({
 		cwd,
-		// baseConfig: {
-		// 	...config,
-		// 	extends: [
-		// 		baseConfigPath,
-		// 		config?.extends ?? [],
-		// 	].flat(),
-		// },
-		baseConfig: pvtnbr(),
-		// useEslintrc: false,
+
+		baseConfig: pvtnbr(options),
+
+		// Don't look up config file
+		overrideConfigFile: true,
 	});
 
 	process.chdir(originalCwd);

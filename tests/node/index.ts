@@ -2,9 +2,8 @@ import path from 'path';
 import { testSuite, expect } from 'manten';
 import { createEslint } from '../utils/eslint.js';
 
-const nodeConfigPath = path.resolve('./dist/node.js');
 const eslint = createEslint({
-	extends: nodeConfigPath,
+	node: true,
 });
 
 export default testSuite(({ describe }) => {
@@ -13,7 +12,7 @@ export default testSuite(({ describe }) => {
 			describe('CommonJS', ({ test }) => {
 				const eslintCommonjs = createEslint(
 					{
-						extends: nodeConfigPath,
+						node: true,
 					},
 					path.join(__dirname, 'fixtures/package-commonjs/'),
 				);
@@ -48,7 +47,7 @@ export default testSuite(({ describe }) => {
 			describe('Module', ({ test }) => {
 				const eslintModule = createEslint(
 					{
-						extends: nodeConfigPath,
+						node: true,
 					},
 					path.join(__dirname, 'fixtures/package-module/'),
 				);

@@ -3,8 +3,6 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-import recommendedModule from 'eslint-plugin-n/lib/configs/recommended-module.js';
-import recommendedScript from 'eslint-plugin-n/lib/configs/recommended-script.js';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import * as importPlugin from 'eslint-plugin-import';
 import * as typescriptParser from '@typescript-eslint/parser';
@@ -126,20 +124,6 @@ export const typescript = (
 
 					// Could be used to pass in an explicit `undefined` to a required parameter
 					'unicorn/no-useless-undefined': 'off',
-				},
-			}),
-			defineConfig({
-				files: ['*.cts'],
-				languageOptions: {
-					globals: recommendedScript.eslintrc.globals,
-					parserOptions: recommendedScript.eslintrc.parserOptions,
-				},
-			}),
-			defineConfig({
-				files: ['*.mts'],
-				languageOptions: {
-					globals: recommendedModule.eslintrc.globals,
-					parserOptions: recommendedModule.eslintrc.parserOptions,
 				},
 			}),
 		]

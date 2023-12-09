@@ -26,9 +26,13 @@ export default testSuite(({ describe }) => {
 			expect(result.usedDeprecatedRules.length).toBe(0);
 		});
 
-		test('Fail cases', async () => {
+		test('Fail cases', async ({ onTestFail }) => {
 			const results = await eslint.lintFiles(failFixture);
 			const { messages } = results[0];
+
+			onTestFail(() => {
+				console.dir(results, { colors: true, depth: null, maxArrayLength: null });
+			});
 
 			expect(messages).toEqual(
 				expect.arrayContaining([
@@ -48,9 +52,13 @@ export default testSuite(({ describe }) => {
 			);
 		});
 
-		test('Fail setup', async () => {
+		test('Fail setup', async ({ onTestFail }) => {
 			const results = await eslint.lintFiles(failSetupFixture);
 			const { messages } = results[0];
+
+			onTestFail(() => {
+				console.dir(results, { colors: true, depth: null, maxArrayLength: null });
+			});
 
 			expect(messages).toEqual(
 				expect.arrayContaining([

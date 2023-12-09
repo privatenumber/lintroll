@@ -16,7 +16,7 @@ import { react } from './rules/react.js';
 import { vue } from './rules/vue.js';
 import { node } from './rules/node.js';
 
-type Options = {
+export type Options = {
 	node?: boolean;
 };
 
@@ -25,13 +25,13 @@ export const pvtnbr = (
 ): FlatESLintConfig[] => [
 	{
 		ignores: [
-			// Nested node_modules
-			'**/node_modules/**',
+			// // Nested node_modules
+			// '**/node_modules/**',
 
-			'{tmp,temp}/**',
-			'**/*.min.js',
-			'**/vendor/**',
-			'**/dist/**',
+			// '{tmp,temp}/**',
+			// '**/*.min.js',
+			// '**/vendor/**',
+			// '**/dist/**',
 		],
 	},
 	...(

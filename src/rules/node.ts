@@ -18,15 +18,21 @@ export const node = [
 	 * because often times, ESM is compiled to CJS at runtime using tools like tsx:
 	 * https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
 	 */
-	{
+	defineConfig({
 		...ambiguious,
 		languageOptions: {
 			...ambiguious.languageOptions,
 			sourceType: 'module',
 		},
-	},
-	mjs,
-	cjs,
+	}),
+	defineConfig({
+		...mjs,
+		files: [...mjs.files!, '**/*.mts']
+	}),
+	defineConfig({
+		...cjs,
+		files: [...cjs.files!, '**/*.mts']
+	}),
 
 	defineConfig({
 		plugins: {
