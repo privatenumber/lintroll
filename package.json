@@ -14,8 +14,8 @@
 	"files": [
 		"dist"
 	],
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.mjs",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --minify",
 		"type-check": "tsc --noEmit",

@@ -1,10 +1,8 @@
-import path from 'path';
-import { ESLint, type Linter } from 'eslint';
-
-const baseConfigPath = path.resolve('./dist/index.js');
+import { FlatESLint } from 'eslint/use-at-your-own-risk';
+import { pvtnbr } from '../../src/index.js';
 
 export const createEslint = (
-	config?: Linter.Config,
+	config?: any,
 	cwd?: string,
 ) => {
 	const originalCwd = process.cwd();
@@ -14,16 +12,17 @@ export const createEslint = (
 		process.chdir(cwd);
 	}
 
-	const eslint = new ESLint({
+	const eslint = new FlatESLint({
 		cwd,
-		baseConfig: {
-			...config,
-			extends: [
-				baseConfigPath,
-				config?.extends ?? [],
-			].flat(),
-		},
-		useEslintrc: false,
+		// baseConfig: {
+		// 	...config,
+		// 	extends: [
+		// 		baseConfigPath,
+		// 		config?.extends ?? [],
+		// 	].flat(),
+		// },
+		baseConfig: pvtnbr(),
+		// useEslintrc: false,
 	});
 
 	process.chdir(originalCwd);

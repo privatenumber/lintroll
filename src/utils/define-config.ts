@@ -1,28 +1,48 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
+import type { FlatESLintConfig, LanguageOptions } from 'eslint-define-config';
 
-const deepFreeze = <T extends object>(
-	object: T,
-	seenObjects = new Set<object>(),
-) => {
-	if (seenObjects.has(object)) {
-		return object;
-	}
+const properties = [
+	'files',
+	'ignores',
+	'languageOptions',
+	'linterOptions',
+	'plugins',
+	'rules',
+	'settings',
+] as const;
 
-	seenObjects.add(object);
+const deepFreeze = <T extends FlatESLintConfig>(config: T) => {
+	for (const property of properties) {
+		const value = config[property];
+		if (!value) {
+			continue;
+		}
 
-	const keys = Reflect.ownKeys(object) as unknown as (keyof T)[];
+		Object.freeze(value);
 
-	for (const key of keys) {
-		const value = object[key];
-		if (
-			(value && typeof value === 'object')
-			|| typeof value === 'function'
-		) {
-			deepFreeze(value, seenObjects);
+		if (property === 'rules') {
+			const rules = value as FlatESLintConfig['rules'];
+			for (const ruleName in rules) {
+				if (Object.hasOwn(rules, ruleName)) {
+					const rule = rules[ruleName];
+					if (rule) {
+						Object.freeze(rule);
+					}
+				}
+			}
+		}
+
+		if (property === 'languageOptions') {
+			const languageOptions = value as LanguageOptions;
+			if (languageOptions.parserOptions) {
+				Object.freeze(languageOptions.parserOptions);
+			}
+			if (languageOptions.globals) {
+				Object.freeze(languageOptions.globals);
+			}
 		}
 	}
 
-	return Object.freeze(object);
+	return Object.freeze(config);
 };
 
 export const defineConfig = <T extends FlatESLintConfig>(

@@ -136,11 +136,12 @@ declare module 'eslint-plugin-vue' {
 }
 
 declare module 'eslint-plugin-n' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData;
+			'flat/mixed-esm-and-cjs': Linter.FlatConfig[];
 		};
 	};
 	export default plugin;
