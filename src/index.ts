@@ -25,13 +25,13 @@ export const pvtnbr = (
 ): FlatESLintConfig[] => [
 	{
 		ignores: [
-			// // Nested node_modules
-			// '**/node_modules/**',
+			// Nested node_modules
+			'**/node_modules/**',
 
-			// '{tmp,temp}/**',
-			// '**/*.min.js',
-			// '**/vendor/**',
-			// '**/dist/**',
+			'{tmp,temp}/**',
+			'**/*.min.js',
+			'**/vendor/**',
+			'**/dist/**',
 		],
 	},
 	...(

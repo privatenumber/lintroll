@@ -12,6 +12,9 @@ const [
 	cjs,
 ] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
 
+/*
+Eventually this should be a function that accepts a glob to apply node rules to
+*/
 export const node = [
 	/**
 	 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
@@ -20,6 +23,7 @@ export const node = [
 	 */
 	defineConfig({
 		...ambiguious,
+		files: [...ambiguious.files!, '**/*.ts'],
 		languageOptions: {
 			...ambiguious.languageOptions,
 			sourceType: 'module',
@@ -27,11 +31,11 @@ export const node = [
 	}),
 	defineConfig({
 		...mjs,
-		files: [...mjs.files!, '**/*.mts']
+		files: [...mjs.files!, '**/*.mts'],
 	}),
 	defineConfig({
 		...cjs,
-		files: [...cjs.files!, '**/*.mts']
+		files: [...cjs.files!, '**/*.mts'],
 	}),
 
 	defineConfig({
@@ -123,45 +127,3 @@ export const node = [
 		},
 	}),
 ];
-
-// export = createConfig({
-// 	extends: [
-// 		'plugin:n/recommended',
-
-// 		/**
-// 		 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
-// 		 * because often times, ESM is compiled to CJS at runtime using tools like tsx:
-// 		 * https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
-// 		 */
-// 		'./index',
-// 	],
-
-// 	settings: {
-// 		node: {
-// 			// Should support the latest LTS and above
-// 			version: '>=18.16.0',
-// 		},
-// 	},
-
-// 	overrides: [
-// 		...(
-// 			isCli
-// 				? [{
-// 					files: [
-// 						'cli.{js,ts}',
-// 						'**/cli/**/*.{js,ts}',
-// 					],
-// 					rules: {
-// 						'n/no-process-exit': 'off',
-// 					} as Linter.RulesRecord,
-// 				}]
-// 				: []
-// 		),
-// 		{
-// 			files: '**/*.md/*',
-// 			rules: {
-// 				'n/no-missing-import': 'off',
-// 			},
-// 		},
-// 	],
-// });
