@@ -1,4 +1,5 @@
 import fs from 'fs';
+import type { ESLint } from 'eslint';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
 import { resolveConfig } from '../utils/resolve-config.js';
@@ -77,7 +78,7 @@ export const vue = [
 		languageOptions: {
 			globals: {
 				// Types incorrect: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67852
-				...detectAutoImport() as unknown as Record<string, boolean>,
+				...detectAutoImport() as unknown as ESLint.Environment['globals'],
 			},
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
