@@ -1,6 +1,6 @@
 import markdownPlugin from 'eslint-plugin-markdown';
 import { defineConfig } from '../utils/define-config.js';
-import { resolveConfig } from '../utils/resolve-config.js';
+// import { resolveConfig } from '../utils/resolve-config.js';
 
 // TODO: extend markdownPlugin.configs.recommended.overrides
 

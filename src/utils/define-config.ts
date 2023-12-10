@@ -46,10 +46,20 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 	return Object.freeze(config);
 };
 
-export const defineConfig = <T extends Linter.FlatConfig | Linter.FlatConfig[]>(
-	config: T,
-) => (
+export function defineConfig(
+	config: Linter.FlatConfig,
+): Linter.FlatConfig;
+
+export function defineConfig(
+	config: Linter.FlatConfig[],
+): Linter.FlatConfig[];
+
+export function defineConfig(
+	config: Linter.FlatConfig | Linter.FlatConfig[],
+): Linter.FlatConfig | Linter.FlatConfig[] {
+	return (
 		Array.isArray(config)
 			? config.map(deepFreeze)
 			: deepFreeze(config)
 	);
+}
