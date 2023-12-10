@@ -45,6 +45,10 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 	return Object.freeze(config);
 };
 
+/**
+ * These specific signatures are needed to make sure that the return type is
+ * narrowed to the input type.
+ */
 export function defineConfig<T extends Linter.FlatConfig>(
 	config: T,
 ): T;
