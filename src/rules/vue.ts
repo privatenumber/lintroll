@@ -76,7 +76,8 @@ export const vue = [
 
 		languageOptions: {
 			globals: {
-				...detectAutoImport(),
+				// Types incorrect: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67852
+				...detectAutoImport() as unknown as Record<string, boolean>,
 			},
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
