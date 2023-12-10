@@ -88,6 +88,9 @@ devDependencies:
   '@types/eslint__eslintrc':
     specifier: ^2.1.1
     version: 2.1.1
+  '@types/eslint__js':
+    specifier: ^8.42.3
+    version: 8.42.3
   '@types/node':
     specifier: ^20.10.0
     version: 20.10.0
@@ -838,6 +841,12 @@ packages:
 
   /@types/eslint__eslintrc@2.1.1:
     resolution: {integrity: sha512-LI51vVv3N7WI4+fM7Xkh1+ciLA1gtuQPgXdKdece+vD8f/G2hrFqtwb4YIQyIM6VXpRM4vSy1PW5y3yuHK+Y2w==}
+    dependencies:
+      '@types/eslint': 8.44.8
+    dev: true
+
+  /@types/eslint__js@8.42.3:
+    resolution: {integrity: sha512-alfG737uhmPdnvkrLdZLcEKJ/B8s9Y4hrZ+YAdzUeoArBlSUERA2E87ROfOaS4jd/C45fzOoZzidLc1IPwLqOw==}
     dependencies:
       '@types/eslint': 8.44.8
     dev: true

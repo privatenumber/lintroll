@@ -1,10 +1,9 @@
 // @ts-check
-import { defineFlatConfig } from 'eslint-define-config';
 
 // eslint-disable-next-line n/file-extension-in-import
-import { pvtnbr } from './src/index.ts';
+import { defineConfig, pvtnbr } from './src/index.ts';
 
-export default defineFlatConfig([
+export default defineConfig([
 	{
 		ignores: [
 			'tests/*/fixtures/**/fail.*',

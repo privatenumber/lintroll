@@ -1,7 +1,4 @@
 import fs from 'fs';
-import vuePlugin from 'eslint-plugin-vue';
-import globals from 'globals';
-import * as vueParser from 'vue-eslint-parser';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
 import { resolveConfig } from '../utils/resolve-config.js';
@@ -67,31 +64,26 @@ function detectAutoImportComponents() {
 }
 
 export const vue = [
-	...resolveConfig('plugin:vue/vue3-recommended'),
+	...resolveConfig({
+		extends: 'plugin:vue/vue3-recommended',
+		env: {
+			'vue/setup-compiler-macros': true,
+		},
+	}),
 
 	defineConfig({
 		files: ['**/*.vue'],
 
 		languageOptions: {
 			globals: {
-				...globals.browser,
-				...globals.es2015,
 				...detectAutoImport(),
-				...vuePlugin.environments!['setup-compiler-macros'].globals,
 			},
-			parser: vueParser,
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
 				// parser: {
 				// 	ts: '@typescript-eslint/parser',
 				// },
 			},
-		},
-
-		processor: vuePlugin.processors!['.vue'],
-
-		plugins: {
-			vue: vuePlugin,
 		},
 
 		rules: {

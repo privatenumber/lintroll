@@ -1,9 +1,15 @@
 import markdownPlugin from 'eslint-plugin-markdown';
 import { defineConfig } from '../utils/define-config.js';
+import { resolveConfig } from '../utils/resolve-config.js';
 
 // TODO: extend markdownPlugin.configs.recommended.overrides
 
+// const c = resolveConfig('plugin:markdown/recommended');
+// console.dir(c, { colors: true, depth: null, maxArrayLength: null });
+
 export const markdown = [
+	// ...resolveConfig('plugin:markdown/recommended'),
+
 	defineConfig({
 		files: ['**/*.md'],
 		plugins: {
@@ -11,6 +17,7 @@ export const markdown = [
 		},
 		processor: 'markdown/markdown',
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
 		rules: {
@@ -33,6 +40,7 @@ export const markdown = [
 			'unicorn/prefer-object-from-entries': 'off',
 		},
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.{jsx,tsx}'],
 		rules: {
@@ -41,6 +49,7 @@ export const markdown = [
 			'react/react-in-jsx-scope': 'off',
 		},
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,vue}'],
 		rules: {
@@ -50,6 +59,7 @@ export const markdown = [
 			'@stylistic/comma-dangle': ['error', 'never'],
 		},
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.vue'],
 		rules: {
@@ -58,6 +68,7 @@ export const markdown = [
 			'vue/require-v-for-key': 'off',
 		},
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.{ts,tsx}'],
 		rules: {
@@ -86,6 +97,7 @@ export const markdown = [
 			'@stylistic/comma-dangle': 'off',
 		},
 	}),
+
 	defineConfig({
 		files: ['**/*.md/*.{json,json5}'],
 		rules: {

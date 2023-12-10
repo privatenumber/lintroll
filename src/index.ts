@@ -51,3 +51,5 @@ export const pvtnbr = (
 	...markdown,
 	jest,
 ].filter(Boolean);
+
+export { defineConfig } from './utils/define-config.js';
