@@ -100,30 +100,23 @@ declare module '@stylistic/eslint-plugin' {
 	export default plugin;
 }
 
-// declare module 'eslint-plugin-react-hooks' {
-// 	import type { ESLint } from 'eslint';
+declare module 'eslint-plugin-markdown' {
+	import type { ESLint } from 'eslint';
 
-// 	const plugin: ESLint.Plugin & {
-// 		configs: {
-// 			recommended: ESLint.ConfigData;
-// 		};
-// 	};
-// 	export default plugin;
-// }
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: ESLint.ConfigData;
+		};
+	};
+	export default plugin;
+}
 
-// declare module 'eslint-plugin-vue' {
-// 	import type { ESLint } from 'eslint';
+declare module 'eslint-plugin-vue' {
+	import type { ESLint } from 'eslint';
 
-// 	const plugin: ESLint.Plugin & {
-// 		configs: {
-// 			'base': ESLint.ConfigData;
-// 			'vue3-essential': ESLint.ConfigData;
-// 			'vue3-strongly-recommended': ESLint.ConfigData;
-// 			'vue3-recommended': ESLint.ConfigData;
-// 		};
-// 	};
-// 	export default plugin;
-// }
+	const plugin: ESLint.Plugin;
+	export default plugin;
+}
 
 declare module 'eslint-plugin-n' {
 	import type { ESLint, Linter } from 'eslint';
