@@ -1,12 +1,12 @@
-import path from 'path';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
 	describe('json', ({ test }) => {
 		test('package.json', async () => {
-			const fixturePath = path.join(__dirname, 'fixtures/fail/package.json');
-			const [results] = await eslint.lintFiles(fixturePath);
+			const [results] = await eslint.lintFiles(
+				new URL('fixtures/fail/package.json', import.meta.url).pathname,
+			);
 
 			expect(results.messages).toEqual(
 				expect.arrayContaining([
@@ -23,8 +23,9 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('random.json', async () => {
-			const fixturePath = path.join(__dirname, 'fixtures/fail/random.json');
-			const [results] = await eslint.lintFiles(fixturePath);
+			const [results] = await eslint.lintFiles(
+				new URL('fixtures/fail/random.json', import.meta.url).pathname,
+			);
 
 			expect(results.messages).toEqual(
 				expect.arrayContaining([

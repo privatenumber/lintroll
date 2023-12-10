@@ -1,11 +1,10 @@
-import path from 'path';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const passFixture = path.join(__dirname, 'fixtures/PassingComponent.vue');
-const passSetupFixture = path.join(__dirname, 'fixtures/PassSetup.vue');
-const failFixture = path.join(__dirname, 'fixtures/fail/fail.vue');
-const failSetupFixture = path.join(__dirname, 'fixtures/fail/FailSetup.vue');
+const passFixture = new URL('fixtures/PassingComponent.vue', import.meta.url).pathname;
+const passSetupFixture = new URL('fixtures/PassSetup.vue', import.meta.url).pathname;
+const failFixture = new URL('fixtures/fail/fail.vue', import.meta.url).pathname;
+const failSetupFixture = new URL('fixtures/fail/FailSetup.vue', import.meta.url).pathname;
 
 export default testSuite(({ describe }) => {
 	describe('vue', ({ test }) => {

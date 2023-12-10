@@ -1,9 +1,8 @@
-import path from 'path';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const fixturePass = path.join(__dirname, 'fixtures/PASS.md');
-const fixtureFail = path.join(__dirname, 'fixtures/fail.md');
+const fixturePass = new URL('fixtures/PASS.md', import.meta.url).pathname;
+const fixtureFail = new URL('fixtures/fail.md', import.meta.url).pathname;
 
 export default testSuite(({ describe }) => {
 	describe('markdown', ({ test }) => {

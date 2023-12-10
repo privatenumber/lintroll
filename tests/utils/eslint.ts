@@ -1,4 +1,4 @@
-import { FlatESLint } from 'eslint/use-at-your-own-risk';
+import eslintApi from 'eslint/use-at-your-own-risk';
 import { pvtnbr, type Options } from '../../src/index.js';
 
 export const createEslint = (
@@ -12,7 +12,7 @@ export const createEslint = (
 		process.chdir(cwd);
 	}
 
-	const eslint = new FlatESLint({
+	const flatEsLint = new eslintApi.FlatESLint({
 		cwd,
 
 		baseConfig: pvtnbr(options),
@@ -23,7 +23,7 @@ export const createEslint = (
 
 	process.chdir(originalCwd);
 
-	return eslint;
+	return flatEsLint;
 };
 
 export const eslint = createEslint();

@@ -11,6 +11,7 @@
 		"name": "Hiroki Osame",
 		"email": "hiroki.osame@gmail.com"
 	},
+	"type": "module",
 	"files": [
 		"dist"
 	],
@@ -58,7 +59,8 @@
 		"eslint-plugin-unicorn": "^49.0.0",
 		"eslint-plugin-vue": "^9.19.2",
 		"get-tsconfig": "^4.7.2",
-		"globals": "^13.23.0"
+		"globals": "^13.23.0",
+		"read-package-up": "^11.0.0"
 	},
 	"devDependencies": {
 		"@total-typescript/ts-reset": "^0.5.1",

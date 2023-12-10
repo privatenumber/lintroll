@@ -1,10 +1,9 @@
-import path from 'path';
 import nodePlugin from 'eslint-plugin-n';
+import { readPackageUpSync } from 'read-package-up';
 import { defineConfig } from '../utils/define-config.js';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const currentPackageJson = require(path.resolve('package.json'));
-const isCli = 'bin' in currentPackageJson;
+const foundPackageJson = readPackageUpSync()!;
+const isCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
 
 const [
 	ambiguious,

@@ -1,9 +1,8 @@
-import path from 'path';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const passFixture = path.join(__dirname, 'fixtures/InputComponent.tsx');
-const failFixture = path.join(__dirname, 'fixtures/fail.tsx');
+const passFixture = new URL('fixtures/InputComponent.tsx', import.meta.url).pathname;
+const failFixture = new URL('fixtures/fail.tsx', import.meta.url).pathname;
 
 export default testSuite(({ describe }) => {
 	describe('react', ({ test }) => {
