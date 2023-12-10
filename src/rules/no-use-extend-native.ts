@@ -1,9 +1,3 @@
-import noUseExtendNativePlugin from 'eslint-plugin-no-use-extend-native';
-import { defineConfig } from '../utils/define-config.js';
+import { flatCompat } from '../utils/flat-compat';
 
-export const noUseExtendNative = defineConfig({
-	plugins: {
-		'no-use-extend-native': noUseExtendNativePlugin,
-	},
-	rules: noUseExtendNativePlugin.configs.recommended.rules,
-});
+export const noUseExtendNative = flatCompat.extends('plugin:no-use-extend-native/recommended');

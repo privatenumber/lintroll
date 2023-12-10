@@ -1,4 +1,4 @@
-import type { FlatESLintConfig } from 'eslint-define-config';
+import type { Linter } from 'eslint';
 import { base } from './rules/base.js';
 import { stylistic } from './rules/stylistic.js';
 import { regexp } from './rules/regexp.js';
@@ -22,7 +22,7 @@ export type Options = {
 
 export const pvtnbr = (
 	options?: Options,
-): FlatESLintConfig[] => [
+): Linter.FlatConfig[] => [
 	{
 		ignores: [
 			// Nested node_modules
@@ -37,17 +37,17 @@ export const pvtnbr = (
 	...(
 		options?.node ? node : []
 	),
-	base,
+	...base,
 	stylistic,
-	regexp,
-	imports,
-	promise,
-	unicorn,
-	noUseExtendNative,
-	eslintComments,
+	...regexp,
+	...imports,
+	...promise,
+	...unicorn,
+	...noUseExtendNative,
+	...eslintComments,
 	...json,
 	...typescript,
-	vue,
+	...vue,
 	react,
 	...markdown,
 	serviceWorkers,

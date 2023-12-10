@@ -1,19 +1,27 @@
 import type { ESLint } from 'eslint';
 import type { Rules } from 'eslint-define-config';
-import jsonc from 'eslint-plugin-jsonc';
+import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.js';
+import { flatCompat } from '../utils/flat-compat.js';
+
+// import { resolvePluginConfig } from '../utils/resolve-plugin-config';
+
+
+
+// console.log(resolvePluginConfig(jsoncPlugin as unknown as ESLint.Plugin, 'base'));
+// console.log(resolvePluginConfig(jsoncPlugin as unknown as ESLint.Plugin, 'recommended-with-jsonc'));
 
 const baseConfig = defineConfig({
 	files: ['**/*.{json,json5,jsonc}'],
-	plugins: {
-		// jsonc comes with own types
-		jsonc: jsonc as unknown as ESLint.Plugin,
-	},
-	languageOptions: {
-		parser: jsonc,
-	},
+	// plugins: {
+	// 	// jsonc comes with own types
+	// 	jsonc: jsoncPlugin as unknown as ESLint.Plugin,
+	// },
+	// languageOptions: {
+	// 	parser: jsoncPlugin,
+	// },
 	rules: {
-		...(jsonc.configs.base.overrides[0].rules as unknown as Rules),
+		// ...(jsoncPlugin.configs.base.overrides[0].rules as unknown as Rules),
 		'jsonc/indent': ['error', 'tab'],
 		'jsonc/key-spacing': [
 			'error',
@@ -81,7 +89,7 @@ const packageJson = defineConfig({
 const tsconfig = defineConfig({
 	files: ['**/tsconfig.json'],
 	rules: {
-		...(jsonc.configs['recommended-with-jsonc'].rules as unknown as Rules),
+		...(jsoncPlugin.configs['recommended-with-jsonc'].rules as unknown as Rules),
 	},
 });
 
@@ -91,6 +99,7 @@ export const json = [
 			'**/package-lock.json',
 		],
 	},
+	...flatCompat.extends('plugin:jsonc/base'),
 	baseConfig,
 	packageJson,
 	tsconfig,

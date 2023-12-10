@@ -4,6 +4,7 @@ import globals from 'globals';
 import * as vueParser from 'vue-eslint-parser';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
+import { flatCompat } from '../utils/flat-compat.js';
 
 const getModuleExports = (
 	moduleName: string,
@@ -65,71 +66,67 @@ function detectAutoImportComponents() {
 	return components;
 }
 
-const vue3Recommended = {
-	...vuePlugin.configs.base.rules,
-	...vuePlugin.configs['vue3-essential'].rules,
-	...vuePlugin.configs['vue3-strongly-recommended'].rules,
-	...vuePlugin.configs['vue3-recommended'].rules,
-};
+export const vue = [
+	...flatCompat.extends('plugin:vue/vue3-recommended'),
 
-export const vue = defineConfig({
-	files: ['**/*.vue'],
+	defineConfig({
+		files: ['**/*.vue'],
 
-	languageOptions: {
-		globals: {
-			...globals.browser,
-			...globals.es2015,
-			...detectAutoImport(),
-			...vuePlugin.environments!['setup-compiler-macros'].globals,
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.es2015,
+				...detectAutoImport(),
+				...vuePlugin.environments!['setup-compiler-macros'].globals,
+			},
+			parser: vueParser,
+			parserOptions: {
+				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
+				// parser: {
+				// 	ts: '@typescript-eslint/parser',
+				// },
+			},
 		},
-		parser: vueParser,
-		parserOptions: {
-			// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
-			// parser: {
-			// 	ts: '@typescript-eslint/parser',
-			// },
+
+		processor: vuePlugin.processors!['.vue'],
+
+		plugins: {
+			vue: vuePlugin,
 		},
-	},
 
-	processor: vuePlugin.processors!['.vue'],
+		rules: {
 
-	plugins: {
-		vue: vuePlugin,
-	},
+			// For Vue 2
+			// 'vue/no-deprecated-slot-attribute': ['error'],
+			// 'vue/no-deprecated-slot-scope-attribute': ['error'],
+			// 'vue/no-deprecated-scope-attribute': ['error'],
 
-	rules: {
-		...vue3Recommended,
+			'unicorn/filename-case': ['error', {
+				case: 'pascalCase',
+			}],
 
-		// For Vue 2
-		// 'vue/no-deprecated-slot-attribute': ['error'],
-		// 'vue/no-deprecated-slot-scope-attribute': ['error'],
-		// 'vue/no-deprecated-scope-attribute': ['error'],
+			'vue/html-indent': ['error', 'tab'],
 
-		'unicorn/filename-case': ['error', {
-			case: 'pascalCase',
-		}],
+			'vue/multi-word-component-names': 'off',
 
-		'vue/html-indent': ['error', 'tab'],
+			'vue/no-undef-components': ['error', {
+				ignorePatterns: [
+					'router-view',
+					'router-link',
+					...detectAutoImportComponents(),
+				],
+			}],
 
-		'vue/multi-word-component-names': 'off',
+			// Deprecated
+			'vue/component-tags-order': 'off',
 
-		'vue/no-undef-components': ['error', {
-			ignorePatterns: [
-				'router-view',
-				'router-link',
-				...detectAutoImportComponents(),
-			],
-		}],
-
-		// Deprecated
-		'vue/component-tags-order': 'off',
-
-		'vue/block-order': ['error', {
-			order: [
-				'script[setup]',
-				['script', 'template'],
-				'style',
-			],
-		}],
-	},
-});
+			'vue/block-order': ['error', {
+				order: [
+					'script[setup]',
+					['script', 'template'],
+					'style',
+				],
+			}],
+		},
+	}),
+];

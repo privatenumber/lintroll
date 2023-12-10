@@ -1,4 +1,5 @@
-import type { FlatESLintConfig, LanguageOptions } from 'eslint-define-config';
+import type { LanguageOptions } from 'eslint-define-config';
+import type { Linter } from 'eslint';
 
 const properties = [
 	'files',
@@ -10,7 +11,7 @@ const properties = [
 	'settings',
 ] as const;
 
-const deepFreeze = <T extends FlatESLintConfig>(config: T) => {
+const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 	for (const property of properties) {
 		const value = config[property];
 		if (!value) {
@@ -20,7 +21,7 @@ const deepFreeze = <T extends FlatESLintConfig>(config: T) => {
 		Object.freeze(value);
 
 		if (property === 'rules') {
-			const rules = value as FlatESLintConfig['rules'];
+			const rules = value as Linter.FlatConfig['rules'];
 			for (const ruleName in rules) {
 				if (Object.hasOwn(rules, ruleName)) {
 					const rule = rules[ruleName];
@@ -45,6 +46,6 @@ const deepFreeze = <T extends FlatESLintConfig>(config: T) => {
 	return Object.freeze(config);
 };
 
-export const defineConfig = <T extends FlatESLintConfig>(
+export const defineConfig = <T extends Linter.FlatConfig>(
 	config: T,
 ) => deepFreeze(config);

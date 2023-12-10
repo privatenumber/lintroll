@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@eslint/eslintrc':
+    specifier: ^2.1.4
+    version: 2.1.4
   '@eslint/js':
     specifier: ^8.55.0
     version: 8.55.0
@@ -82,6 +85,9 @@ devDependencies:
   '@types/eslint':
     specifier: ^8.44.8
     version: 8.44.8
+  '@types/eslint__eslintrc':
+    specifier: ^2.1.1
+    version: 2.1.1
   '@types/node':
     specifier: ^20.10.0
     version: 20.10.0
@@ -560,8 +566,8 @@ packages:
     resolution: {integrity: sha512-cmlKmWLY9PKmsxKdb5DlXZBe6SV3fIyhoMj+lBVUeW5d9Dvqs62Hk+jskz4D9B3x+dEwDez29ScTog04K8WpUQ==}
     dev: true
 
-  /@eslint/eslintrc@2.1.3:
-    resolution: {integrity: sha512-yZzuIG+jnVu6hNSzFEN07e8BxF3uAzYtQb6uDkaYZLo6oYZDCq454c5kB8zxnzfCYyP4MIuyBn10L0DqwujTmA==}
+  /@eslint/eslintrc@2.1.4:
+    resolution: {integrity: sha512-269Z39MS6wVJtsoUl10L60WdkhJVdPG24Q4eZTH3nnF6lpvSShEK3wQjDX9JRWAUPvPh7COouPpU9IrqaZFvtQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
@@ -828,6 +834,12 @@ packages:
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
+    dev: true
+
+  /@types/eslint__eslintrc@2.1.1:
+    resolution: {integrity: sha512-LI51vVv3N7WI4+fM7Xkh1+ciLA1gtuQPgXdKdece+vD8f/G2hrFqtwb4YIQyIM6VXpRM4vSy1PW5y3yuHK+Y2w==}
+    dependencies:
+      '@types/eslint': 8.44.8
     dev: true
 
   /@types/estree@1.0.5:
@@ -2020,7 +2032,7 @@ packages:
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.54.0)
       '@eslint-community/regexpp': 4.10.0
-      '@eslint/eslintrc': 2.1.3
+      '@eslint/eslintrc': 2.1.4
       '@eslint/js': 8.54.0
       '@humanwhocodes/config-array': 0.11.13
       '@humanwhocodes/module-importer': 1.0.1

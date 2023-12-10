@@ -1,13 +1,9 @@
 import * as importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config.js';
+import { resolvePluginConfig } from '../utils/resolve-plugin-config';
 
-export const imports = defineConfig({
-	plugins: {
-		import: importPlugin,
-	},
+export const importsConfig = defineConfig({
 	rules: {
-		...importPlugin.configs.recommended.rules,
-
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
 		'import/default': 'off',
 
@@ -165,16 +161,18 @@ export const imports = defineConfig({
 	},
 });
 
-// 	,
-// 	{
-// 		files: ['src/'],
-// 		rules: {
-// 			// Disallow dynamic imports if compiled
-// 			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
-// 			'import/no-dynamic-require': 'error',
-// 		},
-// 	},
-// ];
+export const imports = [
+	resolvePluginConfig(importPlugin, 'recommended'),
+	importsConfig,
+	defineConfig({
+		files: ['src/'],
+		rules: {
+			// Disallow dynamic imports if compiled
+			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
+			'import/no-dynamic-require': 'error',
+		},
+	}),
+];
 
 // export = createConfig({
 // 	env: {

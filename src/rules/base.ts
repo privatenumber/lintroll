@@ -4,11 +4,9 @@ import confusingBrowserGlobals from 'confusing-browser-globals';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config.js';
 
-export const base = defineConfig({
+export const baseConfig = defineConfig({
 	languageOptions: {
-		globals: {
-			...globals['shared-node-browser'],
-		},
+		globals: globals['shared-node-browser'],
 
 		parserOptions: {
 			ecmaVersion: 2020,
@@ -17,9 +15,6 @@ export const base = defineConfig({
 	},
 
 	rules: {
-		// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
-		...js.configs.recommended.rules,
-
 		/**
 		 * Deprecated in favor of @stylistic
 		 * Disable from recommended
@@ -792,3 +787,10 @@ export const base = defineConfig({
 		yoda: 'error',
 	},
 });
+
+
+export const base = [
+	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
+	js.configs.recommended,
+	baseConfig,
+];

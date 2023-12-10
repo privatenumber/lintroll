@@ -8,32 +8,25 @@ import * as importPlugin from 'eslint-plugin-import';
 import * as typescriptParser from '@typescript-eslint/parser';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
-import { imports as baseImports } from './imports.js';
-import { base } from './base.js';
+import { importsConfig } from './imports.js';
+import { baseConfig } from './base.js';
+import { flatCompat } from '../utils/flat-compat';
 
-const noExtraneousDependenciesConfig = baseImports.rules['import/no-extraneous-dependencies'][1];
-
-// console.log(typescriptPlugin.configs);
-// console.log(importPlugin.configs.typescript);
+const noExtraneousDependenciesConfig = importsConfig.rules['import/no-extraneous-dependencies'][1];
 
 export const typescript = (
 	isInstalled('typescript')
 		? [
+			...flatCompat.extends('plugin:@typescript-eslint/recommended'),
+			...flatCompat.extends('plugin:import/typescript'),
+
 			defineConfig({
 				files: ['**/*.{ts,tsx,mts,cts}'], // TODO: add vue
-				languageOptions: {
-					parser: typescriptParser,
-					parserOptions: {
-						sourceType: 'module', // Necessary?
-					},
-				},
-
-				plugins: {
-					'@typescript-eslint': typescriptPlugin,
-				},
+				// languageOptions: {
+				// 	parser: typescriptParser,
+				// },
 
 				settings: {
-					...importPlugin.configs.typescript.settings,
 					'import/resolver': {
 						typescript: {},
 					},
@@ -57,7 +50,6 @@ export const typescript = (
 					...typescriptPlugin.configs['eslint-recommended'].overrides![0].rules,
 
 					...typescriptPlugin.configs.recommended.rules,
-					...importPlugin.configs.typescript.rules,
 
 					/**
 					 * Suddenly requires parserServices to be generated
@@ -71,12 +63,12 @@ export const typescript = (
 
 					'@typescript-eslint/member-delimiter-style': 'error',
 
-					'@typescript-eslint/no-shadow': base.rules['no-shadow'],
+					'@typescript-eslint/no-shadow': baseConfig.rules['no-shadow'],
 
 					'@typescript-eslint/no-unused-vars': [
 						'error',
 						{
-							...base.rules['no-unused-vars'][1],
+							...baseConfig.rules['no-unused-vars'][1],
 
 							argsIgnorePattern: '^_',
 							caughtErrorsIgnorePattern: '^_',

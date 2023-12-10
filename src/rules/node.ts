@@ -52,6 +52,7 @@ export const node = [
 
 		rules: {
 			// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
+			// TODO: Defer to import plugin
 			'n/file-extension-in-import': ['error', 'always', {
 
 				// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
@@ -103,7 +104,7 @@ export const node = [
 			'n/prefer-promises/fs': 'error',
 
 			// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-			// Currently doesn't work for modules
+			// Defer to import plugin
 			'n/no-missing-import': 'off',
 		},
 	}),
@@ -120,10 +121,4 @@ export const node = [
 			})]
 			: []
 	),
-	defineConfig({
-		files: ['**/*.md/*'],
-		rules: {
-			'n/no-missing-import': 'off',
-		},
-	}),
 ];

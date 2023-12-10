@@ -1,9 +1,3 @@
-import * as regexpPlugin from 'eslint-plugin-regexp';
-import { defineConfig } from '../utils/define-config';
+import { flatCompat } from '../utils/flat-compat.js';
 
-export const regexp = defineConfig({
-	plugins: {
-		regexp: regexpPlugin,
-	},
-	rules: regexpPlugin.configs.recommended.rules,
-});
+export const regexp = flatCompat.extends('plugin:regexp/recommended');

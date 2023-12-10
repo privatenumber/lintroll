@@ -2,6 +2,11 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { getTsconfig } from 'get-tsconfig';
 import { defineConfig } from '../utils/define-config';
+// import { resolvePluginConfig } from '../utils/resolve-plugin-config';
+
+// console.log(resolvePluginConfig(reactPlugin, 'recommended'));
+// console.log(resolvePluginConfig(reactHooksPlugin, 'recommended'));
+// console.log(resolvePluginConfig(reactPlugin, 'jsx-runtime'));
 
 const tsconfig = getTsconfig();
 const jsx = tsconfig?.config.compilerOptions?.jsx;
