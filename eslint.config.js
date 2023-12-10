@@ -6,8 +6,7 @@ import { defineConfig, pvtnbr } from './src/index.ts';
 export default defineConfig([
 	{
 		ignores: [
-			'tests/*/fixtures/**/fail.*',
-			'tests/*/fixtures/**/fail/**',
+			'tests/*/fixtures/**/fail{.*,/**}',
 		],
 	},
 	...pvtnbr({
