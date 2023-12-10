@@ -65,7 +65,6 @@
 		"clean-pkg-json": "^1.2.0",
 		"esbuild": "^0.19.8",
 		"eslint": "^8.54.0",
-		"eslint-define-config": "^2.0.0",
 		"jsonc-eslint-parser": "^2.4.0",
 		"manten": "^1.2.0",
 		"npm-run-all": "^4.1.5",

@@ -1,4 +1,3 @@
-import type { LanguageOptions } from 'eslint-define-config';
 import type { Linter } from 'eslint';
 
 const properties = [
@@ -33,7 +32,7 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 		}
 
 		if (property === 'languageOptions') {
-			const languageOptions = value as LanguageOptions;
+			const languageOptions = value as NonNullable<Linter.FlatConfig['languageOptions']>;
 			if (languageOptions.parserOptions) {
 				Object.freeze(languageOptions.parserOptions);
 			}

@@ -1,4 +1,4 @@
-import type { Rules } from 'eslint-define-config';
+import type { Linter } from 'eslint';
 import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.js';
 import { resolveConfig } from '../utils/resolve-config.js';
@@ -81,7 +81,7 @@ const packageJson = defineConfig({
 const tsconfig = defineConfig({
 	files: ['**/tsconfig.json'],
 	rules: {
-		...(jsoncPlugin.configs['recommended-with-jsonc'].rules as unknown as Rules),
+		...(jsoncPlugin.configs['recommended-with-jsonc'].rules as Linter.RulesRecord),
 	},
 });
 
