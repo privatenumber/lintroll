@@ -4,7 +4,7 @@ import globals from 'globals';
 import * as vueParser from 'vue-eslint-parser';
 import { isInstalled } from '../utils/is-installed.js';
 import { defineConfig } from '../utils/define-config';
-import { flatCompat } from '../utils/flat-compat.js';
+import { resolveConfig } from '../utils/resolve-config.js';
 
 const getModuleExports = (
 	moduleName: string,
@@ -67,7 +67,7 @@ function detectAutoImportComponents() {
 }
 
 export const vue = [
-	...flatCompat.extends('plugin:vue/vue3-recommended'),
+	...resolveConfig('plugin:vue/vue3-recommended'),
 
 	defineConfig({
 		files: ['**/*.vue'],

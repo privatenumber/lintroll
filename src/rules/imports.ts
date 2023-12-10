@@ -1,6 +1,5 @@
-import * as importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config.js';
-import { resolvePluginConfig } from '../utils/resolve-plugin-config';
+import { resolveConfig } from '../utils/resolve-config.js';
 
 export const importsConfig = defineConfig({
 	rules: {
@@ -162,7 +161,7 @@ export const importsConfig = defineConfig({
 });
 
 export const imports = [
-	resolvePluginConfig(importPlugin, 'recommended'),
+	...resolveConfig('plugin:import/recommended'),
 	importsConfig,
 	defineConfig({
 		files: ['src/'],

@@ -1,3 +1,3 @@
-import { flatCompat } from '../utils/flat-compat';
+import { resolveConfig } from '../utils/resolve-config';
 
-export const noUseExtendNative = flatCompat.extends('plugin:no-use-extend-native/recommended');
+export const noUseExtendNative = resolveConfig('plugin:no-use-extend-native/recommended');

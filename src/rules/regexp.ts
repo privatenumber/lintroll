@@ -1,3 +1,3 @@
-import { flatCompat } from '../utils/flat-compat.js';
+import { resolveConfig } from '../utils/resolve-config.js';
 
-export const regexp = flatCompat.extends('plugin:regexp/recommended');
+export const regexp = resolveConfig('plugin:regexp/recommended');

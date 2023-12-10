@@ -788,9 +788,22 @@ export const baseConfig = defineConfig({
 	},
 });
 
+const serviceWorkers = defineConfig({
+	files: ['**/*.sw.js'],
+	languageOptions: {
+		globals: globals.serviceworker,
+	},
+	rules: {
+		'no-restricted-globals': [
+			'error',
+			...confusingBrowserGlobals.filter(variable => variable !== 'self'),
+		],
+	},
+});
 
 export const base = [
 	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
 	js.configs.recommended,
 	baseConfig,
+	serviceWorkers,
 ];

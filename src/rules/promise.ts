@@ -1,8 +1,8 @@
 import { defineConfig } from '../utils/define-config.js';
-import { flatCompat } from '../utils/flat-compat.js';
+import { resolveConfig } from '../utils/resolve-config.js';
 
 export const promise = [
-	...flatCompat.extends('plugin:promise/recommended'),
+	...resolveConfig('plugin:promise/recommended'),
 	defineConfig({
 		rules: {
 			'promise/always-return': 'off',

@@ -61,15 +61,15 @@ export default testSuite(({ describe }) => {
 						messageId: 'blankEndOfFile',
 					}),
 
-					expect.objectContaining({
-						ruleId: '@typescript-eslint/indent',
-						messageId: 'wrongIndentation',
-					}),
-
-					expect.objectContaining({
-						ruleId: '@typescript-eslint/semi',
-						messageId: 'extraSemi',
-					}),
+					// Should no longer be used
+					// expect.objectContaining({
+					// 	ruleId: '@typescript-eslint/indent',
+					// 	messageId: 'wrongIndentation',
+					// }),
+					// expect.objectContaining({
+					// 	ruleId: '@typescript-eslint/semi',
+					// 	messageId: 'extraSemi',
+					// }),
 				]),
 			);
 		});

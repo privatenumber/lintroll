@@ -1,15 +1,7 @@
-import type { ESLint } from 'eslint';
 import type { Rules } from 'eslint-define-config';
 import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.js';
-import { flatCompat } from '../utils/flat-compat.js';
-
-// import { resolvePluginConfig } from '../utils/resolve-plugin-config';
-
-
-
-// console.log(resolvePluginConfig(jsoncPlugin as unknown as ESLint.Plugin, 'base'));
-// console.log(resolvePluginConfig(jsoncPlugin as unknown as ESLint.Plugin, 'recommended-with-jsonc'));
+import { resolveConfig } from '../utils/resolve-config.js';
 
 const baseConfig = defineConfig({
 	files: ['**/*.{json,json5,jsonc}'],
@@ -99,7 +91,7 @@ export const json = [
 			'**/package-lock.json',
 		],
 	},
-	...flatCompat.extends('plugin:jsonc/base'),
+	...resolveConfig('plugin:jsonc/base'),
 	baseConfig,
 	packageJson,
 	tsconfig,

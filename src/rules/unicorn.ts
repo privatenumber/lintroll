@@ -1,8 +1,8 @@
 import { defineConfig } from '../utils/define-config';
-import { flatCompat } from '../utils/flat-compat.js';
+import { resolveConfig } from '../utils/resolve-config.js';
 
 export const unicorn = [
-	...flatCompat.extends('plugin:unicorn/recommended'),
+	...resolveConfig('plugin:unicorn/recommended'),
 	defineConfig({
 		rules: {
 			// Disable in favor of eslint-plugin-regexp
