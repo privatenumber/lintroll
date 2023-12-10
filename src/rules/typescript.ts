@@ -21,7 +21,7 @@ export = createConfig(
 				// Setting as an override allows .ts files to be
 				// linted without specifying it on the user-end
 				{
-					files: '*.{ts,tsx,mts,cts,vue}',
+					files: '**/*.{ts,tsx,mts,cts,vue}',
 
 					extends: [
 						'plugin:@typescript-eslint/recommended',
@@ -117,12 +117,12 @@ export = createConfig(
 					},
 				},
 				{
-					files: '*.cts',
+					files: '**/*.cts',
 					globals: recommendedScript.eslintrc.globals,
 					parserOptions: recommendedScript.eslintrc.parserOptions,
 				},
 				{
-					files: '*.mts',
+					files: '**/*.mts',
 					globals: recommendedModule.eslintrc.globals,
 					parserOptions: recommendedModule.eslintrc.parserOptions,
 				},

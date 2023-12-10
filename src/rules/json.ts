@@ -7,7 +7,7 @@ export = createConfig({
 
 	overrides: [
 		{
-			files: '*.{json,json5,jsonc}',
+			files: '**/*.{json,json5,jsonc}',
 			extends: 'plugin:jsonc/base',
 			rules: {
 				'jsonc/indent': ['error', 'tab'],
@@ -23,7 +23,7 @@ export = createConfig({
 			},
 		},
 		{
-			files: 'package.json',
+			files: '**/package.json',
 			rules: {
 				'jsonc/sort-keys': [
 					'error',
@@ -73,7 +73,7 @@ export = createConfig({
 			},
 		},
 		{
-			files: 'tsconfig.json',
+			files: '**/tsconfig.json',
 			extends: 'plugin:jsonc/recommended-with-jsonc',
 		},
 	],

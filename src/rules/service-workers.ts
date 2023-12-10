@@ -4,7 +4,7 @@ import { createConfig } from '../utils/create-config.js';
 export = createConfig({
 	overrides: [
 		{
-			files: '*.sw.js',
+			files: '**/*.sw.js',
 			env: {
 				serviceworker: true,
 			},

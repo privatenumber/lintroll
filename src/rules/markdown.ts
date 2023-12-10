@@ -3,7 +3,7 @@ import { createConfig } from '../utils/create-config.js';
 export = createConfig({
 	overrides: [
 		{
-			files: '*.md',
+			files: '**/*.md',
 			plugins: ['markdown'],
 			processor: 'markdown/markdown',
 		},

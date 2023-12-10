@@ -8,7 +8,7 @@ const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 export = createConfig({
 	overrides: [
 		{
-			files: '*.{jsx,tsx}',
+			files: '**/*.{jsx,tsx}',
 
 			extends: [
 				// https://github.com/yannickcr/eslint-plugin-react/blob/c8917b0/index.js
