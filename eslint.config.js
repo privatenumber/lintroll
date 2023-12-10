@@ -7,6 +7,7 @@ export default defineConfig([
 	{
 		ignores: [
 			'tests/*/fixtures/**/fail{.*,/**}',
+			'tests/node/fixtures/package-commonjs/pass.js',
 		],
 	},
 	...pvtnbr({

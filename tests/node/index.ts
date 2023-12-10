@@ -1,4 +1,5 @@
 import { testSuite, expect } from 'manten';
+import { execa } from 'execa';
 import { createEslint } from '../utils/eslint.js';
 
 const eslint = createEslint({
@@ -16,17 +17,17 @@ export default testSuite(({ describe }) => {
 					new URL('fixtures/package-commonjs/', import.meta.url).pathname,
 				);
 
-				test('.js file', async ({ onTestFail }) => {
-					const fixturePath = new URL('fixtures/package-commonjs/pass.js', import.meta.url).pathname;
-					const [result] = await eslintCommonjs.lintFiles(fixturePath);
-
-					onTestFail(() => {
-						console.log(result);
+				test('.js file', async () => {
+					const linted = await execa('eslint', ['--no-ignore', 'pass.js'], {
+						cwd: new URL('fixtures/package-commonjs/', import.meta.url).pathname,
+						env: {
+							NODE_OPTIONS: '--import tsx',
+						},
 					});
 
-					expect(result.errorCount).toBe(0);
-					expect(result.warningCount).toBe(0);
-					expect(result.usedDeprecatedRules.length).toBe(0);
+					expect(linted.failed).toBe(false);
+					expect(linted.stdout).toBe('');
+					expect(linted.stderr).toBe('');
 				});
 
 				test('.cjs file', async ({ onTestFail }) => {
