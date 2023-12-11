@@ -1,87 +1,62 @@
 {
-	"name": "@pvtnbr/eslint-config",
-	"version": "0.0.0-semantic-release",
-	"publishConfig": {
-		"access": "public"
-	},
-	"license": "MIT",
-	"repository": "privatenumber/eslint-config",
-	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
-	"author": {
-		"name": "Hiroki Osame",
-		"email": "hiroki.osame@gmail.com"
-	},
-	"type": "module",
-	"files": [
-		"dist"
-	],
-	"exports": {
-		"require": {
-			"types": "./dist/index.d.cts",
-			"default": "./dist/index.cjs"
-		},
-		"import": {
-			"types": "./dist/index.d.mts",
-			"default": "./dist/index.mjs"
-		}
-	},
-	"imports": {
-		"#pvtnbr": {
-			"types": "./src/index.ts",
-			"development": "./src/index.ts",
-			"default": "./dist/index.mjs"
-		}
-	},
-	"scripts": {
-		"build": "rm -rf dist; pkgroll --minify",
-		"type-check": "tsc --noEmit",
-		"lint": "NODE_OPTIONS='--import tsx' eslint --cache .",
-		"dev": "tsx watch --conditions=development tests",
-		"test": "tsx tests",
-		"prepack": "pnpm build && clean-pkg-json"
-	},
-	"peerDependencies": {
-		"eslint": "^8.0.0"
-	},
-	"dependencies": {
-		"@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
-		"@eslint/eslintrc": "^2.1.4",
-		"@eslint/js": "^8.55.0",
-		"@stylistic/eslint-plugin": "^1.5.0",
-		"@typescript-eslint/eslint-plugin": "^6.13.2",
-		"@typescript-eslint/parser": "^6.13.2",
-		"confusing-browser-globals": "^1.0.11",
-		"eslint-import-resolver-typescript": "^3.6.1",
-		"eslint-plugin-import": "^2.29.0",
-		"eslint-plugin-jsonc": "^2.10.0",
-		"eslint-plugin-markdown": "^3.0.1",
-		"eslint-plugin-n": "^16.3.1",
-		"eslint-plugin-no-use-extend-native": "^0.5.0",
-		"eslint-plugin-promise": "^6.1.1",
-		"eslint-plugin-react": "^7.33.2",
-		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-regexp": "^2.1.2",
-		"eslint-plugin-unicorn": "^49.0.0",
-		"eslint-plugin-vue": "^9.19.2",
-		"get-tsconfig": "^4.7.2",
-		"globals": "^13.23.0",
-		"read-package-up": "^11.0.0"
-	},
-	"devDependencies": {
-		"@total-typescript/ts-reset": "^0.5.1",
-		"@types/confusing-browser-globals": "^1.0.3",
-		"@types/eslint": "^8.44.8",
-		"@types/eslint__eslintrc": "^2.1.1",
-		"@types/eslint__js": "^8.42.3",
-		"@types/node": "^20.10.4",
-		"@types/react": "^18.2.43",
-		"clean-pkg-json": "^1.2.0",
-		"eslint": "^8.55.0",
-		"execa": "^8.0.1",
-		"manten": "^1.2.0",
-		"pkgroll": "^2.0.1",
-		"react": "^18.2.0",
-		"tsx": "^4.6.2",
-		"typescript": "^5.3.3"
-	}
+  "name": "@pvtnbr/eslint-config",
+  "version": "0.0.0-semantic-release",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "repository": "privatenumber/eslint-config",
+  "funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
+  "author": {
+    "name": "Hiroki Osame",
+    "email": "hiroki.osame@gmail.com"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "imports": {
+    "#pvtnbr": {
+      "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "peerDependencies": {
+    "eslint": "^8.0.0"
+  },
+  "dependencies": {
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
+    "@eslint/eslintrc": "^2.1.4",
+    "@eslint/js": "^8.55.0",
+    "@stylistic/eslint-plugin": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "confusing-browser-globals": "^1.0.11",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsonc": "^2.10.0",
+    "eslint-plugin-markdown": "^3.0.1",
+    "eslint-plugin-n": "^16.3.1",
+    "eslint-plugin-no-use-extend-native": "^0.5.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-regexp": "^2.1.2",
+    "eslint-plugin-unicorn": "^49.0.0",
+    "eslint-plugin-vue": "^9.19.2",
+    "get-tsconfig": "^4.7.2",
+    "globals": "^13.23.0",
+    "read-package-up": "^11.0.0"
+  }
 }

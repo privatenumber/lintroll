@@ -1,6 +1,0 @@
-{
-	"name": "react-fixture",
-	"engines": {
-		"node": ">=16.18.0"
-	}
-}
