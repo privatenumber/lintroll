@@ -29,13 +29,12 @@ export const pvtnbr = (
 	},
 	{
 		ignores: [
-			// Nested node_modules
-			'**/node_modules/**',
-
+			'**/package-lock.json',
 			'{tmp,temp}/**',
 			'**/*.min.js',
-			'**/vendor/**',
 			'**/dist/**',
+			'**/node_modules/**',
+			'**/vendor/**',
 		],
 	},
 	...base,
