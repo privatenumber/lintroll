@@ -6,10 +6,11 @@ import { defineConfig } from '../utils/define-config.js';
 
 export const baseConfig = defineConfig({
 	languageOptions: {
+		ecmaVersion: 2020,
+
 		globals: globals['shared-node-browser'],
 
 		parserOptions: {
-			ecmaVersion: 2020,
 			sourceType: 'module',
 		},
 	},

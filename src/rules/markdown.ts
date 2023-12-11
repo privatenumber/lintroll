@@ -3,7 +3,6 @@ import { defineConfig } from '../utils/define-config.js';
 // import { resolveConfig } from '../utils/resolve-config.js';
 
 // TODO: extend markdownPlugin.configs.recommended.overrides
-
 // const c = resolveConfig('plugin:markdown/recommended');
 // console.dir(c, { colors: true, depth: null, maxArrayLength: null });
 
