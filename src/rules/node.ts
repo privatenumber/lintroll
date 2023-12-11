@@ -141,5 +141,3 @@ export const node = (options?: {
 
 	return config;
 };
-
-// console.dir(node, { colors: true, depth: 3, maxArrayLength: null });
