@@ -1,6 +1,6 @@
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { execa } from 'execa';
-import { pvtnbr, type Options } from '../../src/index.js';
+import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
 	options?: Options,

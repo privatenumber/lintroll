@@ -25,14 +25,19 @@
 			"default": "./dist/index.mjs"
 		}
 	},
+	"imports": {
+		"#pvtnbr": {
+			"types": "./src/index.ts",
+			"development": "./src/index.ts",
+			"default": "./dist/index.mjs"
+		}
+	},
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --minify",
 		"type-check": "tsc --noEmit",
 		"lint": "NODE_OPTIONS='--import tsx' eslint --cache .",
+		"dev": "tsx watch --conditions=development tests",
 		"test": "tsx tests",
-		"dev:build": "pnpm build --watch",
-		"dev:test": "tsx watch tests",
-		"dev": "run-p 'dev:*'",
 		"prepack": "pnpm build && clean-pkg-json"
 	},
 	"peerDependencies": {
@@ -74,7 +79,6 @@
 		"eslint": "^8.55.0",
 		"execa": "^8.0.1",
 		"manten": "^1.2.0",
-		"npm-run-all": "^4.1.5",
 		"pkgroll": "^2.0.1",
 		"react": "^18.2.0",
 		"tsx": "^4.6.2",
