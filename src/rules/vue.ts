@@ -82,14 +82,13 @@ export const vue = [
 			},
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
-				// parser: {
-				// 	ts: '@typescript-eslint/parser',
-				// },
+				parser: {
+					ts: '@typescript-eslint/parser',
+				},
 			},
 		},
 
 		rules: {
-
 			// For Vue 2
 			// 'vue/no-deprecated-slot-attribute': ['error'],
 			// 'vue/no-deprecated-slot-scope-attribute': ['error'],
