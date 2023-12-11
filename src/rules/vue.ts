@@ -1,15 +1,8 @@
 import fs from 'fs';
 import type { ESLint } from 'eslint';
-import { isInstalled } from '../utils/is-installed.js';
+import { isInstalled, getExports } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config';
 import { resolveConfig } from '../utils/resolve-config.js';
-
-const getModuleExports = (
-	moduleName: string,
-) => Object.keys(
-	// eslint-disable-next-line @typescript-eslint/no-var-requires,n/global-require
-	require(moduleName),
-);
 
 function detectAutoImport() {
 	if (!isInstalled('unplugin-auto-import')) {
@@ -24,7 +17,7 @@ function detectAutoImport() {
 			'@vueuse/head',
 		].flatMap(moduleName => (
 			isInstalled(moduleName)
-				? getModuleExports(moduleName).map(
+				? getExports(moduleName).map(
 					exportName => [exportName, 'readonly'] as const,
 				)
 				: []

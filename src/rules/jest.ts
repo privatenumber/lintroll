@@ -4,7 +4,7 @@
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
 import globals from 'globals';
-import { isInstalled } from '../utils/is-installed.js';
+import { isInstalled } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config.js';
 
 export const jest = (

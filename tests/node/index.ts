@@ -1,6 +1,5 @@
 import { testSuite, expect } from 'manten';
-import { execa } from 'execa';
-import { createEslint } from '../utils/eslint.js';
+import { createEslint, eslintCli } from '../utils/eslint.js';
 
 const eslint = createEslint({
 	node: true,
@@ -18,12 +17,10 @@ export default testSuite(({ describe }) => {
 				);
 
 				test('.js file', async () => {
-					const linted = await execa('eslint', ['--no-ignore', 'pass.js'], {
-						cwd: new URL('fixtures/package-commonjs/', import.meta.url).pathname,
-						env: {
-							NODE_OPTIONS: '--import tsx',
-						},
-					});
+					const linted = await eslintCli(
+						'pass.js',
+						new URL('fixtures/package-commonjs/', import.meta.url).pathname,
+					);
 
 					expect(linted.failed).toBe(false);
 					expect(linted.stdout).toBe('');

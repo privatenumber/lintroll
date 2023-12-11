@@ -1,4 +1,5 @@
 import eslintApi from 'eslint/use-at-your-own-risk';
+import { execa } from 'execa';
 import { pvtnbr, type Options } from '../../src/index.js';
 
 export const createEslint = (
@@ -27,3 +28,17 @@ export const createEslint = (
 };
 
 export const eslint = createEslint();
+
+export const eslintCli = (
+	file: string,
+	cwd: string,
+) => execa(
+	'eslint',
+	['--no-ignore', file],
+	{
+		cwd,
+		env: {
+			NODE_OPTIONS: '--import tsx',
+		},
+	},
+);

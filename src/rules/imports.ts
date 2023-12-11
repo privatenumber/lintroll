@@ -161,10 +161,19 @@ export const importsConfig = defineConfig({
 });
 
 export const imports = [
-	...resolveConfig('plugin:import/recommended'),
+	...resolveConfig({
+		extends: 'plugin:import/recommended',
+
+	}),
 	importsConfig,
 	defineConfig({
-		files: ['src/'],
+		files: ['**/src/**/*'],
+		// settings: {
+		// 	'import/ignore': [
+		// 		// 'node_modules',
+		// 		// '\\.(css|svg|json)$',
+		// 	],
+		// },
 		rules: {
 			// Disallow dynamic imports if compiled
 			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
@@ -172,18 +181,3 @@ export const imports = [
 		},
 	}),
 ];
-
-// export = createConfig({
-// 	env: {
-// 		es6: true,
-// 	},
-
-// 	plugins: ['import'],
-
-// 	settings: {
-// 		'import/ignore': [
-// 			'node_modules',
-// 			'\\.(css|svg|json)$',
-// 		],
-// 	},
-// });

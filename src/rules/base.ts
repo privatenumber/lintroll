@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { isInstalled } from '../utils/is-installed.js';
+import { isInstalled } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config.js';
 
 export const baseConfig = defineConfig({
@@ -17,7 +17,7 @@ export const baseConfig = defineConfig({
 
 	rules: {
 		/**
-		 * Deprecated in favor of @stylistic
+		 * TODO: Deprecated in favor of @stylistic
 		 * Disable from recommended
 		 */
 		'no-mixed-spaces-and-tabs': 'off',

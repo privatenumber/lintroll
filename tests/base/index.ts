@@ -2,20 +2,37 @@ import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
-	describe('base', ({ test }) => {
-		test('Pass cases', async ({ onTestFail }) => {
-			const [result] = await eslint.lintFiles(
-				new URL('fixtures/pass.js', import.meta.url).pathname,
-			);
+	describe('base', ({ test, describe }) => {
+		describe('Pass', ({ test }) => {
+			test('.js', async ({ onTestFail }) => {
+				const [result] = await eslint.lintFiles(
+					new URL('fixtures/pass.js', import.meta.url).pathname,
+				);
 
-			onTestFail(() => {
-				console.log(result);
-				console.log(result.usedDeprecatedRules);
+				onTestFail(() => {
+					console.log(result);
+					console.log(result.usedDeprecatedRules);
+				});
+
+				expect(result.errorCount).toBe(0);
+				expect(result.warningCount).toBe(0);
+				expect(result.usedDeprecatedRules.length).toBe(0);
 			});
 
-			expect(result.errorCount).toBe(0);
-			expect(result.warningCount).toBe(0);
-			expect(result.usedDeprecatedRules.length).toBe(0);
+			test('.cjs', async ({ onTestFail }) => {
+				const [result] = await eslint.lintFiles(
+					new URL('fixtures/pass.cjs', import.meta.url).pathname,
+				);
+
+				onTestFail(() => {
+					console.log(result);
+					console.log(result.usedDeprecatedRules);
+				});
+
+				expect(result.errorCount).toBe(0);
+				expect(result.warningCount).toBe(0);
+				expect(result.usedDeprecatedRules.length).toBe(0);
+			});
 		});
 
 		test('Fail cases', async ({ onTestFail }) => {

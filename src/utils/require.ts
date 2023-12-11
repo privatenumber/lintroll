@@ -10,3 +10,10 @@ export const isInstalled = (specifier: string) => {
 
 	return false;
 };
+
+export const getExports = (
+	moduleName: string,
+) => Object.keys(
+	// eslint-disable-next-line import/no-dynamic-require
+	require(moduleName),
+);

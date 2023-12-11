@@ -41,9 +41,7 @@ export const pvtnbr = (
 	stylistic,
 	...regexp,
 	...promise,
-	...(
-		options?.node ? node : []
-	),
+	...node(options),
 	...noUseExtendNative,
 	...json,
 	...vue,
