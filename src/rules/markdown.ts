@@ -32,12 +32,23 @@ export const markdown = [
 
 			// Allow unused expressions like: argv.command // => "install" (string)
 			'no-unused-expressions': 'off',
-			'no-unused-vars': 'warn',
 			'unicorn/filename-case': 'off',
 
 			// Loose on example code
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/prefer-object-from-entries': 'off',
+
+			// Style
+			'@stylistic/indent': ['error', 4],
+			'@stylistic/semi': ['error', 'never'],
+			'@stylistic/comma-dangle': ['error', 'never'],
+		},
+	}),
+
+	defineConfig({
+		files: ['**/*.md/*.{js,jsx,vue}'],
+		rules: {
+			'no-unused-vars': 'warn',
 		},
 	}),
 
@@ -47,16 +58,6 @@ export const markdown = [
 			'react/jsx-indent-props': ['error', 4],
 			'react/jsx-no-undef': 'off',
 			'react/react-in-jsx-scope': 'off',
-		},
-	}),
-
-	defineConfig({
-		files: ['**/*.md/*.{js,jsx,vue}'],
-		rules: {
-			// Style
-			'@stylistic/indent': ['error', 4],
-			'@stylistic/semi': ['error', 'never'],
-			'@stylistic/comma-dangle': ['error', 'never'],
 		},
 	}),
 
@@ -72,9 +73,7 @@ export const markdown = [
 	defineConfig({
 		files: ['**/*.md/*.{ts,tsx}'],
 		rules: {
-			'@typescript-eslint/comma-dangle': ['error', 'never'],
-			'@typescript-eslint/indent': ['error', 4],
-			'@typescript-eslint/member-delimiter-style': [
+			'@stylistic/member-delimiter-style': [
 				'error',
 				{
 					multiline: {
@@ -89,12 +88,6 @@ export const markdown = [
 				},
 			],
 			'@typescript-eslint/no-unused-vars': 'warn',
-			'@typescript-eslint/semi': ['error', 'never'],
-
-			// Style
-			'@stylistic/indent': 'off',
-			'@stylistic/semi': 'off',
-			'@stylistic/comma-dangle': 'off',
 		},
 	}),
 

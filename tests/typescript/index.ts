@@ -41,17 +41,21 @@ export default testSuite(({ describe }) => {
 						severity: 2,
 					}),
 					expect.objectContaining({
-						ruleId: '@typescript-eslint/member-delimiter-style',
+						ruleId: '@stylistic/member-delimiter-style',
 						messageId: 'expectedSemi',
 					}),
-					// expect.objectContaining({
-					// 	ruleId: '@typescript-eslint/consistent-type-assertions',
-					// 	messageId: 'as',
-					// }),
-					// expect.objectContaining({
-					// 	ruleId: '@typescript-eslint/return-await',
-					// 	messageId: 'requiredPromiseAwait',
-					// }),
+					expect.not.objectContaining({
+						ruleId: '@stylistic/member-delimiter-style',
+						messageId: 'expectedSemi',
+					}),
+				]),
+			);
+
+			expect(messages).toEqual(
+				expect.not.arrayContaining([
+					expect.objectContaining({
+						ruleId: 'no-unused-vars',
+					}),
 				]),
 			);
 		});

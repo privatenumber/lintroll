@@ -41,12 +41,6 @@ export const typescript = [
 		// },
 
 		rules: {
-			// TODO: turn this off in favor of stylistic?
-			// Turn off ESLint recommended rules that are handled by TypeScript
-			// ...typescriptPlugin.configs['eslint-recommended'].overrides![0].rules,
-
-			// ...typescriptPlugin.configs.recommended.rules,
-
 			/**
 			 * Suddenly requires parserServices to be generated
 			 *   Error while loading rule '@typescript-eslint/consistent-type-assertions':
@@ -57,7 +51,7 @@ export const typescript = [
 			 */
 			// '@typescript-eslint/consistent-type-assertions': 'error',
 
-			'@typescript-eslint/member-delimiter-style': 'error',
+			'@stylistic/member-delimiter-style': 'error',
 
 			'@typescript-eslint/no-shadow': baseConfig.rules['no-shadow'],
 
@@ -79,6 +73,11 @@ export const typescript = [
 			// Function expression can be used to type a function
 			'func-style': 'off',
 
+			// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
+			'no-shadow': 'off',
+
+			'prefer-rest-params': 'off',
+
 			// TS disallows .ts extension
 			// https://github.com/Microsoft/TypeScript/issues/27481
 			'import/extensions': ['error', 'ignorePackages', {
@@ -98,11 +97,6 @@ export const typescript = [
 					pattern => pattern.replace('.js', '.{js,ts}'),
 				),
 			}],
-
-			// https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
-			'no-shadow': 'off',
-
-			'prefer-rest-params': 'off',
 
 			// Not always possible to destructue at top-level when the variable is ambigious
 			'unicorn/consistent-destructuring': 'off',

@@ -35,10 +35,10 @@ export const pvtnbr = (
 	},
 	...base,
 	...eslintComments,
-	stylistic,
-	...unicorn,
 	...imports,
+	...unicorn,
 	...typescript,
+	stylistic,
 	...regexp,
 	...promise,
 	...(

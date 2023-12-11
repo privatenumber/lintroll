@@ -1,3 +1,5 @@
+const unusedVar = 1
+
 type UnusedType = string;
 
 // Promise
