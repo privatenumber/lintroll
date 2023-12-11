@@ -120,6 +120,12 @@ export const node = (options?: {
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
 					// Defer to import plugin
 					'n/no-missing-import': 'off',
+
+					/**
+					 * 1. Doesn't support import maps
+					 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
+					 */
+					'n/no-extraneous-import': 'off',
 				},
 			}),
 		);
