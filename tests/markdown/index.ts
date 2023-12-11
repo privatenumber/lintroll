@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -6,7 +7,7 @@ export default testSuite(({ describe }) => {
 		describe('Pass', ({ test }) => {
 			test('.js', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/pass.js.md', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/pass.js.md', import.meta.url)),
 				);
 				const { messages } = result;
 
@@ -20,7 +21,7 @@ export default testSuite(({ describe }) => {
 
 			test('.ts', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/pass.ts.md', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/pass.ts.md', import.meta.url)),
 				);
 				const { messages } = result;
 
@@ -42,7 +43,7 @@ export default testSuite(({ describe }) => {
 
 			test('.vue', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/pass.vue.md', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/pass.vue.md', import.meta.url)),
 				);
 				const { messages } = result;
 
@@ -66,7 +67,7 @@ export default testSuite(({ describe }) => {
 		describe('Fail', ({ test }) => {
 			test('.js', async () => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/fail.js.md', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/fail.js.md', import.meta.url)),
 				);
 				const { messages } = result;
 
@@ -107,7 +108,7 @@ export default testSuite(({ describe }) => {
 
 			test('.ts', async () => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/fail.ts.md', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/fail.ts.md', import.meta.url)),
 				);
 				const { messages } = result;
 

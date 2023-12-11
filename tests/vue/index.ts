@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -6,7 +7,7 @@ export default testSuite(({ describe }) => {
 		describe('Pass', ({ test }) => {
 			test('SFC', async ({ onTestFail }) => {
 				const results = await eslint.lintFiles(
-					new URL('fixtures/PassingComponent.vue', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/PassingComponent.vue', import.meta.url)),
 				);
 
 				const [result] = results;
@@ -23,7 +24,7 @@ export default testSuite(({ describe }) => {
 
 			test('SFC setup', async ({ onTestFail }) => {
 				const results = await eslint.lintFiles(
-					new URL('fixtures/PassSetup.vue', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/PassSetup.vue', import.meta.url)),
 				);
 
 				const [result] = results;
@@ -42,7 +43,7 @@ export default testSuite(({ describe }) => {
 		describe('Fail', ({ test }) => {
 			test('SFC', async ({ onTestFail }) => {
 				const results = await eslint.lintFiles(
-					new URL('fixtures/fail/fail.vue', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/fail/fail.vue', import.meta.url)),
 				);
 				const { messages } = results[0];
 
@@ -70,7 +71,7 @@ export default testSuite(({ describe }) => {
 
 			test('SFC setup', async ({ onTestFail }) => {
 				const results = await eslint.lintFiles(
-					new URL('fixtures/fail/Setup.vue', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/fail/Setup.vue', import.meta.url)),
 				);
 				const { messages } = results[0];
 
@@ -105,7 +106,7 @@ export default testSuite(({ describe }) => {
 
 			test('SFC parsing TS in setup with no lang="ts"', async ({ onTestFail }) => {
 				const results = await eslint.lintFiles(
-					new URL('fixtures/fail/SetupNoLangTs.vue', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/fail/SetupNoLangTs.vue', import.meta.url)),
 				);
 				const { messages } = results[0];
 

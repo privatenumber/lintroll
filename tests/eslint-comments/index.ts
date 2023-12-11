@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -5,7 +6,7 @@ export default testSuite(({ describe }) => {
 	describe('eslint-comments', ({ test }) => {
 		test('Fail cases', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/src/fail.js', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/src/fail.js', import.meta.url)),
 			);
 
 			onTestFail(() => {

@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -6,7 +7,7 @@ export default testSuite(({ describe }) => {
 		describe('Pass', ({ test }) => {
 			test('.js', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/pass.js', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/pass.js', import.meta.url)),
 				);
 
 				onTestFail(() => {
@@ -21,7 +22,7 @@ export default testSuite(({ describe }) => {
 
 			test('.cjs', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
-					new URL('fixtures/pass.cjs', import.meta.url).pathname,
+					fileURLToPath(new URL('fixtures/pass.cjs', import.meta.url)),
 				);
 
 				onTestFail(() => {
@@ -37,7 +38,7 @@ export default testSuite(({ describe }) => {
 
 		test('Fail cases', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/fail.js', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/fail.js', import.meta.url)),
 			);
 
 			onTestFail(() => {
@@ -123,7 +124,7 @@ export default testSuite(({ describe }) => {
 
 		test('Service worker', async () => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/service-worker.sw.js', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/service-worker.sw.js', import.meta.url)),
 			);
 
 			expect(result.errorCount).toBe(0);

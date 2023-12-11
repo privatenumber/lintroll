@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -5,7 +6,7 @@ export default testSuite(({ describe }) => {
 	describe('bundle', ({ test }) => {
 		test('Pass cases', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/src/pass.js', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/src/pass.js', import.meta.url)),
 			);
 
 			onTestFail(() => {
@@ -20,7 +21,7 @@ export default testSuite(({ describe }) => {
 
 		test('Fail cases', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/src/fail.cjs', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/src/fail.cjs', import.meta.url)),
 			);
 
 			onTestFail(() => {
@@ -39,7 +40,7 @@ export default testSuite(({ describe }) => {
 		});
 		test('Fail cases .mjs', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				new URL('fixtures/src/fail.mjs', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/src/fail.mjs', import.meta.url)),
 			);
 
 			onTestFail(() => {

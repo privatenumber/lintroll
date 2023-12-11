@@ -1,9 +1,10 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const passFixtureTs = new URL('fixtures/pass.ts', import.meta.url).pathname;
-const passFixtureMts = new URL('fixtures/pass.mts', import.meta.url).pathname;
-const failFixture = new URL('fixtures/fail.ts', import.meta.url).pathname;
+const passFixtureTs = fileURLToPath(new URL('fixtures/pass.ts', import.meta.url));
+const passFixtureMts = fileURLToPath(new URL('fixtures/pass.mts', import.meta.url));
+const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {

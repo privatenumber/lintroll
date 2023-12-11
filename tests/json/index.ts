@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
@@ -5,7 +6,7 @@ export default testSuite(({ describe }) => {
 	describe('json', ({ test }) => {
 		test('package.json', async () => {
 			const [results] = await eslint.lintFiles(
-				new URL('fixtures/fail/package.json', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/fail/package.json', import.meta.url)),
 			);
 
 			expect(results.messages).toEqual(
@@ -24,7 +25,7 @@ export default testSuite(({ describe }) => {
 
 		test('random.json', async () => {
 			const [results] = await eslint.lintFiles(
-				new URL('fixtures/fail/random.json', import.meta.url).pathname,
+				fileURLToPath(new URL('fixtures/fail/random.json', import.meta.url)),
 			);
 
 			expect(results.messages).toEqual(
