@@ -86,7 +86,7 @@ export const unicorn = [
 			 */
 			'unicorn/template-indent': 'off',
 
-			// Disabled in favor of 
+			// Disabled in favor of
 			// https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html
 			'unicorn/no-abusive-eslint-disable': 'off',
 		},
