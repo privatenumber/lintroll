@@ -15,17 +15,20 @@ export default testSuite(({ describe }) => {
 			expect(result.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'unicorn/no-abusive-eslint-disable',
+						ruleId: 'some-rule',
+						message: "Definition for rule 'some-rule' was not found.",
 						severity: 2,
-						message: 'Specify the rules you want to disable.',
-						messageId: 'no-abusive-eslint-disable',
 					}),
-
-					// TODO: Migrate to https://github.com/eslint-community/eslint-plugin-eslint-comments
-					// expect.objectContaining({
-					// 	ruleId: 'eslint-comments/no-unused-disable',
-					// 	severity: 2,
-					// }),
+					expect.objectContaining({
+						ruleId: null,
+						message: "Unused eslint-disable directive (no problems were reported from 'eqeqeq').",
+						severity: 1,
+					}),
+					expect.objectContaining({
+						ruleId: '@eslint-community/eslint-comments/no-unlimited-disable',
+						messageId: 'unexpected',
+						severity: 2,
+					}),
 				]),
 			);
 		});

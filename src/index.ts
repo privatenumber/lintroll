@@ -23,6 +23,11 @@ export const pvtnbr = (
 	options?: Options,
 ): Linter.FlatConfig[] => [
 	{
+		linterOptions: {
+			reportUnusedDisableDirectives: true,
+		},
+	},
+	{
 		ignores: [
 			// Nested node_modules
 			'**/node_modules/**',

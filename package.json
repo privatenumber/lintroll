@@ -39,6 +39,7 @@
 		"eslint": "^8.0.0"
 	},
 	"dependencies": {
+		"@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
 		"@eslint/eslintrc": "^2.1.4",
 		"@eslint/js": "^8.55.0",
 		"@stylistic/eslint-plugin": "^1.5.0",
@@ -46,7 +47,6 @@
 		"@typescript-eslint/parser": "^6.13.2",
 		"confusing-browser-globals": "^1.0.11",
 		"eslint-import-resolver-typescript": "^3.6.1",
-		"eslint-plugin-eslint-comments": "^3.2.0",
 		"eslint-plugin-import": "^2.29.0",
 		"eslint-plugin-jsonc": "^2.10.0",
 		"eslint-plugin-markdown": "^3.0.1",
