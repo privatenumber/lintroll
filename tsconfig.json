@@ -14,5 +14,5 @@
 	],
 	"exclude": [
 		"tests/*/fixtures"
-	]
+	],
 }

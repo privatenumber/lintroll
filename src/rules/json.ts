@@ -1,13 +1,20 @@
-import type { Linter } from 'eslint';
+import type { Linter, ESLint } from 'eslint';
 import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.js';
-import { resolveConfig } from '../utils/resolve-config.js';
+
+const [base] = jsoncPlugin.configs.base.overrides;
 
 export const json = [
-	...resolveConfig('plugin:jsonc/base'),
 	defineConfig({
 		files: ['**/*.{json,json5,jsonc}'],
+		plugins: {
+			jsonc: jsoncPlugin as unknown as ESLint.Plugin,
+		},
+		languageOptions: {
+			parser: jsoncPlugin as unknown as Linter.ParserModule,
+		},
 		rules: {
+			...base.rules as Linter.RulesRecord,
 			'jsonc/indent': ['error', 'tab'],
 			'jsonc/key-spacing': [
 				'error',
@@ -72,8 +79,6 @@ export const json = [
 	}),
 	defineConfig({
 		files: ['**/tsconfig.json'],
-		rules: {
-			...(jsoncPlugin.configs['recommended-with-jsonc'].rules as Linter.RulesRecord),
-		},
+		rules: jsoncPlugin.configs['recommended-with-jsonc'].rules as Linter.RulesRecord,
 	}),
 ];

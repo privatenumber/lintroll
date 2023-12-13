@@ -3,25 +3,34 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config';
-import { resolveConfig } from '../utils/resolve-config.js';
 import { importsConfig } from './imports.js';
 import { baseConfig } from './base.js';
 
 const noExtraneousDependenciesConfig = importsConfig.rules['import/no-extraneous-dependencies'][1];
 
 export const typescript = [
-	// TODO add "files": ["**/*.ts", "**/*.tsx", "**/*.d.ts"] ?
-	...resolveConfig('plugin:@typescript-eslint/recommended'),
-	...resolveConfig('plugin:import/typescript'),
+	// TODO: should be scoped to TS files
+	defineConfig({
+		plugins: {
+			'@typescript-eslint': tsPlugin,
+		},
+
+		languageOptions: {
+			parser: tsParser,
+		},
+	}),
 
 	defineConfig({
 		files: ['**/*.{ts,tsx,mts,cts}'], // TODO: add vue?
-		// languageOptions: {
-		// 	parser: typescriptParser,
-		// },
 
 		settings: {
+			...importPlugin.configs.typescript.settings,
+
+			// TODO: uncomment?
 			'import/resolver': {
 				typescript: {},
 			},
@@ -41,6 +50,10 @@ export const typescript = [
 		// },
 
 		rules: {
+			...tsPlugin.configs['eslint-recommended'].overrides[0].rules,
+			...tsPlugin.configs.recommended.rules,
+			...importPlugin.configs.typescript.rules,
+
 			/**
 			 * Suddenly requires parserServices to be generated
 			 *   Error while loading rule '@typescript-eslint/consistent-type-assertions':

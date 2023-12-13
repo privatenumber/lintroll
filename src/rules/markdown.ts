@@ -1,23 +1,26 @@
 import markdownPlugin from 'eslint-plugin-markdown';
 import { defineConfig } from '../utils/define-config.js';
 import type { Options } from '../types.js';
-// import { resolveConfig } from '../utils/resolve-config.js';
 
-// TODO: extend markdownPlugin.configs.recommended.overrides
-// const c = resolveConfig('plugin:markdown/recommended');
-// console.dir(c, { colors: true, depth: null, maxArrayLength: null });
+const [, baseMdSubfiles] = markdownPlugin.configs.recommended.overrides!;
 
 export const markdown = (
 	options?: Options,
 ) => [
-	// ...resolveConfig('plugin:markdown/recommended'),
-
 	defineConfig({
 		files: ['**/*.md'],
 		plugins: {
 			markdown: markdownPlugin,
 		},
 		processor: 'markdown/markdown',
+	}),
+
+	defineConfig({
+		files: ['**/*.md/**'],
+		languageOptions: {
+			parserOptions: baseMdSubfiles.parserOptions,
+		},
+		rules: baseMdSubfiles.rules,
 	}),
 
 	defineConfig({

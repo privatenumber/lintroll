@@ -1,10 +1,15 @@
+import unicornPlugin from 'eslint-plugin-unicorn';
 import { defineConfig } from '../utils/define-config';
-import { resolveConfig } from '../utils/resolve-config.js';
 
 export const unicorn = [
-	...resolveConfig('plugin:unicorn/recommended'),
 	defineConfig({
+		plugins: {
+			unicorn: unicornPlugin,
+		},
+
 		rules: {
+			...unicornPlugin.configs.recommended.rules,
+
 			// Disable in favor of eslint-plugin-regexp
 			'unicorn/better-regex': 'off',
 

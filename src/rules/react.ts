@@ -1,6 +1,7 @@
+import reactPlugin from 'eslint-plugin-react';
+import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { getTsconfig } from 'get-tsconfig';
-import { defineConfig } from '../utils/define-config';
-import { resolveConfig } from '../utils/resolve-config.js';
+import { defineConfig } from '../utils/define-config.js';
 
 const tsconfig = getTsconfig();
 const jsx = tsconfig?.config.compilerOptions?.jsx;
@@ -8,8 +9,14 @@ const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 
 export const react = [
 	// https://github.com/yannickcr/eslint-plugin-react/blob/c8917b0/index.js
-	...resolveConfig({
-		extends: 'plugin:react/recommended',
+	defineConfig({
+		plugins: {
+			react: reactPlugin,
+		},
+		languageOptions: {
+			parserOptions: reactPlugin.configs.recommended.parserOptions,
+		},
+		rules: reactPlugin.configs.recommended.rules,
 		settings: {
 			react: {
 				version: 'detect',
@@ -20,11 +27,21 @@ export const react = [
 	// React automatically imported in JSX files
 	...(
 		autoJsx
-			? resolveConfig('plugin:react/jsx-runtime')
+			? [defineConfig({
+				languageOptions: {
+					parserOptions: reactPlugin.configs['jsx-runtime'].parserOptions,
+				},
+				rules: reactPlugin.configs['jsx-runtime'].rules,
+			})]
 			: []
 	),
 
-	...resolveConfig('plugin:react-hooks/recommended'),
+	defineConfig({
+		plugins: {
+			'react-hooks': reactHooksPlugin,
+		},
+		rules: reactHooksPlugin.configs.recommended.rules,
+	}),
 
 	defineConfig({
 		files: ['**/*.{jsx,tsx}'],

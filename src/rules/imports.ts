@@ -1,5 +1,5 @@
+import importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config.js';
-import { resolveConfig } from '../utils/resolve-config.js';
 
 export const importsConfig = defineConfig({
 	rules: {
@@ -161,8 +161,14 @@ export const importsConfig = defineConfig({
 });
 
 export const imports = [
-	...resolveConfig({
-		extends: 'plugin:import/recommended',
+	defineConfig({
+		plugins: {
+			import: importPlugin,
+		},
+		languageOptions: {
+			parserOptions: importPlugin.configs.recommended.parserOptions,
+		},
+		rules: importPlugin.configs.recommended.rules,
 		settings: {
 			'import/ignore': [
 				'node_modules',

@@ -1,8 +1,17 @@
 import fs from 'fs';
 import type { ESLint } from 'eslint';
+import vuePlugin from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
+import globals from 'globals';
 import { isInstalled, getExports } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config';
-import { resolveConfig } from '../utils/resolve-config.js';
+
+const vue3Rules = {
+	...vuePlugin.configs.base.rules,
+	...vuePlugin.configs['vue3-essential'].rules,
+	...vuePlugin.configs['vue3-strongly-recommended'].rules,
+	...vuePlugin.configs['vue3-recommended'].rules,
+};
 
 function detectAutoImport() {
 	if (!isInstalled('unplugin-auto-import')) {
@@ -58,21 +67,26 @@ function detectAutoImportComponents() {
 }
 
 export const vue = [
-	...resolveConfig({
-		extends: 'plugin:vue/vue3-recommended',
-		env: {
-			'vue/setup-compiler-macros': true,
-		},
-	}),
 
 	defineConfig({
 		files: ['**/*.vue'],
 
+		plugins: {
+			vue: vuePlugin,
+		},
+
+		processor: vuePlugin.processors['.vue'],
+
 		languageOptions: {
 			globals: {
+				...globals.browser,
+
+				...vuePlugin.environments['setup-compiler-macros'].globals,
+
 				// Types incorrect: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67852
 				...detectAutoImport() as unknown as ESLint.Environment['globals'],
 			},
+			parser: vueParser,
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
 				parser: {
@@ -82,6 +96,8 @@ export const vue = [
 		},
 
 		rules: {
+			...vue3Rules,
+
 			// For Vue 2
 			// 'vue/no-deprecated-slot-attribute': ['error'],
 			// 'vue/no-deprecated-slot-scope-attribute': ['error'],

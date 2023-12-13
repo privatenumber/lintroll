@@ -1,8 +1,13 @@
+import promisePlugin from 'eslint-plugin-promise';
 import { defineConfig } from '../utils/define-config.js';
-import { resolveConfig } from '../utils/resolve-config.js';
 
 export const promise = [
-	...resolveConfig('plugin:promise/recommended'),
+	defineConfig({
+		plugins: {
+			promise: promisePlugin,
+		},
+		rules: promisePlugin.configs.recommended.rules,
+	}),
 	defineConfig({
 		rules: {
 			'promise/always-return': 'off',

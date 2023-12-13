@@ -71,6 +71,9 @@ dependencies:
   read-package-up:
     specifier: ^11.0.0
     version: 11.0.0
+  vue-eslint-parser:
+    specifier: ^9.3.2
+    version: 9.3.2(eslint@8.55.0)
 
 devDependencies:
   '@total-typescript/ts-reset':
