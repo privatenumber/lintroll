@@ -25,12 +25,12 @@ export const typescript = [
 	}),
 
 	defineConfig({
-		files: ['**/*.{ts,tsx,mts,cts}'], // TODO: add vue?
+		files: ['**/*.{ts,tsx,mts,cts}'],
 
 		settings: {
 			...importPlugin.configs.typescript.settings,
 
-			// TODO: uncomment?
+			// TODO: Remove?
 			'import/resolver': {
 				typescript: {},
 			},
