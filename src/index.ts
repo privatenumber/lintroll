@@ -1,5 +1,6 @@
 import type { Linter } from 'eslint';
 import { isInstalled } from './utils/require.js';
+import type { Options } from './types.js';
 import { base } from './rules/base.js';
 import { eslintComments } from './rules/eslint-comments.js';
 import { stylistic } from './rules/stylistic.js';
@@ -16,45 +17,49 @@ import { unicorn } from './rules/unicorn.js';
 import { react } from './rules/react.js';
 import { vue } from './rules/vue.js';
 
-export type Options = {
-	node?: boolean;
-	react?: boolean;
-	vue?: boolean;
-};
-
 export const pvtnbr = (
 	options?: Options,
-): Linter.FlatConfig[] => [
-	{
-		linterOptions: {
-			reportUnusedDisableDirectives: true,
-		},
-	},
-	{
-		ignores: [
-			'**/package-lock.json',
-			'{tmp,temp}/**',
-			'**/*.min.js',
-			'**/dist/**',
-			'**/node_modules/**',
-			'**/vendor/**',
-		],
-	},
-	...base,
-	...eslintComments,
-	...imports,
-	...unicorn,
-	...typescript,
-	stylistic,
-	...regexp,
-	...promise,
-	...node(options),
-	...noUseExtendNative,
-	...json,
-	...(options?.vue || isInstalled('vue') ? vue : []),
-	...(options?.react || isInstalled('react') ? react : []),
-	...markdown,
-	jest,
-].filter(Boolean);
+): Linter.FlatConfig[] => {
+	const normalizedOptions = {
+		...options,
+		node: options?.node,
+		vue: options?.vue || isInstalled('vue'),
+		react: options?.react || isInstalled('react'),
+	};
 
+	return [
+		{
+			linterOptions: {
+				reportUnusedDisableDirectives: true,
+			},
+		},
+		{
+			ignores: [
+				'**/package-lock.json',
+				'{tmp,temp}/**',
+				'**/*.min.js',
+				'**/dist/**',
+				'**/node_modules/**',
+				'**/vendor/**',
+			],
+		},
+		...base,
+		...eslintComments,
+		...imports,
+		...unicorn,
+		...typescript,
+		stylistic,
+		...regexp,
+		...promise,
+		...node(normalizedOptions),
+		...noUseExtendNative,
+		...json,
+		...(normalizedOptions.vue ? vue : []),
+		...(normalizedOptions.react ? react : []),
+		...markdown(normalizedOptions),
+		jest,
+	].filter(Boolean);
+};
+
+export type { Options };
 export { defineConfig } from './utils/define-config.js';

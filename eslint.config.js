@@ -12,5 +12,6 @@ export default defineConfig([
 	},
 	...pvtnbr({
 		node: true,
+		vue: true,
 	}),
 ]);

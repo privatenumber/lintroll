@@ -27,7 +27,9 @@ export const createEslint = (
 	return flatEsLint;
 };
 
-export const eslint = createEslint();
+export const eslint = createEslint({
+	vue: true,
+});
 
 export const eslintCli = (
 	file: string,

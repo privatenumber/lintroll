@@ -2,6 +2,7 @@ import nodePlugin from 'eslint-plugin-n';
 import { readPackageUpSync } from 'read-package-up';
 import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
+import type { Options } from '../types.js';
 
 const foundPackageJson = readPackageUpSync()!;
 const hasCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
@@ -13,7 +14,7 @@ const [
 ] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
 
 // .cjs files can be assumed to support Node features
-const baselineNode = defineConfig({
+const cjsSupport = defineConfig({
 	...cjs,
 	files: [...cjs.files!, '**/*.cts'],
 });
@@ -21,11 +22,11 @@ const baselineNode = defineConfig({
 /*
 Eventually this should be a function that accepts a glob to apply node rules to
 */
-export const node = (options?: {
-	node?: boolean;
-}) => {
+export const node = (
+	options: Options,
+) => {
 	const config: Linter.FlatConfig[] = [
-		baselineNode,
+		cjsSupport,
 	];
 
 	if (options?.node) {
