@@ -7,7 +7,7 @@ declare module 'eslint/use-at-your-own-risk' {
 		baseConfig?: Linter.FlatConfig[];
 		cache?: boolean;
 		cacheLocation?: string;
-		cacheStrategy?: "metadata" | "content";
+		cacheStrategy?: 'metadata' | 'content';
 		cwd?: string;
 		errorOnUnmatchedPattern?: boolean;
 		fix?: boolean | ((filePath: string) => boolean);
@@ -18,7 +18,7 @@ declare module 'eslint/use-at-your-own-risk' {
 		overrideConfig?: Linter.FlatConfig[];
 		overrideConfigFile?: boolean | string;
 		plugins?: Record<string, Plugin>;
-		reportUnusedDisableDirectives?: "error" | "warn" | "off";
+		reportUnusedDisableDirectives?: 'error' | 'warn' | 'off';
 		warnIgnored?: boolean;
 	};
 

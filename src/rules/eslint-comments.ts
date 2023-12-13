@@ -1,8 +1,13 @@
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments';
 import { defineConfig } from '../utils/define-config.js';
-import { resolveConfig } from '../utils/resolve-config.js';
 
 export const eslintComments = [
-	...resolveConfig('plugin:@eslint-community/eslint-comments/recommended'),
+	defineConfig({
+		plugins: {
+			'@eslint-community/eslint-comments': eslintCommentsPlugin,
+		},
+		rules: eslintCommentsPlugin.configs.recommended.rules,
+	}),
 
 	defineConfig({
 		rules: {
