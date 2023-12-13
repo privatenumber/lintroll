@@ -1,24 +1,7 @@
-import { createConfig } from '../utils/create-config.js';
+import importPlugin from 'eslint-plugin-import';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	env: {
-		es6: true,
-	},
-
-	parserOptions: {
-		ecmaVersion: 6,
-		sourceType: 'module',
-	},
-
-	plugins: ['import'],
-
-	settings: {
-		'import/ignore': [
-			'node_modules',
-			'\\.(css|svg|json)$',
-		],
-	},
-
+export const importsConfig = defineConfig({
 	rules: {
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
 		'import/default': 'off',
@@ -125,7 +108,7 @@ export = createConfig({
 				'**/__{tests,mocks}__/**', // jest pattern
 
 				// Config files
-				'**/*.config.{js,ts}', // any config (eg. jest, webpack, rollup, postcss, vue)
+				'**/*.config.{js,cjs,mjs,ts,cts,mts}', // any config (eg. jest, webpack, rollup, postcss, vue)
 				'**/.*.js', // invisible config files
 
 				// Example snippets
@@ -175,15 +158,31 @@ export = createConfig({
 		// Excessive. Also, named exports help enforce readable imports.
 		'import/prefer-default-export': 'off',
 	},
-
-	overrides: [
-		{
-			files: 'src/',
-			rules: {
-				// Disallow dynamic imports if compiled
-				// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
-				'import/no-dynamic-require': 'error',
-			},
-		},
-	],
 });
+
+export const imports = [
+	defineConfig({
+		plugins: {
+			import: importPlugin,
+		},
+		languageOptions: {
+			parserOptions: importPlugin.configs.recommended.parserOptions,
+		},
+		rules: importPlugin.configs.recommended.rules,
+		settings: {
+			'import/ignore': [
+				'node_modules',
+				'\\.(css|svg|json)$',
+			],
+		},
+	}),
+	importsConfig,
+	defineConfig({
+		files: ['**/src/**/*'],
+		rules: {
+			// Disallow dynamic imports if compiled
+			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
+			'import/no-dynamic-require': 'error',
+		},
+	}),
+];

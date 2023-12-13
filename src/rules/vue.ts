@@ -1,13 +1,17 @@
 import fs from 'fs';
-import { createConfig } from '../utils/create-config.js';
-import { isInstalled } from '../utils/is-installed.js';
+import type { ESLint } from 'eslint';
+import vuePlugin from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
+import globals from 'globals';
+import { isInstalled, getExports } from '../utils/require.js';
+import { defineConfig } from '../utils/define-config';
 
-const getModuleExports = (
-	moduleName: string,
-) => Object.keys(
-	// eslint-disable-next-line @typescript-eslint/no-var-requires,n/global-require
-	require(moduleName),
-);
+const vue3Rules = {
+	...vuePlugin.configs.base.rules,
+	...vuePlugin.configs['vue3-essential'].rules,
+	...vuePlugin.configs['vue3-strongly-recommended'].rules,
+	...vuePlugin.configs['vue3-recommended'].rules,
+};
 
 function detectAutoImport() {
 	if (!isInstalled('unplugin-auto-import')) {
@@ -22,7 +26,7 @@ function detectAutoImport() {
 			'@vueuse/head',
 		].flatMap(moduleName => (
 			isInstalled(moduleName)
-				? getModuleExports(moduleName).map(
+				? getExports(moduleName).map(
 					exportName => [exportName, 'readonly'] as const,
 				)
 				: []
@@ -62,61 +66,69 @@ function detectAutoImportComponents() {
 	return components;
 }
 
-export = createConfig({
-	overrides: [
-		// Setting as an override allows .vue files to be
-		// linted without specifying it on the user-end
-		{
-			files: '**/*.vue',
+export const vue = [
 
-			extends: 'plugin:vue/vue3-recommended',
+	defineConfig({
+		files: ['**/*.vue'],
 
-			env: {
-				'vue/setup-compiler-macros': true,
+		plugins: {
+			vue: vuePlugin,
+		},
+
+		processor: vuePlugin.processors['.vue'],
+
+		languageOptions: {
+			globals: {
+				...globals.browser,
+
+				...vuePlugin.environments['setup-compiler-macros'].globals,
+
+				// Types incorrect: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67852
+				...detectAutoImport() as unknown as ESLint.Environment['globals'],
 			},
-
-			globals: detectAutoImport(),
-
+			parser: vueParser,
 			parserOptions: {
 				// https://github.com/vuejs/vue-eslint-parser#parseroptionsparser
 				parser: {
 					ts: '@typescript-eslint/parser',
 				},
 			},
-
-			rules: {
-				// For Vue 2
-				// 'vue/no-deprecated-slot-attribute': ['error'],
-				// 'vue/no-deprecated-slot-scope-attribute': ['error'],
-				// 'vue/no-deprecated-scope-attribute': ['error'],
-
-				'unicorn/filename-case': ['error', {
-					case: 'pascalCase',
-				}],
-
-				'vue/html-indent': ['error', 'tab'],
-
-				'vue/multi-word-component-names': 'off',
-
-				'vue/no-undef-components': ['error', {
-					ignorePatterns: [
-						'router-view',
-						'router-link',
-						...detectAutoImportComponents(),
-					],
-				}],
-
-				// Deprecated
-				'vue/component-tags-order': 'off',
-
-				'vue/block-order': ['error', {
-					order: [
-						'script[setup]',
-						['script', 'template'],
-						'style',
-					],
-				}],
-			},
 		},
-	],
-});
+
+		rules: {
+			...vue3Rules,
+
+			// For Vue 2
+			// 'vue/no-deprecated-slot-attribute': ['error'],
+			// 'vue/no-deprecated-slot-scope-attribute': ['error'],
+			// 'vue/no-deprecated-scope-attribute': ['error'],
+
+			'unicorn/filename-case': ['error', {
+				case: 'pascalCase',
+			}],
+
+			'vue/html-indent': ['error', 'tab'],
+
+			'vue/multi-word-component-names': 'off',
+
+			'vue/no-undef-components': ['error', {
+				ignorePatterns: [
+					'router-view',
+					'router-link',
+					...detectAutoImportComponents(),
+				],
+			}],
+
+			// Deprecated
+			'vue/component-tags-order': 'off',
+
+			'vue/block-order': ['error', {
+				order: [
+					'script[setup]',
+					['script', 'template'],
+					'style',
+				],
+			}],
+		},
+	}),
+];

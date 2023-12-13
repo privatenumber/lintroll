@@ -1,80 +1,84 @@
-import { createConfig } from '../utils/create-config.js';
+import type { Linter, ESLint } from 'eslint';
+import jsoncPlugin from 'eslint-plugin-jsonc';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	ignorePatterns: [
-		'package-lock.json',
-	],
+const [base] = jsoncPlugin.configs.base.overrides;
 
-	overrides: [
-		{
-			files: '**/*.{json,json5,jsonc}',
-			extends: 'plugin:jsonc/base',
-			rules: {
-				'jsonc/indent': ['error', 'tab'],
-				'jsonc/key-spacing': [
-					'error',
-					{
-						afterColon: true,
-						beforeColon: false,
-						mode: 'strict',
-					},
-				],
-				'jsonc/object-property-newline': 'error',
-			},
+export const json = [
+	defineConfig({
+		files: ['**/*.{json,json5,jsonc}'],
+		plugins: {
+			jsonc: jsoncPlugin as unknown as ESLint.Plugin,
 		},
-		{
-			files: '**/package.json',
-			rules: {
-				'jsonc/sort-keys': [
-					'error',
-					{
-						order: [
-							'name',
-							'version',
-							'private',
-							'publishConfig',
-							'description',
-							'keywords',
-							'license',
-							'repository',
-							'funding',
-							'author',
-							'type',
-							'files',
-							'main',
-							'module',
-							'types',
-							'exports',
-							'imports',
-							'bin',
-							'unpkg',
-							'scripts',
-							'husky',
-							'simple-git-hooks',
-							'lint-staged',
-							'engines',
-							'peerDependencies',
-							'peerDependenciesMeta',
-							'dependencies',
-							'optionalDependencies',
-							'devDependencies',
-							'bundledDependencies',
-							'bundleDependencies',
-							'overrides',
-							'eslintConfig',
-						],
-						pathPattern: '^$',
-					},
-					{
-						order: { type: 'asc' },
-						pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
-					},
-				],
-			},
+		languageOptions: {
+			parser: jsoncPlugin as unknown as Linter.ParserModule,
 		},
-		{
-			files: '**/tsconfig.json',
-			extends: 'plugin:jsonc/recommended-with-jsonc',
+		rules: {
+			...base.rules as Linter.RulesRecord,
+			'jsonc/indent': ['error', 'tab'],
+			'jsonc/key-spacing': [
+				'error',
+				{
+					afterColon: true,
+					beforeColon: false,
+					mode: 'strict',
+				},
+			],
+			'jsonc/object-property-newline': 'error',
 		},
-	],
-});
+	}),
+	defineConfig({
+		files: ['**/package.json'],
+		rules: {
+			'jsonc/sort-keys': [
+				'error',
+				{
+					order: [
+						'name',
+						'version',
+						'private',
+						'publishConfig',
+						'description',
+						'keywords',
+						'license',
+						'repository',
+						'funding',
+						'author',
+						'type',
+						'files',
+						'main',
+						'module',
+						'types',
+						'exports',
+						'imports',
+						'bin',
+						'unpkg',
+						'scripts',
+						'husky',
+						'simple-git-hooks',
+						'lint-staged',
+						'engines',
+						'peerDependencies',
+						'peerDependenciesMeta',
+						'dependencies',
+						'optionalDependencies',
+						'devDependencies',
+						'bundledDependencies',
+						'bundleDependencies',
+						'overrides',
+						'eslintConfig',
+					],
+					pathPattern: '^$',
+				},
+				{
+					order: { type: 'asc' },
+					pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
+				},
+			],
+		},
+	}),
+	defineConfig({
+		files: ['**/tsconfig.json'],
+		rules: jsoncPlugin.configs['recommended-with-jsonc'].rules as Linter.RulesRecord,
+	}),
+];

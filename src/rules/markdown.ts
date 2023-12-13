@@ -1,93 +1,115 @@
-import { createConfig } from '../utils/create-config.js';
+import markdownPlugin from 'eslint-plugin-markdown';
+import { defineConfig } from '../utils/define-config.js';
+import type { Options } from '../types.js';
 
-export = createConfig({
-	overrides: [
-		{
-			files: '**/*.md',
-			plugins: ['markdown'],
-			processor: 'markdown/markdown',
-		},
-		{
-			files: '**/*.md/*.{js,jsx,ts,tsx,vue}',
-			rules: {
-				'import/extensions': 'off',
-				'import/no-unresolved': 'off',
-				'no-console': 'off',
+const [, baseMdSubfiles] = markdownPlugin.configs.recommended.overrides!;
 
-				'no-new': 'off',
-				// Can be snippets that don't fully work
-				'no-undef': 'off',
-				// 'n/no-missing-import': 'off',
+export const markdown = (
+	options?: Options,
+) => [
+	defineConfig({
+		files: ['**/*.md'],
+		plugins: {
+			markdown: markdownPlugin,
+		},
+		processor: {
+			name: 'markdown/markdown',
+			...markdownPlugin.processors.markdown,
+		},
+	}),
 
-				// Allow unused expressions like: argv.command // => "install" (string)
-				'no-unused-expressions': 'off',
-				'no-unused-vars': 'warn',
-				'unicorn/filename-case': 'off',
+	defineConfig({
+		files: ['**/*.md/**'],
+		languageOptions: {
+			parserOptions: baseMdSubfiles.parserOptions,
+		},
+		rules: baseMdSubfiles.rules,
+	}),
 
-				// Loose on example code
-				'unicorn/no-array-reduce': 'off',
-				'unicorn/prefer-object-from-entries': 'off',
-			},
+	defineConfig({
+		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
+		rules: {
+			'import/extensions': 'off',
+			'import/no-extraneous-dependencies': 'off',
+			'import/no-unresolved': 'off',
+			'no-console': 'off',
+			'no-new': 'off',
+
+			// Can be snippets that don't fully work
+			'no-undef': 'off',
+
+			'n/shebang': 'off',
+
+			// Allow unused expressions like: argv.command // => "install" (string)
+			'no-unused-expressions': 'off',
+			'unicorn/filename-case': 'off',
+
+			// Loose on example code
+			'unicorn/no-array-reduce': 'off',
+			'unicorn/prefer-object-from-entries': 'off',
+
+			// Style
+			'@stylistic/indent': ['error', 4],
+			'@stylistic/semi': ['error', 'never'],
+			'@stylistic/comma-dangle': ['error', 'never'],
 		},
-		{
-			files: '**/*.md/*.{jsx,tsx}',
-			rules: {
-				'react/jsx-indent-props': ['error', 4],
-				'react/jsx-no-undef': 'off',
-				'react/react-in-jsx-scope': 'off',
-			},
+	}),
+
+	defineConfig({
+		files: ['**/*.md/*.{js,jsx,vue}'],
+		rules: {
+			'no-unused-vars': 'warn',
 		},
-		{
-			files: '**/*.md/*.{js,jsx,vue}',
-			rules: {
-				// Style
-				'@stylistic/indent': ['error', 4],
-				'@stylistic/semi': ['error', 'never'],
-				'@stylistic/comma-dangle': ['error', 'never'],
-			},
+	}),
+
+	defineConfig({
+		files: ['**/*.md/*.{jsx,tsx}'],
+		rules: {
+			'react/jsx-indent-props': ['error', 4],
+			'react/jsx-no-undef': 'off',
+			'react/react-in-jsx-scope': 'off',
 		},
-		{
-			files: '**/*.md/*.vue',
-			rules: {
-				'vue/html-indent': ['error', 4],
-				'vue/no-undef-components': 'warn',
-				'vue/require-v-for-key': 'off',
-			},
-		},
-		{
-			files: '**/*.md/*.{ts,tsx}',
-			rules: {
-				'@typescript-eslint/comma-dangle': ['error', 'never'],
-				'@typescript-eslint/indent': ['error', 4],
-				'@typescript-eslint/member-delimiter-style': [
-					'error',
-					{
-						multiline: {
-							delimiter: 'none',
-							requireLast: false,
-						},
-						multilineDetection: 'brackets',
-						singleline: {
-							delimiter: 'semi',
-							requireLast: false,
-						},
+	}),
+
+	...(
+		options?.vue
+			? [defineConfig({
+				files: ['**/*.md/*.vue'],
+				rules: {
+					'vue/html-indent': ['error', 4],
+					'vue/no-undef-components': 'warn',
+					'vue/require-v-for-key': 'off',
+				},
+			})]
+			: []
+	),
+
+	defineConfig({
+		files: ['**/*.md/*.{ts,tsx}'],
+		rules: {
+			'@stylistic/member-delimiter-style': [
+				'error',
+				{
+					multiline: {
+						delimiter: 'none',
+						requireLast: false,
 					},
-				],
-				'@typescript-eslint/no-unused-vars': 'warn',
-				'@typescript-eslint/semi': ['error', 'never'],
+					multilineDetection: 'brackets',
+					singleline: {
+						delimiter: 'semi',
+						requireLast: false,
+					},
+				},
+			],
+			'@typescript-eslint/no-unused-vars': 'warn',
+		},
+	}),
 
-				// Style
-				'@stylistic/indent': 'off',
-				'@stylistic/semi': 'off',
-				'@stylistic/comma-dangle': 'off',
-			},
+	defineConfig({
+		files: ['**/*.md/*.{json,json5}'],
+		rules: {
+			'jsonc/indent': ['error', 4],
+			'unicorn/filename-case': 'off',
 		},
-		{
-			files: '**/*.md/*.{json,json5}',
-			rules: {
-				'jsonc/indent': ['error', 4],
-				'unicorn/filename-case': 'off',
-			},
-		},
-	],
-});
+	}),
+];

@@ -1,5 +1,11 @@
-import { createConfig } from '../utils/create-config.js';
+import noUseExtendNativePlugin from 'eslint-plugin-no-use-extend-native';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	extends: 'plugin:no-use-extend-native/recommended',
-});
+export const noUseExtendNative = [
+	defineConfig({
+		plugins: {
+			'no-use-extend-native': noUseExtendNativePlugin,
+		},
+		rules: noUseExtendNativePlugin.configs.recommended.rules,
+	}),
+];

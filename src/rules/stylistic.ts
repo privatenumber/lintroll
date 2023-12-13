@@ -1,10 +1,10 @@
-import { createConfig } from '../utils/create-config.js';
+import stylisticPlugin from '@stylistic/eslint-plugin';
+import { defineConfig } from '../utils/define-config';
 
-export = createConfig({
-	plugins: [
-		'@stylistic',
-	],
-
+export const stylistic = defineConfig({
+	plugins: {
+		'@stylistic': stylisticPlugin,
+	},
 	rules: {
 		// https://eslint.org/docs/latest/rules/array-bracket-newline
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],

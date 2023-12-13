@@ -3,18 +3,17 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-import { createConfig } from '../utils/create-config.js';
-import { isInstalled } from '../utils/is-installed.js';
+import globals from 'globals';
+import { isInstalled } from '../utils/require.js';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig(
+export const jest = (
 	isInstalled('jest')
-		? {
-			overrides: [{
-				files: '**/{test,tests}/*',
-				env: {
-					jest: true,
-				},
-			}],
-		}
-		: {},
+		? defineConfig({
+			files: ['**/{test,tests}/*'],
+			languageOptions: {
+				globals: globals.jest,
+			},
+		})
+		: undefined
 );

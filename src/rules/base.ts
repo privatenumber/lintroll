@@ -1,32 +1,19 @@
+import js from '@eslint/js';
+import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { createConfig } from '../utils/create-config.js';
-import { isInstalled } from '../utils/is-installed.js';
+import { isInstalled } from '../utils/require.js';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
-	extends: 'eslint:recommended',
+export const baseConfig = defineConfig({
+	languageOptions: {
+		ecmaVersion: 'latest',
 
-	env: {
-		/**
-		 * Globals shared across Node.js and Browser
-		 * https://github.com/sindresorhus/globals/blob/v13.18.0/globals.json#L1711
-		 */
-		'shared-node-browser': true,
-	},
-
-	parserOptions: {
-		ecmaVersion: 2020,
 		sourceType: 'module',
+
+		globals: globals['shared-node-browser'],
 	},
 
 	rules: {
-		/**
-		 * Deprecated in favor of @stylistic
-		 * Disable from recommended
-		 */
-		'no-mixed-spaces-and-tabs': 'off',
-		'no-extra-semi': 'off',
-
 		'accessor-pairs': 'error',
 
 		// https://eslint.org/docs/latest/rules/array-callback-return
@@ -792,3 +779,33 @@ export = createConfig({
 		yoda: 'error',
 	},
 });
+
+const serviceWorkers = defineConfig({
+	files: ['**/*.sw.js'],
+	languageOptions: {
+		globals: globals.serviceworker,
+	},
+	rules: {
+		'no-restricted-globals': [
+			'error',
+			...confusingBrowserGlobals.filter(variable => variable !== 'self'),
+		],
+	},
+});
+
+export const base = [
+	// https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
+	defineConfig({
+		rules: {
+			...js.configs.recommended.rules,
+
+			/**
+			 * Deprecated rules enabled by recommended
+			 */
+			'no-mixed-spaces-and-tabs': 'off',
+			'no-extra-semi': 'off',
+		},
+	}),
+	baseConfig,
+	serviceWorkers,
+];

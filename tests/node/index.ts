@@ -1,10 +1,9 @@
-import path from 'path';
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
-import { createEslint } from '../utils/eslint.js';
+import { createEslint, eslintCli } from '../utils/eslint.js';
 
-const nodeConfigPath = path.resolve('./dist/node.js');
 const eslint = createEslint({
-	extends: nodeConfigPath,
+	node: true,
 });
 
 export default testSuite(({ describe }) => {
@@ -13,13 +12,24 @@ export default testSuite(({ describe }) => {
 			describe('CommonJS', ({ test }) => {
 				const eslintCommonjs = createEslint(
 					{
-						extends: nodeConfigPath,
+						node: true,
 					},
-					path.join(__dirname, 'fixtures/package-commonjs/'),
+					fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
 				);
 
-				test('.js file', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/package-commonjs/pass.js');
+				test('.js file', async () => {
+					const linted = await eslintCli(
+						'pass.js',
+						fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
+					);
+
+					expect(linted.failed).toBe(false);
+					expect(linted.stdout).toBe('');
+					expect(linted.stderr).toBe('');
+				});
+
+				test('.cjs file', async ({ onTestFail }) => {
+					const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.cjs', import.meta.url));
 					const [result] = await eslintCommonjs.lintFiles(fixturePath);
 
 					onTestFail(() => {
@@ -32,7 +42,7 @@ export default testSuite(({ describe }) => {
 				});
 
 				test('.mjs file', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/package-commonjs/pass.mjs');
+					const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.mjs', import.meta.url));
 					const [result] = await eslintCommonjs.lintFiles(fixturePath);
 
 					onTestFail(() => {
@@ -48,13 +58,13 @@ export default testSuite(({ describe }) => {
 			describe('Module', ({ test }) => {
 				const eslintModule = createEslint(
 					{
-						extends: nodeConfigPath,
+						node: true,
 					},
-					path.join(__dirname, 'fixtures/package-module/'),
+					fileURLToPath(new URL('fixtures/package-module/', import.meta.url)),
 				);
 
 				test('.js file', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/package-module/pass.js');
+					const fixturePath = fileURLToPath(new URL('fixtures/package-module/pass.js', import.meta.url));
 					const [result] = await eslintModule.lintFiles(fixturePath);
 
 					onTestFail(() => {
@@ -67,7 +77,7 @@ export default testSuite(({ describe }) => {
 				});
 
 				test('.cjs file', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/package-module/pass.cjs');
+					const fixturePath = fileURLToPath(new URL('fixtures/package-module/pass.cjs', import.meta.url));
 					const [result] = await eslintModule.lintFiles(fixturePath);
 
 					onTestFail(() => {
@@ -84,7 +94,7 @@ export default testSuite(({ describe }) => {
 		describe('Fail cases', ({ describe }) => {
 			describe('module', ({ test }) => {
 				test('mjs', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/fail.mjs');
+					const fixturePath = fileURLToPath(new URL('fixtures/fail.mjs', import.meta.url));
 					const [result] = await eslint.lintFiles(fixturePath);
 
 					onTestFail(() => {
@@ -124,7 +134,7 @@ export default testSuite(({ describe }) => {
 				});
 
 				test('mts', async ({ onTestFail }) => {
-					const fixturePath = path.join(__dirname, 'fixtures/fail.mts');
+					const fixturePath = fileURLToPath(new URL('fixtures/fail.mts', import.meta.url));
 					const [result] = await eslint.lintFiles(fixturePath);
 
 					onTestFail(() => {

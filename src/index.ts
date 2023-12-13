@@ -1,31 +1,65 @@
-import { createConfig } from './utils/create-config.js';
+import type { Linter } from 'eslint';
+import { isInstalled } from './utils/require.js';
+import type { Options } from './types.js';
+import { base } from './rules/base.js';
+import { eslintComments } from './rules/eslint-comments.js';
+import { stylistic } from './rules/stylistic.js';
+import { imports } from './rules/imports.js';
+import { typescript } from './rules/typescript.js';
+import { regexp } from './rules/regexp.js';
+import { node } from './rules/node.js';
+import { promise } from './rules/promise.js';
+import { jest } from './rules/jest.js';
+import { markdown } from './rules/markdown.js';
+import { json } from './rules/json.js';
+import { noUseExtendNative } from './rules/no-use-extend-native.js';
+import { unicorn } from './rules/unicorn.js';
+import { react } from './rules/react.js';
+import { vue } from './rules/vue.js';
 
-export = createConfig({
-	extends: [
-		'./rules/base',
-		'./rules/stylistic',
-		'./rules/regexp',
-		'./rules/imports',
-		'./rules/promise',
-		'./rules/unicorn',
-		'./rules/no-use-extend-native',
-		'./rules/eslint-comments',
-		'./rules/json',
-		'./rules/typescript',
-		'./rules/vue',
-		'./rules/react',
-		'./rules/markdown',
-		'./rules/service-workers',
-		'./rules/jest',
-	],
+export const pvtnbr = (
+	options?: Options,
+): Linter.FlatConfig[] => {
+	const normalizedOptions = {
+		...options,
+		node: options?.node,
+		vue: options?.vue || isInstalled('vue'),
+		react: options?.react || isInstalled('react'),
+	};
 
-	ignorePatterns: [
-		// Nested node_modules
-		'**/node_modules/**',
+	return [
+		{
+			linterOptions: {
+				reportUnusedDisableDirectives: true,
+			},
+		},
+		{
+			ignores: [
+				'**/package-lock.json',
+				'{tmp,temp}/**',
+				'**/*.min.js',
+				'**/dist/**',
+				'**/node_modules/**',
+				'**/vendor/**',
+			],
+		},
+		...base,
+		...eslintComments,
+		...imports,
+		...unicorn,
+		...typescript,
+		stylistic,
+		...regexp,
+		...promise,
+		...node(normalizedOptions),
+		...noUseExtendNative,
+		...json,
+		...(normalizedOptions.vue ? vue : []),
+		...(normalizedOptions.react ? react : []),
+		...markdown(normalizedOptions),
+		jest,
+	].filter(Boolean);
+};
 
-		'{tmp,temp}/**',
-		'**/*.min.js',
-		'**/vendor/**',
-		'**/dist/**',
-	],
-});
+export type { Options };
+export { defineConfig } from './utils/define-config.js';

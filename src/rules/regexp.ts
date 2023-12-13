@@ -1,5 +1,9 @@
-import { createConfig } from '../utils/create-config.js';
+import regexpPlugin from 'eslint-plugin-regexp';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	extends: 'plugin:regexp/recommended',
-});
+export const regexp = [defineConfig({
+	plugins: {
+		regexp: regexpPlugin,
+	},
+	rules: regexpPlugin.configs.recommended.rules,
+})];

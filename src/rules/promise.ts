@@ -1,12 +1,19 @@
-import { createConfig } from '../utils/create-config.js';
+import promisePlugin from 'eslint-plugin-promise';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	extends: 'plugin:promise/recommended',
-
-	rules: {
-		'promise/always-return': 'off',
-		'promise/catch-or-return': ['error', {
-			allowThen: true,
-		}],
-	},
-});
+export const promise = [
+	defineConfig({
+		plugins: {
+			promise: promisePlugin,
+		},
+		rules: promisePlugin.configs.recommended.rules,
+	}),
+	defineConfig({
+		rules: {
+			'promise/always-return': 'off',
+			'promise/catch-or-return': ['error', {
+				allowThen: true,
+			}],
+		},
+	}),
+];

@@ -1,10 +1,10 @@
-import path from 'path';
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-const passFixtureTs = path.join(__dirname, 'fixtures/pass.ts');
-const passFixtureMts = path.join(__dirname, 'fixtures/pass.mts');
-const failFixture = path.join(__dirname, 'fixtures/fail.ts');
+const passFixtureTs = fileURLToPath(new URL('fixtures/pass.ts', import.meta.url));
+const passFixtureMts = fileURLToPath(new URL('fixtures/pass.mts', import.meta.url));
+const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {
@@ -42,17 +42,21 @@ export default testSuite(({ describe }) => {
 						severity: 2,
 					}),
 					expect.objectContaining({
-						ruleId: '@typescript-eslint/member-delimiter-style',
+						ruleId: '@stylistic/member-delimiter-style',
 						messageId: 'expectedSemi',
 					}),
-					// expect.objectContaining({
-					// 	ruleId: '@typescript-eslint/consistent-type-assertions',
-					// 	messageId: 'as',
-					// }),
-					// expect.objectContaining({
-					// 	ruleId: '@typescript-eslint/return-await',
-					// 	messageId: 'requiredPromiseAwait',
-					// }),
+					expect.not.objectContaining({
+						ruleId: '@stylistic/member-delimiter-style',
+						messageId: 'expectedSemi',
+					}),
+				]),
+			);
+
+			expect(messages).toEqual(
+				expect.not.arrayContaining([
+					expect.objectContaining({
+						ruleId: 'no-unused-vars',
+					}),
 				]),
 			);
 		});

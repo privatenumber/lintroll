@@ -1,10 +1,9 @@
-import path from 'path';
-import { ESLint, type Linter } from 'eslint';
-
-const baseConfigPath = path.resolve('./dist/index.js');
+import eslintApi from 'eslint/use-at-your-own-risk';
+import { execa } from 'execa';
+import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
-	config?: Linter.Config,
+	options?: Options,
 	cwd?: string,
 ) => {
 	const originalCwd = process.cwd();
@@ -14,21 +13,34 @@ export const createEslint = (
 		process.chdir(cwd);
 	}
 
-	const eslint = new ESLint({
+	const flatEsLint = new eslintApi.FlatESLint({
 		cwd,
-		baseConfig: {
-			...config,
-			extends: [
-				baseConfigPath,
-				config?.extends ?? [],
-			].flat(),
-		},
-		useEslintrc: false,
+
+		baseConfig: pvtnbr(options),
+
+		// Don't look up config file
+		overrideConfigFile: true,
 	});
 
 	process.chdir(originalCwd);
 
-	return eslint;
+	return flatEsLint;
 };
 
-export const eslint = createEslint();
+export const eslint = createEslint({
+	vue: true,
+});
+
+export const eslintCli = (
+	file: string,
+	cwd: string,
+) => execa(
+	'eslint',
+	['--no-ignore', file],
+	{
+		cwd,
+		env: {
+			NODE_OPTIONS: '--import tsx',
+		},
+	},
+);

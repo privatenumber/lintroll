@@ -1,14 +1,19 @@
-import { createConfig } from '../utils/create-config.js';
+import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments';
+import { defineConfig } from '../utils/define-config.js';
 
-export = createConfig({
-	extends: 'plugin:eslint-comments/recommended',
+export const eslintComments = [
+	defineConfig({
+		plugins: {
+			'@eslint-community/eslint-comments': eslintCommentsPlugin,
+		},
+		rules: eslintCommentsPlugin.configs.recommended.rules,
+	}),
 
-	rules: {
-		// Disabled in favor of `unicorn/no-abusive-eslint-disable`
-		// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/c137daa/index.js#L33
-		'eslint-comments/no-unlimited-disable': 'off',
-
-		// Disallow disable directives that don't affect any rules
-		'eslint-comments/no-unused-disable': 'error',
-	},
-});
+	defineConfig({
+		rules: {
+			// Deprecated in favor of official reportUnusedDisableDirectives
+			// https://github.com/eslint-community/eslint-plugin-eslint-comments/issues/133
+			'@eslint-community/eslint-comments/no-unused-enable': 'off',
+		},
+	}),
+];

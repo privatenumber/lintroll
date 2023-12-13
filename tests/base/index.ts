@@ -1,26 +1,45 @@
-import path from 'path';
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
 import { eslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
-	describe('base', ({ test }) => {
-		test('Pass cases', async ({ onTestFail }) => {
-			const fixturePath = path.join(__dirname, 'fixtures/pass.js');
-			const [result] = await eslint.lintFiles(fixturePath);
+	describe('base', ({ test, describe }) => {
+		describe('Pass', ({ test }) => {
+			test('.js', async ({ onTestFail }) => {
+				const [result] = await eslint.lintFiles(
+					fileURLToPath(new URL('fixtures/pass.js', import.meta.url)),
+				);
 
-			onTestFail(() => {
-				console.log(result);
-				console.log(result.usedDeprecatedRules);
+				onTestFail(() => {
+					console.log(result);
+					console.log(result.usedDeprecatedRules);
+				});
+
+				expect(result.errorCount).toBe(0);
+				expect(result.warningCount).toBe(0);
+				expect(result.usedDeprecatedRules.length).toBe(0);
 			});
 
-			expect(result.errorCount).toBe(0);
-			expect(result.warningCount).toBe(0);
-			expect(result.usedDeprecatedRules.length).toBe(0);
+			test('.cjs', async ({ onTestFail }) => {
+				const [result] = await eslint.lintFiles(
+					fileURLToPath(new URL('fixtures/pass.cjs', import.meta.url)),
+				);
+
+				onTestFail(() => {
+					console.log(result);
+					console.log(result.usedDeprecatedRules);
+				});
+
+				expect(result.errorCount).toBe(0);
+				expect(result.warningCount).toBe(0);
+				expect(result.usedDeprecatedRules.length).toBe(0);
+			});
 		});
 
 		test('Fail cases', async ({ onTestFail }) => {
-			const fixturePath = path.join(__dirname, 'fixtures/fail.js');
-			const [result] = await eslint.lintFiles(fixturePath);
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/fail.js', import.meta.url)),
+			);
 
 			onTestFail(() => {
 				console.log(result);
@@ -104,8 +123,9 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Service worker', async () => {
-			const fixturePath = path.join(__dirname, 'fixtures/service-worker.sw.js');
-			const [result] = await eslint.lintFiles(fixturePath);
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/service-worker.sw.js', import.meta.url)),
+			);
 
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);

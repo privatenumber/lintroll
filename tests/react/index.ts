@@ -1,15 +1,9 @@
-import path from 'path';
+import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
-import { createEslint } from '../utils/eslint.js';
+import { eslint } from '../utils/eslint.js';
 
-const eslint = createEslint({
-	rules: {
-		'import/no-extraneous-dependencies': 'off',
-	},
-});
-
-const passFixture = path.join(__dirname, 'fixtures/InputComponent.tsx');
-const failFixture = path.join(__dirname, 'fixtures/fail.tsx');
+const passFixture = fileURLToPath(new URL('fixtures/InputComponent.tsx', import.meta.url));
+const failFixture = fileURLToPath(new URL('fixtures/fail.tsx', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('react', ({ test }) => {
