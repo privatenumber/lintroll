@@ -1,6 +1,7 @@
 import { createRequire } from 'module';
 
-const require = createRequire(import.meta.url);
+// Require from the context of the current project
+const require = createRequire(process.cwd() + '/');
 
 export const isInstalled = (specifier: string) => {
 	try {

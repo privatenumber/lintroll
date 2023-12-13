@@ -1,4 +1,5 @@
 import type { Linter } from 'eslint';
+import { isInstalled } from './utils/require.js';
 import { base } from './rules/base.js';
 import { eslintComments } from './rules/eslint-comments.js';
 import { stylistic } from './rules/stylistic.js';
@@ -17,6 +18,8 @@ import { vue } from './rules/vue.js';
 
 export type Options = {
 	node?: boolean;
+	react?: boolean;
+	vue?: boolean;
 };
 
 export const pvtnbr = (
@@ -48,8 +51,8 @@ export const pvtnbr = (
 	...node(options),
 	...noUseExtendNative,
 	...json,
-	...vue,
-	...react,
+	...(options?.vue || isInstalled('vue') ? vue : []),
+	...(options?.react || isInstalled('react') ? react : []),
 	...markdown,
 	jest,
 ].filter(Boolean);
