@@ -24,6 +24,7 @@ export const markdown = (
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
 		rules: {
 			'import/extensions': 'off',
+			'import/no-extraneous-dependencies': 'off',
 			'import/no-unresolved': 'off',
 			'no-console': 'off',
 			'no-new': 'off',
