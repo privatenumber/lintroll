@@ -193,7 +193,9 @@ declare module 'eslint-plugin-markdown' {
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				// rules: ESLint.RulesRecord;
+				overrides: [{
+					rules: ESLint.RulesRecord;
+				}]
 			};
 		};
 	};
