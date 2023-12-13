@@ -30,8 +30,8 @@ export const typescript = [
 		settings: {
 			...importPlugin.configs.typescript.settings,
 
-			// TODO: Remove?
 			'import/resolver': {
+				// this loads <rootdir>/tsconfig.json to eslint
 				typescript: {},
 			},
 		},
