@@ -11,21 +11,9 @@ export const baseConfig = defineConfig({
 		sourceType: 'module',
 
 		globals: globals['shared-node-browser'],
-
-		// TODO: remove?
-		parserOptions: {
-			sourceType: 'module',
-		},
 	},
 
 	rules: {
-		/**
-		 * TODO: Deprecated in favor of @stylistic
-		 * Disable from recommended
-		 */
-		'no-mixed-spaces-and-tabs': 'off',
-		'no-extra-semi': 'off',
-
 		'accessor-pairs': 'error',
 
 		// https://eslint.org/docs/latest/rules/array-callback-return
@@ -806,8 +794,18 @@ const serviceWorkers = defineConfig({
 });
 
 export const base = [
-	// https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
-	js.configs.recommended,
+	// https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
+	defineConfig({
+		rules: {
+			...js.configs.recommended.rules,
+
+			/**
+			 * Deprecated rules enabled by recommended
+			 */
+			'no-mixed-spaces-and-tabs': 'off',
+			'no-extra-semi': 'off',
+		},
+	}),
 	baseConfig,
 	serviceWorkers,
 ];
