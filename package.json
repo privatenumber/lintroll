@@ -48,7 +48,6 @@
 	},
 	"dependencies": {
 		"@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
-		"@eslint/eslintrc": "^2.1.4",
 		"@eslint/js": "^8.55.0",
 		"@stylistic/eslint-plugin": "^1.5.0",
 		"@typescript-eslint/eslint-plugin": "^6.13.2",
