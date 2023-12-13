@@ -188,15 +188,18 @@ declare module 'eslint-plugin-react-hooks' {
 }
 
 declare module 'eslint-plugin-markdown' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
 				overrides: [{
 					rules: ESLint.RulesRecord;
-				}]
+				}];
 			};
+		};
+		processors: {
+			markdown: Linter.Processor;
 		};
 	};
 	export default plugin;

@@ -12,7 +12,10 @@ export const markdown = (
 		plugins: {
 			markdown: markdownPlugin,
 		},
-		processor: 'markdown/markdown',
+		processor: {
+			name: 'markdown/markdown',
+			...markdownPlugin.processors.markdown,
+		},
 	}),
 
 	defineConfig({
