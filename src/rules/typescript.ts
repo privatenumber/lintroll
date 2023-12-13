@@ -13,8 +13,9 @@ import { baseConfig } from './base.js';
 const noExtraneousDependenciesConfig = importsConfig.rules['import/no-extraneous-dependencies'][1];
 
 export const typescript = [
-	// TODO: should be scoped to TS files
 	defineConfig({
+		files: ['**/*.{ts,tsx,mts,cts}'],
+
 		plugins: {
 			'@typescript-eslint': tsPlugin,
 		},
@@ -22,10 +23,6 @@ export const typescript = [
 		languageOptions: {
 			parser: tsParser,
 		},
-	}),
-
-	defineConfig({
-		files: ['**/*.{ts,tsx,mts,cts}'],
 
 		settings: {
 			...importPlugin.configs.typescript.settings,

@@ -165,9 +165,6 @@ export const imports = [
 		plugins: {
 			import: importPlugin,
 		},
-		languageOptions: {
-			parserOptions: importPlugin.configs.recommended.parserOptions,
-		},
 		rules: importPlugin.configs.recommended.rules,
 		settings: {
 			'import/ignore': [
