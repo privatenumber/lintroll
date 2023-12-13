@@ -120,6 +120,7 @@ export const node = (options?: {
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
 					// Defer to import plugin
 					'n/no-missing-import': 'off',
+					'n/no-missing-require': 'off',
 
 					/**
 					 * 1. Doesn't support import maps

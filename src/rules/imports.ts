@@ -108,7 +108,7 @@ export const importsConfig = defineConfig({
 				'**/__{tests,mocks}__/**', // jest pattern
 
 				// Config files
-				'**/*.config.{js,ts}', // any config (eg. jest, webpack, rollup, postcss, vue)
+				'**/*.config.{js,cjs,mjs,ts,cts,mts}', // any config (eg. jest, webpack, rollup, postcss, vue)
 				'**/.*.js', // invisible config files
 
 				// Example snippets
@@ -163,17 +163,16 @@ export const importsConfig = defineConfig({
 export const imports = [
 	...resolveConfig({
 		extends: 'plugin:import/recommended',
-
+		settings: {
+			'import/ignore': [
+				'node_modules',
+				'\\.(css|svg|json)$',
+			],
+		},
 	}),
 	importsConfig,
 	defineConfig({
 		files: ['**/src/**/*'],
-		// settings: {
-		// 	'import/ignore': [
-		// 		// 'node_modules',
-		// 		// '\\.(css|svg|json)$',
-		// 	],
-		// },
 		rules: {
 			// Disallow dynamic imports if compiled
 			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md

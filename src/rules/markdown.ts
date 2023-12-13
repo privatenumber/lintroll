@@ -23,11 +23,12 @@ export const markdown = [
 			'import/extensions': 'off',
 			'import/no-unresolved': 'off',
 			'no-console': 'off',
-
 			'no-new': 'off',
+
 			// Can be snippets that don't fully work
 			'no-undef': 'off',
-			// 'n/no-missing-import': 'off',
+
+			'n/shebang': 'off',
 
 			// Allow unused expressions like: argv.command // => "install" (string)
 			'no-unused-expressions': 'off',
