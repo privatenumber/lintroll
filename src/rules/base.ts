@@ -26,7 +26,10 @@ export const baseConfig = defineConfig({
 		'block-scoped-var': 'error',
 
 		// require camel case names
-		camelcase: ['error', { ignoreDestructuring: false, properties: 'never' }],
+		camelcase: ['error', {
+			ignoreDestructuring: false,
+			properties: 'never',
+		}],
 
 		// https://eslint.org/docs/latest/rules/complexity
 		complexity: ['warn', 10],
@@ -638,7 +641,10 @@ export const baseConfig = defineConfig({
 		'no-void': 'error',
 
 		// disallow usage of configurable warning terms in comments: e.g. todo
-		'no-warning-comments': ['off', { location: 'start', terms: ['todo', 'fixme', 'xxx'] }],
+		'no-warning-comments': ['off', {
+			location: 'start',
+			terms: ['todo', 'fixme', 'xxx'],
+		}],
 
 		// disallow use of the with statement
 		'no-with': 'error',
@@ -752,7 +758,10 @@ export const baseConfig = defineConfig({
 		}],
 
 		// requires object keys to be sorted
-		'sort-keys': ['off', 'asc', { caseSensitive: false, natural: true }],
+		'sort-keys': ['off', 'asc', {
+			caseSensitive: false,
+			natural: true,
+		}],
 
 		// sort variables within the same declaration block
 		'sort-vars': 'off',

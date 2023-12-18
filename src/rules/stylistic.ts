@@ -6,24 +6,27 @@ export const stylistic = defineConfig({
 		'@stylistic': stylisticPlugin,
 	},
 	rules: {
-		// https://eslint.org/docs/latest/rules/array-bracket-newline
+		// https://eslint.style/rules/default/array-bracket-newline
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],
 
-		// https://eslint.org/docs/latest/rules/array-bracket-spacing
+		// https://eslint.style/rules/default/array-bracket-spacing
 		'@stylistic/array-bracket-spacing': ['error', 'never'],
 
-		// https://eslint.org/docs/latest/rules/array-element-newline
+		// https://eslint.style/rules/default/array-element-newline
 		'@stylistic/array-element-newline': ['error', 'consistent'],
 
 		// require parens in arrow function arguments
-		// https://eslint.org/docs/latest/rules/arrow-parens
+		// https://eslint.style/rules/default/arrow-parens
 		'@stylistic/arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
 
 		// require space before/after arrow function's arrow
-		// https://eslint.org/docs/latest/rules/arrow-spacing
-		'@stylistic/arrow-spacing': ['error', { after: true, before: true }],
+		// https://eslint.style/rules/default/arrow-spacing
+		'@stylistic/arrow-spacing': ['error', {
+			after: true,
+			before: true,
+		}],
 
-		// https://eslint.org/docs/latest/rules/block-spacing
+		// https://eslint.style/rules/default/block-spacing
 		'@stylistic/block-spacing': ['error', 'always'],
 
 		// enforce one true brace style
@@ -39,7 +42,10 @@ export const stylistic = defineConfig({
 		}],
 
 		// enforce spacing before and after comma
-		'@stylistic/comma-spacing': ['error', { after: true, before: false }],
+		'@stylistic/comma-spacing': ['error', {
+			after: true,
+			before: false,
+		}],
 
 		// enforce one true comma style
 		'@stylistic/comma-style': ['error', 'last', {
@@ -61,33 +67,36 @@ export const stylistic = defineConfig({
 		// disallow padding inside computed properties
 		'@stylistic/computed-property-spacing': ['error', 'never'],
 
-		// https://eslint.org/docs/latest/rules/dot-location
+		// https://eslint.style/rules/default/dot-location
 		'@stylistic/dot-location': ['error', 'property'],
 
 		// enforce newline at the end of file, with no multiple empty lines
 		'@stylistic/eol-last': ['error', 'always'],
 
 		// enforce spacing between functions and their invocations
-		// https://eslint.org/docs/latest/rules/func-call-spacing
+		// https://eslint.style/rules/default/func-call-spacing
 		'@stylistic/func-call-spacing': ['error', 'never'],
 
-		// https://eslint.org/docs/latest/rules/function-call-argument-newline
+		// https://eslint.style/rules/default/function-call-argument-newline
 		'@stylistic/function-call-argument-newline': ['error', 'consistent'],
 
 		// enforce consistent line breaks inside function parentheses
-		// https://eslint.org/docs/latest/rules/function-paren-newline
+		// https://eslint.style/rules/default/function-paren-newline
 		'@stylistic/function-paren-newline': ['error', 'consistent'],
 
 		// enforce the spacing around the * in generator functions
-		// https://eslint.org/docs/latest/rules/generator-star-spacing
-		'@stylistic/generator-star-spacing': ['error', { after: true, before: false }],
+		// https://eslint.style/rules/default/generator-star-spacing
+		'@stylistic/generator-star-spacing': ['error', {
+			after: true,
+			before: false,
+		}],
 
 		// Enforce the location of arrow function bodies with implicit returns
-		// https://eslint.org/docs/latest/rules/implicit-arrow-linebreak
+		// https://eslint.style/rules/default/implicit-arrow-linebreak
 		'@stylistic/implicit-arrow-linebreak': ['error', 'beside'],
 
 		// this option sets a specific tab width for your code
-		// https://eslint.org/docs/latest/rules/indent
+		// https://eslint.style/rules/default/indent
 		'@stylistic/indent': ['error', 'tab', {
 			ArrayExpression: 1,
 			CallExpression: {
@@ -134,7 +143,10 @@ export const stylistic = defineConfig({
 		}],
 
 		// enforces spacing between keys and values in object literal properties
-		'@stylistic/key-spacing': ['error', { afterColon: true, beforeColon: false }],
+		'@stylistic/key-spacing': ['error', {
+			afterColon: true,
+			beforeColon: false,
+		}],
 
 		// require a space before & after certain keywords
 		'@stylistic/keyword-spacing': ['error', {
@@ -148,18 +160,18 @@ export const stylistic = defineConfig({
 		}],
 
 		// enforce consistent 'LF' or 'CRLF' as linebreaks
-		// https://eslint.org/docs/latest/rules/linebreak-style
+		// https://eslint.style/rules/default/linebreak-style
 		'@stylistic/linebreak-style': ['error', 'unix'],
 
 		// enforces empty lines around comments
 		'@stylistic/lines-around-comment': 'off',
 
 		// require or disallow an empty line between class members
-		// https://eslint.org/docs/latest/rules/lines-between-class-members
+		// https://eslint.style/rules/default/lines-between-class-members
 		'@stylistic/lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: false }],
 
 		// specify the maximum length of a line in your program
-		// https://eslint.org/docs/latest/rules/max-len
+		// https://eslint.style/rules/default/max-len
 		'@stylistic/max-len': ['error', 100, 2, {
 			ignoreComments: false,
 			ignoreRegExpLiterals: true,
@@ -168,29 +180,29 @@ export const stylistic = defineConfig({
 			ignoreUrls: true,
 		}],
 
-		// https://eslint.org/docs/latest/rules/max-statements-per-line
+		// https://eslint.style/rules/default/max-statements-per-line
 		'@stylistic/max-statements-per-line': ['warn', { max: 1 }],
 
-		// https://eslint.org/docs/latest/rules/multiline-ternary
+		// https://eslint.style/rules/default/multiline-ternary
 		'@stylistic/multiline-ternary': ['error', 'always-multiline'],
 
 		// disallow the omission of parentheses when invoking a constructor with no arguments
-		// https://eslint.org/docs/latest/rules/new-parens
+		// https://eslint.style/rules/default/new-parens
 		'@stylistic/new-parens': 'error',
 
 		// enforces new line after each method call in the chain to make it
 		// more readable and easy to maintain
-		// https://eslint.org/docs/latest/rules/newline-per-chained-call
+		// https://eslint.style/rules/default/newline-per-chained-call
 		'@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 4 }],
 
 		// disallow arrow functions where they could be confused with comparisons
-		// https://eslint.org/docs/latest/rules/no-confusing-arrow
+		// https://eslint.style/rules/default/no-confusing-arrow
 		'@stylistic/no-confusing-arrow': ['error', {
 			allowParens: true,
 		}],
 
 		// disallow unnecessary parentheses
-		// https://eslint.org/docs/latest/rules/no-extra-parens
+		// https://eslint.style/rules/default/no-extra-parens
 		'@stylistic/no-extra-parens': ['off', 'all', {
 			conditionalAssign: true,
 			// delegate to eslint-plugin-react
@@ -207,7 +219,7 @@ export const stylistic = defineConfig({
 		'@stylistic/no-floating-decimal': 'error',
 
 		// disallow un-paren'd mixes of different operators
-		// https://eslint.org/docs/latest/rules/no-mixed-operators
+		// https://eslint.style/rules/default/no-mixed-operators
 		'@stylistic/no-mixed-operators': ['error', {
 			allowSamePrecedence: false,
 			// the list of arithmetic groups disallows mixing `%` and `**`
@@ -234,8 +246,12 @@ export const stylistic = defineConfig({
 		}],
 
 		// disallow multiple empty lines, only one newline at the end, and no new lines at the beginning
-		// https://eslint.org/docs/latest/rules/no-multiple-empty-lines
-		'@stylistic/no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
+		// https://eslint.style/rules/default/no-multiple-empty-lines
+		'@stylistic/no-multiple-empty-lines': ['error', {
+			max: 1,
+			maxBOF: 0,
+			maxEOF: 0,
+		}],
 
 		// disallow trailing whitespace at the end of lines
 		'@stylistic/no-trailing-spaces': ['error', {
@@ -244,39 +260,55 @@ export const stylistic = defineConfig({
 		}],
 
 		// disallow whitespace before properties
-		// https://eslint.org/docs/latest/rules/no-whitespace-before-property
+		// https://eslint.style/rules/default/no-whitespace-before-property
 		'@stylistic/no-whitespace-before-property': 'error',
 
 		// enforce the location of single-line statements
-		// https://eslint.org/docs/latest/rules/nonblock-statement-body-position
+		// https://eslint.style/rules/default/nonblock-statement-body-position
 		'@stylistic/nonblock-statement-body-position': ['error', 'beside', {
 			overrides: {},
 		}],
 
 		// enforce line breaks between braces
-		// https://eslint.org/docs/latest/rules/object-curly-newline
+		// https://eslint.style/rules/default/object-curly-newline
 		'@stylistic/object-curly-newline': ['error', {
-			ExportDeclaration: { consistent: true, minProperties: 4, multiline: true },
-			ImportDeclaration: { consistent: true, minProperties: 4, multiline: true },
-			ObjectExpression: { consistent: true, minProperties: 4, multiline: true },
-			ObjectPattern: { consistent: true, minProperties: 4, multiline: true },
+			ExportDeclaration: {
+				consistent: true,
+				minProperties: 3,
+				multiline: true,
+			},
+			ImportDeclaration: {
+				consistent: true,
+				minProperties: 3,
+				multiline: true,
+			},
+			ObjectExpression: {
+				consistent: true,
+				minProperties: 3,
+				multiline: true,
+			},
+			ObjectPattern: {
+				consistent: true,
+				minProperties: 3,
+				multiline: true,
+			},
 		}],
 
 		// require padding inside curly braces
 		'@stylistic/object-curly-spacing': ['error', 'always'],
 
 		// enforce "same line" or "multiple line" on object properties.
-		// https://eslint.org/docs/latest/rules/object-property-newline
+		// https://eslint.style/rules/default/object-property-newline
 		'@stylistic/object-property-newline': ['error', {
-			allowAllPropertiesOnSameLine: true,
+			allowAllPropertiesOnSameLine: false,
 		}],
 
 		// require a newline around variable declaration
-		// https://eslint.org/docs/latest/rules/one-var-declaration-per-line
+		// https://eslint.style/rules/default/one-var-declaration-per-line
 		'@stylistic/one-var-declaration-per-line': ['error', 'always'],
 
 		// Requires operator at the beginning of the line in multiline statements
-		// https://eslint.org/docs/latest/rules/operator-linebreak
+		// https://eslint.style/rules/default/operator-linebreak
 		'@stylistic/operator-linebreak': ['error', 'before', {
 			overrides: {
 				'=': 'none',
@@ -293,7 +325,7 @@ export const stylistic = defineConfig({
 		}],
 
 		// Require or disallow padding lines between statements
-		// https://eslint.org/docs/latest/rules/padding-line-between-statements
+		// https://eslint.style/rules/default/padding-line-between-statements
 		'@stylistic/padding-line-between-statements': [
 			'error',
 			{
@@ -304,31 +336,38 @@ export const stylistic = defineConfig({
 		],
 
 		// require quotes around object literal property names
-		// https://eslint.org/docs/latest/rules/quote-props.html
-		'@stylistic/quote-props': ['error', 'as-needed', { keywords: false, numbers: false, unnecessary: true }],
+		// https://eslint.style/rules/default/quote-props.html
+		'@stylistic/quote-props': ['error', 'as-needed', {
+			keywords: false,
+			numbers: false,
+			unnecessary: true,
+		}],
 
 		// specify whether double or single quotes should be used
 		'@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
 
 		// enforce spacing between object rest-spread
-		// https://eslint.org/docs/latest/rules/rest-spread-spacing
+		// https://eslint.style/rules/default/rest-spread-spacing
 		'@stylistic/rest-spread-spacing': ['error', 'never'],
 
 		// require or disallow use of semicolons instead of ASI
 		'@stylistic/semi': ['error', 'always'],
 
 		// enforce spacing before and after semicolons
-		'@stylistic/semi-spacing': ['error', { after: true, before: false }],
+		'@stylistic/semi-spacing': ['error', {
+			after: true,
+			before: false,
+		}],
 
 		// Enforce location of semicolons
-		// https://eslint.org/docs/latest/rules/semi-style
+		// https://eslint.style/rules/default/semi-style
 		'@stylistic/semi-style': ['error', 'last'],
 
 		// require or disallow space before blocks
 		'@stylistic/space-before-blocks': 'error',
 
 		// require or disallow space before function opening parenthesis
-		// https://eslint.org/docs/latest/rules/space-before-function-paren
+		// https://eslint.style/rules/default/space-before-function-paren
 		'@stylistic/space-before-function-paren': ['error', {
 			anonymous: 'always',
 			asyncArrow: 'always',
@@ -342,7 +381,7 @@ export const stylistic = defineConfig({
 		'@stylistic/space-infix-ops': 'error',
 
 		// Require or disallow spaces before/after unary operators
-		// https://eslint.org/docs/latest/rules/space-unary-ops
+		// https://eslint.style/rules/default/space-unary-ops
 		'@stylistic/space-unary-ops': ['error', {
 			nonwords: false,
 			overrides: {},
@@ -350,7 +389,7 @@ export const stylistic = defineConfig({
 		}],
 
 		// require or disallow a space immediately following the // or /* in a comment
-		// https://eslint.org/docs/latest/rules/spaced-comment
+		// https://eslint.style/rules/default/spaced-comment
 		'@stylistic/spaced-comment': ['error', 'always', {
 			block: {
 				// space here to support sprockets directives and flow comment types
@@ -365,23 +404,26 @@ export const stylistic = defineConfig({
 		}],
 
 		// Enforce spacing around colons of switch statements
-		// https://eslint.org/docs/latest/rules/switch-colon-spacing
-		'@stylistic/switch-colon-spacing': ['error', { after: true, before: false }],
+		// https://eslint.style/rules/default/switch-colon-spacing
+		'@stylistic/switch-colon-spacing': ['error', {
+			after: true,
+			before: false,
+		}],
 
 		// enforce usage of spacing in template strings
-		// https://eslint.org/docs/latest/rules/template-curly-spacing
+		// https://eslint.style/rules/default/template-curly-spacing
 		'@stylistic/template-curly-spacing': 'error',
 
 		// Require or disallow spacing between template tags and their literals
-		// https://eslint.org/docs/latest/rules/template-tag-spacing
+		// https://eslint.style/rules/default/template-tag-spacing
 		'@stylistic/template-tag-spacing': ['error', 'never'],
 
 		// require immediate function invocation to be wrapped in parentheses
-		// https://eslint.org/docs/latest/rules/wrap-iife.html
+		// https://eslint.style/rules/default/wrap-iife.html
 		'@stylistic/wrap-iife': ['error', 'inside', { functionPrototypeMethods: false }],
 
 		// enforce spacing around the * in yield* expressions
-		// https://eslint.org/docs/latest/rules/yield-star-spacing
+		// https://eslint.style/rules/default/yield-star-spacing
 		'@stylistic/yield-star-spacing': ['error', 'after'],
 	},
 });

@@ -77,7 +77,10 @@ export default testSuite(({ describe }) => {
 						ruleId: '@stylistic/operator-linebreak',
 						messageId: 'operatorAtBeginning',
 					}),
-
+					expect.objectContaining({
+						ruleId: '@stylistic/object-property-newline',
+						messageId: 'propertiesOnNewline',
+					}),
 					expect.objectContaining({
 						ruleId: 'curly',
 						messageId: 'missingCurlyAfterCondition',

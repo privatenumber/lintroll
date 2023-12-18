@@ -20,6 +20,8 @@ console.log ("hello world")
 
 console.log(new Buffer(5));
 
+const objectMulti = { a: 1, b: 2 };
+
 // iife
 (function () {
 

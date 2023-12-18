@@ -14,6 +14,13 @@ const objectMethods = {
 	},
 };
 
+const objectSingle = { a: 1 };
+
+const objectMulti = {
+	a: 1,
+	b: 2,
+};
+
 // Ternary
 const ternaryValue = (
 	Math.random() > 0.5
@@ -98,6 +105,8 @@ try {
 console.log(
 	path,
 	objectMethods,
+	objectSingle,
+	objectMulti,
 	message,
 	ternaryValue,
 	someFunction,
