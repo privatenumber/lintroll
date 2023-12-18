@@ -63,8 +63,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.0
   get-conditions:
-    specifier: github:privatenumber/get-conditions#npm/develop
-    version: git@github.com+privatenumber/get-conditions/9bc8173e898c59489ec5c0cfdf2efdf086548f02
+    specifier: ^1.0.0
+    version: 1.0.0
   get-tsconfig:
     specifier: ^4.7.2
     version: 4.7.2
@@ -1952,6 +1952,13 @@ packages:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: false
 
+  /get-conditions@1.0.0:
+    resolution: {integrity: sha512-9wKpu0AjWat7OKzvChkghCCkLmYwc3lUbRP5xDSNI4+SrK4599OXcmJamgpU3pNBUOuaKjSg1NE/6ukFSC8kSA==}
+    dependencies:
+      shell-quote: 1.8.1
+      type-flag: 3.0.0
+    dev: false
+
   /get-intrinsic@1.2.1:
     resolution: {integrity: sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==}
     dependencies:
@@ -3626,12 +3633,3 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  git@github.com+privatenumber/get-conditions/9bc8173e898c59489ec5c0cfdf2efdf086548f02:
-    resolution: {commit: 9bc8173e898c59489ec5c0cfdf2efdf086548f02, repo: git@github.com:privatenumber/get-conditions.git, type: git}
-    name: get-conditions
-    version: 0.0.0-semantic-release
-    dependencies:
-      shell-quote: 1.8.1
-      type-flag: 3.0.0
-    dev: false

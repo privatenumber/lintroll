@@ -74,7 +74,7 @@
 		"eslint-plugin-unicorn": "^49.0.0",
 		"eslint-plugin-vue": "^9.19.2",
 		"find-up-simple": "^1.0.0",
-		"get-conditions": "github:privatenumber/get-conditions#npm/develop",
+		"get-conditions": "^1.0.0",
 		"get-tsconfig": "^4.7.2",
 		"globals": "^13.23.0",
 		"read-package-up": "^11.0.0",
