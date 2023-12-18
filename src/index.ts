@@ -16,6 +16,7 @@ import { noUseExtendNative } from './rules/no-use-extend-native.js';
 import { unicorn } from './rules/unicorn.js';
 import { react } from './rules/react.js';
 import { vue } from './rules/vue.js';
+import { arrowFunctions } from './rules/arrow-functions.js';
 
 export const pvtnbr = (
 	options?: Options,
@@ -57,6 +58,7 @@ export const pvtnbr = (
 		...(normalizedOptions.vue ? vue : []),
 		...(normalizedOptions.react ? react : []),
 		...markdown(normalizedOptions),
+		arrowFunctions,
 		jest,
 	].filter(Boolean);
 };

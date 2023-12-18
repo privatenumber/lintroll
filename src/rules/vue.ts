@@ -13,7 +13,7 @@ const vue3Rules = {
 	...vuePlugin.configs['vue3-recommended'].rules,
 };
 
-function detectAutoImport() {
+const detectAutoImport = () => {
 	if (!isInstalled('unplugin-auto-import')) {
 		return {};
 	}
@@ -32,9 +32,9 @@ function detectAutoImport() {
 				: []
 		)),
 	);
-}
+};
 
-function detectAutoImportComponents() {
+const detectAutoImportComponents = () => {
 	const components = [];
 
 	if (isInstalled('vitepress')) {
@@ -64,7 +64,7 @@ function detectAutoImportComponents() {
 	}
 
 	return components;
-}
+};
 
 export const vue = [
 

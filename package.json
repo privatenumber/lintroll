@@ -79,6 +79,7 @@
 		"@types/react": "^18.2.43",
 		"clean-pkg-json": "^1.2.0",
 		"eslint": "^8.55.0",
+		"eslint-plugin-prefer-arrow-functions": "^3.2.4",
 		"execa": "^8.0.1",
 		"manten": "^1.2.0",
 		"pkgroll": "^2.0.1",
