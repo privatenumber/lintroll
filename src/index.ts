@@ -44,7 +44,7 @@ export const pvtnbr = (
 			],
 		},
 		...base,
-		...eslintComments,
+		eslintComments,
 		...imports,
 		...unicorn,
 		...typescript,
