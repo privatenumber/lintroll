@@ -8,12 +8,17 @@ import path from 'path';
 const message = 'hello world';
 
 const objectMethods = {
-	method() {
-		return true;
-	},
+	method: () => true,
 	'method-a'() {
 		return true;
 	},
+};
+
+const objectSingle = { a: 1 };
+
+const objectMulti = {
+	a: 1,
+	b: 2,
 };
 
 // Ternary
@@ -55,7 +60,9 @@ function someFunction(objectValue, sourceValue, ...args) {
 }
 
 // iife
-(function named() {})();
+(function named() {
+	return this;
+})();
 (() => {})();
 
 // Promise
@@ -63,9 +70,7 @@ const sleep = ms => new Promise((resolve) => {
 	setTimeout(resolve, ms);
 });
 
-async function someAsync() {
-	return await sleep(100);
-}
+const someAsync = async () => await sleep(100);
 
 (async () => {
 	await someAsync();
@@ -100,6 +105,8 @@ try {
 console.log(
 	path,
 	objectMethods,
+	objectSingle,
+	objectMulti,
 	message,
 	ternaryValue,
 	someFunction,

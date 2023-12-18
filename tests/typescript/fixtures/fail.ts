@@ -1,3 +1,5 @@
+import './some-file';
+
 const unusedVar = 1
 
 type UnusedType = string;

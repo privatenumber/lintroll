@@ -6,10 +6,8 @@
 
 <script>
 export default {
-	data() {
-		return {
-			someData: 1,
-		};
-	},
+	data: () => ({
+		someData: 1,
+	}),
 };
 </script>

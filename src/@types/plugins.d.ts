@@ -223,3 +223,11 @@ declare module 'eslint-plugin-n' {
 	};
 	export default plugin;
 }
+
+declare module 'eslint-plugin-prefer-arrow-functions' {
+	import type { ESLint } from 'eslint';
+
+	const plugin: ESLint.Plugin;
+
+	export default plugin;
+}

@@ -48,7 +48,11 @@ export default testSuite(({ describe }) => {
 				const { messages } = results[0];
 
 				onTestFail(() => {
-					console.dir(results, { colors: true, depth: null, maxArrayLength: null });
+					console.dir(results, {
+						colors: true,
+						depth: null,
+						maxArrayLength: null,
+					});
 				});
 
 				expect(messages).toEqual(
@@ -76,7 +80,11 @@ export default testSuite(({ describe }) => {
 				const { messages } = results[0];
 
 				onTestFail(() => {
-					console.dir(results, { colors: true, depth: null, maxArrayLength: null });
+					console.dir(results, {
+						colors: true,
+						depth: null,
+						maxArrayLength: null,
+					});
 				});
 
 				expect(messages).toEqual(
@@ -111,7 +119,11 @@ export default testSuite(({ describe }) => {
 				const { messages } = results[0];
 
 				onTestFail(() => {
-					console.dir(results, { colors: true, depth: null, maxArrayLength: null });
+					console.dir(results, {
+						colors: true,
+						depth: null,
+						maxArrayLength: null,
+					});
 				});
 
 				expect(messages).toEqual(
