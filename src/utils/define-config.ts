@@ -45,24 +45,15 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 	return Object.freeze(config);
 };
 
-/**
- * These specific signatures are needed to make sure that the return type is
- * narrowed to the input type.
- */
-export function defineConfig<T extends Linter.FlatConfig>(
-	config: T,
-): T;
-
-export function defineConfig<T extends Linter.FlatConfig[]>(
-	config: T,
-): T;
-
-export function defineConfig(
-	config: Linter.FlatConfig | Linter.FlatConfig[],
-): Linter.FlatConfig | Linter.FlatConfig[] {
-	return (
-		Array.isArray(config)
-			? config.map(deepFreeze)
-			: deepFreeze(config)
-	);
+interface DefineConfig {
+	<Config extends Linter.FlatConfig>(config: Config): Config;
+	<Configs extends Linter.FlatConfig[]>(config: Configs): Configs;
 }
+
+export const defineConfig: DefineConfig = (
+	config: Linter.FlatConfig | Linter.FlatConfig[],
+): Linter.FlatConfig | Linter.FlatConfig[] => (
+	Array.isArray(config)
+		? config.map(deepFreeze)
+		: deepFreeze(config)
+);
