@@ -1,7 +1,6 @@
 // @ts-check
 
-// eslint-disable-next-line n/file-extension-in-import
-import { defineConfig, pvtnbr } from './src/index.ts';
+import { defineConfig, pvtnbr } from '#pvtnbr';
 
 export default defineConfig([
 	{

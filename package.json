@@ -19,26 +19,34 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
 	"exports": {
-		"require": {
-			"types": "./dist/index.d.cts",
-			"default": "./dist/index.cjs"
+		".": {
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			},
+			"import": {
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
+			}
 		},
-		"import": {
-			"types": "./dist/index.d.mts",
-			"default": "./dist/index.mjs"
-		}
+		"./___pkg-maps-resolver": "./dist/resolvers/pkg-maps-resolver.cjs"
 	},
 	"imports": {
 		"#pvtnbr": {
 			"types": "./src/index.ts",
 			"development": "./src/index.ts",
 			"default": "./dist/index.mjs"
+		},
+		"#pkg-maps-resolver": {
+			"types": "./src/resolvers/pkg-maps-resolver.ts",
+			"development": "./src/resolvers/pkg-maps-resolver.ts",
+			"default": "./dist/resolvers/pkg-maps-resolver.cjs"
 		}
 	},
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --minify",
 		"type-check": "tsc --noEmit",
-		"lint": "NODE_OPTIONS='--import tsx' eslint --cache .",
+		"lint": "NODE_OPTIONS='--import tsx --conditions=development' eslint .",
 		"dev": "tsx watch --conditions=development tests",
 		"test": "tsx tests",
 		"prepack": "pnpm build && clean-pkg-json"
@@ -66,9 +74,11 @@
 		"eslint-plugin-unicorn": "^49.0.0",
 		"eslint-plugin-vue": "^9.19.2",
 		"find-up-simple": "^1.0.0",
+		"get-conditions": "^1.0.0",
 		"get-tsconfig": "^4.7.2",
 		"globals": "^13.23.0",
 		"read-package-up": "^11.0.0",
+		"resolve-pkg-maps": "^1.0.0",
 		"vue-eslint-parser": "^9.3.2"
 	},
 	"devDependencies": {

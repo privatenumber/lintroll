@@ -6,15 +6,18 @@ declare module '@stylistic/eslint-plugin' {
 }
 
 declare module 'eslint-plugin-import' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 			typescript: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
+				settings: {
+					'import/resolver': object;
+				};
 			};
 		};
 	};
@@ -22,12 +25,12 @@ declare module 'eslint-plugin-import' {
 	export default plugin;
 }
 declare module '@eslint-community/eslint-plugin-eslint-comments' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -36,12 +39,12 @@ declare module '@eslint-community/eslint-plugin-eslint-comments' {
 }
 
 declare module 'eslint-plugin-no-use-extend-native' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -50,12 +53,12 @@ declare module 'eslint-plugin-no-use-extend-native' {
 }
 
 declare module 'eslint-plugin-promise' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -64,12 +67,12 @@ declare module 'eslint-plugin-promise' {
 }
 
 declare module 'eslint-plugin-unicorn' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -83,16 +86,16 @@ declare module 'eslint-plugin-vue' {
 	const plugin: ESLint.Plugin & {
 		configs: {
 			base: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 			'vue3-essential': ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 			'vue3-strongly-recommended': ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 			'vue3-recommended': ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 
@@ -118,12 +121,12 @@ declare module 'vue-eslint-parser' {
 }
 
 declare module 'eslint-plugin-regexp' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -131,17 +134,17 @@ declare module 'eslint-plugin-regexp' {
 	export default plugin;
 }
 declare module '@typescript-eslint/eslint-plugin' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 
 			'eslint-recommended': ESLint.ConfigData & {
 				overrides: [{
-					rules: ESLint.RulesRecord;
+					rules: Linter.RulesRecord;
 				}];
 			};
 		};
@@ -157,15 +160,15 @@ declare module '@typescript-eslint/parser' {
 }
 
 declare module 'eslint-plugin-react' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 			'jsx-runtime': ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -174,12 +177,12 @@ declare module 'eslint-plugin-react' {
 }
 
 declare module 'eslint-plugin-react-hooks' {
-	import type { ESLint } from 'eslint';
+	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData & {
-				rules: ESLint.RulesRecord;
+				rules: Linter.RulesRecord;
 			};
 		};
 	};
@@ -194,7 +197,7 @@ declare module 'eslint-plugin-markdown' {
 		configs: {
 			recommended: ESLint.ConfigData & {
 				overrides: [{
-					rules: ESLint.RulesRecord;
+					rules: Linter.RulesRecord;
 				}];
 			};
 		};
