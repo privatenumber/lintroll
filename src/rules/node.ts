@@ -1,8 +1,25 @@
+import fs from 'node:fs';
 import nodePlugin from 'eslint-plugin-n';
 import { readPackageUpSync } from 'read-package-up';
+import { findUpSync } from 'find-up-simple';
 import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
 import type { Options } from '../types.js';
+
+const getNodeVersion = () => {
+	const foundNvmrc = findUpSync('.nvmrc');
+	if (foundNvmrc) {
+		let version = fs.readFileSync(foundNvmrc, 'utf8');
+		version = version.trim();
+		if (version.startsWith('v')) {
+			version = version.slice(1);
+		}
+		return version;
+	}
+
+	// Oldest LTS: https://endoflife.date/nodejs
+	return '18.19.0';
+};
 
 const foundPackageJson = readPackageUpSync()!;
 const hasCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
@@ -60,8 +77,7 @@ export const node = (
 
 				settings: {
 					node: {
-						// Should support the latest LTS and above
-						version: '>=18.16.0',
+						version: `>=${getNodeVersion()}`,
 					},
 				},
 

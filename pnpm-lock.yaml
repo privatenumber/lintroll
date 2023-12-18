@@ -59,6 +59,9 @@ dependencies:
   eslint-plugin-vue:
     specifier: ^9.19.2
     version: 9.19.2(eslint@8.55.0)
+  find-up-simple:
+    specifier: ^1.0.0
+    version: 1.0.0
   get-tsconfig:
     specifier: ^4.7.2
     version: 4.7.2
