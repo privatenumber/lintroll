@@ -171,6 +171,10 @@ export const imports = [
 				'node_modules',
 				'\\.(css|svg|json)$',
 			],
+
+			// 'import/resolver': {
+			// 	// []
+			// },
 		},
 	}),
 	importsConfig,

@@ -38,7 +38,7 @@
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --minify",
 		"type-check": "tsc --noEmit",
-		"lint": "NODE_OPTIONS='--import tsx' eslint --cache .",
+		"lint": "NODE_OPTIONS='--import tsx --conditions=development' eslint --cache .",
 		"dev": "tsx watch --conditions=development tests",
 		"test": "tsx tests",
 		"prepack": "pnpm build && clean-pkg-json"
