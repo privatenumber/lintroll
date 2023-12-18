@@ -1,5 +1,10 @@
+import { fileURLToPath } from 'url';
 import importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config';
+
+const pkgMapsResolver = fileURLToPath(
+	import.meta.resolve('#pkg-maps-resolver'),
+);
 
 export const importsConfig = defineConfig({
 	plugins: {
@@ -11,6 +16,10 @@ export const importsConfig = defineConfig({
 			'node_modules',
 			'\\.(css|svg|json)$',
 		],
+		'import/resolver': {
+			node: {},
+			[pkgMapsResolver]: {},
+		},
 	},
 
 	rules: {
