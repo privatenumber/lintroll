@@ -1,8 +1,21 @@
 import importPlugin from 'eslint-plugin-import';
-import { defineConfig } from '../utils/define-config.js';
+import { defineConfig } from '../utils/define-config';
 
 export const importsConfig = defineConfig({
+	plugins: {
+		import: importPlugin,
+	},
+
+	settings: {
+		'import/ignore': [
+			'node_modules',
+			'\\.(css|svg|json)$',
+		],
+	},
+
 	rules: {
+		...importPlugin.configs.recommended.rules,
+
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
 		'import/default': 'off',
 
@@ -24,7 +37,7 @@ export const importsConfig = defineConfig({
 		// In TS, if a type needs to be exported inline, it's dependent types should be right above it
 		'import/exports-last': 'off',
 
-		// ESM requires all imports to have extensions
+		// Always require a file extension except from packages
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/extensions.md
 		'import/extensions': ['error', 'ignorePackages'],
 
@@ -161,19 +174,9 @@ export const importsConfig = defineConfig({
 });
 
 export const imports = [
-	defineConfig({
-		plugins: {
-			import: importPlugin,
-		},
-		rules: importPlugin.configs.recommended.rules,
-		settings: {
-			'import/ignore': [
-				'node_modules',
-				'\\.(css|svg|json)$',
-			],
-		},
-	}),
 	importsConfig,
+
+	// Bundled files
 	defineConfig({
 		files: ['**/src/**/*'],
 		rules: {

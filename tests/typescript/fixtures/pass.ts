@@ -1,5 +1,6 @@
 import './cts.cjs';
 import './mts.mjs';
+import './some-file.js';
 
 // Promise
 const sleep = (ms: number) => new Promise((resolve) => {

@@ -36,6 +36,11 @@ export default testSuite(({ describe }) => {
 
 			expect(messages).toEqual(
 				expect.arrayContaining([
+					// expect.objectContaining({
+					// 	ruleId: 'import/extensions',
+					// 	message: 'Missing file extension "js" for "./some-file"',
+					// 	severity: 2,
+					// }),
 					expect.objectContaining({
 						ruleId: '@typescript-eslint/no-unused-vars',
 						messageId: 'unusedVar',
