@@ -16,3 +16,5 @@ export default defineConfig([
 		vue: true,
 	}),
 ]);
+
+// export { default } from '#pvtnbr';
