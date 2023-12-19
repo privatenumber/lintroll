@@ -1,9 +1,12 @@
 import 'tsx/esm';
+import { pathToFileURL } from 'url';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { findUp } from 'find-up-simple';
 import type { Linter } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
+
+type ConfigModule = { default?: Linter.FlatConfig[] };
 
 const getConfig = async (): Promise<Linter.FlatConfig[]> => {
 	const configFilePath = (
@@ -12,7 +15,7 @@ const getConfig = async (): Promise<Linter.FlatConfig[]> => {
 	);
 
 	if (configFilePath) {
-		const configModule: { default?: Linter.FlatConfig[] } = await import(configFilePath);
+		const configModule: ConfigModule = await import(pathToFileURL(configFilePath).toString());
 
 		if (configModule.default) {
 			return configModule.default;
