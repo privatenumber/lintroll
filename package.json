@@ -41,14 +41,18 @@
 			"types": "./src/resolvers/pkg-maps-resolver.ts",
 			"development": "./src/resolvers/pkg-maps-resolver.ts",
 			"default": "./dist/resolvers/pkg-maps-resolver.cjs"
+		},
+		"#cli": {
+			"development": "./src/cli.ts",
+			"default": "./dist/cli.mjs"
 		}
 	},
 	"bin": "./dist/cli.mjs",
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --export-condition development",
 		"type-check": "tsc --noEmit",
-		"lint": "NODE_OPTIONS='--import tsx --conditions=development' eslint .",
-		"dev": "tsx watch --conditions=development tests",
+		"lint": "tsx -C development ./src/cli.ts .",
+		"dev": "tsx watch -C development tests",
 		"test": "tsx tests",
 		"prepack": "pnpm build && clean-pkg-json"
 	},

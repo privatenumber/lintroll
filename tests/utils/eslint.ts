@@ -1,5 +1,6 @@
+import { fileURLToPath } from 'url';
 import eslintApi from 'eslint/use-at-your-own-risk';
-import { execa } from 'execa';
+import { execaNode } from 'execa';
 import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
@@ -34,9 +35,12 @@ export const eslint = createEslint({
 export const eslintCli = (
 	file: string,
 	cwd: string,
-) => execa(
-	'eslint',
-	['--no-ignore', file],
+) => execaNode(
+	fileURLToPath(import.meta.resolve('#cli')),
+	[
+		'--no-ignore',
+		file,
+	],
 	{
 		cwd,
 		env: {
