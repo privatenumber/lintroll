@@ -1,5 +1,3 @@
-// @ts-check
-
 import { defineConfig, pvtnbr } from '#pvtnbr';
 
 export default defineConfig([

@@ -13,7 +13,7 @@
 	"include": [
 		"src",
 		"tests",
-		"eslint.config.js",
+		"eslint.config.ts",
 	],
 	"exclude": [
 		"tests/*/fixtures"
