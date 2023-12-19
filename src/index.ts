@@ -65,3 +65,4 @@ export const pvtnbr = (
 
 export type { Options };
 export { defineConfig } from './utils/define-config.js';
+export default pvtnbr();
