@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import eslintApi from 'eslint/use-at-your-own-risk';
-import { execaNode } from 'execa';
+import { execa } from 'execa';
 import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
@@ -35,9 +35,11 @@ export const eslint = createEslint({
 export const eslintCli = (
 	file: string,
 	cwd: string,
-) => execaNode(
-	fileURLToPath(import.meta.resolve('#cli')),
+) => execa(
+	// Couldn't use execaNode because Windows expects file:// path for mjs files, but execaNode didn't accept it
+	process.execPath,
 	[
+		fileURLToPath(import.meta.resolve('#cli')),
 		'--no-ignore',
 		file,
 	],
