@@ -47,7 +47,9 @@
 			"default": "./dist/cli.mjs"
 		}
 	},
-	"bin": "./dist/cli.mjs",
+	"bin": {
+		"lint": "./dist/cli.mjs"
+	},
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --export-condition development",
 		"type-check": "tsc --noEmit",
