@@ -15,7 +15,6 @@
 	"files": [
 		"dist"
 	],
-	"bin": "./dist/cli.mjs",
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
@@ -44,6 +43,7 @@
 			"default": "./dist/resolvers/pkg-maps-resolver.cjs"
 		}
 	},
+	"bin": "./dist/cli.mjs",
 	"scripts": {
 		"build": "rm -rf dist; pkgroll --minify",
 		"type-check": "tsc --noEmit",
