@@ -75,12 +75,12 @@
 		"eslint-plugin-regexp": "^2.1.2",
 		"eslint-plugin-unicorn": "^49.0.0",
 		"eslint-plugin-vue": "^9.19.2",
-		"find-up-simple": "^1.0.0",
 		"get-conditions": "^1.0.0",
 		"get-tsconfig": "^4.7.2",
 		"globals": "^13.24.0",
 		"read-package-up": "^11.0.0",
 		"resolve-pkg-maps": "^1.0.0",
+		"tsx": "^4.6.2",
 		"vue-eslint-parser": "^9.3.2"
 	},
 	"devDependencies": {
@@ -94,10 +94,10 @@
 		"eslint": "^8.56.0",
 		"eslint-plugin-prefer-arrow-functions": "^3.2.4",
 		"execa": "^8.0.1",
+		"find-up-simple": "^1.0.0",
 		"manten": "^1.2.0",
 		"pkgroll": "^2.0.1",
 		"react": "^18.2.0",
-		"tsx": "^4.6.2",
 		"typescript": "^5.3.3"
 	}
 }

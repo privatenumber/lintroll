@@ -1,4 +1,4 @@
-// import 'tsx/esm';
+import 'tsx/esm';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { findUp } from 'find-up-simple';
