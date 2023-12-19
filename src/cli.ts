@@ -1,6 +1,26 @@
+// import 'tsx/esm';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
+import { findUp } from 'find-up-simple';
+import type { Linter } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
+
+const getConfig = async (): Promise<Linter.FlatConfig[]> => {
+	const configFilePath = (
+		await findUp('eslint.config.ts')
+		?? await findUp('eslint.config.js')
+	);
+
+	if (configFilePath) {
+		const configModule: { default?: Linter.FlatConfig[] } = await import(configFilePath);
+
+		if (configModule.default) {
+			return configModule.default;
+		}
+	}
+
+	return pvtnbr();
+};
 
 const argv = cli({
 	name: 'lint',
@@ -31,8 +51,12 @@ const argv = cli({
 (async () => {
 	const { FlatESLint } = eslintApi;
 	const eslint = new FlatESLint({
+		baseConfig: await getConfig(),
+
+		// Don't look up config file
+		overrideConfigFile: true,
+
 		fix: argv.flags.fix,
-		baseConfig: pvtnbr(),
 		cache: argv.flags.cache,
 		cacheLocation: argv.flags.cacheLocation,
 	});

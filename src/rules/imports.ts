@@ -6,6 +6,7 @@ const pkgMapsResolver = fileURLToPath(
 	import.meta.resolve('#pkg-maps-resolver'),
 );
 
+console.log(pkgMapsResolver);
 export const importsConfig = defineConfig({
 	plugins: {
 		import: importPlugin,

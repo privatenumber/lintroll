@@ -45,7 +45,7 @@
 	},
 	"bin": "./dist/cli.mjs",
 	"scripts": {
-		"build": "rm -rf dist; pkgroll --minify",
+		"build": "rm -rf dist; pkgroll --export-condition development",
 		"type-check": "tsc --noEmit",
 		"lint": "NODE_OPTIONS='--import tsx --conditions=development' eslint .",
 		"dev": "tsx watch --conditions=development tests",
