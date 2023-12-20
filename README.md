@@ -122,9 +122,9 @@ export default defineConfig([
 
         // Indicate Vue.js project (auto-detected by default)
         vue: true
-    }),
+    })
 
-	// Other configs...
+    // Other configs...
 ])
 ```
 
@@ -150,9 +150,9 @@ module.exports = defineConfig([
 
         // Indicate Vue.js project (auto-detected by default)
         vue: true
-    }),
+    })
 
-	// Other configs...
+    // Other configs...
 ])
 ```
 
