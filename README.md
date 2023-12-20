@@ -3,7 +3,7 @@
 	<img src="./.github/logo.webp" width="240">
 </p>
 <h2 align="center">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ESLint config <sub>by pvtnbr</sub>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ESLint config <sub><em>by pvtnbr</em></sub>
 </h2>
 
 This ESLint configuration was originally forked from Airbnb's ESLint config, taking inspiration from their comprehensive [JavaScript style guide](https://github.com/airbnb/javascript).
