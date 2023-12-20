@@ -54,7 +54,7 @@ pnpm lint --cache .
 
 #### Add it to your `package.json` scripts
 
-In addition to documenting the available commands in a central place, adding it to `package.json#scripts` also gives you the convenience of not needing to pass in the current directory (`.`) every time:
+In addition to documenting the available commands in a central place, adding it to `package.json#scripts` also gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead.
 
 ```diff
   "scripts": {
