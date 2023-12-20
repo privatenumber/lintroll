@@ -1,5 +1,5 @@
 'some-directive';
-import fs from 'fs'
+import { readFile, writeFile, stat, access } from 'fs';
 import path from 'path'
 import stream from 'stream'
 import os from 'os'

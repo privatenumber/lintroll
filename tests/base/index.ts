@@ -54,6 +54,16 @@ export default testSuite(({ describe }) => {
 						line: 2,
 					}),
 					expect.objectContaining({
+						ruleId: '@stylistic/object-curly-newline',
+						messageId: 'expectedLinebreakAfterOpeningBrace',
+						line: 2,
+					}),
+					expect.objectContaining({
+						ruleId: '@stylistic/object-curly-newline',
+						messageId: 'expectedLinebreakBeforeClosingBrace',
+						line: 2,
+					}),
+					expect.objectContaining({
 						ruleId: '@stylistic/semi',
 						messageId: 'missingSemi',
 					}),

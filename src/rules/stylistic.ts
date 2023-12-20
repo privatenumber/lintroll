@@ -287,22 +287,22 @@ export const stylistic = defineConfig({
 		'@stylistic/object-curly-newline': ['error', {
 			ExportDeclaration: {
 				consistent: true,
-				minProperties: 3,
+				minProperties: 4,
 				multiline: true,
 			},
 			ImportDeclaration: {
 				consistent: true,
-				minProperties: 3,
+				minProperties: 4,
 				multiline: true,
 			},
 			ObjectExpression: {
 				consistent: true,
-				minProperties: 3,
+				minProperties: 4,
 				multiline: true,
 			},
 			ObjectPattern: {
 				consistent: true,
-				minProperties: 3,
+				minProperties: 4,
 				multiline: true,
 			},
 		}],

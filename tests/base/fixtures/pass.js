@@ -1,7 +1,7 @@
 'some-directive';
 
+import { readFile, writeFile, stat } from 'fs';
 import './some-file.js';
-import path from 'path';
 
 // require('./some-file');
 
@@ -103,7 +103,9 @@ try {
 
 // eslint-disable-next-line no-console
 console.log(
-	path,
+	readFile,
+	writeFile,
+	stat,
 	objectMethods,
 	objectSingle,
 	objectMulti,
