@@ -83,6 +83,14 @@ export const typescript = [
 				},
 			],
 
+			'@typescript-eslint/no-explicit-any': ['error', {
+				fixToUnknown: false,
+
+				// No other way to type a function that takes any number of arguments
+				// This should be used in generics where we're narrowing the type with any
+				ignoreRestArgs: true,
+			}],
+
 			// Function expression can be used to type a function
 			'func-style': 'off',
 

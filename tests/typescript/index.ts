@@ -8,9 +8,13 @@ const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {
-		test('Pass ts', async () => {
+		test('Pass ts', async ({ onTestFail }) => {
 			const results = await eslint.lintFiles(passFixtureTs);
 			const [result] = results;
+
+			onTestFail(() => {
+				console.log(result);
+			});
 
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);

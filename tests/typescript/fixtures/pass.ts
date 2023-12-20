@@ -17,6 +17,8 @@ type SomeObject = {
 
 type _AllowUnused = number;
 
+const anySpread = (...args: any[]) => args;
+
 const isNumber = (n): n is number => typeof n === 'number';
 
 const filtered = [1, '2'].filter(isNumber);
@@ -29,6 +31,7 @@ const filtered = [1, '2'].filter(isNumber);
 
 // eslint-disable-next-line no-console
 console.log(
+	anySpread,
 	filtered,
 );
 
