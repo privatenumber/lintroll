@@ -243,7 +243,7 @@ declare module 'eslint-plugin-yml' {
 			base: ESLint.ConfigData & {
 				rules: Linter.RulesRecord;
 			};
-			recommended: ESLint.ConfigData & {
+			standard: ESLint.ConfigData & {
 				rules: Linter.RulesRecord;
 			};
 		};
