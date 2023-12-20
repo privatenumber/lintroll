@@ -4,6 +4,10 @@ import eslintApi from 'eslint/use-at-your-own-risk';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
 
+/**
+ * Reference: ESlint CLI
+ * https://github.com/eslint/eslint/blob/main/lib/cli.js
+ */
 const argv = cli({
 	name: 'lint',
 	parameters: ['<files...>'],
@@ -27,13 +31,16 @@ const argv = cli({
 			type: String,
 			description: 'Path to the cache file or directory',
 		},
+		ignorePattern: {
+			type: [String],
+			description: 'Pattern of files to ignore',
+		},
 		node: {
 			type: [String],
 			description: 'Enable Node.js rules. Pass in a glob to specify files',
 		},
 	},
 });
-
 const isNodeEnabled = (
 	flag: string[],
 ) => {
@@ -59,6 +66,7 @@ const isNodeEnabled = (
 		fix: argv.flags.fix,
 		cache: argv.flags.cache,
 		cacheLocation: argv.flags.cacheLocation,
+		ignorePatterns: argv.flags.ignorePattern,
 	});
 
 	const results = await eslint.lintFiles(argv._.files);
