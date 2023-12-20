@@ -57,7 +57,7 @@ export const pvtnbr = (
 		...node(normalizedOptions),
 		...noUseExtendNative,
 		...json,
-		...yml,
+		yml,
 		...(normalizedOptions.vue ? vue : []),
 		...(normalizedOptions.react ? react : []),
 		...markdown(normalizedOptions),
