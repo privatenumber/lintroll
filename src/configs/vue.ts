@@ -4,7 +4,7 @@ import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import globals from 'globals';
 import { isInstalled, getExports } from '../utils/require.js';
-import { defineConfig } from '../utils/define-config';
+import { defineConfig } from '../utils/define-config.js';
 
 const vue3Rules = {
 	...vuePlugin.configs.base.rules,

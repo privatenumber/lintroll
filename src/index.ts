@@ -1,23 +1,23 @@
 import type { Linter } from 'eslint';
 import { isInstalled } from './utils/require.js';
 import type { Options } from './types.js';
-import { base } from './rules/base.js';
-import { eslintComments } from './rules/eslint-comments.js';
-import { stylistic } from './rules/stylistic.js';
-import { imports } from './rules/imports.js';
-import { typescript } from './rules/typescript.js';
-import { regexp } from './rules/regexp.js';
-import { node } from './rules/node.js';
-import { promise } from './rules/promise.js';
-import { jest } from './rules/jest.js';
-import { markdown } from './rules/markdown.js';
-import { json } from './rules/json.js';
-import { yml } from './rules/yml.js';
-import { noUseExtendNative } from './rules/no-use-extend-native.js';
-import { unicorn } from './rules/unicorn.js';
-import { react } from './rules/react.js';
-import { vue } from './rules/vue.js';
-import { arrowFunctions } from './rules/arrow-functions.js';
+import { base } from './configs/base.js';
+import { eslintComments } from './configs/eslint-comments.js';
+import { stylistic } from './configs/stylistic.js';
+import { imports } from './configs/imports.js';
+import { typescript } from './configs/typescript.js';
+import { regexp } from './configs/regexp.js';
+import { node } from './configs/node.js';
+import { promise } from './configs/promise.js';
+import { jest } from './configs/jest.js';
+import { markdown } from './configs/markdown.js';
+import { json } from './configs/json.js';
+import { yml } from './configs/yml.js';
+import { noUseExtendNative } from './configs/no-use-extend-native.js';
+import { unicorn } from './configs/unicorn.js';
+import { react } from './configs/react.js';
+import { vue } from './configs/vue.js';
+import { arrowFunctions } from './configs/arrow-functions.js';
 
 export const pvtnbr = (
 	options?: Options,
