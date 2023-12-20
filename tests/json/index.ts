@@ -12,12 +12,20 @@ export default testSuite(({ describe }) => {
 			expect(results.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'jsonc/indent',
-						messageId: 'wrongIndentation',
+						ruleId: 'jsonc/sort-keys',
+						message: "Expected object keys to be in specified order. 'version' should be before 'description'.",
 					}),
 					expect.objectContaining({
 						ruleId: 'jsonc/sort-keys',
-						messageId: 'sortKeys',
+						message: "Expected object keys to be in ascending order. 'a' should be before 'b'.",
+					}),
+					expect.objectContaining({
+						ruleId: 'jsonc/sort-keys',
+						message: "Expected object keys to be in ascending order. 'a' should be before 'c'.",
+					}),
+					expect.objectContaining({
+						ruleId: 'jsonc/indent',
+						messageId: 'wrongIndentation',
 					}),
 				]),
 			);

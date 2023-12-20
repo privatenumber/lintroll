@@ -1,5 +1,15 @@
 {
   "name": "some-package-json",
   "description": "",
-  "version": ""
+  "version": "",
+  "dependencies": {
+    "b": "*",
+    "a": "*",
+    "c": "*"
+  },
+  "devDependencies": {
+    "b": "*",
+    "c": "*",
+    "a": "*"
+  }
 }

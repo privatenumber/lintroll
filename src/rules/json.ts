@@ -72,7 +72,7 @@ export const json = [
 				},
 				{
 					order: { type: 'asc' },
-					pathPattern: '^(?:dev|peer|optional|bundled)?Dependencies$',
+					pathPattern: '^(dependencies|(dev|peer|optional|bundled)Dependencies)$',
 				},
 			],
 		},
