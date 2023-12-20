@@ -16,7 +16,7 @@
 	],
 	"type": "module",
 	"bin": {
-		"lint": "./dist/cli.mjs"
+		"lint": "./dist/cli/index.mjs"
 	},
 	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
@@ -46,14 +46,14 @@
 			"default": "./dist/resolvers/pkg-maps-resolver.cjs"
 		},
 		"#cli": {
-			"development": "./src/cli.ts",
-			"default": "./dist/cli.mjs"
+			"development": "./src/cli/index.ts",
+			"default": "./dist/cli/index.mjs"
 		}
 	},
 	"scripts": {
 		"build": "pkgroll --export-condition development --minify",
 		"type-check": "tsc --noEmit",
-		"lint": "tsx -C development ./src/cli.ts .",
+		"lint": "tsx -C development ./src/cli/index.ts .",
 		"dev": "tsx watch -C development tests",
 		"test": "tsx tests",
 		"prepack": "pnpm build && clean-pkg-json"
