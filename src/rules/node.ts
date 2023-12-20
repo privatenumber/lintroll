@@ -30,12 +30,6 @@ const [
 	cjs,
 ] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
 
-// .cjs files can be assumed to support Node features
-const cjsSupport = defineConfig({
-	...cjs,
-	files: [...cjs.files!, '**/*.cts'],
-});
-
 /*
 Eventually this should be a function that accepts a glob to apply node rules to
 */
@@ -43,7 +37,11 @@ export const node = (
 	options: Options,
 ) => {
 	const config: Linter.FlatConfig[] = [
-		cjsSupport,
+		// .cjs files can be assumed to be Node
+		defineConfig({
+			...cjs,
+			files: [...cjs.files!, '**/*.cts'],
+		}),
 	];
 
 	if (options?.node) {
@@ -61,17 +59,39 @@ export const node = (
 					...ambiguious.languageOptions,
 					sourceType: 'module',
 				},
+				rules: {
+					...ambiguious.rules,
+
+					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+					// Defer to import plugin
+					'n/no-missing-import': 'off',
+					'n/no-missing-require': 'off',
+
+					/**
+					 * 1. Doesn't support import maps
+					 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
+					 */
+					'n/no-extraneous-import': 'off',
+				},
 			}),
+
 			defineConfig({
 				...mjs,
 				files: [...mjs.files!, '**/*.mts'],
 			}),
+
 			defineConfig({
 				...cjs,
 				files: [...cjs.files!, '**/*.cts'],
 			}),
 
 			defineConfig({
+				files: (
+					options.node === true
+						? ['**/*.{js,ts,mjs,cjs,mts,cts}'] // all JS files
+						: options.node
+				),
+
 				plugins: {
 					n: nodePlugin,
 				},
@@ -134,17 +154,6 @@ export const node = (
 
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
 					'n/prefer-promises/fs': 'error',
-
-					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-					// Defer to import plugin
-					'n/no-missing-import': 'off',
-					'n/no-missing-require': 'off',
-
-					/**
-					 * 1. Doesn't support import maps
-					 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
-					 */
-					'n/no-extraneous-import': 'off',
 				},
 			}),
 		);
