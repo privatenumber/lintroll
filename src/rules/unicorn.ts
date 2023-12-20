@@ -6,7 +6,7 @@ export const unicorn = [
 		plugins: {
 			unicorn: unicornPlugin,
 		},
-
+		ignores: ['**/*.{json,json5,jsonc,yml,yaml}'],
 		rules: {
 			...unicornPlugin.configs.recommended.rules,
 

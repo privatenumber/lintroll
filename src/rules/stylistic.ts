@@ -5,7 +5,7 @@ export const stylistic = defineConfig({
 	plugins: {
 		'@stylistic': stylisticPlugin,
 	},
-
+	ignores: ['**/*.{json,json5,jsonc,yml,yaml}'],
 	rules: {
 		// https://eslint.style/rules/default/array-bracket-newline
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],
