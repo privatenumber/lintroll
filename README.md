@@ -59,8 +59,8 @@ In addition to documenting the available commands in a central place, adding it 
 ```diff
   "scripts": {
 +   "lint": "lint .",
-	"build": "..."
-	"dev": "..."
+    "build": "..."
+    "dev": "..."
   }
 ```
 
