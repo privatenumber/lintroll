@@ -44,6 +44,9 @@ dependencies:
   eslint-plugin-no-use-extend-native:
     specifier: ^0.5.0
     version: 0.5.0
+  eslint-plugin-prefer-arrow-functions:
+    specifier: ^3.2.4
+    version: 3.2.4(eslint@8.56.0)
   eslint-plugin-promise:
     specifier: ^6.1.1
     version: 6.1.1(eslint@8.56.0)
@@ -109,9 +112,6 @@ devDependencies:
   eslint:
     specifier: ^8.56.0
     version: 8.56.0
-  eslint-plugin-prefer-arrow-functions:
-    specifier: ^3.2.4
-    version: 3.2.4(eslint@8.56.0)
   execa:
     specifier: ^8.0.1
     version: 8.0.1
@@ -1615,7 +1615,7 @@ packages:
       eslint: '>=5.0.0'
     dependencies:
       eslint: 8.56.0
-    dev: true
+    dev: false
 
   /eslint-plugin-promise@6.1.1(eslint@8.56.0):
     resolution: {integrity: sha512-tjqWDwVZQo7UIPMeDReOpUgHCmCiH+ePnVT+5zVapL0uuHnegBUs2smM13CzOs2Xb5+MHMRFTs9v24yjba4Oig==}
