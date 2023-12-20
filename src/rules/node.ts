@@ -6,6 +6,8 @@ import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
 import type { Options } from '../types.js';
 
+const scriptExtensions = 'js,ts,mjs,cjs,mts,cts';
+
 const getNodeVersion = () => {
 	const foundNvmrc = findUpSync('.nvmrc');
 	if (foundNvmrc) {
@@ -25,82 +27,89 @@ const foundPackageJson = readPackageUpSync()!;
 const hasCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
 
 const [
-	ambiguious,
-	mjs,
-	cjs,
+	defaultAmbiguous,
+	defaultMjs,
+	defaultCjs,
 ] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
 
-/*
-Eventually this should be a function that accepts a glob to apply node rules to
+const disableRules = {
+	// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
+	// Defer to import plugin
+	'n/no-missing-import': 'off',
+	'n/no-missing-require': 'off',
+
+	/**
+	 * 1. Doesn't support import maps
+	 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
+	 */
+	'n/no-extraneous-import': 'off',
+} as const;
+
+/**
+* Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
+* because often times, ESM is compiled to CJS at runtime using tools like tsx:
+* https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
 */
+const base = defineConfig({
+	...defaultAmbiguous,
+	files: [...defaultAmbiguous.files!, '**/*.ts'],
+	languageOptions: {
+		...defaultAmbiguous.languageOptions,
+		sourceType: 'module',
+	},
+	rules: {
+		...defaultAmbiguous.rules,
+		...disableRules,
+	},
+});
+
+const mjs = defineConfig({
+	...defaultMjs,
+	files: [...defaultMjs.files!, '**/*.mts'],
+	rules: {
+		...defaultMjs.rules,
+		...disableRules,
+	},
+});
+
+const cjs = defineConfig({
+	...defaultCjs,
+	files: [...defaultCjs.files!, '**/*.cts'],
+	rules: {
+		...defaultCjs.rules,
+		...disableRules,
+	},
+});
+
 export const node = (
 	options: Options,
 ) => {
 	const config: Linter.FlatConfig[] = [
-		// .cjs files can be assumed to be Node
 		defineConfig({
-			...cjs,
-			files: [...cjs.files!, '**/*.cts'],
+			plugins: {
+				n: nodePlugin,
+			},
+			settings: {
+				node: {
+					version: `>=${getNodeVersion()}`,
+				},
+			},
 		}),
+
+		// .cjs files can be assumed to be Node
+		cjs,
 	];
 
 	if (options?.node) {
 		config.push(
-
-			/**
-			 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
-			 * because often times, ESM is compiled to CJS at runtime using tools like tsx:
-			 * https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
-			 */
-			defineConfig({
-				...ambiguious,
-				files: [...ambiguious.files!, '**/*.ts'],
-				languageOptions: {
-					...ambiguious.languageOptions,
-					sourceType: 'module',
-				},
-				rules: {
-					...ambiguious.rules,
-
-					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-					// Defer to import plugin
-					'n/no-missing-import': 'off',
-					'n/no-missing-require': 'off',
-
-					/**
-					 * 1. Doesn't support import maps
-					 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
-					 */
-					'n/no-extraneous-import': 'off',
-				},
-			}),
-
-			defineConfig({
-				...mjs,
-				files: [...mjs.files!, '**/*.mts'],
-			}),
-
-			defineConfig({
-				...cjs,
-				files: [...cjs.files!, '**/*.cts'],
-			}),
-
+			base,
+			mjs,
 			defineConfig({
 				files: (
 					options.node === true
-						? ['**/*.{js,ts,mjs,cjs,mts,cts}'] // all JS files
+						? [`**/*.{${scriptExtensions}}`] // all JS files
 						: options.node
 				),
-
-				plugins: {
-					n: nodePlugin,
-				},
-
-				settings: {
-					node: {
-						version: `>=${getNodeVersion()}`,
-					},
-				},
 
 				rules: {
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
@@ -162,11 +171,13 @@ export const node = (
 	if (hasCli) {
 		config.push(
 			defineConfig({
+				...base,
 				files: [
-					'**/cli.{js,ts}',
-					'**/cli/**/*.{js,ts}',
+					`**/cli.{${scriptExtensions}}`,
+					`**/cli/**/*.{${scriptExtensions}}`,
 				],
 				rules: {
+					...base.rules,
 					'n/no-process-exit': 'off',
 				},
 			}),

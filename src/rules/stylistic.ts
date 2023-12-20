@@ -5,6 +5,7 @@ export const stylistic = defineConfig({
 	plugins: {
 		'@stylistic': stylisticPlugin,
 	},
+
 	rules: {
 		// https://eslint.style/rules/default/array-bracket-newline
 		'@stylistic/array-bracket-newline': ['error', 'consistent'],
