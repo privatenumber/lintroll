@@ -33,6 +33,7 @@ export const json = [
 			'jsonc/sort-keys': [
 				'error',
 				{
+					pathPattern: '^$',
 					order: [
 						'name',
 						'version',
@@ -46,12 +47,12 @@ export const json = [
 						'author',
 						'type',
 						'files',
+						'bin',
 						'main',
 						'module',
 						'types',
 						'exports',
 						'imports',
-						'bin',
 						'unpkg',
 						'scripts',
 						'husky',
@@ -68,11 +69,10 @@ export const json = [
 						'overrides',
 						'eslintConfig',
 					],
-					pathPattern: '^$',
 				},
 				{
-					order: { type: 'asc' },
 					pathPattern: '^(dependencies|(dev|peer|optional|bundled)Dependencies)$',
+					order: { type: 'asc' },
 				},
 			],
 		},
