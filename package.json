@@ -51,7 +51,7 @@
 		}
 	},
 	"scripts": {
-		"build": "pkgroll --export-condition development --minify",
+		"build": "pkgroll --export-condition=node --export-condition=development --minify",
 		"type-check": "tsc --noEmit",
 		"lint": "tsx -C development ./src/cli/index.ts .",
 		"dev": "tsx watch -C development tests",
