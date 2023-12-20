@@ -65,6 +65,9 @@ dependencies:
   eslint-plugin-vue:
     specifier: ^9.19.2
     version: 9.19.2(eslint@8.56.0)
+  eslint-plugin-yml:
+    specifier: ^1.11.0
+    version: 1.11.0(eslint@8.56.0)
   get-conditions:
     specifier: ^1.0.0
     version: 1.0.0
@@ -86,6 +89,9 @@ dependencies:
   vue-eslint-parser:
     specifier: ^9.3.2
     version: 9.3.2(eslint@8.56.0)
+  yaml-eslint-parser:
+    specifier: ^1.2.2
+    version: 1.2.2
 
 devDependencies:
   '@total-typescript/ts-reset':
@@ -1713,6 +1719,22 @@ packages:
       semver: 7.5.4
       vue-eslint-parser: 9.3.2(eslint@8.56.0)
       xml-name-validator: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /eslint-plugin-yml@1.11.0(eslint@8.56.0):
+    resolution: {integrity: sha512-NBZP1NDGy0u38pY5ieix75jxS9GNOJy9xd4gQa0rU4gWbfEsVhKDwuFaQ6RJpDbv6Lq5TtcAZS/YnAc0oeRw0w==}
+    engines: {node: ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: '>=6.0.0'
+    dependencies:
+      debug: 4.3.4
+      eslint: 8.56.0
+      eslint-compat-utils: 0.1.2(eslint@8.56.0)
+      lodash: 4.17.21
+      natural-compare: 1.4.0
+      yaml-eslint-parser: 1.2.2
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3618,6 +3640,20 @@ packages:
 
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
+    dev: false
+
+  /yaml-eslint-parser@1.2.2:
+    resolution: {integrity: sha512-pEwzfsKbTrB8G3xc/sN7aw1v6A6c/pKxLAkjclnAyo5g5qOh6eL9WGu0o3cSDQZKrTNk4KL4lQSwZW+nBkANEg==}
+    engines: {node: ^14.17.0 || >=16.0.0}
+    dependencies:
+      eslint-visitor-keys: 3.4.3
+      lodash: 4.17.21
+      yaml: 2.3.4
+    dev: false
+
+  /yaml@2.3.4:
+    resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
+    engines: {node: '>= 14'}
     dev: false
 
   /yocto-queue@0.1.0:
