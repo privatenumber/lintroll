@@ -203,7 +203,7 @@ Type: `FlatConfig | FlatConfig[]`
 	- [regexp](https://www.npmjs.com/package/eslint-plugin-regexp): Lints Regular Expressions
 	- [import](https://www.npmjs.com/package/eslint-plugin-import): Lints imports
 	- [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc): Lints JSON & JSONC
-    - [yml](https://www.npmjs.com/package/eslint-plugin-yml): Lints YAML
+	- [yml](https://www.npmjs.com/package/eslint-plugin-yml): Lints YAML
 	- [vue](https://www.npmjs.com/package/eslint-plugin-vue): Lints Vue.js
 	- [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks): Lints React
 	- [markdown](https://www.npmjs.com/package/eslint-plugin-markdown): Lints Markdown
