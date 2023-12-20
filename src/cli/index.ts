@@ -27,13 +27,31 @@ const argv = cli({
 			type: String,
 			description: 'Path to the cache file or directory',
 		},
+		node: {
+			type: [String],
+			description: 'Enable Node.js rules. Pass in a glob to specify files',
+		},
 	},
 });
 
+const isNodeEnabled = (
+	flag: string[],
+) => {
+	if (flag.length === 0) {
+		return false;
+	}
+
+	const globs = flag.filter(glob => glob.length > 0);
+	return (globs.length > 0) ? globs : true;
+};
+
 (async () => {
 	const { FlatESLint } = eslintApi;
+
 	const eslint = new FlatESLint({
-		baseConfig: await getConfig(),
+		baseConfig: await getConfig({
+			node: isNodeEnabled(argv.flags.node),
+		}),
 
 		// Don't look up config file
 		overrideConfigFile: true,

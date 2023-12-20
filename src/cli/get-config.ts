@@ -2,6 +2,7 @@ import 'tsx/esm';
 import { pathToFileURL } from 'url';
 import fs from 'fs/promises';
 import type { Linter } from 'eslint';
+import type { Options } from '../types.js';
 import { pvtnbr } from '#pvtnbr';
 
 const exists = async (
@@ -10,7 +11,9 @@ const exists = async (
 
 type ConfigModule = { default?: Linter.FlatConfig[] };
 
-export const getConfig = async (): Promise<Linter.FlatConfig[]> => {
+export const getConfig = async (
+	options: Options,
+): Promise<Linter.FlatConfig[]> => {
 	/**
 	 * Only checks cwd. I considerered find-up,
 	 * but I'm not sure if it's expected to detect config files far up
@@ -30,5 +33,5 @@ export const getConfig = async (): Promise<Linter.FlatConfig[]> => {
 		}
 	}
 
-	return pvtnbr();
+	return pvtnbr(options);
 };
