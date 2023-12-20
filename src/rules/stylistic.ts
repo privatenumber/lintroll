@@ -103,6 +103,7 @@ export const stylistic = defineConfig({
 				arguments: 1,
 			},
 			flatTernaryExpressions: false,
+
 			// MemberExpression: null,
 			FunctionDeclaration: {
 				body: 1,
@@ -164,7 +165,16 @@ export const stylistic = defineConfig({
 		'@stylistic/linebreak-style': ['error', 'unix'],
 
 		// enforces empty lines around comments
-		'@stylistic/lines-around-comment': 'off',
+		'@stylistic/lines-around-comment': ['error', {
+			beforeBlockComment: true,
+			beforeLineComment: true,
+			afterHashbangComment: true,
+
+			allowBlockStart: true,
+			allowObjectStart: true,
+			allowArrayStart: true,
+			allowClassStart: true,
+		}],
 
 		// require or disallow an empty line between class members
 		// https://eslint.style/rules/default/lines-between-class-members
@@ -205,6 +215,7 @@ export const stylistic = defineConfig({
 		// https://eslint.style/rules/default/no-extra-parens
 		'@stylistic/no-extra-parens': ['off', 'all', {
 			conditionalAssign: true,
+
 			// delegate to eslint-plugin-react
 			enforceForArrowConditionals: false,
 			ignoreJSX: 'all',
@@ -222,6 +233,7 @@ export const stylistic = defineConfig({
 		// https://eslint.style/rules/default/no-mixed-operators
 		'@stylistic/no-mixed-operators': ['error', {
 			allowSamePrecedence: false,
+
 			// the list of arithmetic groups disallows mixing `%` and `**`
 			// with other arithmetic operators.
 			groups: [

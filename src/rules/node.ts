@@ -48,6 +48,7 @@ export const node = (
 
 	if (options?.node) {
 		config.push(
+
 			/**
 			 * Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
 			 * because often times, ESM is compiled to CJS at runtime using tools like tsx:

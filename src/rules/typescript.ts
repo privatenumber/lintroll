@@ -74,6 +74,7 @@ export const typescript = [
 
 					argsIgnorePattern: '^_',
 					caughtErrorsIgnorePattern: '^_',
+
 					/**
 					 * TypeScript ignores any variables that are prefixed with _
 					 * https://github.com/microsoft/TypeScript/pull/9464

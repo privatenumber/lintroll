@@ -17,7 +17,7 @@ import http2 from 'http2'
 import zlib from 'zlib'
 
 console.log ("hello world")
-
+// comment without newline above
 console.log(new Buffer(5));
 
 const objectMulti = { a: 1, b: 2 };

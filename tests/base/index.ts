@@ -82,6 +82,11 @@ export default testSuite(({ describe }) => {
 						messageId: 'propertiesOnNewline',
 					}),
 					expect.objectContaining({
+						ruleId: '@stylistic/lines-around-comment',
+						message: 'Expected line before comment.',
+						line: 20,
+					}),
+					expect.objectContaining({
 						ruleId: 'curly',
 						messageId: 'missingCurlyAfterCondition',
 					}),

@@ -487,6 +487,7 @@ export const baseConfig = defineConfig({
 				property: 'pow',
 			},
 		],
+
 		// disallow use of assignment in return statement
 		'no-return-assign': ['error', 'always'],
 
