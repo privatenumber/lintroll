@@ -1,9 +1,6 @@
 {
 	"name": "@pvtnbr/eslint-config",
 	"version": "0.0.0-semantic-release",
-	"publishConfig": {
-		"access": "public"
-	},
 	"license": "MIT",
 	"repository": "privatenumber/eslint-config",
 	"funding": "https://github.com/privatenumber/eslint-config?sponsor=1",
@@ -11,10 +8,13 @@
 		"name": "Hiroki Osame",
 		"email": "hiroki.osame@gmail.com"
 	},
-	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
 	"files": [
 		"dist"
 	],
+	"type": "module",
 	"bin": {
 		"lint": "./dist/cli.mjs"
 	},
