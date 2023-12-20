@@ -51,7 +51,7 @@
     }
   },
   "peerDependencies": {
-    "eslint": "^8.0.0"
+    "eslint": "^8.50.0"
   },
   "dependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
