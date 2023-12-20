@@ -18,7 +18,7 @@ It's been enhanced with plugins, cutting edge tooling, and offers a comprehensiv
 
 - **Handy CLI command** Comes with a quick and easy-to-use CLI command, which even supports `eslint.config.ts`.
 
-- **Extended plugin support**: A rich set of plugins to lint ESlint comments, imports, JSON and more.
+- **Extended plugin support**: A rich set of plugins to lint ESlint comments, imports, JSON, YAML and more.
 
 <!--
 ### What does the styled code look like?
@@ -203,6 +203,7 @@ Type: `FlatConfig | FlatConfig[]`
 	- [regexp](https://www.npmjs.com/package/eslint-plugin-regexp): Lints Regular Expressions
 	- [import](https://www.npmjs.com/package/eslint-plugin-import): Lints imports
 	- [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc): Lints JSON & JSONC
+	- [yml](https://www.npmjs.com/package/eslint-plugin-yml): Lints YAML
 	- [vue](https://www.npmjs.com/package/eslint-plugin-vue): Lints Vue.js
 	- [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks): Lints React
 	- [markdown](https://www.npmjs.com/package/eslint-plugin-markdown): Lints Markdown

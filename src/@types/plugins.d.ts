@@ -234,3 +234,27 @@ declare module 'eslint-plugin-prefer-arrow-functions' {
 
 	export default plugin;
 }
+
+declare module 'eslint-plugin-yml' {
+	import type { ESLint, Linter } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			base: ESLint.ConfigData & {
+				rules: Linter.RulesRecord;
+			};
+			standard: ESLint.ConfigData & {
+				rules: Linter.RulesRecord;
+			};
+		};
+	};
+
+	export default plugin;
+}
+
+declare module 'yaml-eslint-parser' {
+	import type { Linter } from 'eslint';
+
+	const parser: Linter.ParserModule;
+	export default parser;
+}

@@ -12,6 +12,7 @@ import { promise } from './rules/promise.js';
 import { jest } from './rules/jest.js';
 import { markdown } from './rules/markdown.js';
 import { json } from './rules/json.js';
+import { yml } from './rules/yml.js';
 import { noUseExtendNative } from './rules/no-use-extend-native.js';
 import { unicorn } from './rules/unicorn.js';
 import { react } from './rules/react.js';
@@ -37,6 +38,7 @@ export const pvtnbr = (
 		{
 			ignores: [
 				'**/package-lock.json',
+				'**/pnpm-lock.yaml',
 				'{tmp,temp}/**',
 				'**/*.min.js',
 				'**/dist/**',
@@ -55,6 +57,7 @@ export const pvtnbr = (
 		...node(normalizedOptions),
 		...noUseExtendNative,
 		...json,
+		yml,
 		...(normalizedOptions.vue ? vue : []),
 		...(normalizedOptions.react ? react : []),
 		...markdown(normalizedOptions),
