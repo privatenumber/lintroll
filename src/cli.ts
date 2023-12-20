@@ -1,28 +1,62 @@
 import 'tsx/esm';
 import { pathToFileURL } from 'url';
+import fs from 'fs/promises';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
-import { findUp } from 'find-up-simple';
-import type { Linter } from 'eslint';
+import type { ESLint, Linter } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
+
+const exists = async (path: string) => fs.access(path).then(() => path, () => {});
 
 type ConfigModule = { default?: Linter.FlatConfig[] };
 
 const getConfig = async (): Promise<Linter.FlatConfig[]> => {
+	/**
+	 * Only checks cwd. I considerered find-up,
+	 * but I'm not sure if it's expected to detect config files far up
+	 * given this is an opinionated CLI command
+	 */
 	const configFilePath = (
-		await findUp('eslint.config.ts')
-		?? await findUp('eslint.config.js')
+		await exists('eslint.config.ts')
+		?? await exists('eslint.config.js')
 	);
 
 	if (configFilePath) {
 		const configModule: ConfigModule = await import(pathToFileURL(configFilePath).toString());
 
 		if (configModule.default) {
+			console.log('[@pvtnbr/eslint-config]: Using config file:', configFilePath);
 			return configModule.default;
 		}
 	}
 
 	return pvtnbr();
+};
+
+type ErrorCount = {
+	errorCount: number;
+	fatalErrorCount: number;
+	warningCount: number;
+};
+
+const countErrors = (
+	results: ESLint.LintResult[],
+): ErrorCount => {
+	let errorCount = 0;
+	let fatalErrorCount = 0;
+	let warningCount = 0;
+
+	for (const result of results) {
+		errorCount += result.errorCount;
+		fatalErrorCount += result.fatalErrorCount;
+		warningCount += result.warningCount;
+	}
+
+	return {
+		errorCount,
+		fatalErrorCount,
+		warningCount,
+	};
 };
 
 const argv = cli({
@@ -51,6 +85,20 @@ const argv = cli({
 	},
 });
 
+const getExitCode = (
+	errorCount: ErrorCount,
+) => {
+	if (errorCount.fatalErrorCount > 0) {
+		return 2;
+	}
+
+	if (errorCount.errorCount > 0) {
+		return 1;
+	}
+
+	return 0;
+};
+
 (async () => {
 	const { FlatESLint } = eslintApi;
 	const eslint = new FlatESLint({
@@ -75,9 +123,13 @@ const argv = cli({
 		resultsToPrint = FlatESLint.getErrorResults(results);
 	}
 
+	const resultCounts = countErrors(results);
+
 	const formatter = await eslint.loadFormatter();
 	const output = await formatter.format(resultsToPrint);
 	if (output) {
 		console.log(output);
 	}
+
+	process.exitCode = getExitCode(resultCounts);
 })();
