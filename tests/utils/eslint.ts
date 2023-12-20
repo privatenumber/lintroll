@@ -38,7 +38,7 @@ export const eslintCli = (
 ) => execaNode(
 	fileURLToPath(import.meta.resolve('#cli')),
 	[
-		'--no-ignore',
+		'--node=true',
 		file,
 	],
 	{
