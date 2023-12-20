@@ -1,6 +1,6 @@
 
 <p align="center">
-	<img src="./.github/logo.png" width="240">
+	<img src="./.github/logo.webp" width="240">
 </p>
 <h2 align="center">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ESLint config <sub>by pvtnbr</sub>
