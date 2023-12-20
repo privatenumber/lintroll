@@ -84,7 +84,7 @@ When using `eslint`, the [flat configuration format](https://eslint.org/docs/lat
 ### Simple config
 If you want a simple setup with no customizations, create the following `eslint.config.js`:
 
-ESM:
+Module:
 ```js
 export { default } from '@pvtnbr/eslint-config'
 ```
@@ -100,7 +100,7 @@ If you're using TypeScript, you can add [`@ts-check`](https://www.typescriptlang
 
 In `eslint.config.js`:
 
-ESM:
+Module:
 ```js
 // @ts-check
 
