@@ -72,7 +72,7 @@ If you'd like to customize the linting rules further, you can add one of these E
 
 - `eslint.config.js`: A standard JavaScript file for ESLint configuration, suitable for projects not using TypeScript.
 
-Note, when creating a custom config, you must manually add the `pvtnbr` config. Read the section below to learn how.
+Note: when creating an ESLint config file, you must manually add the `pvtnbr` config. Read the section below to learn how.
 
 ## ESLint setup
 
@@ -211,7 +211,11 @@ Type: `FlatConfig | FlatConfig[]`
 
 ## Other ESLint configs
 
-Also check out these awesome ESLint configs. They inspired many features of this config, and are great alternatives to consider.
+Also check out these awesome ESLint configs. They have inspired me and are great alternatives to consider.
 
-- [@antfu](https://github.com/antfu)'s ESLint config: https://github.com/antfu/eslint-config
-- [@sxzz](https://github.com/sxzz)'s ESLint config: https://github.com/sxzz/eslint-config
+- [@antfu](https://github.com/antfu)'s ESLint config: [antfu/eslint-config](https://github.com/antfu/eslint-config)
+- [@sxzz](https://github.com/sxzz)'s ESLint config: [sxzz/eslint-config](https://github.com/sxzz/eslint-config)
+- [@ota-meshi](https://github.com/ota-meshi)'s ESlint config & plugin: [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin)
+- [standard config](https://github.com/standard/eslint-config-standard)
+
+Hope they also inspire you to create your own ESLint config!
