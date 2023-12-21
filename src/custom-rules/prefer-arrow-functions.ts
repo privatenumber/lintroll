@@ -1,12 +1,5 @@
-import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule } from './utils/create-rule.js';
-
-// https://github.com/eslint/eslint/blob/e563c52e35d25f726d423cc3b1dffcd80027fd99/lib/source-code/source-code.js#L446
-const getTextRange = (
-	sourceCode: TSESLint.SourceCode,
-	start: number,
-	end: number,
-) => sourceCode.getText({ range: [start, end] } as TSESTree.Node);
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
@@ -94,8 +87,7 @@ export const preferArrowFunctions = createRule({
 					&& firstToken.value === 'async'
 				) {
 					const nextToken = context.sourceCode.getTokenAfter(firstToken)!;
-					return getTextRange(
-						context.sourceCode,
+					return context.sourceCode.text.slice(
 						firstToken.range[0],
 						nextToken.range[0],
 					);
@@ -110,8 +102,7 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(functionNode.id)!;
-				return getTextRange(
-					context.sourceCode,
+				return context.sourceCode.text.slice(
 					previousToken.range[1],
 					excludeName ? functionNode.id.range[0] : functionNode.id.range[1],
 				);
@@ -126,12 +117,12 @@ export const preferArrowFunctions = createRule({
 					filter: token => token.type === 'Punctuator' && token.value === ')',
 				})!;
 
-				return getTextRange(context.sourceCode, previousToken.range[1], parenEnd.range[1]);
+				return context.sourceCode.text.slice(previousToken.range[1], parenEnd.range[1]);
 			};
 
 			const getBodyString = () => {
 				const previousToken = context.sourceCode.getTokenBefore(functionNode.body)!;
-				return getTextRange(context.sourceCode, previousToken.range[1], functionNode.body.range[1]);
+				return context.sourceCode.text.slice(previousToken.range[1], functionNode.body.range[1]);
 			};
 
 			const getTypeParameters = () => {
@@ -139,8 +130,7 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(functionNode.typeParameters)!;
-				return getTextRange(
-					context.sourceCode,
+				return context.sourceCode.text.slice(
 					previousToken.range[1],
 					functionNode.typeParameters.range[1],
 				);
@@ -151,8 +141,7 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(functionNode.returnType)!;
-				return getTextRange(
-					context.sourceCode,
+				return context.sourceCode.text.slice(
 					previousToken.range[1],
 					functionNode.returnType.range[1],
 				);
@@ -220,12 +209,32 @@ export const preferArrowFunctions = createRule({
 				context.report({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
+					fix: fixer => {
+						const [variable] = context.sourceCode.getDeclaredVariables!(node);
+						const [firstReference] = variable.references;	
+						const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
+						const tokenAfter = context.sourceCode.getTokenAfter(node, {
+							includeComments: true,
+						});
+						const removeTextTill = tokenAfter ? tokenAfter.range[0] : context.sourceCode.text.length;
+						const tokenDelimiter = context.sourceCode.text.slice(node.range[1], removeTextTill) || ';';
 
-					// TODO: handle hoisting
-					fix: fixer => fixer.replaceText(
-						node,
-						convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration'),
-					),
+						// Hoist above first usage
+						if (firstReference) {
+							return [
+								fixer.insertTextBefore(firstReference.identifier, arrowCode + tokenDelimiter),
+								fixer.removeRange([
+									node.range[0],
+									removeTextTill,
+								]),
+							];
+						} else {
+							return fixer.replaceText(
+								node,
+								arrowCode,
+							);	
+						}
+					},
 				});
 			},
 		};

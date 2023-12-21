@@ -2,6 +2,12 @@ import { testSuite } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions.js';
 
+/**
+ * function hoisting
+ * function prototype
+ * function.length
+ * function.name
+ */
 export default testSuite(({ describe }) => {
 	describe('prefer-arrow-functions', ({ describe, test }) => {
 		RuleTester.describe = describe;
@@ -121,6 +127,40 @@ export default testSuite(({ describe }) => {
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: 'const/*b*/foo=async/*a*//*c*/(/*d*/\na\n/*e*/)=>/*f*/{\n}',
+				},
+
+				// Function hoisting
+				{
+					name: 'declaration / hoisting / no whitespace',
+					code: 'a();function a(){}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{};a();',
+				},
+				{
+					name: 'declaration / hoisting / whitespace eof',
+					code: 'a();function a(){}\n',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{}\na();',
+				},
+				{
+					name: 'declaration / hoisting / whitespace comment',
+					code: 'a();function a(){}\n/**/a',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{}\na();/**/a',
+				},
+				{
+					name: 'declaration / hoisting / different scope',
+					code: '(()=>a);a;function a(){}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{};(()=>a);a;',
 				},
 
 				// Function expression
