@@ -73,13 +73,16 @@ export const preferArrowFunctions = createRule({
 	defaultOptions: ['warning'],
 
 	create: (context) => {
-		const functionsWithThis = new Set<FunctionNode>();
+		const untransformableFunctions = new Set<FunctionNode>();
 
 		const isConvertable = (
 			node: FunctionNode,
 		) => {
 			// Generators cannot be arrow functions
-			if (node.generator) {
+			if (
+				node.generator
+				|| untransformableFunctions.has(node)	
+			) {
 				return false;
 			}
 
@@ -101,35 +104,7 @@ export const preferArrowFunctions = createRule({
 
 			const scope = context.sourceCode.getScope!(node);
 			const hasArguments = scope.set.get('arguments')!.references.length > 0;
-			const hasThis = functionsWithThis.has(node);
-
-			// References to this or arguments cannot be in arrow functions
-			const tokens = context.sourceCode.getTokens(node.body);
-
-			const hasSuper = tokens.some(token => token.type === 'Keyword' && token.value === 'super');
-			const hasNewIndex = tokens.findIndex(token => token.type === 'Keyword' && token.value === 'new');
-			const hasNewTarget = (
-				hasNewIndex !== -1
-				&& (
-					tokens[hasNewIndex + 1].type === 'Punctuator'
-					&& tokens[hasNewIndex + 1].value === '.'
-				)
-				&& (
-					tokens[hasNewIndex + 2].type === 'Identifier'
-					&& tokens[hasNewIndex + 2].value === 'target'
-				)
-			);
-
-			if (
-				hasArguments
-				|| hasThis
-				|| hasSuper
-				|| hasNewTarget
-			) {
-				return false;
-			}
-
-			return true;
+			return !hasArguments;
 		};
 
 		const convertToArrowFunction = (
@@ -214,7 +189,7 @@ export const preferArrowFunctions = createRule({
 		};
 
 		const getNearestFunction = (
-			node: TSESTree.ThisExpression,
+			node: TSESTree.ThisExpression | TSESTree.Super | TSESTree.MetaProperty,
 		): FunctionNode => {
 			let scope = context.sourceCode.getScope!(node);
 
@@ -230,7 +205,18 @@ export const preferArrowFunctions = createRule({
 
 		return {
 			'ThisExpression': (node) => {
-				functionsWithThis.add(getNearestFunction(node));
+				untransformableFunctions.add(getNearestFunction(node));
+			},
+			Super: (node) => {
+				untransformableFunctions.add(getNearestFunction(node));
+			},
+			'MetaProperty': (node) => {
+				if (
+					node.meta.name === 'new'
+					&& node.property.name === 'target'
+				) {
+					untransformableFunctions.add(getNearestFunction(node));
+				}
 			},
 			'FunctionExpression:exit': (node) => {
 				if (!isConvertable(node)) {

@@ -61,6 +61,10 @@ export default testSuite(({ describe }) => {
 					name: 'new.target',
 					code: '(function(){new.target})',
 				},
+				{
+					name: 'nested new.target',
+					code: '(function(){(() => new.target)})',
+				},
 
 				// Object getters & setters
 				{
@@ -150,6 +154,22 @@ export default testSuite(({ describe }) => {
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: 'const foo=()=>{(function(){arguments})}',
+				},
+				{
+					name: 'declaration / function with "new.target" inside',
+					code: 'function foo(){(function(){new.target})}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const foo=()=>{(function(){new.target})}',
+				},
+				{
+					name: 'declaration / function with "class super()" inside',
+					code: 'function foo(){(class{a(){super()}})}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const foo=()=>{(class{a(){super()}})}',
 				},
 
 				// Function hoisting˚
