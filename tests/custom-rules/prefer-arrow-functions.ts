@@ -45,6 +45,16 @@ export default testSuite(({ describe }) => {
 					code: '(function(){return arguments})',
 				},
 
+				// Object getters & setters
+				{
+					name: 'object getter',
+					code: '({get foo(){}})',
+				},
+				{
+					name: 'object setter',
+					code: '({set foo(){}})',
+				},
+
 				// Ignores generators
 				{
 					name: 'generator',
@@ -57,7 +67,6 @@ export default testSuite(({ describe }) => {
 			],
 
 			invalid: [
-
 				// Function declaration
 				{
 					name: 'declaration / empty parameters',
@@ -127,6 +136,16 @@ export default testSuite(({ describe }) => {
 					}],
 					output: '({["a"]:(b)=>{}})',
 				},
+
+				// Class
+				// {
+				// 	name: 'class',
+				// 	code: 'class {a:/**/function/**/()/**/{}}',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: '({a:/**//**/()=>/**/{}})',
+				// },
 
 				// Exports
 				{
