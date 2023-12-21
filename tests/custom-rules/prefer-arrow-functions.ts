@@ -1,8 +1,8 @@
 import { testSuite } from 'manten';
-import { RuleTester } from '@typescript-eslint/rule-tester'
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions.js';
 
-export default testSuite(({ describe  }) => {
+export default testSuite(({ describe }) => {
 	describe('prefer-arrow-functions', ({ describe, test }) => {
 		RuleTester.describe = describe;
 		RuleTester.it = test;
@@ -13,28 +13,49 @@ export default testSuite(({ describe  }) => {
 
 		ruleTester.run('prefer-arrow-functions', preferArrowFunctions, {
 			valid: [
+				// Ignores arrow functions
 				{
-					name: 'arrow function expression',
+					name: 'arrow',
 					code: '(() => {})',
 				},
 				{
-					name: 'async arrow function expression',
+					name: 'async arrow',
 					code: '(async () => {})',
 				},
 				{
-					name: 'assigned arrow function',
+					name: 'assigned arrow',
 					code: 'const foo = () => {}',
 				},
 				{
-					name: 'generator function',
+					name: 'named export arrow',
+					code: 'export const foo = () => {}',
+				},
+				{
+					name: 'default export arrow',
+					code: 'export default () => {}',
+				},
+
+				// Ignores this & arguments
+				{
+					name: 'this',
+					code: '(function(){return this})',
+				},
+				{
+					name: 'arguments',
+					code: '(function(){return arguments})',
+				},
+
+				// Ignores generators
+				{
+					name: 'generator',
 					code: 'function* foo() {}',
 				},
 				{
-					name: 'async generator function',
+					name: 'async generator',
 					code: 'async function* foo() {}',
 				},
 			],
-		
+
 			invalid: [
 
 				// Function declaration
@@ -81,6 +102,24 @@ export default testSuite(({ describe  }) => {
 					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
 
+				// Object property
+				{
+					name: 'object property / value',
+					code: '({a:/**/function/**/()/**/{}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '({a:/**//**/()=>/**/{}})',
+				},
+				{
+					name: 'object property / method',
+					code: '({a(b){}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '({a:(b)=>{}})',
+				},
+				
 				// Exports
 				{
 					name: 'named export / declaration ',

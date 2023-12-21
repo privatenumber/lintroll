@@ -53,8 +53,7 @@ export const preferArrowFunctions = createRule({
 		const getParamString = (
 			node: TSESTree.FunctionDeclaration,
 		) => {
-			const firstToken = context.sourceCode.getFirstToken(node)!;
-			const parenStart = context.sourceCode.getTokenAfter(firstToken, {
+			const parenStart = context.sourceCode.getFirstToken(node, {
 				filter: token => token.type === 'Punctuator' && token.value === '(',
 			})!;
 			const previousToken = context.sourceCode.getTokenBefore(parenStart)!;
@@ -121,6 +120,14 @@ export const preferArrowFunctions = createRule({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
 					fix: fixer => {
+						const fixes = [];
+						if (
+							node.parent.type === 'Property'
+							&& node.parent.method
+						) {
+							fixes.push(fixer.insertTextAfter(node.parent.key, `:`));
+						}
+
 						const data = {
 							async: getAsyncString(node),
 							name: getIdString(node, true),
@@ -130,7 +137,9 @@ export const preferArrowFunctions = createRule({
 							body: getBodyString(node),
 						};
 
-						return fixer.replaceText(node, `${data.async}${data.name}${data.typeParameters}${data.paren}${data.returnType}=>${data.body}`);
+						fixes.push(fixer.replaceText(node, `${data.async}${data.name}${data.typeParameters}${data.paren}${data.returnType}=>${data.body}`));
+
+						return fixes;
 					},
 				});
 			},
