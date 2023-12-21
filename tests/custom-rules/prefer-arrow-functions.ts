@@ -3,7 +3,6 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions.js';
 
 /**
- * function hoisting
  * function prototype
  * function.length
  * function.name
@@ -155,12 +154,20 @@ export default testSuite(({ describe }) => {
 					output: 'const a=()=>{}\na();/**/a',
 				},
 				{
-					name: 'declaration / hoisting / different scope',
+					name: 'declaration / hoisting / preserves scope above function scope',
 					code: '(()=>a);a;function a(){}',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: 'const a=()=>{};(()=>a);a;',
+				},
+				{
+					name: 'declaration / hoisting / preserves scope above block scope',
+					code: 'if(1){(()=>a)}a;function a(){}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{};if(1){(()=>a)}a;',
 				},
 
 				// Function expression

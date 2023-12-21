@@ -1,7 +1,42 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { createRule } from './utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
+
+const getClosestInsertion = (
+	node: TSESTree.Node,
+) => {
+	let currentNode: TSESTree.Node | undefined = node;
+	while (currentNode) {
+		if (['ExpressionStatement', 'Program'].includes(currentNode.type)) {
+			return currentNode;
+		}
+		currentNode = currentNode.parent;
+	}
+};
+
+const findFirstReference = (
+	sourceCode: TSESLint.SourceCode,
+	node: TSESTree.Node,
+) => {
+	const [variable] = sourceCode.getDeclaredVariables!(node);
+	const [firstReference] = variable.references;
+
+	if (!firstReference) {
+		return;
+	}
+
+	let firstReferenceScope = firstReference.from;
+	while (firstReferenceScope.upper !== variable.scope) {
+		const { upper } = firstReferenceScope;
+		if (!upper) {
+			break;
+		}
+		firstReferenceScope = upper;
+	}
+
+	return getClosestInsertion(firstReferenceScope.block);
+};
 
 // TODO: add option not to transform default exports of named functions as the name gets lost
 // And really, we should be disabling default export instead
@@ -210,19 +245,22 @@ export const preferArrowFunctions = createRule({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
 					fix: (fixer) => {
-						const [variable] = context.sourceCode.getDeclaredVariables!(node);
-						const [firstReference] = variable.references;
+						const hoistAboveNode = findFirstReference(context.sourceCode, node);
 						const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
 						const tokenAfter = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
 						});
-						const removeTextTill = tokenAfter ? tokenAfter.range[0] : context.sourceCode.text.length;
+						const removeTextTill = (
+							tokenAfter
+								? tokenAfter.range[0]
+								: context.sourceCode.text.length
+						);
 						const tokenDelimiter = context.sourceCode.text.slice(node.range[1], removeTextTill) || ';';
 
 						// Hoist above first usage
-						if (firstReference) {
+						if (hoistAboveNode) {
 							return [
-								fixer.insertTextBefore(firstReference.identifier, arrowCode + tokenDelimiter),
+								fixer.insertTextBefore(hoistAboveNode, arrowCode + tokenDelimiter),
 								fixer.removeRange([
 									node.range[0],
 									removeTextTill,
