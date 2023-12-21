@@ -40,7 +40,6 @@ const findFirstReference = (
 	let firstReferenceScope = firstReference.from;
 
 	if (firstReferenceScope === functionVariable.scope) {
-		// console.log(firstReference.identifier);
 		return getClosestInsertion(firstReference.identifier);
 	}
 
@@ -74,6 +73,8 @@ export const preferArrowFunctions = createRule({
 	defaultOptions: ['warning'],
 
 	create: (context) => {
+		const functionsWithThis = new Set<FunctionNode>();
+
 		const isConvertable = (
 			node: FunctionNode,
 		) => {
@@ -98,10 +99,13 @@ export const preferArrowFunctions = createRule({
 				return false;
 			}
 
+			const scope = context.sourceCode.getScope!(node);
+			const hasArguments = scope.set.get('arguments')!.references.length > 0;
+			const hasThis = functionsWithThis.has(node);
+
 			// References to this or arguments cannot be in arrow functions
 			const tokens = context.sourceCode.getTokens(node.body);
-			const hasArguments = tokens.some(token => token.type === 'Identifier' && token.value === 'arguments');
-			const hasThis = tokens.some(token => token.type === 'Keyword' && token.value === 'this');
+
 			const hasSuper = tokens.some(token => token.type === 'Keyword' && token.value === 'super');
 			const hasNewIndex = tokens.findIndex(token => token.type === 'Keyword' && token.value === 'new');
 			const hasNewTarget = (
@@ -209,8 +213,26 @@ export const preferArrowFunctions = createRule({
 			return `${noAssignment ? `${async}${name}` : `const${name}=${async}`}${typeParameters}${paren}${returnType}=>${body}`;
 		};
 
+		const getNearestFunction = (
+			node: TSESTree.ThisExpression,
+		): FunctionNode => {
+			let scope = context.sourceCode.getScope!(node);
+
+			while (
+				scope.block.type !== 'FunctionDeclaration'
+				&& scope.block.type !== 'FunctionExpression'
+			) {
+				scope = scope.upper!;
+			}
+
+			return scope.block as FunctionNode;
+		};
+
 		return {
-			FunctionExpression: (node) => {
+			'ThisExpression': (node) => {
+				functionsWithThis.add(getNearestFunction(node));
+			},
+			'FunctionExpression:exit': (node) => {
 				if (!isConvertable(node)) {
 					return;
 				}
@@ -238,23 +260,20 @@ export const preferArrowFunctions = createRule({
 							fixes.push(fixer.insertTextBefore(node.parent.value, ':'));
 						}
 
-						fixes.push(fixer.replaceText(node, convertToArrowFunction(node, true)));
+						let arrowCode = convertToArrowFunction(node, true);
+						if (node.parent.type === 'LogicalExpression') {
+							arrowCode = `(${arrowCode})`;
+						}
+
+						fixes.push(fixer.replaceText(node, arrowCode));
 
 						return fixes;
 					},
 				});
 			},
 
-			FunctionDeclaration: (node) => {
+			'FunctionDeclaration:exit': (node) => {
 				if (!isConvertable(node)) {
-					return;
-				}
-
-				const tokens = context.sourceCode.getTokens(node.body);
-				const hasArguments = tokens.some(token => token.type === 'Identifier' && token.value === 'arguments');
-				const hasThis = tokens.some(token => token.type === 'Keyword' && token.value === 'this');
-
-				if (hasArguments || hasThis) {
 					return;
 				}
 

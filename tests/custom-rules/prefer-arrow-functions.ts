@@ -46,8 +46,16 @@ export default testSuite(({ describe }) => {
 					code: '(function(){this})',
 				},
 				{
+					name: 'nested this',
+					code: '(function(){(() => this)})',
+				},
+				{
 					name: 'arguments',
 					code: '(function(){arguments})',
+				},
+				{
+					name: 'nested arguments',
+					code: '(function(){(() => arguments)})',
 				},
 				{
 					name: 'new.target',
@@ -127,8 +135,24 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'const/*b*/foo=async/*a*//*c*/(/*d*/\na\n/*e*/)=>/*f*/{\n}',
 				},
+				{
+					name: 'declaration / function with "this" inside',
+					code: 'function foo(){(function(){this})}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const foo=()=>{(function(){this})}',
+				},
+				{
+					name: 'declaration / function with "arguments" inside',
+					code: 'function foo(){(function(){arguments})}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const foo=()=>{(function(){arguments})}',
+				},
 
-				// Function hoisting
+				// Function hoisting˚
 				{
 					name: 'declaration / hoisting / doesnt hoist',
 					code: 'function a(){}a()',
@@ -202,6 +226,14 @@ export default testSuite(({ describe }) => {
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+				},
+				{
+					name: 'expression / &&',
+					code: `(1 && function(){})`,
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: `(1 && (()=>{}))`,
 				},
 
 				// Object property
