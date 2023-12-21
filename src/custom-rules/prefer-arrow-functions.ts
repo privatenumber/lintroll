@@ -1,24 +1,145 @@
 import type { Rule } from 'eslint';
+import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
+import { createRule } from './utils/create-rule.js';
 
-export const preferArrowFunctions = {
+const getTextRange = (
+	sourceCode: TSESLint.SourceCode,
+	start: number,
+	end: number,
+) => sourceCode.getText({ range: [start, end] } as TSESTree.Node);
+
+export const preferArrowFunctions = createRule({
+	name: 'prefer-arrow-functions',
 	meta: {
+		'messages': {
+			unexpectedFunctionDeclaration: 'Unexpected function declaration',
+		},
+		'type': 'suggestion',
+		'schema': [],
+		docs: {
+			'description': 'Prefer arrow functions when possible',
+		},
 		fixable: 'code',
 	},
-	create(context) {
-		// console.log(context);
+	
+	defaultOptions: ['warning'],
 
-		const referencesArguments = () => {
-			const scope = context.getScope();
-			return scope.set.has('arguments');
+	create(context) {
+		const getAsyncString = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			const firstToken = context.sourceCode.getFirstToken(node)!;
+			if (
+				firstToken.type === 'Identifier'
+				&& firstToken.value === 'async'
+			) {
+				const nextToken = context.sourceCode.getTokenAfter(firstToken)!;
+				return getTextRange(context.sourceCode, firstToken.range[0], nextToken.range[0]);
+			}
+			return '';
 		};
 
-		function isSafeTransformation(node) {
-			console.log(node);
+		const getIdString = (
+			node: TSESTree.FunctionDeclaration,
+			excludeName: boolean,
+		) => {
+			if (!node.id) {
+				return '';
+			}
+			const previousToken = context.sourceCode.getTokenBefore(node.id)!;
+			return getTextRange(context.sourceCode, previousToken.range[1], excludeName ? node.id.range[0] : node.id.range[1]);
 		}
 
+		const getParamString = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			const firstToken = context.sourceCode.getFirstToken(node)!;
+			const parenStart = context.sourceCode.getTokenAfter(firstToken, {
+				filter: token => token.type === 'Punctuator' && token.value === '(',
+			})!;
+			const previousToken = context.sourceCode.getTokenBefore(parenStart)!;
+			const parenEnd = context.sourceCode.getTokenAfter(parenStart, {
+				filter: token => token.type === 'Punctuator' && token.value === ')',
+			})!;
+			
+			return getTextRange(context.sourceCode, previousToken.range[1], parenEnd.range[1]);
+		};
+
+		const getBodyString = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			const previousToken = context.sourceCode.getTokenBefore(node.body)!;
+			return getTextRange(context.sourceCode, previousToken.range[1], node.body.range[1]);			
+		};
+
+		const getTypeParameters = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			if (!node.typeParameters) {
+				return '';
+			}
+			const previousToken = context.sourceCode.getTokenBefore(node.typeParameters)!;
+			return getTextRange(context.sourceCode, previousToken.range[1], node.typeParameters.range[1]);
+		};
+
+		const getReturnTypeParameters = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			if (!node.returnType) {
+				return '';
+			}
+			const previousToken = context.sourceCode.getTokenBefore(node.returnType)!;
+			return getTextRange(context.sourceCode, previousToken.range[1], node.returnType.range[1]);
+		};
+
+
+		const isConvertable = (
+			node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+		) => {
+			if (node.generator) {
+				return false;
+			}
+
+			const tokens = context.sourceCode.getTokens(node.body);
+			const hasArguments = tokens.some(token => token.type === 'Identifier' && token.value === 'arguments');
+			const hasThis = tokens.some(token => token.type === 'Keyword' && token.value === 'this');
+
+			if (hasArguments || hasThis) {
+				return false;
+			}
+
+			return true;
+		};
+
 		return {
+			FunctionExpression: (node) => {
+				if (!isConvertable(node)) {
+					return;
+				}
+
+				context.report({
+					node,
+					messageId: 'unexpectedFunctionDeclaration',
+					fix: fixer => {
+						const data = {
+							async: getAsyncString(node),
+							name: getIdString(node, true),
+							typeParameters: getTypeParameters(node),
+							paren: getParamString(node),
+							returnType: getReturnTypeParameters(node),
+							body: getBodyString(node),
+						};
+
+						return fixer.replaceText(node, `${data.async}${data.name}${data.typeParameters}${data.paren}${data.returnType}=>${data.body}`);
+					},
+				});
+			},
+
 			FunctionDeclaration: (node) => {
-				// console.log(node);
+				if (!isConvertable(node)) {
+					return;
+				}
+
 				const tokens = context.sourceCode.getTokens(node.body);
 				const hasArguments = tokens.some(token => token.type === 'Identifier' && token.value === 'arguments');
 				const hasThis = tokens.some(token => token.type === 'Keyword' && token.value === 'this');
@@ -29,102 +150,37 @@ export const preferArrowFunctions = {
 
 				context.report({
 					node,
-					message: 'Prefer arrow functions',
+					messageId: 'unexpectedFunctionDeclaration',
 
 					// TODO: handle hoisting
-					fix: fixer => fixer.replaceText(node, `const ${node.id.name} = () => {}`),
+					fix: fixer => {
+
+						if (node.parent.type === 'ExportDefaultDeclaration') {
+							const data = {
+								async: getAsyncString(node),
+								name: getIdString(node, true),
+								typeParameters: getTypeParameters(node),
+								paren: getParamString(node),
+								returnType: getReturnTypeParameters(node),
+								body: getBodyString(node),
+							};
+	
+							return fixer.replaceText(node, `${data.async}${data.name}${data.typeParameters}${data.paren}${data.returnType}=>${data.body}`);
+						}
+
+						const data = {
+							async: getAsyncString(node),
+							name: getIdString(node),
+							typeParameters: getTypeParameters(node),
+							paren: getParamString(node),
+							returnType: getReturnTypeParameters(node),
+							body: getBodyString(node),
+						};
+
+						return fixer.replaceText(node, `const${data.name}=${data.async}${data.typeParameters}${data.paren}${data.returnType}=>${data.body}`);
+					},
 				});
-
-				console.dir({
-					node,
-					code: context.sourceCode.getText(node),
-
-					// tokens,
-
-					hasArguments,
-					hasThis,
-
-					// refArgs: scope.set.has('arguments'),
-					// refThis: scope.set.has('this'),
-					// scope: scope,
-				}, {
-					depth: 5,
-				});
-
-				// const tokens = context.sourceCode.getTokens(node);
-				// console.log({
-				// 	tokens,
-				// });
-				// if (isSafeTransformation(node)) {
-				// 	context.report({
-				// 	fix: (fixer) =>
-				// 		fixer.replaceText(node, writeArrowFunction(node) + ';'),
-				// 	message: getMessage(node),
-				// 	node,
-				// 	});
-				// }
 			},
-
-			// ':matches(ClassProperty, MethodDefinition, Property)[key.name][value.type="FunctionExpression"][kind!=/^(get|set)$/]': (node) => {
-			// 	// const propName = node.key.name;
-			// 	// const functionNode = node.value;
-			// 	// if (
-			// 	// isSafeTransformation(functionNode) &&
-			// 	// (!isWithinClassBody(functionNode) || classPropertiesAllowed)
-			// 	// ) {
-			// 	// context.report({
-			// 	// 	fix: (fixer) =>
-			// 	// 	fixer.replaceText(
-			// 	// 		node,
-			// 	// 		isWithinClassBody(node)
-			// 	// 		? `${propName} = ${writeArrowFunction(functionNode)};`
-			// 	// 		: `${propName}: ${writeArrowFunction(functionNode)}`,
-			// 	// 	),
-			// 	// 	message: getMessage(functionNode),
-			// 	// 	node: functionNode,
-			// 	// });
-			// 	// }
-			// },
-			// 'ArrowFunctionExpression[body.type!="BlockStatement"]': (node) => {
-			// 	// console.log(node);
-
-			// 	// console.log(context.sourceCode.getText(node));
-			// 	// if (returnStyle === 'explicit' && isSafeTransformation(node)) {
-			// 	// 	context.report({
-			// 	// 	fix: (fixer) => fixer.replaceText(node, writeArrowFunction(node)),
-			// 	// 	message: USE_EXPLICIT,
-			// 	// 	node,
-			// 	// 	});
-			// 	// }
-			// },
-			// 'ArrowFunctionExpression[body.body.length=1][body.body.0.type="ReturnStatement"]': (node) => {
-			// 	// if (returnStyle === 'implicit' && isSafeTransformation(node)) {
-			// 	// context.report({
-			// 	// 	fix: (fixer) => fixer.replaceText(node, writeArrowFunction(node)),
-			// 	// 	message: USE_IMPLICIT,
-			// 	// 	node,
-			// 	// });
-			// 	// }
-			// },
-			// 'FunctionExpression[parent.type!=/^(ClassProperty|MethodDefinition|Property)$/]': (node) => {
-			// 	// if (isSafeTransformation(node)) {
-			// 	// context.report({
-			// 	// 	fix: (fixer) => fixer.replaceText(node, writeArrowFunction(node)),
-			// 	// 	message: getMessage(node),
-			// 	// 	node,
-			// 	// });
-			// 	// }
-			// },
-			// 'FunctionDeclaration[parent.type!="ExportDefaultDeclaration"]': (node) => {
-			// 	// if (isSafeTransformation(node)) {
-			// 	// 	context.report({
-			// 	// 	fix: (fixer) =>
-			// 	// 		fixer.replaceText(node, writeArrowConstant(node) + ';'),
-			// 	// 	message: getMessage(node),
-			// 	// 	node,
-			// 	// 	});
-			// 	// }
-			// },
 		};
 	},
-} satisfies Rule.RuleModule;
+}) as unknown as Rule.RuleModule;
