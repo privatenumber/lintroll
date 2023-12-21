@@ -1,6 +1,7 @@
 import type { Linter } from 'eslint';
 import { isInstalled } from './utils/require.js';
 import type { Options } from './types.js';
+import { defineConfig } from './utils/define-config.js';
 import { base } from './configs/base.js';
 import { eslintComments } from './configs/eslint-comments.js';
 import { stylistic } from './configs/stylistic.js';
@@ -32,12 +33,7 @@ export const pvtnbr = (
 	};
 
 	return [
-		{
-			linterOptions: {
-				reportUnusedDisableDirectives: true,
-			},
-		},
-		{
+		defineConfig({
 			ignores: [
 				'**/package-lock.json',
 				'**/pnpm-lock.yaml',
@@ -47,13 +43,14 @@ export const pvtnbr = (
 				'**/node_modules/**',
 				'**/vendor/**',
 			],
-		},
-		{
+			linterOptions: {
+				reportUnusedDisableDirectives: true,
+			},
 			languageOptions: {
 				ecmaVersion: 'latest',
-				sourceType: 'module',		
+				sourceType: 'module',
 			},
-		} as const,
+		}),
 		// ...base,
 		// eslintComments,
 		// ...imports,
@@ -76,6 +73,6 @@ export const pvtnbr = (
 	].filter(Boolean);
 };
 
-export type { Options };
-export { defineConfig } from './utils/define-config.js';
 export default pvtnbr();
+export { defineConfig}
+export type { Options };
