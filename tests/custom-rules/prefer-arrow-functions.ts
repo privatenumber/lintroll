@@ -130,6 +130,14 @@ export default testSuite(({ describe }) => {
 
 				// Function hoisting
 				{
+					name: 'declaration / hoisting / doesnt hoist',
+					code: 'function a(){}a()',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'const a=()=>{};a()',
+				},
+				{
 					name: 'declaration / hoisting / no whitespace',
 					code: 'a();function a(){}',
 					errors: [{
@@ -168,6 +176,14 @@ export default testSuite(({ describe }) => {
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: 'const a=()=>{};if(1){(()=>a)}a;',
+				},
+				{
+					name: 'declaration / hoisting / preserves scope within block scope',
+					code: 'if(1){while(a()){}function a(){}}',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: 'if(1){const a=()=>{};while(a()){}}',
 				},
 
 				// Function expression

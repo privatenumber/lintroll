@@ -8,7 +8,13 @@ const getClosestInsertion = (
 ) => {
 	let currentNode: TSESTree.Node | undefined = node;
 	while (currentNode) {
-		if (['ExpressionStatement', 'Program'].includes(currentNode.type)) {
+		const { type } = currentNode;
+
+		if (type === 'BlockStatement') {
+			return currentNode.body[0];
+		}
+
+		if (['ExpressionStatement', 'BlockStatement', 'Program'].includes(type)) {
 			return currentNode;
 		}
 		currentNode = currentNode.parent;
@@ -19,15 +25,26 @@ const findFirstReference = (
 	sourceCode: TSESLint.SourceCode,
 	node: TSESTree.Node,
 ) => {
-	const [variable] = sourceCode.getDeclaredVariables!(node);
-	const [firstReference] = variable.references;
+	const [functionVariable] = sourceCode.getDeclaredVariables!(node);
+	const [firstReference] = functionVariable.references;
 
-	if (!firstReference) {
+	if (
+		!firstReference
+
+		// First reference comes after declaration
+		|| node.range[0] < firstReference.identifier.range[0]
+	) {
 		return;
 	}
 
 	let firstReferenceScope = firstReference.from;
-	while (firstReferenceScope.upper !== variable.scope) {
+
+	if (firstReferenceScope === functionVariable.scope) {
+		// console.log(firstReference.identifier);
+		return getClosestInsertion(firstReference.identifier);
+	}
+
+	while (firstReferenceScope !== functionVariable.scope) {
 		const { upper } = firstReferenceScope;
 		if (!upper) {
 			break;
@@ -247,30 +264,27 @@ export const preferArrowFunctions = createRule({
 					fix: (fixer) => {
 						const hoistAboveNode = findFirstReference(context.sourceCode, node);
 						const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
-						const tokenAfter = context.sourceCode.getTokenAfter(node, {
+						const nextToken = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
 						});
 						const removeTextTill = (
-							tokenAfter
-								? tokenAfter.range[0]
+							nextToken
+								? nextToken.range[0]
 								: context.sourceCode.text.length
 						);
 						const tokenDelimiter = context.sourceCode.text.slice(node.range[1], removeTextTill) || ';';
+						const removeRange = [node.range[0], removeTextTill] as const;
 
 						// Hoist above first usage
 						if (hoistAboveNode) {
 							return [
 								fixer.insertTextBefore(hoistAboveNode, arrowCode + tokenDelimiter),
-								fixer.removeRange([
-									node.range[0],
-									removeTextTill,
-								]),
+								fixer.removeRange(removeRange),
 							];
 						}
-						return fixer.replaceText(
-							node,
-							arrowCode,
-						);
+
+						const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween!(node, nextToken!);
+						return fixer.replaceText(node, arrowCode + (needsDelimiter ? ';' : ''));
 					},
 				});
 			},
