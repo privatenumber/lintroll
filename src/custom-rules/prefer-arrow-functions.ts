@@ -160,10 +160,13 @@ export const preferArrowFunctions = createRule({
 						const fixes = [];
 
 						if (
+							// Class method
 							(
 								node.parent.type === 'MethodDefinition'
-								&& node.parent.kind !== 'constructor'
+								&& node.parent.kind === 'method'
 							)
+
+							// Object method
 							|| (
 								node.parent.type === 'Property'
 								&& node.parent.method
