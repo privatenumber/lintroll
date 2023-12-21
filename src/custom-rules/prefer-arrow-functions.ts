@@ -66,13 +66,11 @@ export const preferArrowFunctions = createRule({
 		};
 
 		const convertToArrowFunction = (
-			node: FunctionNode,
+			functionNode: FunctionNode,
 			noAssignment: boolean,
 		) => {
-			const getAsyncString = (
-				node: FunctionNode,
-			) => {
-				const firstToken = context.sourceCode.getFirstToken(node)!;
+			const getAsyncString = () => {
+				const firstToken = context.sourceCode.getFirstToken(functionNode)!;
 				if (
 					firstToken.type === 'Identifier'
 					&& firstToken.value === 'async'
@@ -88,24 +86,21 @@ export const preferArrowFunctions = createRule({
 			};
 
 			const getIdString = (
-				node: FunctionNode,
 				excludeName: boolean,
 			) => {
-				if (!node.id) {
+				if (!functionNode.id) {
 					return '';
 				}
-				const previousToken = context.sourceCode.getTokenBefore(node.id)!;
+				const previousToken = context.sourceCode.getTokenBefore(functionNode.id)!;
 				return getTextRange(
 					context.sourceCode,
 					previousToken.range[1],
-					excludeName ? node.id.range[0] : node.id.range[1],
+					excludeName ? functionNode.id.range[0] : functionNode.id.range[1],
 				);
 			};
 
-			const getParameterString = (
-				node: FunctionNode,
-			) => {
-				const parenStart = context.sourceCode.getFirstToken(node, {
+			const getParameterString = () => {
+				const parenStart = context.sourceCode.getFirstToken(functionNode, {
 					filter: token => token.type === 'Punctuator' && token.value === '(',
 				})!;
 				const previousToken = context.sourceCode.getTokenBefore(parenStart)!;
@@ -116,47 +111,41 @@ export const preferArrowFunctions = createRule({
 				return getTextRange(context.sourceCode, previousToken.range[1], parenEnd.range[1]);
 			};
 
-			const getBodyString = (
-				node: FunctionNode,
-			) => {
-				const previousToken = context.sourceCode.getTokenBefore(node.body)!;
-				return getTextRange(context.sourceCode, previousToken.range[1], node.body.range[1]);
+			const getBodyString = () => {
+				const previousToken = context.sourceCode.getTokenBefore(functionNode.body)!;
+				return getTextRange(context.sourceCode, previousToken.range[1], functionNode.body.range[1]);
 			};
 
-			const getTypeParameters = (
-				node: FunctionNode,
-			) => {
-				if (!node.typeParameters) {
+			const getTypeParameters = () => {
+				if (!functionNode.typeParameters) {
 					return '';
 				}
-				const previousToken = context.sourceCode.getTokenBefore(node.typeParameters)!;
+				const previousToken = context.sourceCode.getTokenBefore(functionNode.typeParameters)!;
 				return getTextRange(
 					context.sourceCode,
 					previousToken.range[1],
-					node.typeParameters.range[1],
+					functionNode.typeParameters.range[1],
 				);
 			};
 
-			const getReturnTypeParameters = (
-				node: FunctionNode,
-			) => {
-				if (!node.returnType) {
+			const getReturnTypeParameters = () => {
+				if (!functionNode.returnType) {
 					return '';
 				}
-				const previousToken = context.sourceCode.getTokenBefore(node.returnType)!;
+				const previousToken = context.sourceCode.getTokenBefore(functionNode.returnType)!;
 				return getTextRange(
 					context.sourceCode,
 					previousToken.range[1],
-					node.returnType.range[1],
+					functionNode.returnType.range[1],
 				);
 			};
 
-			const async = getAsyncString(node);
-			const typeParameters = getTypeParameters(node);
-			const name = getIdString(node, noAssignment);
-			const paren = getParameterString(node);
-			const returnType = getReturnTypeParameters(node);
-			const body = getBodyString(node);
+			const async = getAsyncString();
+			const typeParameters = getTypeParameters();
+			const name = getIdString(noAssignment);
+			const paren = getParameterString();
+			const returnType = getReturnTypeParameters();
+			const body = getBodyString();
 
 			return `${noAssignment ? `${async}${name}` : `const${name}=${async}`}${typeParameters}${paren}${returnType}=>${body}`;
 		};
