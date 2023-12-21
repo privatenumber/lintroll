@@ -35,14 +35,18 @@ export default testSuite(({ describe }) => {
 					code: 'export default () => {}',
 				},
 
-				// Ignores this & arguments
+				// Ignores this, arguments, new.target
 				{
 					name: 'this',
-					code: '(function(){return this})',
+					code: '(function(){this})',
 				},
 				{
 					name: 'arguments',
-					code: '(function(){return arguments})',
+					code: '(function(){arguments})',
+				},
+				{
+					name: 'new.target',
+					code: '(function(){new.target})',
 				},
 
 				// Object getters & setters
@@ -61,6 +65,10 @@ export default testSuite(({ describe }) => {
 					code: '(class{constructor(){}})',
 				},
 				{
+					name: 'class / method with super',
+					code: '(class{a(){super.a()}})',
+				},
+				{
 					name: 'class / generator',
 					code: '(class{*a(){}})',
 				},
@@ -69,11 +77,11 @@ export default testSuite(({ describe }) => {
 					code: '(class{async*a(){}})',
 				},
 				{
-					name: 'class / generator / setter',
+					name: 'class / setter',
 					code: '(class{set/**/a(b){}})',
 				},
 				{
-					name: 'class / generator / getter',
+					name: 'class / getter',
 					code: '(class{get/**/a(){}})',
 				},
 

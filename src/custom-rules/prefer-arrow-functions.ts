@@ -1,6 +1,7 @@
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { createRule } from './utils/create-rule.js';
 
+// https://github.com/eslint/eslint/blob/e563c52e35d25f726d423cc3b1dffcd80027fd99/lib/source-code/source-code.js#L446
 const getTextRange = (
 	sourceCode: TSESLint.SourceCode,
 	start: number,
@@ -56,8 +57,26 @@ export const preferArrowFunctions = createRule({
 			const tokens = context.sourceCode.getTokens(node.body);
 			const hasArguments = tokens.some(token => token.type === 'Identifier' && token.value === 'arguments');
 			const hasThis = tokens.some(token => token.type === 'Keyword' && token.value === 'this');
+			const hasSuper = tokens.some(token => token.type === 'Keyword' && token.value === 'super');
+			const hasNewIndex = tokens.findIndex(token => token.type === 'Keyword' && token.value === 'new');
+			const hasNewTarget = (
+				hasNewIndex !== -1
+				&& (
+					tokens[hasNewIndex + 1].type === 'Punctuator'
+					&& tokens[hasNewIndex + 1].value === '.'
+				)
+				&& (
+					tokens[hasNewIndex + 2].type === 'Identifier'
+					&& tokens[hasNewIndex + 2].value === 'target'
+				)
+			);
 
-			if (hasArguments || hasThis) {
+			if (
+				hasArguments
+				|| hasThis
+				|| hasSuper
+				|| hasNewTarget
+			) {
 				return false;
 			}
 
