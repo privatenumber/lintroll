@@ -124,7 +124,7 @@ export const preferArrowFunctions = createRule({
 							node.parent.type === 'Property'
 							&& node.parent.method
 						) {
-							fixes.push(fixer.insertTextAfter(node.parent.key, ':'));
+							fixes.push(fixer.insertTextBefore(node.parent.value, ':'));
 						}
 
 						const data = {

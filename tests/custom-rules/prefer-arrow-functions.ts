@@ -119,6 +119,14 @@ export default testSuite(({ describe }) => {
 					}],
 					output: '({a:(b)=>{}})',
 				},
+				{
+					name: 'object property / method',
+					code: '({["a"](b){}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '({["a"]:(b)=>{}})',
+				},
 
 				// Exports
 				{
