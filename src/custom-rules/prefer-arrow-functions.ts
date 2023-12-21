@@ -35,13 +35,17 @@ export const preferArrowFunctions = createRule({
 				return false;
 			}
 
-			// Object getters & setters cannot be arrow functions
+			// Object/Class getters, setters, and constructors cannot be arrow functions
 			const { parent } = node;
 			if (
-				parent.type === 'Property'
+				(
+					parent.type === 'Property'
+					|| parent.type === 'MethodDefinition'
+				)
 				&& (
 					parent.kind === 'set'
 					|| parent.kind === 'get'
+					|| parent.kind === 'constructor'
 				)	
 			) {
 				return false;
@@ -156,8 +160,14 @@ export const preferArrowFunctions = createRule({
 						const fixes = [];
 
 						if (
-							node.parent.type === 'Property'
-							&& node.parent.method
+							(
+								node.parent.type === 'MethodDefinition'
+								&& node.parent.kind !== 'constructor'
+							)
+							|| (
+								node.parent.type === 'Property'
+								&& node.parent.method
+							)
 						) {
 							fixes.push(fixer.insertTextBefore(node.parent.value, ':'));
 						}

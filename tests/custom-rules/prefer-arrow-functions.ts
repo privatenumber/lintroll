@@ -24,11 +24,11 @@ export default testSuite(({ describe }) => {
 				},
 				{
 					name: 'assigned arrow',
-					code: 'const foo = () => {}',
+					code: 'const a = () => {}',
 				},
 				{
 					name: 'named export arrow',
-					code: 'export const foo = () => {}',
+					code: 'export const a = () => {}',
 				},
 				{
 					name: 'default export arrow',
@@ -48,11 +48,33 @@ export default testSuite(({ describe }) => {
 				// Object getters & setters
 				{
 					name: 'object getter',
-					code: '({get foo(){}})',
+					code: '({get a(){}})',
 				},
 				{
 					name: 'object setter',
-					code: '({set foo(){}})',
+					code: '({set a(b){}})',
+				},
+
+				// Class
+				{
+					name: 'class / constructor',
+					code: '(class{constructor(){}})',
+				},
+				{
+					name: 'class / generator',
+					code: '(class{*a(){}})',
+				},
+				{
+					name: 'class / generator / async',
+					code: '(class{async*a(){}})',
+				},
+				{
+					name: 'class / generator / setter',
+					code: '(class{set/**/a(b){}})',
+				},
+				{
+					name: 'class / generator / getter',
+					code: '(class{get/**/a(){}})',
 				},
 
 				// Ignores generators
@@ -138,14 +160,30 @@ export default testSuite(({ describe }) => {
 				},
 
 				// Class
-				// {
-				// 	name: 'class',
-				// 	code: 'class {a:/**/function/**/()/**/{}}',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: '({a:/**//**/()=>/**/{}})',
-				// },
+				{
+					name: 'class',
+					code: '(class{a/**/()/**/{}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '(class{a/**/:/**/()=>/**/{}})',
+				},
+				{
+					name: 'class / private method',
+					code: '(class{#a/**/()/**/{}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '(class{#a/**/:/**/()=>/**/{}})',
+				},
+				{
+					name: 'class / static method',
+					code: '(class{static/**/a/**/()/**/{}})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '(class{static/**/a/**/:/**/()=>/**/{}})',
+				},
 
 				// Exports
 				{
