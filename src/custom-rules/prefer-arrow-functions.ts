@@ -209,9 +209,9 @@ export const preferArrowFunctions = createRule({
 				context.report({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
-					fix: fixer => {
+					fix: (fixer) => {
 						const [variable] = context.sourceCode.getDeclaredVariables!(node);
-						const [firstReference] = variable.references;	
+						const [firstReference] = variable.references;
 						const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
 						const tokenAfter = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
@@ -228,12 +228,11 @@ export const preferArrowFunctions = createRule({
 									removeTextTill,
 								]),
 							];
-						} else {
-							return fixer.replaceText(
-								node,
-								arrowCode,
-							);	
 						}
+						return fixer.replaceText(
+							node,
+							arrowCode,
+						);
 					},
 				});
 			},
