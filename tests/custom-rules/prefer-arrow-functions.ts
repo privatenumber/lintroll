@@ -119,7 +119,7 @@ export default testSuite(({ describe }) => {
 					}],
 					output: '({a:(b)=>{}})',
 				},
-				
+
 				// Exports
 				{
 					name: 'named export / declaration ',
