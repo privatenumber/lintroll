@@ -8,6 +8,8 @@ const getTextRange = (
 	end: number,
 ) => sourceCode.getText({ range: [start, end] } as TSESTree.Node);
 
+type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
+
 // TODO: add option not to transform default exports of named functions as the name gets lost
 // And really, we should be disabling default export instead
 export const preferArrowFunctions = createRule({
@@ -28,7 +30,7 @@ export const preferArrowFunctions = createRule({
 
 	create: (context) => {
 		const isConvertable = (
-			node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+			node: FunctionNode,
 		) => {
 			// Generators cannot be arrow functions
 			if (node.generator) {
@@ -46,7 +48,7 @@ export const preferArrowFunctions = createRule({
 					parent.kind === 'set'
 					|| parent.kind === 'get'
 					|| parent.kind === 'constructor'
-				)	
+				)
 			) {
 				return false;
 			}
@@ -63,7 +65,6 @@ export const preferArrowFunctions = createRule({
 			return true;
 		};
 
-		type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 		const convertToArrowFunction = (
 			node: FunctionNode,
 			noAssignment: boolean,
@@ -77,11 +78,15 @@ export const preferArrowFunctions = createRule({
 					&& firstToken.value === 'async'
 				) {
 					const nextToken = context.sourceCode.getTokenAfter(firstToken)!;
-					return getTextRange(context.sourceCode, firstToken.range[0], nextToken.range[0]);
+					return getTextRange(
+						context.sourceCode,
+						firstToken.range[0],
+						nextToken.range[0],
+					);
 				}
 				return '';
 			};
-	
+
 			const getIdString = (
 				node: FunctionNode,
 				excludeName: boolean,
@@ -90,9 +95,13 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(node.id)!;
-				return getTextRange(context.sourceCode, previousToken.range[1], excludeName ? node.id.range[0] : node.id.range[1]);
+				return getTextRange(
+					context.sourceCode,
+					previousToken.range[1],
+					excludeName ? node.id.range[0] : node.id.range[1],
+				);
 			};
-	
+
 			const getParameterString = (
 				node: FunctionNode,
 			) => {
@@ -103,17 +112,17 @@ export const preferArrowFunctions = createRule({
 				const parenEnd = context.sourceCode.getTokenAfter(parenStart, {
 					filter: token => token.type === 'Punctuator' && token.value === ')',
 				})!;
-	
+
 				return getTextRange(context.sourceCode, previousToken.range[1], parenEnd.range[1]);
 			};
-	
+
 			const getBodyString = (
 				node: FunctionNode,
 			) => {
 				const previousToken = context.sourceCode.getTokenBefore(node.body)!;
 				return getTextRange(context.sourceCode, previousToken.range[1], node.body.range[1]);
 			};
-	
+
 			const getTypeParameters = (
 				node: FunctionNode,
 			) => {
@@ -121,9 +130,13 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(node.typeParameters)!;
-				return getTextRange(context.sourceCode, previousToken.range[1], node.typeParameters.range[1]);
+				return getTextRange(
+					context.sourceCode,
+					previousToken.range[1],
+					node.typeParameters.range[1],
+				);
 			};
-	
+
 			const getReturnTypeParameters = (
 				node: FunctionNode,
 			) => {
@@ -131,7 +144,11 @@ export const preferArrowFunctions = createRule({
 					return '';
 				}
 				const previousToken = context.sourceCode.getTokenBefore(node.returnType)!;
-				return getTextRange(context.sourceCode, previousToken.range[1], node.returnType.range[1]);
+				return getTextRange(
+					context.sourceCode,
+					previousToken.range[1],
+					node.returnType.range[1],
+				);
 			};
 
 			const async = getAsyncString(node);
@@ -141,10 +158,7 @@ export const preferArrowFunctions = createRule({
 			const returnType = getReturnTypeParameters(node);
 			const body = getBodyString(node);
 
-			return (
-				(noAssignment ? `${async}${name}` : `const${name}=${async}`)
-				+ `${typeParameters}${paren}${returnType}=>${body}`
-			);
+			return `${noAssignment ? `${async}${name}` : `const${name}=${async}`}${typeParameters}${paren}${returnType}=>${body}`;
 		};
 
 		return {
@@ -160,6 +174,7 @@ export const preferArrowFunctions = createRule({
 						const fixes = [];
 
 						if (
+
 							// Class method
 							(
 								node.parent.type === 'MethodDefinition'
@@ -200,7 +215,7 @@ export const preferArrowFunctions = createRule({
 					messageId: 'unexpectedFunctionDeclaration',
 
 					// TODO: handle hoisting
-					fix: (fixer) => fixer.replaceText(
+					fix: fixer => fixer.replaceText(
 						node,
 						convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration'),
 					),

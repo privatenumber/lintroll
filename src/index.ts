@@ -17,7 +17,8 @@ import { noUseExtendNative } from './configs/no-use-extend-native.js';
 import { unicorn } from './configs/unicorn.js';
 import { react } from './configs/react.js';
 import { vue } from './configs/vue.js';
-import { arrowFunctions } from './configs/arrow-functions.js';
+
+// import { arrowFunctions } from './configs/arrow-functions.js';
 import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
