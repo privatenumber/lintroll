@@ -1,4 +1,4 @@
-import type { ESLint } from 'eslint';
+import type { ESLint, Rule } from 'eslint';
 import { version } from '../../package.json';
 import { preferArrowFunctions } from './prefer-arrow-functions.js';
 
@@ -8,7 +8,7 @@ export const pvtnbrPlugin = {
 		version,
 	},
 	rules: {
-		'prefer-arrow-functions': preferArrowFunctions,
+		'prefer-arrow-functions': preferArrowFunctions as unknown as Rule.RuleModule,
 	},
 	configs: {
 		base: {

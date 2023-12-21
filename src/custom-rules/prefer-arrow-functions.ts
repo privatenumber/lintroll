@@ -1,4 +1,3 @@
-import type { Rule } from 'eslint';
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { createRule } from './utils/create-rule.js';
 
@@ -212,4 +211,4 @@ export const preferArrowFunctions = createRule({
 			},
 		};
 	},
-}) as unknown as Rule.RuleModule;
+});
