@@ -3,6 +3,35 @@ import { createRule } from './utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
+const mergeFixes = (
+	fixes: TSESLint.RuleFix[],
+) => {
+
+	for (let i = 0; i < fixes.length; i += 1) {
+		const fix = fixes[i];
+
+		for (let j = i + 1; j < fixes.length; j += 1) {
+			const otherFix = fixes[j];
+
+			const isOverlapping = (
+				fix.range[0] <= otherFix.range[1]
+				&& otherFix.range[0] <= fix.range[1]
+			);
+
+			if (isOverlapping) {
+				const isMergable = fix.text === otherFix.text;
+				if (isMergable) {
+					fix.range[0] = Math.min(fix.range[0], otherFix.range[0]);
+					fix.range[1] = Math.max(fix.range[1], otherFix.range[1]);
+					fixes.splice(j, 1);
+				}
+			}
+		}
+	}
+
+	return fixes;
+};
+
 const getClosestInsertion = (
 	node: TSESTree.Node,
 ) => {
@@ -73,6 +102,41 @@ export const preferArrowFunctions = createRule({
 	defaultOptions: ['warning'],
 
 	create: (context) => {
+
+		const getRange = (
+			token: TSESTree.Token | TSESTree.Node,
+			options: {
+				leftUntil?: (token: TSESTree.Token) => boolean;
+				rightUntil?: (token: TSESTree.Token) => boolean;
+			}
+		) => {
+			const range = token.range.slice() as TSESTree.Range;
+
+			if (options.leftUntil) {
+				const previousToken = context.sourceCode.getTokenBefore(token, {
+					includeComments: true,
+					filter: options.leftUntil,
+				});
+				if (previousToken) {
+					range[0] = previousToken.range[1];
+				}
+			}
+			
+			if (options.rightUntil) {
+				const nextToken = context.sourceCode.getTokenAfter(token, {
+					includeComments: true,
+					filter: options.rightUntil,
+				});
+				if (nextToken) {
+					range[1] = nextToken.range[0];
+				}
+			}
+
+			return range;
+		}
+
+
+
 		const untransformableFunctions = new Set<FunctionNode>();
 
 		const isConvertable = (
@@ -81,7 +145,7 @@ export const preferArrowFunctions = createRule({
 			// Generators cannot be arrow functions
 			if (
 				node.generator
-				|| untransformableFunctions.has(node)	
+				|| untransformableFunctions.has(node)
 			) {
 				return false;
 			}
@@ -100,6 +164,13 @@ export const preferArrowFunctions = createRule({
 				)
 			) {
 				return false;
+			}
+
+			if (node.id) {
+				const hoistAboveNode = findFirstReference(context.sourceCode, node);
+				if (!hoistAboveNode) {
+					// return false;
+				}
 			}
 
 			const scope = context.sourceCode.getScope!(node);
@@ -224,35 +295,65 @@ export const preferArrowFunctions = createRule({
 					return;
 				}
 
+
 				context.report({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
 					fix: (fixer) => {
+						// console.log(node.id);
+
 						const fixes = [];
 
+						const { parent } = node;
 						if (
 
 							// Class method
 							(
-								node.parent.type === 'MethodDefinition'
-								&& node.parent.kind === 'method'
+								parent.type === 'MethodDefinition'
+								&& parent.kind === 'method'
 							)
 
 							// Object method
 							|| (
-								node.parent.type === 'Property'
-								&& node.parent.method
+								parent.type === 'Property'
+								&& parent.method
 							)
 						) {
-							fixes.push(fixer.insertTextBefore(node.parent.value, ':'));
+							fixes.push(fixer.insertTextBefore(parent.value, ':'));
+						} else {
+							const functionToken = context.sourceCode.getFirstToken(node, {
+								filter: token => token.type === 'Keyword' && token.value === 'function',
+							});
+	
+							if (functionToken) {
+								const functionTokenRange = getRange(functionToken, {
+									rightUntil: Boolean, // Until first comment
+								});
+	
+								fixes.push(fixer.removeRange(functionTokenRange));
+							}
 						}
 
-						let arrowCode = convertToArrowFunction(node, true);
+						if (node.id) {
+							const functionNameRange = getRange(node.id!, {
+								leftUntil: Boolean, // Until first comment
+							});
+							fixes.push(fixer.removeRange(functionNameRange));
+						}
+
+						const parenEnd = context.sourceCode.getTokenBefore(node.body, {
+							// filter: token => token.type === 'Punctuator' && token.value === ')',
+						})!;
+						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
+
 						if (node.parent.type === 'LogicalExpression') {
-							arrowCode = `(${arrowCode})`;
+							fixes.push(
+								fixer.insertTextBefore(node, '('),
+								fixer.insertTextAfter(node, ')'),	
+							);
 						}
 
-						fixes.push(fixer.replaceText(node, arrowCode));
+						mergeFixes(fixes);
 
 						return fixes;
 					},
@@ -268,29 +369,64 @@ export const preferArrowFunctions = createRule({
 					node,
 					messageId: 'unexpectedFunctionDeclaration',
 					fix: (fixer) => {
-						const hoistAboveNode = findFirstReference(context.sourceCode, node);
-						const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
+						const fixes = [];
+
+						const functionToken = context.sourceCode.getFirstToken(node, {
+							filter: token => token.type === 'Keyword' && token.value === 'function',
+						})!;
+
+						fixes.push(fixer.remove(functionToken));
+
+						const exportDefault = node.parent.type === 'ExportDefaultDeclaration';
+						const functionNameRange = getRange(node.id!, {
+							leftUntil: exportDefault ? Boolean : (token) => token.type === 'Keyword' && token.value === 'function',
+						});
+
+						const functionNameString = context.sourceCode.text.slice(functionNameRange[0], functionNameRange[1]);
+
+						fixes.push(fixer.removeRange(functionNameRange));
+
+						if (!exportDefault) {
+							fixes.push(fixer.insertTextBefore(node, `const${functionNameString}=`));
+						}
+
+						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
+						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
+
 						const nextToken = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
 						});
-						const removeTextTill = (
-							nextToken
-								? nextToken.range[0]
-								: context.sourceCode.text.length
-						);
-						const tokenDelimiter = context.sourceCode.text.slice(node.range[1], removeTextTill) || ';';
-						const removeRange = [node.range[0], removeTextTill] as const;
+						const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween!(node, nextToken!);
 
-						// Hoist above first usage
-						if (hoistAboveNode) {
-							return [
-								fixer.insertTextBefore(hoistAboveNode, arrowCode + tokenDelimiter),
-								fixer.removeRange(removeRange),
-							];
+						if (needsDelimiter) {
+							fixes.push(fixer.insertTextAfter(node, ';'));
 						}
 
-						const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween!(node, nextToken!);
-						return fixer.replaceText(node, arrowCode + (needsDelimiter ? ';' : ''));
+						return fixes;
+
+						// const hoistAboveNode = findFirstReference(context.sourceCode, node);
+						// const arrowCode = convertToArrowFunction(node, node.parent.type === 'ExportDefaultDeclaration');
+						// const nextToken = context.sourceCode.getTokenAfter(node, {
+						// 	includeComments: true,
+						// });
+						// const removeTextTill = (
+						// 	nextToken
+						// 		? nextToken.range[0]
+						// 		: context.sourceCode.text.length
+						// );
+						// const tokenDelimiter = context.sourceCode.text.slice(node.range[1], removeTextTill) || ';';
+						// const removeRange = [node.range[0], removeTextTill] as const;
+
+						// // Hoist above first usage
+						// if (hoistAboveNode) {
+						// 	return [
+						// 		fixer.insertTextBefore(hoistAboveNode, arrowCode + tokenDelimiter),
+						// 		fixer.removeRange(removeRange),
+						// 	];
+						// }
+
+						// const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween!(node, nextToken!);
+						// return fixer.replaceText(node, arrowCode + (needsDelimiter ? ';' : ''));
 					},
 				});
 			},

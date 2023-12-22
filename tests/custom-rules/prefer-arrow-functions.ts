@@ -117,11 +117,11 @@ export default testSuite(({ describe }) => {
 				// Function declaration
 				{
 					name: 'declaration / empty parameters',
-					code: 'function foo(\n\n) {\n}',
+					code: 'function foo/*b*/(/*c*/)/*d*/{}',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: 'const foo=(\n\n)=> {\n}',
+					output: 'const foo=/*b*/(/*c*/)=>/*d*/{}',
 				},
 				{
 					name: 'declaration / empty parameters - no spaces after "function"',
@@ -171,73 +171,75 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'const foo=()=>{(class{a(){super()}})}',
 				},
-
-				// Function hoisting˚
 				{
-					name: 'declaration / hoisting / doesnt hoist',
+					name: 'declaration / inserts semicolon',
 					code: 'function a(){}a()',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: 'const a=()=>{};a()',
 				},
-				{
-					name: 'declaration / hoisting / no whitespace',
-					code: 'a();function a(){}',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'const a=()=>{};a();',
-				},
-				{
-					name: 'declaration / hoisting / whitespace eof',
-					code: 'a();function a(){}\n',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'const a=()=>{}\na();',
-				},
-				{
-					name: 'declaration / hoisting / whitespace comment',
-					code: 'a();function a(){}\n/**/a',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'const a=()=>{}\na();/**/a',
-				},
-				{
-					name: 'declaration / hoisting / preserves scope above function scope',
-					code: '(()=>a);a;function a(){}',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'const a=()=>{};(()=>a);a;',
-				},
-				{
-					name: 'declaration / hoisting / preserves scope above block scope',
-					code: 'if(1){(()=>a)}a;function a(){}',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'const a=()=>{};if(1){(()=>a)}a;',
-				},
-				{
-					name: 'declaration / hoisting / preserves scope within block scope',
-					code: 'if(1){while(a()){}function a(){}}',
-					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
-					}],
-					output: 'if(1){const a=()=>{};while(a()){}}',
-				},
+
+				// Function hoisting
+				// {
+				// 	name: 'declaration / hoisting / no whitespace',
+				// 	code: 'a();function a(){}',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'const a=()=>{};a();',
+				// },
+				// {
+				// 	name: 'declaration / hoisting / whitespace eof',
+				// 	code: 'a();function a(){}\n',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'const a=()=>{}\na();',
+				// },
+				// {
+				// 	name: 'declaration / hoisting / whitespace comment',
+				// 	code: 'a();function a(){}\n/**/a',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'const a=()=>{}\na();/**/a',
+				// },
+				// {
+				// 	name: 'declaration / hoisting / preserves scope above function scope',
+				// 	code: '(()=>a);a;function a(){}',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'const a=()=>{};(()=>a);a;',
+				// },
+				// {
+				// 	name: 'declaration / hoisting / preserves scope above block scope',
+				// 	code: 'if(1){(()=>a)}a;function a(){}',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'const a=()=>{};if(1){(()=>a)}a;',
+				// },
+				// {
+				// 	name: 'declaration / hoisting / preserves scope within block scope',
+				// 	code: 'if(1){while(a()){}function a(){}}',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'if(1){const a=()=>{};while(a()){}}',
+				// },
 
 				// Function expression
 				{
 					name: 'expression / named / async',
+					// The parser doesn't catch this but note the position of comment f
+					// JS doesn't allow multiline comments before the =>, but allows it after
 					code: '(async /*a*/ function /*b*/ a /*c*/ (/*d*/\na\n/*e*/) /*f*/ {\n})',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+					output: '(async /*a*/ /*b*/ /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
 				{
 					name: 'expression / anonymous / async',
@@ -245,7 +247,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+					output: '(async /*a*/ /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
 				{
 					name: 'expression / &&',
@@ -254,6 +256,30 @@ export default testSuite(({ describe }) => {
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
 					output: `(1 && (()=>{}))`,
+				},
+				{
+					name: 'expression / nested',
+					code: '(function(){(function(){})})',
+					errors: [{
+						messageId: 'unexpectedFunctionDeclaration',
+					},{
+						messageId: 'unexpectedFunctionDeclaration',
+					}],
+					output: '(()=>{(()=>{})})'
+				},
+				{
+					name: 'expression / nested default parameter',
+					code: '(function (b = (function (){})){})',
+					errors: [
+						{
+							messageId: 'unexpectedFunctionDeclaration',
+						},
+						{
+							messageId: 'unexpectedFunctionDeclaration',
+						},
+					],
+					// Ideally, it removes the inner function too
+					output: '((b = (function (){}))=>{})'
 				},
 
 				// Object property
@@ -285,27 +311,27 @@ export default testSuite(({ describe }) => {
 				// Class
 				{
 					name: 'class',
-					code: '(class{a/**/()/**/{}})',
+					code: '(class{_/*a*/()/*b*/{}})',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: '(class{a/**/:/**/()=>/**/{}})',
+					output: '(class{_/*a*/:()=>/*b*/{}})',
 				},
 				{
 					name: 'class / private method',
-					code: '(class{#a/**/()/**/{}})',
+					code: '(class{#_/*a*/()/*b*/{}})',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: '(class{#a/**/:/**/()=>/**/{}})',
+					output: '(class{#_/*a*/:()=>/*b*/{}})',
 				},
 				{
 					name: 'class / static method',
-					code: '(class{static/**/a/**/()/**/{}})',
+					code: '(class{static/*a*/_/*b*/()/*c*/{}})',
 					errors: [{
 						messageId: 'unexpectedFunctionDeclaration',
 					}],
-					output: '(class{static/**/a/**/:/**/()=>/**/{}})',
+					output: '(class{static/*a*/_/*b*/:()=>/*c*/{}})',
 				},
 
 				// Exports
@@ -359,27 +385,6 @@ export default testSuite(({ describe }) => {
 					}],
 					output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 				},
-
-				// {
-				// 	name: 'nested functions',
-				// 	code: '(function(){(function(){})})',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	},{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'asdf'
-				// },
-				// {
-				// 	name: 'nested functions',
-				// 	code: '(function(a = function(){}){})',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	},{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'asdf'
-				// },
 			],
 		});
 	});
