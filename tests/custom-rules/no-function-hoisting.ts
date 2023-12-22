@@ -1,6 +1,6 @@
 import { testSuite } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { preferArrowFunctions } from '../../src/custom-rules/no-function-hoisting/index.js';
+import { noFunctionHoisting } from '../../src/custom-rules/no-function-hoisting/index.js';
 
 export default testSuite(({ describe }) => {
 	describe('no-function-hoisting', ({ describe, test }) => {
@@ -11,7 +11,7 @@ export default testSuite(({ describe }) => {
 			parser: '@typescript-eslint/parser',
 		});
 
-		ruleTester.run('no-function-hoisting', preferArrowFunctions, {
+		ruleTester.run('no-function-hoisting', noFunctionHoisting, {
 			valid: [
 				{
 					name: 'no hoisting',

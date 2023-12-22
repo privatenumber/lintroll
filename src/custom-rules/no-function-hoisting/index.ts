@@ -44,7 +44,7 @@ const findFirstReference = (
 	return getClosestInsertion(firstReferenceScope.block);
 };
 
-export const preferArrowFunctions = createRule({
+export const noFunctionHoisting = createRule({
 	name: 'prefer-arrow-functions',
 	meta: {
 		messages: {
