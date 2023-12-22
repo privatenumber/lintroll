@@ -1,6 +1,6 @@
 import type { ESLint, Rule } from 'eslint';
 import { version } from '../../package.json';
-import { preferArrowFunctions } from './prefer-arrow-functions.js';
+import { preferArrowFunctions } from './prefer-arrow-functions/index.js';
 
 export const pvtnbrPlugin = {
 	meta: {

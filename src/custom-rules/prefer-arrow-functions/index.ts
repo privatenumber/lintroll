@@ -1,5 +1,5 @@
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { createRule } from './utils/create-rule.js';
+import { createRule } from '../utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
@@ -166,10 +166,11 @@ export const preferArrowFunctions = createRule({
 				return false;
 			}
 
-			if (node.id) {
+			if (node.type === 'FunctionDeclaration') {
+				// TODO: remove most of this logic to bare necessities
 				const hoistAboveNode = findFirstReference(context.sourceCode, node);
-				if (!hoistAboveNode) {
-					// return false;
+				if (hoistAboveNode) {
+					return false;
 				}
 			}
 

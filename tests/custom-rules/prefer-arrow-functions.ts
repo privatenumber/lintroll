@@ -1,6 +1,6 @@
 import { testSuite } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions.js';
+import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions/index.js';
 
 /**
  * function prototype
@@ -110,6 +110,11 @@ export default testSuite(({ describe }) => {
 				{
 					name: 'async generator',
 					code: 'async function* foo() {}',
+				},
+
+				{
+					name: 'hoisting',
+					code: 'a();function a(){}',
 				},
 			],
 
