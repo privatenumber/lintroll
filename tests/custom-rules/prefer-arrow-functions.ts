@@ -359,6 +359,27 @@ export default testSuite(({ describe }) => {
 					}],
 					output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 				},
+
+				// {
+				// 	name: 'nested functions',
+				// 	code: '(function(){(function(){})})',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	},{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'asdf'
+				// },
+				// {
+				// 	name: 'nested functions',
+				// 	code: '(function(a = function(){}){})',
+				// 	errors: [{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	},{
+				// 		messageId: 'unexpectedFunctionDeclaration',
+				// 	}],
+				// 	output: 'asdf'
+				// },
 			],
 		});
 	});

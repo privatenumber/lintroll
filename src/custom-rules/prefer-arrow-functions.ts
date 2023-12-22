@@ -194,13 +194,14 @@ export const preferArrowFunctions = createRule({
 			let scope = context.sourceCode.getScope!(node);
 
 			while (
-				scope.block.type !== 'FunctionDeclaration'
+				scope
+				&& scope.block.type !== 'FunctionDeclaration'
 				&& scope.block.type !== 'FunctionExpression'
 			) {
 				scope = scope.upper!;
 			}
 
-			return scope.block as FunctionNode;
+			return scope?.block as FunctionNode;
 		};
 
 		return {
