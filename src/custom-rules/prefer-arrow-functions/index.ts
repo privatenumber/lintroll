@@ -156,7 +156,11 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 
 			let references: TSESLint.Scope.Reference[] = [];
 
-			if (node.type === 'FunctionDeclaration') {
+			if (
+				node.type === 'FunctionDeclaration'
+				// Default export can have anonymous function declarations
+				&& node.id	
+			) {
 				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
 				const [firstReference] = functionVariable.references;
 				const isHoisted = (
@@ -169,7 +173,10 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				}
 
 				references = functionVariable.references;
-			} else if (node.type === 'FunctionExpression' && node.parent.type === 'VariableDeclarator') {
+			} else if (
+				node.type === 'FunctionExpression'
+				&& node.parent.type === 'VariableDeclarator'
+			) {
 				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
 
 				// The first reference is the variable declaration itself
@@ -313,28 +320,36 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 						const functionToken = context.sourceCode.getFirstToken(node, {
 							filter: token => token.type === 'Keyword' && token.value === 'function',
 						})!;
-
-						fixes.push(fixer.remove(functionToken));
-
-						const functionNameRange = getRange(node.id!, {
-							leftUntil: token => token.type === 'Keyword' && token.value === 'function',
+						const functionTokenRange = getRange(functionToken, {
+							rightUntil: !node.id ? Boolean : undefined, // Until first comment
 						});
+						fixes.push(fixer.removeRange(functionTokenRange));
 
-						const functionNameString = context.sourceCode.text.slice(
-							functionNameRange[0],
-							functionNameRange[1],
-						);
-
-						fixes.push(
-							fixer.removeRange(functionNameRange),
-							fixer.insertTextBefore(node, `const${functionNameString}=`),
-						);
+						// Default export can have unnamed function declarations
+						if (node.id) {
+							const functionNameRange = getRange(node.id, {
+								leftUntil: token => token.type === 'Keyword' && token.value === 'function',
+							});
+	
+							const functionNameString = context.sourceCode.text.slice(
+								functionNameRange[0],
+								functionNameRange[1],
+							);
+	
+							fixes.push(
+								fixer.removeRange(functionNameRange),
+								fixer.insertTextBefore(node, `const${functionNameString}=`),
+							);
+						}
 
 						// Insert arrow
 						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
 						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
 
-						if (node.parent.type === 'ExportDefaultDeclaration') {
+						if (
+							node.parent.type === 'ExportDefaultDeclaration'
+							&& node.id	
+						) {
 							const { parent } = node;
 							const range: TSESTree.Range = [parent.range[0], node.range[0]];
 

@@ -361,8 +361,17 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'export const a=async (b)=> {}',
 				},
+
 				{
-					name: 'default export / declaration ',
+					name: 'default export / anonymous',
+					code: `export default function () {}`,
+					errors: [
+						{ messageId: 'preferArrowFunction' },
+					],
+					output: `export default ()=> {}`,
+				},
+				{
+					name: 'default export / named ',
 					code: 'export\ndefault/*a*/function/*b*/a/*c*/(b)/*d*/{}[]',
 					errors: [{
 						messageId: 'preferArrowFunction',
