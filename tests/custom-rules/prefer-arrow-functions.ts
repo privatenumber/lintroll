@@ -114,11 +114,11 @@ export default testSuite(({ describe }) => {
 				// Ignores generators
 				{
 					name: 'generator',
-					code: 'function* foo() {}',
+					code: 'function* a() {}',
 				},
 				{
 					name: 'async generator',
-					code: 'async function* foo() {}',
+					code: 'async function* a() {}',
 				},
 
 				{
@@ -193,56 +193,6 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'const a=()=>{};a()',
 				},
-
-				// Function hoisting
-				// {
-				// 	name: 'declaration / hoisting / no whitespace',
-				// 	code: 'a();function a(){}',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'const a=()=>{};a();',
-				// },
-				// {
-				// 	name: 'declaration / hoisting / whitespace eof',
-				// 	code: 'a();function a(){}\n',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'const a=()=>{}\na();',
-				// },
-				// {
-				// 	name: 'declaration / hoisting / whitespace comment',
-				// 	code: 'a();function a(){}\n/**/a',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'const a=()=>{}\na();/**/a',
-				// },
-				// {
-				// 	name: 'declaration / hoisting / preserves scope above function scope',
-				// 	code: '(()=>a);a;function a(){}',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'const a=()=>{};(()=>a);a;',
-				// },
-				// {
-				// 	name: 'declaration / hoisting / preserves scope above block scope',
-				// 	code: 'if(1){(()=>a)}a;function a(){}',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'const a=()=>{};if(1){(()=>a)}a;',
-				// },
-				// {
-				// 	name: 'declaration / hoisting / preserves scope within block scope',
-				// 	code: 'if(1){while(a()){}function a(){}}',
-				// 	errors: [{
-				// 		messageId: 'unexpectedFunctionDeclaration',
-				// 	}],
-				// 	output: 'if(1){const a=()=>{};while(a()){}}',
-				// },
 
 				// Function expression
 				{
@@ -323,6 +273,7 @@ export default testSuite(({ describe }) => {
 				},
 
 				// Class
+				// TODO: FIX to use = instead of :
 				{
 					name: 'class',
 					code: '(class{_/*a*/()/*b*/{}})',
