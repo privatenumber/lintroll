@@ -22,7 +22,7 @@ export default testSuite(({ describe }) => {
 
 		test('Fail cases', async () => {
 			const results = await eslint.lintFiles(failFixture);
-			const { messages } = results[0];
+			const [{ messages }] = results;
 
 			expect(messages).toEqual(
 				expect.arrayContaining([

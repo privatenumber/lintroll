@@ -19,6 +19,11 @@ const objectMulti = {
 	b: 2,
 };
 
+const range = [1, 2];
+const [destructure] = range;
+objectMulti.a = range[1];
+const { a: destructure2 } = objectMulti;
+
 // Ternary
 const ternaryValue = (
 	Math.random() > 0.5
@@ -103,6 +108,8 @@ try {
 console.log(
 	readFile,
 	writeFile,
+	destructure,
+	destructure2,
 	stat,
 	objectMethods,
 	objectSingle,
