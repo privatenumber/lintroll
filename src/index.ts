@@ -7,7 +7,7 @@ import { serviceWorkers } from './configs/service-workers.js';
 import { eslintComments } from './configs/eslint-comments.js';
 import { stylistic } from './configs/stylistic.js';
 import { imports } from './configs/imports.js';
-import { typescript } from './configs/typescript.js';
+import { typescript, parseTypescript } from './configs/typescript.js';
 import { regexp } from './configs/regexp.js';
 import { node } from './configs/node.js';
 import { promise } from './configs/promise.js';
@@ -18,7 +18,7 @@ import { yml } from './configs/yml.js';
 import { noUseExtendNative } from './configs/no-use-extend-native.js';
 import { unicorn } from './configs/unicorn.js';
 import { react } from './configs/react.js';
-import { vue } from './configs/vue.js';
+import { vue, parseVue } from './configs/vue.js';
 import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
@@ -52,24 +52,31 @@ export const pvtnbr = (
 				sourceType: 'module',
 			},
 		}),
-		// eslint,
-		// serviceWorkers,
-		// eslintComments,
-		// ...imports,
-		// ...unicorn,
-		// ...typescript,
-		// stylistic,
-		// ...regexp,
-		// ...promise,
-		// ...node(normalizedOptions),
-		// ...noUseExtendNative,
-		// ...json,
-		// yml,
-		// ...(normalizedOptions.vue ? vue : []),
-		// ...(normalizedOptions.react ? react : []),
-		// ...markdown(normalizedOptions),
 
-		// jest,
+		/**
+		 * Separating the parsers allows to test individual rules
+		 * without applying the rules associated with the parsers
+		 */
+		parseVue,
+		parseTypescript,
+
+		eslint,
+		serviceWorkers,
+		eslintComments,
+		...imports,
+		...unicorn,
+		typescript,
+		stylistic,
+		...regexp,
+		...promise,
+		...node(normalizedOptions),
+		...noUseExtendNative,
+		...json,
+		yml,
+		...(normalizedOptions.vue ? [vue] : []),
+		...(normalizedOptions.react ? react : []),
+		...markdown(normalizedOptions),
+		jest,
 		customConfigs,
 	].filter(Boolean);
 };
