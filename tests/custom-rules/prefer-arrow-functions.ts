@@ -209,6 +209,7 @@ export default testSuite(({ describe }) => {
 				// Function expression
 				{
 					name: 'expression / named / async',
+
 					// The parser doesn't catch this but note the position of comment f
 					// JS doesn't allow multiline comments before the =>, but allows it after
 					code: '(async /*a*/ function /*b*/ a /*c*/ (/*d*/\na\n/*e*/) /*f*/ {\n})',
@@ -227,21 +228,21 @@ export default testSuite(({ describe }) => {
 				},
 				{
 					name: 'expression / &&',
-					code: `(1 && function(){})`,
+					code: '(1 && function(){})',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: `(1 && (()=>{}))`,
+					output: '(1 && (()=>{}))',
 				},
 				{
 					name: 'expression / nested',
 					code: '(function(){(function(){})})',
 					errors: [{
 						messageId: 'preferArrowFunction',
-					},{
+					}, {
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(()=>{(()=>{})})'
+					output: '(()=>{(()=>{})})',
 				},
 				{
 					name: 'expression / nested default parameter',
@@ -254,8 +255,9 @@ export default testSuite(({ describe }) => {
 							messageId: 'preferArrowFunction',
 						},
 					],
+
 					// Ideally, it removes the inner function too
-					output: '((b = (function (){}))=>{})'
+					output: '((b = (function (){}))=>{})',
 				},
 
 				// Object property

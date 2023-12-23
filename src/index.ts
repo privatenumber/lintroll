@@ -75,5 +75,5 @@ export const pvtnbr = (
 };
 
 export default pvtnbr();
-export { defineConfig }
+export { defineConfig };
 export type { Options };

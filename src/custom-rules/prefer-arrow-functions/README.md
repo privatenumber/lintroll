@@ -16,61 +16,60 @@ Noticing these differences may even help make better design choices. For example
 ```js
 // Allows arrow functions
 (() => {});
-(async () => {});
+(async () => {})
 
-const foo = () => {};
-export const foo = () => {};
+const foo = () => {}
+export const bar = () => {}
 export default () => {};
 
 // Ignores this, arguments, new.target
-(function(){
-	this;
-	(() => this);
+(function () {
+    this;
+    (() => this)
 
-	arguments;
-	(() => arguments);
+    arguments;
+    (() => arguments)
 
-	new.target;
-	(() => new.target);
+    new.target;
+    (() => new.target)
 });
-
 
 // Object getters & setters
 ({
-	get foo(){},
-	set bar(value){},
-});
+    get foo() {},
+    set bar(value) {}
+})
 
 // Class
-class{
-	constructor(){}
+class myClass {
+    constructor() {}
 
-	accessSuper(){
-		super.foo()
-	}
+    accessSuper() {
+        super.foo()
+    }
 
-	*generator(){}
+    * generator() {}
 
-	get foo(){}
+    get foo() {}
 
-	set bar(value){}
+    set bar(value) {}
 
-	arrow: () => {}
+    arrow = () => {}
 }
 
 // Prototype setting and function properties
-function proto(){}
-proto.prototype = {};
-proto.name;
-proto.length;
+function proto() {}
+proto.prototype = {}
+proto.name
+proto.length
 
 // Ignores generators
-function* generator() {};
-async function* generator() {};
+function* generator() {}
+async function* asyncGenerator() {}
 
 // Hoisting
 hoisted()
-function hoisted(){}
+function hoisted() {}
 ```
 
 
@@ -80,11 +79,11 @@ function hoisted(){}
 function foo() {}
 // Fixed: const foo = () => {}
 
-async function foo() {}
+async function bar() {}
 // Fixed: const foo = async () => {}
 
 /* Function with comments */
-function/*a*/foo/*b*/()/*c*/{}
+function/*a*/baz/*b*/()/*c*/{}
 // Fixed: const/*a*/foo=/*b*/()=>/*c*/{}
 
 /* Function expressions */
@@ -104,10 +103,10 @@ class MyClass {
 // Fixed: class MyClass { method = () => {} }
 
 /* Exports */
-export function myFunction() {}
+export function namedExport() {}
 // Fixed: export const myFunction = () => {}
 
-export default function myFunction() {}
+export default function defaultExport() {}
 // Fixed: export default () => {}
 
 /* TypeScript */

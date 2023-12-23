@@ -22,13 +22,12 @@ export const preferArrowFunctions = createRule({
 	defaultOptions: ['warning'],
 
 	create: (context) => {
-
 		const getRange = (
 			token: TSESTree.Token | TSESTree.Node,
 			options: {
 				leftUntil?: (token: TSESTree.Token) => boolean;
 				rightUntil?: (token: TSESTree.Token) => boolean;
-			}
+			},
 		) => {
 			const range = token.range.slice() as TSESTree.Range;
 
@@ -41,7 +40,7 @@ export const preferArrowFunctions = createRule({
 					range[0] = previousToken.range[1];
 				}
 			}
-			
+
 			if (options.rightUntil) {
 				const nextToken = context.sourceCode.getTokenAfter(token, {
 					includeComments: true,
@@ -53,7 +52,7 @@ export const preferArrowFunctions = createRule({
 			}
 
 			return range;
-		}
+		};
 
 		const untransformableFunctions = new Set<FunctionNode>();
 
@@ -105,19 +104,17 @@ export const preferArrowFunctions = createRule({
 					firstReference
 					&& node.range[0] > firstReference.identifier.range[0]
 				);
-	
+
 				if (isHoisted) {
 					return false;
 				}
 
 				references = functionVariable.references;
-			} else if (node.type === 'FunctionExpression') {
-				if (node.parent.type === 'VariableDeclarator') {
-					const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
+			} else if (node.type === 'FunctionExpression' && node.parent.type === 'VariableDeclarator') {
+				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
 
-					// The first reference is the variable declaration itself
-					references = functionVariable.references.slice(1);
-				}
+				// The first reference is the variable declaration itself
+				references = functionVariable.references.slice(1);
 			}
 
 			for (const { identifier } of references) {
@@ -150,13 +147,13 @@ export const preferArrowFunctions = createRule({
 		};
 
 		return {
-			'ThisExpression': (node) => {
+			ThisExpression: (node) => {
 				untransformableFunctions.add(getNearestFunction(node));
 			},
 			Super: (node) => {
 				untransformableFunctions.add(getNearestFunction(node));
 			},
-			'MetaProperty': (node) => {
+			MetaProperty: (node) => {
 				if (
 					node.meta.name === 'new'
 					&& node.property.name === 'target'
@@ -168,7 +165,6 @@ export const preferArrowFunctions = createRule({
 				if (!isConvertable(node)) {
 					return;
 				}
-
 
 				context.report({
 					node,
@@ -198,12 +194,12 @@ export const preferArrowFunctions = createRule({
 							const functionToken = context.sourceCode.getFirstToken(node, {
 								filter: token => token.type === 'Keyword' && token.value === 'function',
 							});
-	
+
 							if (functionToken) {
 								const functionTokenRange = getRange(functionToken, {
 									rightUntil: Boolean, // Until first comment
 								});
-	
+
 								fixes.push(fixer.removeRange(functionTokenRange));
 							}
 						}
@@ -223,7 +219,7 @@ export const preferArrowFunctions = createRule({
 						if (node.parent.type === 'LogicalExpression') {
 							fixes.push(
 								fixer.insertTextBefore(node, '('),
-								fixer.insertTextAfter(node, ')'),	
+								fixer.insertTextAfter(node, ')'),
 							);
 						}
 
@@ -251,10 +247,13 @@ export const preferArrowFunctions = createRule({
 
 						const exportDefault = node.parent.type === 'ExportDefaultDeclaration';
 						const functionNameRange = getRange(node.id!, {
-							leftUntil: exportDefault ? Boolean : (token) => token.type === 'Keyword' && token.value === 'function',
+							leftUntil: exportDefault ? Boolean : token => token.type === 'Keyword' && token.value === 'function',
 						});
 
-						const functionNameString = context.sourceCode.text.slice(functionNameRange[0], functionNameRange[1]);
+						const functionNameString = context.sourceCode.text.slice(
+							functionNameRange[0],
+							functionNameRange[1],
+						);
 
 						fixes.push(fixer.removeRange(functionNameRange));
 
