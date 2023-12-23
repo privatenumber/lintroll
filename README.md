@@ -238,9 +238,9 @@ Type: `FlatConfig | FlatConfig[]`
 
 Also check out these awesome ESLint configs. They have inspired me and are great alternatives to consider.
 
-- [@antfu](https://github.com/antfu)'s ESLint config: [antfu/eslint-config](https://github.com/antfu/eslint-config)
-- [@sxzz](https://github.com/sxzz)'s ESLint config: [sxzz/eslint-config](https://github.com/sxzz/eslint-config)
-- [@ota-meshi](https://github.com/ota-meshi)'s ESlint config & plugin: [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin)
-- [standard config](https://github.com/standard/eslint-config-standard)
+- [antfu/eslint-config](https://github.com/antfu/eslint-config) by [@antfu](https://github.com/antfu)
+- [sxzz/eslint-config](https://github.com/sxzz/eslint-config) by [@sxzz](https://github.com/sxzz)
+- [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin) by [@ota-meshi](https://github.com/ota-meshi)
+- [standard config](https://github.com/standard/eslint-config-standard) by [@feross](https://github.com/feross)
 
 Hope they also inspire you to create your own ESLint config!
