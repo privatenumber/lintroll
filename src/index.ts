@@ -41,6 +41,8 @@ export const pvtnbr = (
 				'**/node_modules/**',
 				'**/vendor/**',
 			],
+		}),
+		defineConfig({
 			linterOptions: {
 				reportUnusedDisableDirectives: true,
 			},
