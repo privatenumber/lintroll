@@ -13,6 +13,39 @@ const messages = {
 
 type MessageIds = keyof typeof messages;
 
+
+const mergeFixes = (
+	fixes: TSESLint.RuleFix[],
+) => {
+
+	for (let i = 0; i < fixes.length; i += 1) {
+		const fix = fixes[i] as {
+			text: string;
+			range: TSESTree.Range;
+		};
+
+		for (let j = i + 1; j < fixes.length; j += 1) {
+			const otherFix = fixes[j];
+
+			const isOverlapping = (
+				fix.range[0] <= otherFix.range[1]
+				&& otherFix.range[0] <= fix.range[1]
+			);
+
+			if (isOverlapping) {
+				const isMergable = fix.text === otherFix.text;
+				if (isMergable) {
+					fix.range[0] = Math.min(fix.range[0], otherFix.range[0]);
+					fix.range[1] = Math.max(fix.range[1], otherFix.range[1]);
+					fixes.splice(j, 1);
+				}
+			}
+		}
+	}
+
+	return fixes;
+};
+
 export const preferArrowFunctions = createRule<Options, MessageIds>({
 	name: 'prefer-arrow-functions',
 	meta: {
@@ -258,6 +291,8 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 								fixer.insertTextAfter(node, ')'),
 							);
 						}
+
+						mergeFixes(fixes);
 
 						return fixes;
 					},
