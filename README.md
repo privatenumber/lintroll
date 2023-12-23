@@ -156,6 +156,45 @@ module.exports = defineConfig([
 ])
 ```
 
+## Linting coverage
+
+This ESLint config comprehensively supports a variety of languages and file types, ensuring coding standards and best practices across your project.
+
+| Language/File Type | Extensions |
+| ------------------ | -------------------- |
+| JavaScript | `.js`, `.cjs`, `.mjs` |
+| Node.js | `.cjs`, `.mjs` |
+| Service Workers | `.sw.js`, `.sw.ts` |
+| TypeScript | `.ts`, `.cts`, `.mts`, `.d.ts` |
+| Vue.js | `.vue` |
+| React | `.jsx`, `.tsx` |
+| JSON | `.json`, `.json5`, `.jsonc` |
+| YML | `.yml`, `.yaml` |
+| Markdown | `.md` |
+
+
+### Integrated plugins
+
+Each plugin in this ESLint configuration targets specific aspects of your code, ensuring quality and consistency.
+
+| Plugin | Focus area |
+| ------ | ---------- |
+| [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments) | ESLint directive comments |
+| [node](https://www.npmjs.com/package/eslint-plugin-node) | Node.js coding practices |
+| [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) | TypeScript coding Practices |
+| [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin) | JavaScript & TypeScript code style |
+| [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions) | Arrow function usage |
+| [promise](https://www.npmjs.com/package/eslint-plugin-promise) | Promises best practices |
+| [regexp](https://www.npmjs.com/package/eslint-plugin-regexp) | Regular Expressions best practices |
+| [import](https://www.npmjs.com/package/eslint-plugin-import) | ES6+ Import/Export |
+| [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc) | JSON, JSON5, and JSONC style |
+| [yml](https://www.npmjs.com/package/eslint-plugin-yml) | YAML style |
+| [vue](https://www.npmjs.com/package/eslint-plugin-vue) | Vue.js Templates & Scripts |
+| [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) | React & React Hooks |
+| [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown embedded code blocks |
+| [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native prototype extensions |
+| [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous code quality rules |
+
 
 ## API
 
@@ -195,31 +234,13 @@ An identity function to enforce type checking on the config.
 
 Type: `FlatConfig | FlatConfig[]`
 
-## Dependencies
-- Plugins:
-	- [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments): Lints ESLint comments
-	- [node](https://www.npmjs.com/package/eslint-plugin-n): Lints Node.js
-	- [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin): Lints TypeScript
-	- [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin): Lints JS code style
-	- [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions): Lints function style
-	- [promise](https://www.npmjs.com/package/eslint-plugin-promise): Lints Promises
-	- [regexp](https://www.npmjs.com/package/eslint-plugin-regexp): Lints Regular Expressions
-	- [import](https://www.npmjs.com/package/eslint-plugin-import): Lints imports
-	- [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc): Lints JSON & JSONC
-	- [yml](https://www.npmjs.com/package/eslint-plugin-yml): Lints YAML
-	- [vue](https://www.npmjs.com/package/eslint-plugin-vue): Lints Vue.js
-	- [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks): Lints React
-	- [markdown](https://www.npmjs.com/package/eslint-plugin-markdown): Lints Markdown
-	- [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native): Lints native prototypes
-	- [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn): Miscellaneous linting rules
-
 ## Other ESLint configs
 
 Also check out these awesome ESLint configs. They have inspired me and are great alternatives to consider.
 
-- [@antfu](https://github.com/antfu)'s ESLint config: [antfu/eslint-config](https://github.com/antfu/eslint-config)
-- [@sxzz](https://github.com/sxzz)'s ESLint config: [sxzz/eslint-config](https://github.com/sxzz/eslint-config)
-- [@ota-meshi](https://github.com/ota-meshi)'s ESlint config & plugin: [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin)
-- [standard config](https://github.com/standard/eslint-config-standard)
+- [antfu/eslint-config](https://github.com/antfu/eslint-config) by [@antfu](https://github.com/antfu)
+- [sxzz/eslint-config](https://github.com/sxzz/eslint-config) by [@sxzz](https://github.com/sxzz)
+- [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin) by [@ota-meshi](https://github.com/ota-meshi)
+- [standard config](https://github.com/standard/eslint-config-standard) by [@feross](https://github.com/feross)
 
 Hope they also inspire you to create your own ESLint config!
