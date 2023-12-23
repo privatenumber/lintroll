@@ -19,7 +19,7 @@ import { noUseExtendNative } from './configs/no-use-extend-native.js';
 import { unicorn } from './configs/unicorn.js';
 import { react } from './configs/react.js';
 import { vue } from './configs/vue.js';
-import { arrowFunctions } from './configs/arrow-functions.js';
+import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
 	options?: Options,
@@ -68,11 +68,12 @@ export const pvtnbr = (
 		...(normalizedOptions.vue ? vue : []),
 		...(normalizedOptions.react ? react : []),
 		...markdown(normalizedOptions),
-		arrowFunctions,
+
 		jest,
+		customConfigs,
 	].filter(Boolean);
 };
 
-export type { Options };
-export { defineConfig };
 export default pvtnbr();
+export { defineConfig }
+export type { Options };
