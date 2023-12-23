@@ -179,21 +179,21 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 
 | Plugin | Focus area |
 | ------ | ---------- |
-| [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments) | ESLint Directive Comments |
-| [node](https://www.npmjs.com/package/eslint-plugin-node) | Node.js Coding Practices |
-| [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) | TypeScript Syntax & Practices |
-| [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin) | JavaScript & TypeScript Code Style |
-| [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions) | Arrow Function Usage |
-| [promise](https://www.npmjs.com/package/eslint-plugin-promise) | Promises Best Practices |
-| [regexp](https://www.npmjs.com/package/eslint-plugin-regexp) | Regular Expressions Usage |
-| [import](https://www.npmjs.com/package/eslint-plugin-import) | ES6+ Import/Export Syntax |
-| [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc) | JSON, JSON5, and JSONC Formatting |
-| [yml](https://www.npmjs.com/package/eslint-plugin-yml) | YAML File Structure |
+| [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments) | ESLint directive comments |
+| [node](https://www.npmjs.com/package/eslint-plugin-node) | Node.js coding practices |
+| [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) | TypeScript coding Practices |
+| [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin) | JavaScript & TypeScript code style |
+| [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions) | Arrow function usage |
+| [promise](https://www.npmjs.com/package/eslint-plugin-promise) | Promises best practices |
+| [regexp](https://www.npmjs.com/package/eslint-plugin-regexp) | Regular Expressions best practices |
+| [import](https://www.npmjs.com/package/eslint-plugin-import) | ES6+ Import/Export |
+| [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc) | JSON, JSON5, and JSONC style |
+| [yml](https://www.npmjs.com/package/eslint-plugin-yml) | YAML style |
 | [vue](https://www.npmjs.com/package/eslint-plugin-vue) | Vue.js Templates & Scripts |
 | [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) | React & React Hooks |
-| [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown Embedded Code Blocks |
-| [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native Prototype Extensions |
-| [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous Code Quality Rules |
+| [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown embedded code blocks |
+| [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native prototype extensions |
+| [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous code quality rules |
 
 
 ## API
