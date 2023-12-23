@@ -4,16 +4,19 @@ import confusingBrowserGlobals from 'confusing-browser-globals';
 import { isInstalled } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config.js';
 
-export const baseConfig = defineConfig({
+export const eslint = defineConfig({
 	languageOptions: {
-		ecmaVersion: 'latest',
-
-		sourceType: 'module',
-
 		globals: globals['shared-node-browser'],
 	},
 
 	rules: {
+		// https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
+		...js.configs.recommended.rules,
+
+		// Turn off deprecated rules enabled by recommended
+		'no-mixed-spaces-and-tabs': 'off',
+		'no-extra-semi': 'off',
+
 		'accessor-pairs': 'error',
 
 		// https://eslint.org/docs/latest/rules/array-callback-return
@@ -789,33 +792,3 @@ export const baseConfig = defineConfig({
 		yoda: 'error',
 	},
 });
-
-const serviceWorkers = defineConfig({
-	files: ['**/*.sw.js'],
-	languageOptions: {
-		globals: globals.serviceworker,
-	},
-	rules: {
-		'no-restricted-globals': [
-			'error',
-			...confusingBrowserGlobals.filter(variable => variable !== 'self'),
-		],
-	},
-});
-
-export const base = [
-	// https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
-	defineConfig({
-		rules: {
-			...js.configs.recommended.rules,
-
-			/**
-			 * Deprecated rules enabled by recommended
-			 */
-			'no-mixed-spaces-and-tabs': 'off',
-			'no-extra-semi': 'off',
-		},
-	}),
-	baseConfig,
-	serviceWorkers,
-];
