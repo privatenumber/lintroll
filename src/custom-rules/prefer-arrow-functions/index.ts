@@ -176,20 +176,17 @@ export const preferArrowFunctions = createRule({
 
 						const { parent } = node;
 						if (
-
-							// Class method
-							(
-								parent.type === 'MethodDefinition'
-								&& parent.kind === 'method'
-							)
-
 							// Object method
-							|| (
-								parent.type === 'Property'
-								&& parent.method
-							)
+							parent.type === 'Property'
+							&& parent.method
 						) {
 							fixes.push(fixer.insertTextBefore(parent.value, ':'));
+						} else if (
+							// Class method
+							parent.type === 'MethodDefinition'
+							&& parent.kind === 'method'
+						) {
+							fixes.push(fixer.insertTextBefore(parent.value, '='));
 						} else {
 							const functionToken = context.sourceCode.getFirstToken(node, {
 								filter: token => token.type === 'Keyword' && token.value === 'function',
@@ -267,7 +264,10 @@ export const preferArrowFunctions = createRule({
 						const nextToken = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
 						});
-						const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween!(node, nextToken!);
+						const needsDelimiter = (
+							nextToken
+							&& !context.sourceCode.isSpaceBetween!(node, nextToken!)
+						);
 
 						if (needsDelimiter) {
 							fixes.push(fixer.insertTextAfter(node, ';'));

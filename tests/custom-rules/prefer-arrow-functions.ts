@@ -294,7 +294,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{_/*a*/:()=>/*b*/{}})',
+					output: '(class{_/*a*/=()=>/*b*/{}})',
 				},
 				{
 					name: 'class / private method',
@@ -302,7 +302,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{#_/*a*/:()=>/*b*/{}})',
+					output: '(class{#_/*a*/=()=>/*b*/{}})',
 				},
 				{
 					name: 'class / static method',
@@ -310,7 +310,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{static/*a*/_/*b*/:()=>/*c*/{}})',
+					output: '(class{static/*a*/_/*b*/=()=>/*c*/{}})',
 				},
 
 				// Exports

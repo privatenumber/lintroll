@@ -12,6 +12,8 @@ Noticing these differences may even help make better design choices. For example
 
 ## Behavior
 
+Preserves comments, whitespace, and types.
+
 ### Passing code
 ```js
 // Allows arrow functions
@@ -36,8 +38,8 @@ export default () => {};
 
 // Object getters & setters
 ({
-    get foo() {},
-    set bar(value) {}
+    get foo() { return value },
+    set foo(value) {}
 })
 
 // Class
@@ -50,9 +52,9 @@ class myClass {
 
     * generator() {}
 
-    get foo() {}
+    get foo() { return value }
 
-    set bar(value) {}
+    set foo(value) {}
 
     arrow = () => {}
 }
@@ -74,43 +76,44 @@ function hoisted() {}
 
 
 ### Failing code
-```js
+TODO: disable this rule for this block
+```ts
 /* Function declarations */
-function foo() {}
+const foo = () => {}
 // Fixed: const foo = () => {}
 
-async function bar() {}
+const bar = async () => {}
 // Fixed: const foo = async () => {}
 
 /* Function with comments */
-function/*a*/baz/*b*/()/*c*/{}
+const/* a */baz = /* b */() =>/* c */ {}
 // Fixed: const/*a*/foo=/*b*/()=>/*c*/{}
 
 /* Function expressions */
-(async function() {})
+(async () => {})
 // Fixed: (async () => {})
 
 /* Object properties */
-const obj = {
-  method() {}
-};
+const object = {
+    method: () => {}
+}
 // Fixed: { method: () => {} };
 
 /* Classes */
 class MyClass {
-  method() {}
+    method() => value
 }
-// Fixed: class MyClass { method = () => {} }
+// Fixed: class MyClass { method = () => value }
 
 /* Exports */
-export function namedExport() {}
+export const namedExport = () => {}
 // Fixed: export const myFunction = () => {}
 
-export default function defaultExport() {}
+export default () => {}
 // Fixed: export default () => {}
 
 /* TypeScript */
-function foo<a extends string>(a: a) {}
+const typescript = <a extends string>(a: a) => {}
 // Fixed: const foo = <a extends string>(a: a) => {}
 ```
 

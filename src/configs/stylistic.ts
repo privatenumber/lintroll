@@ -168,7 +168,7 @@ export const stylistic = defineConfig({
 		// enforces empty lines around comments
 		'@stylistic/lines-around-comment': ['error', {
 			beforeBlockComment: true,
-			beforeLineComment: true,
+			beforeLineComment: false,
 			afterHashbangComment: true,
 
 			allowBlockStart: true,
