@@ -210,9 +210,16 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 								const asyncToken = context.sourceCode.getFirstToken(parent, {
 									filter: token => token.type === 'Identifier' && token.value === 'async',
 								});
+								const asyncTokenRange = getRange(asyncToken!, {
+									rightUntil: Boolean, // Until first comment
+								});
+								const asyncTokenString = context.sourceCode.text.slice(
+									asyncTokenRange[0],
+									asyncTokenRange[1],
+								);
 								fixes.push(
-									fixer.remove(asyncToken!),
-									fixer.insertTextBefore(node, 'async'),
+									fixer.removeRange(asyncTokenRange!),
+									fixer.insertTextBefore(node, asyncTokenString),
 								);
 							}
 						} else if (
