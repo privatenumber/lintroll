@@ -16,7 +16,7 @@ export const pvtnbrPlugin = {
 		base: {
 			rules: {
 				'pvtnbr/prefer-arrow-functions': 'error',
-				'pvtnbr/no-function-hoisting': 'error',
+				// 'pvtnbr/no-function-hoisting': 'error',
 			},
 		},
 	},

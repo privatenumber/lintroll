@@ -45,7 +45,7 @@ const findFirstReference = (
 };
 
 export const noFunctionHoisting = createRule({
-	name: 'prefer-arrow-functions',
+	name: 'no-function-hoisting',
 	meta: {
 		messages: {
 			noFunctionHoisting: 'Unexpected function hoisting',

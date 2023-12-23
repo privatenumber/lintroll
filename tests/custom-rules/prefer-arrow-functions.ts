@@ -2,11 +2,6 @@ import { testSuite } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions/index.js';
 
-/**
- * function prototype
- * function.length
- * function.name
- */
 export default testSuite(({ describe }) => {
 	describe('prefer-arrow-functions', ({ describe, test }) => {
 		RuleTester.describe = describe;
@@ -100,6 +95,20 @@ export default testSuite(({ describe }) => {
 				{
 					name: 'class / getter',
 					code: '(class{get/**/a(){}})',
+				},
+
+				// Prototype setting
+				{
+					name: 'prototype',
+					code: 'function a(){}a.prototype={}',
+				},
+				{
+					name: 'function name',
+					code: 'function a(){}a.name',
+				},
+				{
+					name: 'function length',
+					code: 'function a(){}a.length',
 				},
 
 				// Ignores generators

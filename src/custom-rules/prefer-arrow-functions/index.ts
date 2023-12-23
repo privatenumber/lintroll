@@ -41,10 +41,30 @@ const isFunctionHoisted = (
 ) => {
 	const [functionVariable] = sourceCode.getDeclaredVariables!(node);
 	const [firstReference] = functionVariable.references;
-	return (
+	const isHoisted = (
 		firstReference
 		&& node.range[0] > firstReference.identifier.range[0]
 	);
+
+	if (isHoisted) {
+		return true;
+	}
+
+	// Access to prototype, name, or length
+	const disallowedProperties = [
+		'prototype',
+		'name',
+		'length',
+	] as const;
+	for (const { identifier } of functionVariable.references) {
+		if (
+			identifier.parent.type === 'MemberExpression'
+			&& identifier.parent.property.type === 'Identifier'
+			&& disallowedProperties.includes(identifier.parent.property.name)
+		) {
+			return true;
+		}
+	}
 };
 
 // TODO: add option not to transform default exports of named functions as the name gets lost

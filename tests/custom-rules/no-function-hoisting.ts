@@ -68,6 +68,16 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'function a(){}export{a}\n',
 				},
+				{
+					name: 'reverse hoisting / preserve scope / nested',
+					code: 'b();function a(){}function b(){a();}',
+					errors: [{
+						messageId: 'noFunctionHoisting',
+					}],
+					output: 'function a(){}function b(){a();}b();',
+				},
+
+				// Move comment before function too
 			],
 		});
 	});
