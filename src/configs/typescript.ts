@@ -10,7 +10,7 @@ import { defineConfig } from '../utils/define-config';
 import { importsConfig } from './imports.js';
 import { eslint } from './eslint.js';
 
-const noExtraneousDependenciesConfig = importsConfig.rules['import/no-extraneous-dependencies'][1];
+const [, noExtraneousDependenciesConfig] = importsConfig.rules['import/no-extraneous-dependencies'];
 
 export const typescript = [
 	defineConfig({

@@ -680,18 +680,32 @@ export const eslint = defineConfig({
 
 		// Prefer destructuring from arrays and objects
 		// https://eslint.org/docs/latest/rules/prefer-destructuring
-		'prefer-destructuring': ['error', {
-			AssignmentExpression: {
-				array: true,
-				object: false,
+		'prefer-destructuring': [
+			'error',
+			{
+				VariableDeclarator: {
+					array: true,
+					object: true,
+				},
+				AssignmentExpression: {
+					array: false,
+					object: false,
+				},
 			},
-			VariableDeclarator: {
-				array: false,
-				object: true,
+			{
+				/**
+				 * TODO: Ideally this can be enabled for code like:
+				 * const destructure = objectMulti.a;
+				 *
+				 * But it currently also errors on:
+				 * const [element] = obj.prop;
+				 *
+				 * Would like to fine tune to ignore arrays
+				 * or if some destructuring already exists.
+				 */
+				enforceForRenamedProperties: false,
 			},
-		}, {
-			enforceForRenamedProperties: false,
-		}],
+		],
 
 		// https://eslint.org/docs/latest/rules/prefer-exponentiation-operator
 		'prefer-exponentiation-operator': 'error',

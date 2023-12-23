@@ -45,7 +45,7 @@ export default testSuite(({ describe }) => {
 				const results = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/fail/fail.vue', import.meta.url)),
 				);
-				const { messages } = results[0];
+				const [{ messages }] = results;
 
 				onTestFail(() => {
 					console.dir(results, {
@@ -77,7 +77,7 @@ export default testSuite(({ describe }) => {
 				const results = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/fail/Setup.vue', import.meta.url)),
 				);
-				const { messages } = results[0];
+				const [{ messages }] = results;
 
 				onTestFail(() => {
 					console.dir(results, {
@@ -116,7 +116,7 @@ export default testSuite(({ describe }) => {
 				const results = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/fail/SetupNoLangTs.vue', import.meta.url)),
 				);
-				const { messages } = results[0];
+				const [{ messages }] = results;
 
 				onTestFail(() => {
 					console.dir(results, {
