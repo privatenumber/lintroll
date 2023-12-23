@@ -287,7 +287,6 @@ export default testSuite(({ describe }) => {
 				},
 
 				// Class
-				// TODO: FIX to use = instead of :
 				{
 					name: 'class',
 					code: '(class{_/*a*/()/*b*/{}})',
@@ -332,11 +331,11 @@ export default testSuite(({ describe }) => {
 				},
 				{
 					name: 'default export / declaration ',
-					code: 'export default/*a*/function/*b*/a/*c*/(b)/*d*/{}',
+					code: 'export\ndefault/*a*/function/*b*/a/*c*/(b)/*d*/{}[]',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'export default/*a*//*b*//*c*/(b)=>/*d*/{}',
+					output: 'const/*b*/a=/*c*/(b)=>/*d*/{};export\ndefault/*a*/a;[]',
 				},
 
 				// TypeScript

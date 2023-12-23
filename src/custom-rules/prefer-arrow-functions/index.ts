@@ -3,23 +3,49 @@ import { createRule } from '../utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
-// TODO: add option not to transform default exports of named functions as the name gets lost
-// And really, we should be disabling default export instead
-export const preferArrowFunctions = createRule({
+type Options = [{
+	removeFunctionNames?: boolean;
+}];
+
+const messages = {
+	preferArrowFunction: 'Prefer arrow function',
+} as const;
+
+type MessageIds = keyof typeof messages;
+
+export const preferArrowFunctions = createRule<Options, MessageIds>({
 	name: 'prefer-arrow-functions',
 	meta: {
-		messages: {
-			preferArrowFunction: 'Prefer arrow function',
-		},
 		type: 'suggestion',
-		schema: [],
 		docs: {
 			description: 'Prefer arrow functions when possible',
 		},
 		fixable: 'code',
+		schema: [
+			{
+				type: 'object',
+				additionalProperties: false,
+				properties: {
+					/**
+					 * Sometimes transformation removes the function names
+					 * For example:
+					 * export default function a() {}
+					 *
+					 * Becomes:
+					 * export default () => {}
+					 */
+					removeFunctionNames: {
+						type: 'boolean',
+					},
+				},
+			},
+		],
+		messages,
 	},
 
-	defaultOptions: ['warning'],
+	defaultOptions: [{
+		removeFunctionNames: false,
+	}],
 
 	create: (context) => {
 		const getRange = (
@@ -47,7 +73,7 @@ export const preferArrowFunctions = createRule({
 					filter: options.rightUntil,
 				});
 				if (nextToken) {
-					range[1] = nextToken.range[0];
+					range[1] = nextToken.range[options.inclusive ? 1 : 0];
 				}
 			}
 
@@ -170,8 +196,6 @@ export const preferArrowFunctions = createRule({
 					node,
 					messageId: 'preferArrowFunction',
 					fix: (fixer) => {
-						// console.log(node.id);
-
 						const fixes = [];
 
 						const { parent } = node;
@@ -208,9 +232,7 @@ export const preferArrowFunctions = createRule({
 							fixes.push(fixer.removeRange(functionNameRange));
 						}
 
-						const parenEnd = context.sourceCode.getTokenBefore(node.body, {
-							// filter: token => token.type === 'Punctuator' && token.value === ')',
-						})!;
+						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
 						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
 
 						if (node.parent.type === 'LogicalExpression') {
@@ -242,9 +264,8 @@ export const preferArrowFunctions = createRule({
 
 						fixes.push(fixer.remove(functionToken));
 
-						const exportDefault = node.parent.type === 'ExportDefaultDeclaration';
 						const functionNameRange = getRange(node.id!, {
-							leftUntil: exportDefault ? Boolean : token => token.type === 'Keyword' && token.value === 'function',
+							leftUntil: token => token.type === 'Keyword' && token.value === 'function',
 						});
 
 						const functionNameString = context.sourceCode.text.slice(
@@ -252,15 +273,29 @@ export const preferArrowFunctions = createRule({
 							functionNameRange[1],
 						);
 
-						fixes.push(fixer.removeRange(functionNameRange));
+						fixes.push(
+							fixer.removeRange(functionNameRange),
+							fixer.insertTextBefore(node, `const${functionNameString}=`),
+						);
 
-						if (!exportDefault) {
-							fixes.push(fixer.insertTextBefore(node, `const${functionNameString}=`));
-						}
-
+						// Insert arrow
 						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
 						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
 
+						if (node.parent.type === 'ExportDefaultDeclaration') {
+							const { parent } = node;
+							const range: TSESTree.Range = [parent.range[0], node.range[0]];
+
+							fixes.push(
+								fixer.removeRange(range),
+								fixer.insertTextAfter(
+									node,
+									`;${context.sourceCode.text.slice(range[0], range[1])}${node.id!.name}`,
+								),
+							);
+						}
+
+						// Insert semicolon if necessary
 						const nextToken = context.sourceCode.getTokenAfter(node, {
 							includeComments: true,
 						});
