@@ -3,77 +3,13 @@ import { createRule } from '../utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
-const mergeFixes = (
-	fixes: TSESLint.RuleFix[],
-) => {
-
-	for (let i = 0; i < fixes.length; i += 1) {
-		const fix = fixes[i] as {
-			text: string;
-			range: TSESTree.Range;
-		};
-
-		for (let j = i + 1; j < fixes.length; j += 1) {
-			const otherFix = fixes[j];
-
-			const isOverlapping = (
-				fix.range[0] <= otherFix.range[1]
-				&& otherFix.range[0] <= fix.range[1]
-			);
-
-			if (isOverlapping) {
-				const isMergable = fix.text === otherFix.text;
-				if (isMergable) {
-					fix.range[0] = Math.min(fix.range[0], otherFix.range[0]);
-					fix.range[1] = Math.max(fix.range[1], otherFix.range[1]);
-					fixes.splice(j, 1);
-				}
-			}
-		}
-	}
-
-	return fixes;
-};
-
-const isFunctionHoisted = (
-	sourceCode: TSESLint.SourceCode,
-	node: TSESTree.Node,
-) => {
-	const [functionVariable] = sourceCode.getDeclaredVariables!(node);
-	const [firstReference] = functionVariable.references;
-	const isHoisted = (
-		firstReference
-		&& node.range[0] > firstReference.identifier.range[0]
-	);
-
-	if (isHoisted) {
-		return true;
-	}
-
-	// Access to prototype, name, or length
-	const disallowedProperties = [
-		'prototype',
-		'name',
-		'length',
-	] as const;
-	for (const { identifier } of functionVariable.references) {
-		if (
-			identifier.parent.type === 'MemberExpression'
-			&& identifier.parent.property.type === 'Identifier'
-			&& disallowedProperties.includes(identifier.parent.property.name)
-		) {
-			return true;
-		}
-	}
-};
-
 // TODO: add option not to transform default exports of named functions as the name gets lost
 // And really, we should be disabling default export instead
 export const preferArrowFunctions = createRule({
 	name: 'prefer-arrow-functions',
 	meta: {
 		messages: {
-			unexpectedFunctionDeclaration: 'Unexpected function declaration',
+			preferArrowFunction: 'Prefer arrow function',
 		},
 		type: 'suggestion',
 		schema: [],
@@ -121,6 +57,12 @@ export const preferArrowFunctions = createRule({
 
 		const untransformableFunctions = new Set<FunctionNode>();
 
+		const disallowedProperties = [
+			'prototype',
+			'name',
+			'length',
+		] as const;
+
 		const isConvertable = (
 			node: FunctionNode,
 		) => {
@@ -148,15 +90,47 @@ export const preferArrowFunctions = createRule({
 				return false;
 			}
 
+			const scope = context.sourceCode.getScope!(node);
+			const hasArguments = scope.set.get('arguments')!.references.length > 0;
+			if (hasArguments) {
+				return false;
+			}
+
+			let references: TSESLint.Scope.Reference[] = [];
+
 			if (node.type === 'FunctionDeclaration') {
-				if (isFunctionHoisted(context.sourceCode, node)) {
+				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
+				const [firstReference] = functionVariable.references;
+				const isHoisted = (
+					firstReference
+					&& node.range[0] > firstReference.identifier.range[0]
+				);
+	
+				if (isHoisted) {
+					return false;
+				}
+
+				references = functionVariable.references;
+			} else if (node.type === 'FunctionExpression') {
+				if (node.parent.type === 'VariableDeclarator') {
+					const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
+
+					// The first reference is the variable declaration itself
+					references = functionVariable.references.slice(1);
+				}
+			}
+
+			for (const { identifier } of references) {
+				if (
+					identifier.parent.type === 'MemberExpression'
+					&& identifier.parent.property.type === 'Identifier'
+					&& disallowedProperties.includes(identifier.parent.property.name)
+				) {
 					return false;
 				}
 			}
 
-			const scope = context.sourceCode.getScope!(node);
-			const hasArguments = scope.set.get('arguments')!.references.length > 0;
-			return !hasArguments;
+			return true;
 		};
 
 		const getNearestFunction = (
@@ -198,7 +172,7 @@ export const preferArrowFunctions = createRule({
 
 				context.report({
 					node,
-					messageId: 'unexpectedFunctionDeclaration',
+					messageId: 'preferArrowFunction',
 					fix: (fixer) => {
 						// console.log(node.id);
 
@@ -253,8 +227,6 @@ export const preferArrowFunctions = createRule({
 							);
 						}
 
-						mergeFixes(fixes);
-
 						return fixes;
 					},
 				});
@@ -267,7 +239,7 @@ export const preferArrowFunctions = createRule({
 
 				context.report({
 					node,
-					messageId: 'unexpectedFunctionDeclaration',
+					messageId: 'preferArrowFunction',
 					fix: (fixer) => {
 						const fixes = [];
 

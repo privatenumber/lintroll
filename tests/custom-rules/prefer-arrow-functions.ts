@@ -99,16 +99,28 @@ export default testSuite(({ describe }) => {
 
 				// Prototype setting
 				{
-					name: 'prototype',
+					name: 'prototype / declaration',
 					code: 'function a(){}a.prototype={}',
 				},
 				{
-					name: 'function name',
+					name: 'prototype / expression',
+					code: 'const a = function(){};a.prototype={}',
+				},
+				{
+					name: 'function name / declaration',
 					code: 'function a(){}a.name',
+				},
+				{
+					name: 'function name / expression',
+					code: 'const a = function(){};a.name',
 				},
 				{
 					name: 'function length',
 					code: 'function a(){}a.length',
+				},
+				{
+					name: 'function length / expression',
+					code: 'const a = function(){};a.length',
 				},
 
 				// Ignores generators
@@ -133,7 +145,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / empty parameters',
 					code: 'function foo/*b*/(/*c*/)/*d*/{}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const foo=/*b*/(/*c*/)=>/*d*/{}',
 				},
@@ -141,7 +153,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / empty parameters - no spaces after "function"',
 					code: 'function/*a*/foo/*b*/(\n\n)/*c*/{\n}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const/*a*/foo=/*b*/(\n\n)=>/*c*/{\n}',
 				},
@@ -149,7 +161,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / async',
 					code: 'async/*a*/function/*b*/foo/*c*/(/*d*/\na\n/*e*/)/*f*/{\n}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const/*b*/foo=async/*a*//*c*/(/*d*/\na\n/*e*/)=>/*f*/{\n}',
 				},
@@ -157,7 +169,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / function with "this" inside',
 					code: 'function foo(){(function(){this})}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const foo=()=>{(function(){this})}',
 				},
@@ -165,7 +177,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / function with "arguments" inside',
 					code: 'function foo(){(function(){arguments})}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const foo=()=>{(function(){arguments})}',
 				},
@@ -173,7 +185,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / function with "new.target" inside',
 					code: 'function foo(){(function(){new.target})}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const foo=()=>{(function(){new.target})}',
 				},
@@ -181,7 +193,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / function with "class super()" inside',
 					code: 'function foo(){(class{a(){super()}})}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const foo=()=>{(class{a(){super()}})}',
 				},
@@ -189,7 +201,7 @@ export default testSuite(({ describe }) => {
 					name: 'declaration / inserts semicolon',
 					code: 'function a(){}a()',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const a=()=>{};a()',
 				},
@@ -201,7 +213,7 @@ export default testSuite(({ describe }) => {
 					// JS doesn't allow multiline comments before the =>, but allows it after
 					code: '(async /*a*/ function /*b*/ a /*c*/ (/*d*/\na\n/*e*/) /*f*/ {\n})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(async /*a*/ /*b*/ /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
@@ -209,7 +221,7 @@ export default testSuite(({ describe }) => {
 					name: 'expression / anonymous / async',
 					code: '(async /*a*/ function /*b*/  /*c*/ (/*d*/\na\n/*e*/) /*f*/ {\n})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(async /*a*/ /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
@@ -217,7 +229,7 @@ export default testSuite(({ describe }) => {
 					name: 'expression / &&',
 					code: `(1 && function(){})`,
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: `(1 && (()=>{}))`,
 				},
@@ -225,9 +237,9 @@ export default testSuite(({ describe }) => {
 					name: 'expression / nested',
 					code: '(function(){(function(){})})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					},{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(()=>{(()=>{})})'
 				},
@@ -236,10 +248,10 @@ export default testSuite(({ describe }) => {
 					code: '(function (b = (function (){})){})',
 					errors: [
 						{
-							messageId: 'unexpectedFunctionDeclaration',
+							messageId: 'preferArrowFunction',
 						},
 						{
-							messageId: 'unexpectedFunctionDeclaration',
+							messageId: 'preferArrowFunction',
 						},
 					],
 					// Ideally, it removes the inner function too
@@ -251,7 +263,7 @@ export default testSuite(({ describe }) => {
 					name: 'object property / value',
 					code: '({a:/**/function/**/()/**/{}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '({a:/**//**/()=>/**/{}})',
 				},
@@ -259,7 +271,7 @@ export default testSuite(({ describe }) => {
 					name: 'object property / method',
 					code: '({a(b){}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '({a:(b)=>{}})',
 				},
@@ -267,7 +279,7 @@ export default testSuite(({ describe }) => {
 					name: 'object property / method',
 					code: '({["a"](b){}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '({["a"]:(b)=>{}})',
 				},
@@ -278,7 +290,7 @@ export default testSuite(({ describe }) => {
 					name: 'class',
 					code: '(class{_/*a*/()/*b*/{}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(class{_/*a*/:()=>/*b*/{}})',
 				},
@@ -286,7 +298,7 @@ export default testSuite(({ describe }) => {
 					name: 'class / private method',
 					code: '(class{#_/*a*/()/*b*/{}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(class{#_/*a*/:()=>/*b*/{}})',
 				},
@@ -294,7 +306,7 @@ export default testSuite(({ describe }) => {
 					name: 'class / static method',
 					code: '(class{static/*a*/_/*b*/()/*c*/{}})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(class{static/*a*/_/*b*/:()=>/*c*/{}})',
 				},
@@ -304,7 +316,7 @@ export default testSuite(({ describe }) => {
 					name: 'named export / declaration ',
 					code: 'export function a(b) {}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'export const a=(b)=> {}',
 				},
@@ -312,7 +324,7 @@ export default testSuite(({ describe }) => {
 					name: 'named export / declaration / async',
 					code: 'export async function a(b) {}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'export const a=async (b)=> {}',
 				},
@@ -320,7 +332,7 @@ export default testSuite(({ describe }) => {
 					name: 'default export / declaration ',
 					code: 'export default/*a*/function/*b*/a/*c*/(b)/*d*/{}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'export default/*a*//*b*//*c*/(b)=>/*d*/{}',
 				},
@@ -330,7 +342,7 @@ export default testSuite(({ describe }) => {
 					name: 'ts / declaration',
 					code: 'async/*a*/function/*b*/foo/*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void/*\ng*/{}',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: 'const/*b*/foo=async/*a*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{}',
 				},
@@ -338,7 +350,7 @@ export default testSuite(({ describe }) => {
 					name: 'ts / expression / named',
 					code: '(async/*a*/function/*b*/foo/*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void/*\ng*/{})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 				},
@@ -346,7 +358,7 @@ export default testSuite(({ describe }) => {
 					name: 'ts / expression / anonymous',
 					code: '(async/*a*/function/*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void/*\ng*/{})',
 					errors: [{
-						messageId: 'unexpectedFunctionDeclaration',
+						messageId: 'preferArrowFunction',
 					}],
 					output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 				},
