@@ -263,19 +263,27 @@ export default testSuite(({ describe }) => {
 				// Object property
 				{
 					name: 'object property / value',
-					code: '({a:/**/function/**/()/**/{}})',
+					code: '({a:/*a*/function/*b*/()/*c*/{}})',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({a:/**//**/()=>/**/{}})',
+					output: '({a:/*a*//*b*/()=>/*c*/{}})',
 				},
 				{
 					name: 'object property / method',
-					code: '({a(b){}})',
+					code: '({/*a*/a/*b*/(b)/*c*/{}})',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({a:(b)=>{}})',
+					output: '({/*a*/a/*b*/:(b)=>/*c*/{}})',
+				},
+				{
+					name: 'object property / async method',
+					code: '({async/*a*/a/*b*/(b)/*c*/{}})',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: '({/*a*/a/*b*/:async(b)=>/*c*/{}})',
 				},
 				{
 					name: 'object property / method',

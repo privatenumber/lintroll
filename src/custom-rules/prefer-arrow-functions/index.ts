@@ -204,13 +204,23 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							parent.type === 'Property'
 							&& parent.method
 						) {
-							fixes.push(fixer.insertTextBefore(parent.value, ':'));
+							fixes.push(fixer.insertTextBefore(node, ':'));
+
+							if (node.async) {
+								const asyncToken = context.sourceCode.getFirstToken(parent, {
+									filter: token => token.type === 'Identifier' && token.value === 'async',
+								});
+								fixes.push(
+									fixer.remove(asyncToken!),
+									fixer.insertTextBefore(node, 'async'),
+								);
+							}
 						} else if (
 							// Class method
 							parent.type === 'MethodDefinition'
 							&& parent.kind === 'method'
 						) {
-							fixes.push(fixer.insertTextBefore(parent.value, '='));
+							fixes.push(fixer.insertTextBefore(node, '='));
 						} else {
 							const functionToken = context.sourceCode.getFirstToken(node, {
 								filter: token => token.type === 'Keyword' && token.value === 'function',
