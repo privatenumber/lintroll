@@ -156,6 +156,45 @@ module.exports = defineConfig([
 ])
 ```
 
+## Linting coverage
+
+This ESLint config comprehensively supports a variety of languages and file types, ensuring coding standards and best practices across your project.
+
+| Language/File Type | Extensions |
+| ------------------ | -------------------- |
+| JavaScript | `.js`, `.cjs`, `.mjs` |
+| Node.js | `.cjs`, `.mjs` |
+| Service Workers | `.sw.js`, `.sw.ts` |
+| TypeScript | `.ts`, `.cts`, `.mts`, `.d.ts` |
+| Vue.js | `.vue` |
+| React | `.jsx`, `.tsx` |
+| JSON | `.json`, `.json5`, `.jsonc` |
+| YML | `.yml`, `.yaml` |
+| Markdown | `.md` |
+
+
+### Integrated plugins
+
+Each plugin in this ESLint configuration targets specific aspects of your code, ensuring quality and consistency.
+
+| Plugin | Focus area |
+| ------ | ---------- |
+| [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments) | ESLint Directive Comments |
+| [node](https://www.npmjs.com/package/eslint-plugin-node) | Node.js Coding Practices |
+| [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) | TypeScript Syntax & Practices |
+| [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin) | JavaScript & TypeScript Code Style |
+| [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions) | Arrow Function Usage |
+| [promise](https://www.npmjs.com/package/eslint-plugin-promise) | Promises Best Practices |
+| [regexp](https://www.npmjs.com/package/eslint-plugin-regexp) | Regular Expressions Usage |
+| [import](https://www.npmjs.com/package/eslint-plugin-import) | ES6+ Import/Export Syntax |
+| [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc) | JSON, JSON5, and JSONC Formatting |
+| [yml](https://www.npmjs.com/package/eslint-plugin-yml) | YAML File Structure |
+| [vue](https://www.npmjs.com/package/eslint-plugin-vue) | Vue.js Templates & Scripts |
+| [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) | React & React Hooks |
+| [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown Embedded Code Blocks |
+| [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native Prototype Extensions |
+| [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous Code Quality Rules |
+
 
 ## API
 
@@ -194,24 +233,6 @@ An identity function to enforce type checking on the config.
 #### configs
 
 Type: `FlatConfig | FlatConfig[]`
-
-## Dependencies
-- Plugins:
-	- [eslint-comments](https://www.npmjs.com/package/@eslint-community/eslint-plugin-eslint-comments): Lints ESLint comments
-	- [node](https://www.npmjs.com/package/eslint-plugin-n): Lints Node.js
-	- [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin): Lints TypeScript
-	- [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin): Lints JS code style
-	- [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions): Lints function style
-	- [promise](https://www.npmjs.com/package/eslint-plugin-promise): Lints Promises
-	- [regexp](https://www.npmjs.com/package/eslint-plugin-regexp): Lints Regular Expressions
-	- [import](https://www.npmjs.com/package/eslint-plugin-import): Lints imports
-	- [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc): Lints JSON & JSONC
-	- [yml](https://www.npmjs.com/package/eslint-plugin-yml): Lints YAML
-	- [vue](https://www.npmjs.com/package/eslint-plugin-vue): Lints Vue.js
-	- [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks): Lints React
-	- [markdown](https://www.npmjs.com/package/eslint-plugin-markdown): Lints Markdown
-	- [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native): Lints native prototypes
-	- [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn): Miscellaneous linting rules
 
 ## Other ESLint configs
 
