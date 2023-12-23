@@ -77,45 +77,47 @@ function hoisted() {}
 
 ### Failing code
 TODO: disable this rule for this block
+<!-- eslint-disable pvtnbr/prefer-arrow-functions -->
 ```ts
 /* Function declarations */
-const foo = () => {}
+function foo() {}
 // Fixed: const foo = () => {}
 
-const bar = async () => {}
+async function bar() {}
 // Fixed: const foo = async () => {}
 
 /* Function with comments */
-const/* a */baz = /* b */() =>/* c */ {}
-// Fixed: const/*a*/foo=/*b*/()=>/*c*/{}
+function/* a */baz/* b */()/* c */ {}
+// Fixed: const/ *a */foo=/* b */()=>/* c */{}
 
 /* Function expressions */
-(async () => {})
+(async function () {})
 // Fixed: (async () => {})
 
 /* Object properties */
 const object = {
-    method: () => {}
+    method() {}
 }
 // Fixed: { method: () => {} };
 
 /* Classes */
 class MyClass {
-    method() => value
+    method() {}
 }
 // Fixed: class MyClass { method = () => value }
 
 /* Exports */
-export const namedExport = () => {}
-// Fixed: export const myFunction = () => {}
+export function namedExport() {}
+// Fixed: export const namedExport = () => {}
 
-export default () => {}
+export default function defaultExport() {}
 // Fixed: export default () => {}
 
 /* TypeScript */
-const typescript = <a extends string>(a: a) => {}
-// Fixed: const foo = <a extends string>(a: a) => {}
+function typescript<T extends string>(a: T) {}
+// Fixed: const typescript = <T extends string>(a: T) => {}
 ```
+<!-- eslint-enable pvtnbr/prefer-arrow-functions -->
 
 ### Limitations
 This rule will not warn or fix functions if it detects that the function uses any of these features:
