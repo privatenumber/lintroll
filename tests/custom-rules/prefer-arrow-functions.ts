@@ -364,11 +364,11 @@ export default testSuite(({ describe }) => {
 
 				{
 					name: 'default export / anonymous',
-					code: `export default function () {}`,
+					code: 'export default function () {}',
 					errors: [
 						{ messageId: 'preferArrowFunction' },
 					],
-					output: `export default ()=> {}`,
+					output: 'export default ()=> {}',
 				},
 				{
 					name: 'default export / named ',

@@ -13,11 +13,9 @@ const messages = {
 
 type MessageIds = keyof typeof messages;
 
-
 const mergeFixes = (
 	fixes: TSESLint.RuleFix[],
 ) => {
-
 	for (let i = 0; i < fixes.length; i += 1) {
 		const fix = fixes[i] as {
 			text: string;
@@ -159,7 +157,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			if (
 				node.type === 'FunctionDeclaration'
 				// Default export can have anonymous function declarations
-				&& node.id	
+				&& node.id
 			) {
 				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
 				const [firstReference] = functionVariable.references;
@@ -321,7 +319,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							filter: token => token.type === 'Keyword' && token.value === 'function',
 						})!;
 						const functionTokenRange = getRange(functionToken, {
-							rightUntil: !node.id ? Boolean : undefined, // Until first comment
+							rightUntil: node.id ? undefined : Boolean, // Until first comment
 						});
 						fixes.push(fixer.removeRange(functionTokenRange));
 
@@ -330,12 +328,12 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							const functionNameRange = getRange(node.id, {
 								leftUntil: token => token.type === 'Keyword' && token.value === 'function',
 							});
-	
+
 							const functionNameString = context.sourceCode.text.slice(
 								functionNameRange[0],
 								functionNameRange[1],
 							);
-	
+
 							fixes.push(
 								fixer.removeRange(functionNameRange),
 								fixer.insertTextBefore(node, `const${functionNameString}=`),
@@ -348,7 +346,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 
 						if (
 							node.parent.type === 'ExportDefaultDeclaration'
-							&& node.id	
+							&& node.id
 						) {
 							const { parent } = node;
 							const range: TSESTree.Range = [parent.range[0], node.range[0]];
