@@ -2,7 +2,8 @@ import type { Linter } from 'eslint';
 import { isInstalled } from './utils/require.js';
 import type { Options } from './types.js';
 import { defineConfig } from './utils/define-config.js';
-import { base } from './configs/base.js';
+import { eslint } from './configs/eslint.js';
+import { serviceWorkers } from './configs/service-workers.js';
 import { eslintComments } from './configs/eslint-comments.js';
 import { stylistic } from './configs/stylistic.js';
 import { imports } from './configs/imports.js';
@@ -51,7 +52,8 @@ export const pvtnbr = (
 				sourceType: 'module',
 			},
 		}),
-		...base,
+		eslint,
+		serviceWorkers,
 		eslintComments,
 		...imports,
 		...unicorn,
@@ -73,5 +75,5 @@ export const pvtnbr = (
 };
 
 export default pvtnbr();
-export { defineConfig}
+export { defineConfig }
 export type { Options };

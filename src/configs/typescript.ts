@@ -8,7 +8,7 @@ import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import';
 import { defineConfig } from '../utils/define-config';
 import { importsConfig } from './imports.js';
-import { baseConfig } from './base.js';
+import { eslint } from './eslint.js';
 
 const noExtraneousDependenciesConfig = importsConfig.rules['import/no-extraneous-dependencies'][1];
 
@@ -65,12 +65,12 @@ export const typescript = [
 
 			'@stylistic/member-delimiter-style': 'error',
 
-			'@typescript-eslint/no-shadow': baseConfig.rules['no-shadow'],
+			'@typescript-eslint/no-shadow': eslint.rules['no-shadow'],
 
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{
-					...baseConfig.rules['no-unused-vars'][1],
+					...eslint.rules['no-unused-vars'][1],
 
 					argsIgnorePattern: '^_',
 					caughtErrorsIgnorePattern: '^_',
