@@ -1,5 +1,4 @@
 import type { Linter } from 'eslint';
-import { isInstalled } from './utils/require.js';
 import type { Options } from './types.js';
 import { defineConfig } from './utils/define-config.js';
 import { eslint } from './configs/eslint.js';
@@ -27,8 +26,6 @@ export const pvtnbr = (
 	const normalizedOptions = {
 		...options,
 		node: options?.node,
-		vue: options?.vue || isInstalled('vue'),
-		react: options?.react || isInstalled('react'),
 	};
 
 	return [
@@ -73,9 +70,9 @@ export const pvtnbr = (
 		...noUseExtendNative,
 		...json,
 		yml,
-		...(normalizedOptions.vue ? [vue] : []),
-		...(normalizedOptions.react ? react : []),
-		...markdown(normalizedOptions),
+		vue,
+		...react,
+		...markdown(),
 		jest,
 		customConfigs,
 	].filter(Boolean);

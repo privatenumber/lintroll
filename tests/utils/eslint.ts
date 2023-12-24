@@ -12,9 +12,7 @@ export const createEslint = (
 	overrideConfigFile: true,
 });
 
-export const eslint = createEslint({
-	vue: true,
-});
+export const eslint = createEslint({});
 
 export const eslintCli = (
 	file: string,
