@@ -122,7 +122,7 @@ function typescript<T extends string>(a: T) {}
 <!-- eslint-enable pvtnbr/prefer-arrow-functions -->
 
 ### Limitations
-This rule will not warn or fix functions if it detects that the function uses any of these features:
+This rule will not generate warnings or fixes for traditional functions that use any of the following features:
 
 #### Inside function body
 - [`this`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
@@ -137,8 +137,8 @@ This rule will not warn or fix functions if it detects that the function uses an
 - [`prototype`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype)
 
 #### Declaration style
-- [`hoisting`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#hoisting)
-- [`getter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) / [`setter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)
+- [Hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#hoisting)
+- [`get`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) / [`set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)
 - [`constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
 
 
