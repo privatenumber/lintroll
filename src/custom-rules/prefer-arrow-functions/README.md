@@ -17,7 +17,7 @@ This rule generates warnings when traditional function syntax (`function () {}`)
 ### Examples of passing code
 ```js
 // Arrow functions are allowed
-(() => {})
+(() => {});
 (async () => {})
 
 const foo = () => {}
@@ -40,7 +40,7 @@ export default () => {}
 ({
     get foo() { return value },
     set foo(value) {}
-});
+})
 
 // Class definition
 class myClass {
@@ -99,7 +99,7 @@ function/* a */baz/* b */()/* c */ {}
 /* Object properties */
 const object = {
     method() {}
-};
+}
 // Fixed: { method: () => {} }
 
 /* Classes */
