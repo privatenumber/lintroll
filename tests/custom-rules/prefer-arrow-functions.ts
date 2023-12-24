@@ -115,6 +115,10 @@ export default testSuite(({ describe }) => {
 					code: 'const a = function(){};a.name',
 				},
 				{
+					name: 'function name / expression / inside',
+					code: '(function a(){ return a.name })',
+				},
+				{
 					name: 'function length',
 					code: 'function a(){}a.length',
 				},

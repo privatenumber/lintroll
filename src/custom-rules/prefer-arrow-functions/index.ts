@@ -74,8 +74,8 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				// Default export can have anonymous function declarations
 				&& node.id
 			) {
-				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
-				const [firstReference] = functionVariable.references;
+				const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
+				const [firstReference] = functionNameVariable.references;
 				const isHoisted = (
 					firstReference
 					&& node.range[0] > firstReference.identifier.range[0]
@@ -85,15 +85,20 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					return false;
 				}
 
-				references = functionVariable.references;
-			} else if (
-				node.type === 'FunctionExpression'
-				&& node.parent.type === 'VariableDeclarator'
-			) {
-				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
+				references = functionNameVariable.references;
+			} else if (node.type === 'FunctionExpression') {
+				const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
 
-				// The first reference is the variable declaration itself
-				references = functionVariable.references.slice(1);
+				if (functionNameVariable) {
+					references.push(...functionNameVariable.references);
+				}
+
+				if (node.parent.type === 'VariableDeclarator') {
+					const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
+
+					// The first reference is the variable declaration itself
+					references.push(...functionVariable.references.slice(1));
+				}
 			}
 
 			for (const { identifier } of references) {
@@ -255,7 +260,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					fix: (fixer) => {
 						const fixes: TSESLint.RuleFix[] = [
 							...insertArrow(node, fixer),
-							...removeFunctionToken(node, fixer)
+							...removeFunctionToken(node, fixer),
 						];
 
 						// Default export can have unnamed function declarations

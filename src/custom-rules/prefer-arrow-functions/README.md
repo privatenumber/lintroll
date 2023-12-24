@@ -1,30 +1,30 @@
 # Prefer arrow functions
 
-This rule prefers the use of arrow functions `() => {}` over traditional `function () {}` when possible.
+This ESLint rule encourages the use of arrow functions (`() => {}`) over traditional `function () {}` syntax whenever possible.
 
-## Why?
 
-Arrow functions are more concise and have minimal features compared to regular functions. Adopting arrow functions as the default function syntax allows readers to quickly grasp the functionality and limitations of the code.
+## Why prefer arrow functions?
 
-For example, when you see arrow function syntax, you can assume less complexity. Conversely, the traditional `function () {}` syntax might imply more complex features like using `this`, handling `arguments`, or modifying `prototypes` and require keeping a larger mental model of the code.
+Arrow functions are more concise and have fewer features compared to regular functions. Notably, they do not support `this` and `arguments`. By defaulting to arrow functions when possible, the code signals that it's simpler and easier to understand.
 
-Noticing these differences may even help make better design choices. For example, if you have an arrow function in a `class`, do you really need that method on the class? Should it leverage `this`? If not, should it be a static method?
+When you encounter an arrow function, you can quickly assume it's straightforward. Conversely, when you encounter traditional `function () {}` syntax, you can expect it to be more complex and requiring closer attention.
 
 ## Behavior
 
-Preserves comments, whitespace, and types.
+This rule generates warnings when traditional function syntax (`function () {}`) is used when it could be replaced with arrow function syntax (`() => {}`). The fixes preserve comments, whitespace, and types.
 
-### Passing code
+
+### Examples of passing code
 ```js
-// Allows arrow functions
-(() => {});
+// Arrow functions are allowed
+(() => {})
 (async () => {})
 
 const foo = () => {}
 export const bar = () => {}
-export default () => {};
+export default () => {}
 
-// Ignores this, arguments, new.target
+// Ignores references to this, arguments, and new.target
 (function () {
     this;
     (() => this)
@@ -40,9 +40,9 @@ export default () => {};
 ({
     get foo() { return value },
     set foo(value) {}
-})
+});
 
-// Class
+// Class definition
 class myClass {
     constructor() {}
 
@@ -60,10 +60,12 @@ class myClass {
 }
 
 // Prototype setting and function properties
-function proto() {}
-proto.prototype = {}
-proto.name
-proto.length
+function myFunction() {
+    return myFunction.name
+}
+myFunction.myFunctype = {}
+myFunction.name
+myFunction.length
 
 // Ignores generators
 function* generator() {}
@@ -75,8 +77,8 @@ function hoisted() {}
 ```
 
 
-### Failing code
-TODO: disable this rule for this block
+### Examples of failing code
+
 <!-- eslint-disable pvtnbr/prefer-arrow-functions -->
 ```ts
 /* Function declarations */
@@ -88,7 +90,7 @@ async function bar() {}
 
 /* Function with comments */
 function/* a */baz/* b */()/* c */ {}
-// Fixed: const/ *a */foo=/* b */()=>/* c */{}
+// Fixed: const /* a */ baz /* b */ = /* c */ () => {}
 
 /* Function expressions */
 (async function () {})
@@ -97,8 +99,8 @@ function/* a */baz/* b */()/* c */ {}
 /* Object properties */
 const object = {
     method() {}
-}
-// Fixed: { method: () => {} };
+};
+// Fixed: { method: () => {} }
 
 /* Classes */
 class MyClass {
