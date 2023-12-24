@@ -227,11 +227,11 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							}
 
 							if (parent.type === 'LogicalExpression') {
-								const prevToken = context.sourceCode.getTokenBefore(node);
+								const previousToken = context.sourceCode.getTokenBefore(node);
 								const nextToken = context.sourceCode.getTokenAfter(node);
-	
+
 								if (!(
-									prevToken?.value === '('
+									previousToken?.value === '('
 									&& nextToken?.value === ')'
 								)) {
 									fixes.push(...wrapInParentheses(node, fixer));
@@ -280,7 +280,10 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							const exportDefaultEnd = context.sourceCode.getTokenAfter(exportDefaultStart, {
 								filter: token => token.type === 'Keyword' && token.value === 'default',
 							})!;
-							const exportDefaultRange: TSESTree.Range = [exportDefaultStart.range[0], exportDefaultEnd.range[1]];
+							const exportDefaultRange: TSESTree.Range = [
+								exportDefaultStart.range[0],
+								exportDefaultEnd.range[1],
+							];
 							const exportDefaultString = context.sourceCode.text.slice(...exportDefaultRange);
 							fixes.push(
 								fixer.removeRange(exportDefaultRange),
