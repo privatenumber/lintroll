@@ -147,7 +147,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const foo=/*b*/(/*c*/)=>/*d*/{}',
+					output: 'const foo= /*b*/(/*c*/)=>/*d*/{}',
 				},
 				{
 					name: 'declaration / empty parameters - no spaces after "function"',
@@ -155,7 +155,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const/*a*/foo=/*b*/(\n\n)=>/*c*/{\n}',
+					output: 'const foo=/*a*//*b*/(\n\n)=>/*c*/{\n}',
 				},
 				{
 					name: 'declaration / async',
@@ -163,7 +163,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const/*b*/foo=async/*a*//*c*/(/*d*/\na\n/*e*/)=>/*f*/{\n}',
+					output: 'const foo=async/*a*//*b*//*c*/(/*d*/\na\n/*e*/)=>/*f*/{\n}',
 				},
 				{
 					name: 'declaration / function with "this" inside',
@@ -171,7 +171,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const foo=()=>{(function(){this})}',
+					output: 'const foo= ()=>{(function(){this})}',
 				},
 				{
 					name: 'declaration / function with "arguments" inside',
@@ -179,7 +179,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const foo=()=>{(function(){arguments})}',
+					output: 'const foo= ()=>{(function(){arguments})}',
 				},
 				{
 					name: 'declaration / function with "new.target" inside',
@@ -187,7 +187,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const foo=()=>{(function(){new.target})}',
+					output: 'const foo= ()=>{(function(){new.target})}',
 				},
 				{
 					name: 'declaration / function with "class super()" inside',
@@ -195,7 +195,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const foo=()=>{(class{a(){super()}})}',
+					output: 'const foo= ()=>{(class{a(){super()}})}',
 				},
 				{
 					name: 'declaration / inserts semicolon',
@@ -203,7 +203,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const a=()=>{};a()',
+					output: 'const a= ()=>{};a()',
 				},
 
 				// Function expression
@@ -213,7 +213,7 @@ export default testSuite(({ describe }) => {
 					errors: [
 						{ messageId: 'preferArrowFunction' },
 					],
-					output: '(()=> {})',
+					output: '( ()=> {})',
 				},
 				{
 					name: 'expression / named / comment',
@@ -221,7 +221,15 @@ export default testSuite(({ describe }) => {
 					errors: [
 						{ messageId: 'preferArrowFunction' },
 					],
-					output: '(/*a*/()=> {})',
+					output: '( /*a*/ ()=> {})',
+				},
+				{
+					name: 'expression / named / line comment',
+					code: '(function\n//a\na() {})',
+					errors: [
+						{ messageId: 'preferArrowFunction' },
+					],
+					output: '(\n//a\n()=> {})',
 				},
 				{
 					name: 'expression / named / async',
@@ -232,7 +240,15 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(async /*a*/ /*b*/ /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+				},
+				{
+					name: '2 expression / named / async',
+					code: '(async /*a*/ function a /*b*/ (/*c*/\na\n/*d*/) /*e*/ {\n})',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: '(async /*a*/   /*b*/ (/*c*/\na\n/*d*/)=> /*e*/ {\n})',
 				},
 				{
 					name: 'expression / anonymous / async',
@@ -240,11 +256,19 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(async /*a*/ /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
+					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
 				{
 					name: 'expression / &&',
 					code: '(1 && function(){})',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: '(1 && (()=>{}))',
+				},
+				{
+					name: 'expression / && / shoudnt double wrap',
+					code: '(1 && (function(){}))',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
@@ -273,83 +297,83 @@ export default testSuite(({ describe }) => {
 					],
 
 					// Ideally, it removes the inner function too
-					output: '((b = (function (){}))=>{})',
+					output: '( (b = (function (){}))=>{})',
 				},
 
 				// Object property
 				{
 					name: 'object property / value',
-					code: '({a:/*a*/function/*b*/()/*c*/{}})',
+					code: '({ a:/*a*/function/*b*/()/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({a:/*a*//*b*/()=>/*c*/{}})',
+					output: '({ a:/*a*//*b*/()=>/*c*/{} })',
 				},
 				{
 					name: 'object property / method',
-					code: '({/*a*/a/*b*/(b)/*c*/{}})',
+					code: '({ /*a*/a/*b*/(b)/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({/*a*/a/*b*/:(b)=>/*c*/{}})',
+					output: '({ /*a*/a/*b*/:(b)=>/*c*/{} })',
 				},
 				{
 					name: 'object property / async method',
-					code: '({async/*a*/a/*b*/(b)/*c*/{}})',
+					code: '({ async/*a*/a/*b*/(b)/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({/*a*/a/*b*/:async(b)=>/*c*/{}})',
+					output: '({ /*a*/a/*b*/:async(b)=>/*c*/{} })',
 				},
 				{
 					name: 'object property / async method / whitespace',
-					code: '({async /*a*/a/*b*/(b)/*c*/{}})',
+					code: '({ async /*a*/a/*b*/(b)/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({/*a*/a/*b*/:async (b)=>/*c*/{}})',
+					output: '({  /*a*/a/*b*/:async(b)=>/*c*/{} })',
 				},
 				{
 					name: 'object property / method',
-					code: '({["a"](b){}})',
+					code: '({ /*a*/["a"]/*b*/(b)/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '({["a"]:(b)=>{}})',
+					output: '({ /*a*/["a"]/*b*/:(b)=>/*c*/{} })',
 				},
 
 				// Class
 				{
 					name: 'class / method',
-					code: '(class{_/*a*/()/*b*/{}})',
+					code: '(class{ _/*a*/()/*b*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{_/*a*/=()=>/*b*/{}})',
+					output: '(class{ _/*a*/=()=>/*b*/{} })',
 				},
 				{
 					name: 'class / async method',
-					code: '(class{async/*a*/_/*b*/()/*c*/{}})',
+					code: '(class{ async/*a*/_/*b*/()/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{/*a*/_/*b*/=async()=>/*c*/{}})',
+					output: '(class{ /*a*/_/*b*/=async()=>/*c*/{} })',
 				},
 				{
 					name: 'class / private method',
-					code: '(class{#_/*a*/()/*b*/{}})',
+					code: '(class{ #_/*a*/()/*b*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{#_/*a*/=()=>/*b*/{}})',
+					output: '(class{ #_/*a*/=()=>/*b*/{} })',
 				},
 				{
 					name: 'class / static method',
-					code: '(class{static/*a*/_/*b*/()/*c*/{}})',
+					code: '(class{ static/*a*/_/*b*/()/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: '(class{static/*a*/_/*b*/=()=>/*c*/{}})',
+					output: '(class{ static/*a*/_/*b*/=()=>/*c*/{} })',
 				},
 
 				// Exports
@@ -359,7 +383,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'export const a=(b)=> {}',
+					output: 'export const a= (b)=> {}',
 				},
 				{
 					name: 'named export / declaration / async',
@@ -367,7 +391,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'export const a=async (b)=> {}',
+					output: 'export const a=async  (b)=> {}',
 				},
 
 				{
@@ -376,7 +400,7 @@ export default testSuite(({ describe }) => {
 					errors: [
 						{ messageId: 'preferArrowFunction' },
 					],
-					output: 'export default ()=> {}',
+					output: 'export default  ()=> {}',
 				},
 				{
 					name: 'default export / named ',
@@ -384,7 +408,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const/*b*/a=/*c*/(b)=>/*d*/{};export\ndefault/*a*/a;[]',
+					output: '/*a*/const a=/*b*//*c*/(b)=>/*d*/{};export\ndefault a;[]',
 				},
 
 				// TypeScript
@@ -394,7 +418,7 @@ export default testSuite(({ describe }) => {
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
-					output: 'const/*b*/foo=async/*a*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{}',
+					output: 'const foo=async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{}',
 				},
 				{
 					name: 'ts / expression / named',

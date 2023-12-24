@@ -3,46 +3,13 @@ import { createRule } from '../utils/create-rule.js';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
-type Options = [{
-	removeFunctionNames?: boolean;
-}];
+type Options = [];
 
 const messages = {
 	preferArrowFunction: 'Prefer arrow function',
 } as const;
 
 type MessageIds = keyof typeof messages;
-
-const mergeFixes = (
-	fixes: TSESLint.RuleFix[],
-) => {
-	for (let i = 0; i < fixes.length; i += 1) {
-		const fix = fixes[i] as {
-			text: string;
-			range: TSESTree.Range;
-		};
-
-		for (let j = i + 1; j < fixes.length; j += 1) {
-			const otherFix = fixes[j];
-
-			const isOverlapping = (
-				fix.range[0] <= otherFix.range[1]
-				&& otherFix.range[0] <= fix.range[1]
-			);
-
-			if (isOverlapping) {
-				const isMergable = fix.text === otherFix.text;
-				if (isMergable) {
-					fix.range[0] = Math.min(fix.range[0], otherFix.range[0]);
-					fix.range[1] = Math.max(fix.range[1], otherFix.range[1]);
-					fixes.splice(j, 1);
-				}
-			}
-		}
-	}
-
-	return fixes;
-};
 
 export const preferArrowFunctions = createRule<Options, MessageIds>({
 	name: 'prefer-arrow-functions',
@@ -52,65 +19,13 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			description: 'Prefer arrow functions when possible',
 		},
 		fixable: 'code',
-		schema: [
-			{
-				type: 'object',
-				additionalProperties: false,
-				properties: {
-					/**
-					 * Sometimes transformation removes the function names
-					 * For example:
-					 * export default function a() {}
-					 *
-					 * Becomes:
-					 * export default () => {}
-					 */
-					removeFunctionNames: {
-						type: 'boolean',
-					},
-				},
-			},
-		],
+		schema: [],
 		messages,
 	},
 
-	defaultOptions: [{
-		removeFunctionNames: false,
-	}],
+	defaultOptions: [],
 
 	create: (context) => {
-		const getRange = (
-			token: TSESTree.Token | TSESTree.Node,
-			options: {
-				leftUntil?: (token: TSESTree.Token) => boolean;
-				rightUntil?: (token: TSESTree.Token) => boolean;
-			},
-		) => {
-			const range = token.range.slice() as TSESTree.Range;
-
-			if (options.leftUntil) {
-				const previousToken = context.sourceCode.getTokenBefore(token, {
-					includeComments: true,
-					filter: options.leftUntil,
-				});
-				if (previousToken) {
-					range[0] = previousToken.range[1];
-				}
-			}
-
-			if (options.rightUntil) {
-				const nextToken = context.sourceCode.getTokenAfter(token, {
-					includeComments: true,
-					filter: options.rightUntil,
-				});
-				if (nextToken) {
-					range[1] = nextToken.range[options.inclusive ? 1 : 0];
-				}
-			}
-
-			return range;
-		};
-
 		const untransformableFunctions = new Set<FunctionNode>();
 
 		const disallowedProperties = [
@@ -210,6 +125,50 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			return scope?.block as FunctionNode;
 		};
 
+		const removeFunctionToken = (
+			node: FunctionNode,
+			fixer: TSESLint.RuleFixer,
+		) => {
+			const functionToken = context.sourceCode.getFirstToken(node, {
+				filter: token => token.type === 'Keyword' && token.value === 'function',
+			});
+
+			if (functionToken) {
+				return [fixer.remove(functionToken)];
+			}
+			return [];
+		};
+
+		const insertArrow = (
+			node: FunctionNode,
+			fixer: TSESLint.RuleFixer,
+		) => {
+			const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
+			return [fixer.insertTextAfter(parenEnd, '=>')];
+		};
+
+		const moveAsyncToken = (
+			node: FunctionNode,
+			fixer: TSESLint.RuleFixer,
+		) => {
+			const asyncToken = context.sourceCode.getFirstToken(node.parent, {
+				filter: token => token.type === 'Identifier' && token.value === 'async',
+			});
+			const asyncTokenString = context.sourceCode.getText(asyncToken!);
+			return [
+				fixer.remove(asyncToken!),
+				fixer.insertTextBefore(node, asyncTokenString),
+			];
+		};
+
+		const wrapInParentheses = (
+			node: FunctionNode,
+			fixer: TSESLint.RuleFixer,
+		) => [
+			fixer.insertTextBefore(node, '('),
+			fixer.insertTextAfter(node, ')'),
+		];
+
 		return {
 			ThisExpression: (node) => {
 				untransformableFunctions.add(getNearestFunction(node));
@@ -234,87 +193,51 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					node,
 					messageId: 'preferArrowFunction',
 					fix: (fixer) => {
-						const fixes = [];
+						const fixes: TSESLint.RuleFix[] = [
+							...insertArrow(node, fixer),
+						];
 
 						const { parent } = node;
-						if (
-							// Object method
-							parent.type === 'Property'
-							&& parent.method
-						) {
-							fixes.push(fixer.insertTextBefore(node, ':'));
+						const isMethod = (
+							(
+								// Object method
+								parent.type === 'Property'
+								&& parent.method
+							) || (
+								// Class method
+								parent.type === 'MethodDefinition'
+								&& parent.kind === 'method'
+							)
+						);
+
+						if (isMethod) {
+							fixes.push(fixer.insertTextBefore(
+								node,
+								parent.type === 'Property' ? ':' : '=',
+							));
 
 							if (node.async) {
-								const asyncToken = context.sourceCode.getFirstToken(parent, {
-									filter: token => token.type === 'Identifier' && token.value === 'async',
-								});
-								const asyncTokenRange = getRange(asyncToken!, {
-									rightUntil: Boolean, // Until first comment
-								});
-								const asyncTokenString = context.sourceCode.text.slice(
-									asyncTokenRange[0],
-									asyncTokenRange[1],
-								);
-								fixes.push(
-									fixer.removeRange(asyncTokenRange!),
-									fixer.insertTextBefore(node, asyncTokenString),
-								);
-							}
-						} else if (
-							// Class method
-							parent.type === 'MethodDefinition'
-							&& parent.kind === 'method'
-						) {
-							fixes.push(fixer.insertTextBefore(node, '='));
-
-							if (node.async) {
-								const asyncToken = context.sourceCode.getFirstToken(parent, {
-									filter: token => token.type === 'Identifier' && token.value === 'async',
-								});
-								const asyncTokenRange = getRange(asyncToken!, {
-									rightUntil: Boolean, // Until first comment
-								});
-								const asyncTokenString = context.sourceCode.text.slice(
-									asyncTokenRange[0],
-									asyncTokenRange[1],
-								);
-								fixes.push(
-									fixer.removeRange(asyncTokenRange!),
-									fixer.insertTextBefore(node, asyncTokenString),
-								);
+								fixes.push(...moveAsyncToken(node, fixer));
 							}
 						} else {
-							const functionToken = context.sourceCode.getFirstToken(node, {
-								filter: token => token.type === 'Keyword' && token.value === 'function',
-							});
+							fixes.push(...removeFunctionToken(node, fixer));
 
-							if (functionToken) {
-								const functionTokenRange = getRange(functionToken, {
-									rightUntil: Boolean, // Until first comment
-								});
+							if (node.id) {
+								fixes.push(fixer.remove(node.id));
+							}
 
-								fixes.push(fixer.removeRange(functionTokenRange));
+							if (parent.type === 'LogicalExpression') {
+								const prevToken = context.sourceCode.getTokenBefore(node);
+								const nextToken = context.sourceCode.getTokenAfter(node);
+	
+								if (!(
+									prevToken?.value === '('
+									&& nextToken?.value === ')'
+								)) {
+									fixes.push(...wrapInParentheses(node, fixer));
+								}
 							}
 						}
-
-						if (node.id) {
-							const functionNameRange = getRange(node.id!, {
-								leftUntil: Boolean, // Until first comment
-							});
-							fixes.push(fixer.removeRange(functionNameRange));
-						}
-
-						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
-						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
-
-						if (node.parent.type === 'LogicalExpression') {
-							fixes.push(
-								fixer.insertTextBefore(node, '('),
-								fixer.insertTextAfter(node, ')'),
-							);
-						}
-
-						mergeFixes(fixes);
 
 						return fixes;
 					},
@@ -330,49 +253,40 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					node,
 					messageId: 'preferArrowFunction',
 					fix: (fixer) => {
-						const fixes = [];
+						const fixes: TSESLint.RuleFix[] = [
+							...insertArrow(node, fixer),
+						];
 
-						const functionToken = context.sourceCode.getFirstToken(node, {
-							filter: token => token.type === 'Keyword' && token.value === 'function',
-						})!;
-						const functionTokenRange = getRange(functionToken, {
-							rightUntil: node.id ? undefined : Boolean, // Until first comment
-						});
-						fixes.push(fixer.removeRange(functionTokenRange));
+						fixes.push(...removeFunctionToken(node, fixer));
 
 						// Default export can have unnamed function declarations
 						if (node.id) {
-							const functionNameRange = getRange(node.id, {
-								leftUntil: token => token.type === 'Keyword' && token.value === 'function',
-							});
-
-							const functionNameString = context.sourceCode.text.slice(
-								functionNameRange[0],
-								functionNameRange[1],
-							);
+							const functionNameString = context.sourceCode.getText(node.id);
 
 							fixes.push(
-								fixer.removeRange(functionNameRange),
-								fixer.insertTextBefore(node, `const${functionNameString}=`),
+								fixer.remove(node.id),
+								fixer.insertTextBefore(node, `const ${functionNameString}=`),
 							);
 						}
 
-						// Insert arrow
-						const parenEnd = context.sourceCode.getTokenBefore(node.body)!;
-						fixes.push(fixer.insertTextAfter(parenEnd, '=>'));
-
+						const { parent } = node;
 						if (
-							node.parent.type === 'ExportDefaultDeclaration'
+							parent.type === 'ExportDefaultDeclaration'
 							&& node.id
 						) {
-							const { parent } = node;
-							const range: TSESTree.Range = [parent.range[0], node.range[0]];
-
+							const exportDefaultStart = context.sourceCode.getFirstToken(parent, {
+								filter: token => token.type === 'Keyword' && token.value === 'export',
+							})!;
+							const exportDefaultEnd = context.sourceCode.getTokenAfter(exportDefaultStart, {
+								filter: token => token.type === 'Keyword' && token.value === 'default',
+							})!;
+							const exportDefaultRange: TSESTree.Range = [exportDefaultStart.range[0], exportDefaultEnd.range[1]];
+							const exportDefaultString = context.sourceCode.text.slice(...exportDefaultRange);
 							fixes.push(
-								fixer.removeRange(range),
+								fixer.removeRange(exportDefaultRange),
 								fixer.insertTextAfter(
 									node,
-									`;${context.sourceCode.text.slice(range[0], range[1])}${node.id!.name}`,
+									`;${exportDefaultString} ${node.id.name}`,
 								),
 							);
 						}
