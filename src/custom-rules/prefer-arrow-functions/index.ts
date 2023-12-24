@@ -255,9 +255,8 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					fix: (fixer) => {
 						const fixes: TSESLint.RuleFix[] = [
 							...insertArrow(node, fixer),
+							...removeFunctionToken(node, fixer)
 						];
-
-						fixes.push(...removeFunctionToken(node, fixer));
 
 						// Default export can have unnamed function declarations
 						if (node.id) {
