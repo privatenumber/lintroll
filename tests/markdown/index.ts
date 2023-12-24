@@ -69,83 +69,84 @@ export default testSuite(({ describe }) => {
 				const [result] = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/fail.js.md', import.meta.url)),
 				);
-				const { messages } = result;
 
-				expect(messages).toEqual(
-					expect.arrayContaining([
-						expect.objectContaining({
-							ruleId: '@stylistic/semi',
-							messageId: 'extraSemi',
-							severity: 2,
-						}),
+				[
+					expect.objectContaining({
+						ruleId: '@stylistic/semi',
+						messageId: 'extraSemi',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/comma-dangle',
-							messageId: 'unexpected',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/comma-dangle',
+						messageId: 'unexpected',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/indent',
-							messageId: 'wrongIndentation',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/indent',
+						messageId: 'wrongIndentation',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/no-multiple-empty-lines',
-							messageId: 'blankEndOfFile',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/no-multiple-empty-lines',
+						messageId: 'blankEndOfFile',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: 'no-unused-vars',
-							messageId: 'unusedVar',
-							severity: 1,
-						}),
-					]),
-				);
+					expect.objectContaining({
+						ruleId: 'no-unused-vars',
+						messageId: 'unusedVar',
+						severity: 1,
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
+				});
 			});
 
 			test('.ts', async () => {
 				const [result] = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/fail.ts.md', import.meta.url)),
 				);
-				const { messages } = result;
 
-				// console.dir(messages, { colors: true, depth: null, maxArrayLength: null });
-				expect(messages).toEqual(
-					expect.arrayContaining([
-						expect.objectContaining({
-							ruleId: '@stylistic/semi',
-							messageId: 'extraSemi',
-							severity: 2,
-						}),
+				[
+					expect.objectContaining({
+						ruleId: '@stylistic/semi',
+						messageId: 'extraSemi',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/comma-dangle',
-							messageId: 'unexpected',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/comma-dangle',
+						messageId: 'unexpected',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/indent',
-							messageId: 'wrongIndentation',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/indent',
+						messageId: 'wrongIndentation',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@stylistic/no-multiple-empty-lines',
-							messageId: 'blankEndOfFile',
-							severity: 2,
-						}),
+					expect.objectContaining({
+						ruleId: '@stylistic/no-multiple-empty-lines',
+						messageId: 'blankEndOfFile',
+						severity: 2,
+					}),
 
-						expect.objectContaining({
-							ruleId: '@typescript-eslint/no-unused-vars',
-							messageId: 'unusedVar',
-							severity: 1,
-						}),
-					]),
-				);
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/no-unused-vars',
+						messageId: 'unusedVar',
+						severity: 1,
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
+				});
 			});
 		});
 	});

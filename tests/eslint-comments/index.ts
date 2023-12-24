@@ -13,25 +13,27 @@ export default testSuite(({ describe }) => {
 				console.log(result);
 			});
 
-			expect(result.messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'some-rule',
-						message: "Definition for rule 'some-rule' was not found.",
-						severity: 2,
-					}),
-					expect.objectContaining({
-						ruleId: null,
-						message: "Unused eslint-disable directive (no problems were reported from 'eqeqeq').",
-						severity: 1,
-					}),
-					expect.objectContaining({
-						ruleId: '@eslint-community/eslint-comments/no-unlimited-disable',
-						messageId: 'unexpected',
-						severity: 2,
-					}),
-				]),
-			);
+			[
+				expect.objectContaining({
+					ruleId: 'some-rule',
+					message: "Definition for rule 'some-rule' was not found.",
+					severity: 2,
+				}),
+				expect.objectContaining({
+					ruleId: null,
+					message: "Unused eslint-disable directive (no problems were reported from 'eqeqeq').",
+					severity: 1,
+				}),
+				expect.objectContaining({
+					ruleId: '@eslint-community/eslint-comments/no-unlimited-disable',
+					messageId: 'unexpected',
+					severity: 2,
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });

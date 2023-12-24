@@ -47,21 +47,23 @@ export default testSuite(({ describe }) => {
 				console.log(result);
 			});
 
-			expect(result.messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'no-undef',
-						messageId: 'undef',
-						message: "'require' is not defined.",
-						severity: 2,
-					}),
-					expect.objectContaining({
-						ruleId: 'import/no-dynamic-require',
-						nodeType: 'CallExpression',
-						severity: 2,
-					}),
-				]),
-			);
+			[
+				expect.objectContaining({
+					ruleId: 'no-undef',
+					messageId: 'undef',
+					message: "'require' is not defined.",
+					severity: 2,
+				}),
+				expect.objectContaining({
+					ruleId: 'import/no-dynamic-require',
+					nodeType: 'CallExpression',
+					severity: 2,
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });

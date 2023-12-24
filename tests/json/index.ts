@@ -32,18 +32,20 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('random.json', async () => {
-			const [results] = await eslint.lintFiles(
+			const [result] = await eslint.lintFiles(
 				fileURLToPath(new URL('fixtures/fail/random.json', import.meta.url)),
 			);
 
-			expect(results.messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'jsonc/indent',
-						messageId: 'wrongIndentation',
-					}),
-				]),
-			);
+			[
+				expect.objectContaining({
+					ruleId: 'jsonc/indent',
+					messageId: 'wrongIndentation',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });

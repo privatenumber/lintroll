@@ -45,104 +45,106 @@ export default testSuite(({ describe }) => {
 				console.log(result);
 			});
 
-			expect(result.messages).toEqual(
-				expect.arrayContaining([
-					// Move to different test file
-					expect.objectContaining({
-						ruleId: '@stylistic/padding-line-between-statements',
-						message: 'Expected blank line before this statement.',
-						line: 2,
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/object-curly-newline',
-						messageId: 'expectedLinebreakAfterOpeningBrace',
-						line: 2,
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/object-curly-newline',
-						messageId: 'expectedLinebreakBeforeClosingBrace',
-						line: 2,
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/semi',
-						messageId: 'missingSemi',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/quotes',
-						message: 'Strings must use singlequote.',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/eol-last',
-						messageId: 'missing',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/func-call-spacing',
-						messageId: 'unexpectedWhitespace',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/wrap-iife',
-						messageId: 'wrapExpression',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/operator-linebreak',
-						messageId: 'operatorAtBeginning',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/object-property-newline',
-						messageId: 'propertiesOnNewline',
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/lines-around-comment',
-						message: 'Expected line before comment.',
-						line: 20,
-					}),
-					expect.objectContaining({
-						ruleId: 'prefer-destructuring',
-						messageId: 'preferDestructuring',
-						line: 30,
-					}),
-					expect.objectContaining({
-						ruleId: 'curly',
-						messageId: 'missingCurlyAfterCondition',
-					}),
-					expect.objectContaining({
-						ruleId: 'func-names',
-						messageId: 'unnamed',
-					}),
-					expect.objectContaining({
-						ruleId: 'no-console',
-						messageId: 'unexpected',
-					}),
-					expect.objectContaining({
-						ruleId: 'import/max-dependencies',
-						severity: 1,
-						message: 'Maximum number of dependencies (15) exceeded.',
-					}),
-					expect.objectContaining({
-						ruleId: 'import/extensions',
-						message: 'Missing file extension "js" for "./some-file"',
-					}),
-					expect.objectContaining({
-						ruleId: 'unicorn/prefer-number-properties',
-						message: 'Prefer `Number.isFinite` over `isFinite`.',
-					}),
-					expect.objectContaining({
-						ruleId: 'unicorn/prefer-number-properties',
-						message: 'Prefer `Number.isNaN` over `isNaN`.',
-					}),
-					expect.objectContaining({
-						ruleId: 'regexp/prefer-d',
-						messageId: 'unexpected',
-					}),
-					expect.objectContaining({
-						ruleId: 'regexp/prefer-d',
-						message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
-					}),
-					expect.objectContaining({
-						ruleId: 'regexp/prefer-w',
-					}),
-				]),
-			);
+			[
+				// Move to different test file
+				expect.objectContaining({
+					ruleId: '@stylistic/padding-line-between-statements',
+					message: 'Expected blank line before this statement.',
+					line: 2,
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/object-curly-newline',
+					messageId: 'expectedLinebreakAfterOpeningBrace',
+					line: 2,
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/object-curly-newline',
+					messageId: 'expectedLinebreakBeforeClosingBrace',
+					line: 2,
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/semi',
+					messageId: 'missingSemi',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/quotes',
+					message: 'Strings must use singlequote.',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/eol-last',
+					messageId: 'missing',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/func-call-spacing',
+					messageId: 'unexpectedWhitespace',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/wrap-iife',
+					messageId: 'wrapExpression',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/operator-linebreak',
+					messageId: 'operatorAtBeginning',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/object-property-newline',
+					messageId: 'propertiesOnNewline',
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/lines-around-comment',
+					message: 'Expected line before comment.',
+					line: 20,
+				}),
+				expect.objectContaining({
+					ruleId: 'prefer-destructuring',
+					messageId: 'preferDestructuring',
+					line: 30,
+				}),
+				expect.objectContaining({
+					ruleId: 'curly',
+					messageId: 'missingCurlyAfterCondition',
+				}),
+				expect.objectContaining({
+					ruleId: 'func-names',
+					messageId: 'unnamed',
+				}),
+				expect.objectContaining({
+					ruleId: 'no-console',
+					messageId: 'unexpected',
+				}),
+				expect.objectContaining({
+					ruleId: 'import/max-dependencies',
+					severity: 1,
+					message: 'Maximum number of dependencies (15) exceeded.',
+				}),
+				expect.objectContaining({
+					ruleId: 'import/extensions',
+					message: 'Missing file extension "js" for "./some-file"',
+				}),
+				expect.objectContaining({
+					ruleId: 'unicorn/prefer-number-properties',
+					message: 'Prefer `Number.isFinite` over `isFinite`.',
+				}),
+				expect.objectContaining({
+					ruleId: 'unicorn/prefer-number-properties',
+					message: 'Prefer `Number.isNaN` over `isNaN`.',
+				}),
+				expect.objectContaining({
+					ruleId: 'regexp/prefer-d',
+					messageId: 'unexpected',
+				}),
+				expect.objectContaining({
+					ruleId: 'regexp/prefer-d',
+					message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
+				}),
+				expect.objectContaining({
+					ruleId: 'regexp/prefer-w',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 		});
 
 		test('Service worker', async () => {
