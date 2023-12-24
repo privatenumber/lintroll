@@ -1,12 +1,9 @@
 import markdownPlugin from 'eslint-plugin-markdown';
 import { defineConfig } from '../utils/define-config.js';
-import type { Options } from '../types.js';
 
 const [, baseMdSubfiles] = markdownPlugin.configs.recommended.overrides!;
 
-export const markdown = (
-	options?: Options,
-) => [
+export const markdown = () => [
 	defineConfig({
 		files: ['**/*.md'],
 		plugins: {
@@ -73,18 +70,14 @@ export const markdown = (
 		},
 	}),
 
-	...(
-		options?.vue
-			? [defineConfig({
-				files: ['**/*.md/*.vue'],
-				rules: {
-					'vue/html-indent': ['error', 4],
-					'vue/no-undef-components': 'warn',
-					'vue/require-v-for-key': 'off',
-				},
-			})]
-			: []
-	),
+	defineConfig({
+		files: ['**/*.md/*.vue'],
+		rules: {
+			'vue/html-indent': ['error', 4],
+			'vue/no-undef-components': 'warn',
+			'vue/require-v-for-key': 'off',
+		},
+	}),
 
 	defineConfig({
 		files: ['**/*.md/*.{ts,tsx}'],

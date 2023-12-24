@@ -9,9 +9,6 @@ export default defineConfig([
 	},
 	...pvtnbr({
 		node: true,
-
-		// Because Vue is not installed but we lint SFCs
-		vue: true,
 	}),
 ]);
 
