@@ -91,11 +91,6 @@ export default testSuite(({ describe }) => {
 					messageId: 'propertiesOnNewline',
 				}),
 				expect.objectContaining({
-					ruleId: '@stylistic/lines-around-comment',
-					message: 'Expected line before comment.',
-					line: 20,
-				}),
-				expect.objectContaining({
 					ruleId: 'prefer-destructuring',
 					messageId: 'preferDestructuring',
 					line: 30,

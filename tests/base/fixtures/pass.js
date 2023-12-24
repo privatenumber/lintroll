@@ -32,6 +32,7 @@ const ternaryValue = (
 		? 1
 		: 2
 );
+// => 1 or 2
 
 OUTERLOOP:
 for (let i = 0; i < 10; i += 1) {
