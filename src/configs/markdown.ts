@@ -34,6 +34,8 @@ export const markdown = (
 			'import/no-unresolved': 'off',
 			'no-console': 'off',
 			'no-new': 'off',
+			'no-empty-function': 'off',
+			'no-useless-constructor': 'off',
 
 			// Can be snippets that don't fully work
 			'no-undef': 'off',

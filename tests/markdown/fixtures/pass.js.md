@@ -3,6 +3,12 @@
 ```js
 import A from 'b'
 
+const noop = () => {}
+
+class noopClass {
+    constructor() {}
+}
+
 const data = A({
     a: 1,
     b: 2
