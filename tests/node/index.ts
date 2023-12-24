@@ -102,36 +102,38 @@ export default testSuite(({ describe }) => {
 						console.log(result);
 					});
 
-					expect(result.messages).toEqual(
-						expect.arrayContaining([
-							expect.objectContaining({
-								ruleId: 'no-undef',
-								messageId: 'undef',
-								message: "'__dirname' is not defined.",
-							}),
+					[
+						expect.objectContaining({
+							ruleId: 'no-undef',
+							messageId: 'undef',
+							message: "'__dirname' is not defined.",
+						}),
 
-							expect.objectContaining({
-								ruleId: 'n/prefer-promises/fs',
-								messageId: 'preferPromises',
-							}),
+						expect.objectContaining({
+							ruleId: 'n/prefer-promises/fs',
+							messageId: 'preferPromises',
+						}),
 
-							expect.objectContaining({
-								ruleId: 'n/no-deprecated-api',
-								messageId: 'deprecated',
-							}),
+						expect.objectContaining({
+							ruleId: 'n/no-deprecated-api',
+							messageId: 'deprecated',
+						}),
 
-							expect.objectContaining({
-								ruleId: 'n/no-process-exit',
-								messageId: 'noProcessExit',
-							}),
+						expect.objectContaining({
+							ruleId: 'n/no-process-exit',
+							messageId: 'noProcessExit',
+						}),
 
-							expect.objectContaining({
-								ruleId: 'n/no-deprecated-api',
-								messageId: 'deprecated',
-								message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-							}),
-						]),
-					);
+						expect.objectContaining({
+							ruleId: 'n/no-deprecated-api',
+							messageId: 'deprecated',
+							message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
+						}),
+					].forEach((matcher) => {
+						expect(result.messages).toEqual(
+							expect.arrayContaining([matcher]),
+						);
+					});
 				});
 
 				test('mts', async ({ onTestFail }) => {
@@ -142,27 +144,29 @@ export default testSuite(({ describe }) => {
 						console.log(result);
 					});
 
-					expect(result.messages).toEqual(
-						expect.arrayContaining([
-							// Disabled by TypeScript plugin
-							// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
-							// expect.objectContaining({
-							// 	ruleId: 'no-undef',
-							// 	messageId: 'undef',
-							// 	message: "'__dirname' is not defined.",
-							// }),
+					[
+						// Disabled by TypeScript plugin
+						// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
+						// expect.objectContaining({
+						// 	ruleId: 'no-undef',
+						// 	messageId: 'undef',
+						// 	message: "'__dirname' is not defined.",
+						// }),
 
-							expect.objectContaining({
-								ruleId: 'n/prefer-promises/fs',
-								messageId: 'preferPromises',
-							}),
+						expect.objectContaining({
+							ruleId: 'n/prefer-promises/fs',
+							messageId: 'preferPromises',
+						}),
 
-							expect.objectContaining({
-								ruleId: 'n/no-deprecated-api',
-								messageId: 'deprecated',
-							}),
-						]),
-					);
+						expect.objectContaining({
+							ruleId: 'n/no-deprecated-api',
+							messageId: 'deprecated',
+						}),
+					].forEach((matcher) => {
+						expect(result.messages).toEqual(
+							expect.arrayContaining([matcher]),
+						);
+					});
 				});
 			});
 		});

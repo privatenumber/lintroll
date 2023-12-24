@@ -21,29 +21,30 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles(failFixture);
-			const [{ messages }] = results;
+			const [result] = await eslint.lintFiles(failFixture);
 
-			expect(messages).toEqual(
-				expect.arrayContaining([
-					expect.objectContaining({
-						ruleId: '@stylistic/jsx-quotes',
-						messageId: 'unexpected',
-					}),
-					expect.objectContaining({
-						ruleId: 'unicorn/filename-case',
-						messageId: 'filename-case',
-					}),
-					expect.objectContaining({
-						ruleId: 'react/prop-types',
-						messageId: 'missingPropType',
-					}),
-					expect.objectContaining({
-						ruleId: 'react/jsx-max-props-per-line',
-						messageId: 'newLine',
-					}),
-				]),
-			);
+			[
+				expect.objectContaining({
+					ruleId: '@stylistic/jsx-quotes',
+					messageId: 'unexpected',
+				}),
+				expect.objectContaining({
+					ruleId: 'unicorn/filename-case',
+					messageId: 'filename-case',
+				}),
+				expect.objectContaining({
+					ruleId: 'react/prop-types',
+					messageId: 'missingPropType',
+				}),
+				expect.objectContaining({
+					ruleId: 'react/jsx-max-props-per-line',
+					messageId: 'newLine',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });

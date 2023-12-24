@@ -35,39 +35,42 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Fail cases', async () => {
-			const results = await eslint.lintFiles(failFixture);
-			const [{ messages }] = results;
+			const [result] = await eslint.lintFiles(failFixture);
 
-			expect(messages).toEqual(
-				expect.arrayContaining([
-					// expect.objectContaining({
-					// 	ruleId: 'import/extensions',
-					// 	message: 'Missing file extension "js" for "./some-file"',
-					// 	severity: 2,
-					// }),
-					expect.objectContaining({
-						ruleId: '@typescript-eslint/no-unused-vars',
-						messageId: 'unusedVar',
-						severity: 2,
-					}),
-					expect.objectContaining({
-						ruleId: '@stylistic/member-delimiter-style',
-						messageId: 'expectedSemi',
-					}),
-					expect.not.objectContaining({
-						ruleId: '@stylistic/member-delimiter-style',
-						messageId: 'expectedSemi',
-					}),
-				]),
-			);
+			[
+				// expect.objectContaining({
+				// 	ruleId: 'import/extensions',
+				// 	message: 'Missing file extension "js" for "./some-file"',
+				// 	severity: 2,
+				// }),
+				expect.objectContaining({
+					ruleId: '@typescript-eslint/no-unused-vars',
+					messageId: 'unusedVar',
+					severity: 2,
+				}),
+				expect.objectContaining({
+					ruleId: '@stylistic/member-delimiter-style',
+					messageId: 'expectedSemi',
+				}),
+				expect.not.objectContaining({
+					ruleId: '@stylistic/member-delimiter-style',
+					messageId: 'expectedSemi',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.arrayContaining([matcher]),
+				);
+			});
 
-			expect(messages).toEqual(
-				expect.not.arrayContaining([
-					expect.objectContaining({
-						ruleId: 'no-unused-vars',
-					}),
-				]),
-			);
+			[
+				expect.objectContaining({
+					ruleId: 'no-unused-vars',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.not.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });
