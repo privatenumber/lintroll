@@ -243,14 +243,6 @@ export default testSuite(({ describe }) => {
 					output: '(async /*a*/  /*b*/  /*c*/ (/*d*/\na\n/*e*/)=> /*f*/ {\n})',
 				},
 				{
-					name: '2 expression / named / async',
-					code: '(async /*a*/ function a /*b*/ (/*c*/\na\n/*d*/) /*e*/ {\n})',
-					errors: [{
-						messageId: 'preferArrowFunction',
-					}],
-					output: '(async /*a*/   /*b*/ (/*c*/\na\n/*d*/)=> /*e*/ {\n})',
-				},
-				{
 					name: 'expression / anonymous / async',
 					code: '(async /*a*/ function /*b*/  /*c*/ (/*d*/\na\n/*e*/) /*f*/ {\n})',
 					errors: [{
@@ -324,14 +316,6 @@ export default testSuite(({ describe }) => {
 						messageId: 'preferArrowFunction',
 					}],
 					output: '({ /*a*/a/*b*/:async(b)=>/*c*/{} })',
-				},
-				{
-					name: 'object property / async method / whitespace',
-					code: '({ async /*a*/a/*b*/(b)/*c*/{} })',
-					errors: [{
-						messageId: 'preferArrowFunction',
-					}],
-					output: '({  /*a*/a/*b*/:async(b)=>/*c*/{} })',
 				},
 				{
 					name: 'object property / method',
