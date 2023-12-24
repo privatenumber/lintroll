@@ -9,9 +9,7 @@ const message = 'hello world';
 
 const objectMethods = {
 	method: () => true,
-	'method-a'() {
-		return true;
-	},
+	'method-a': () => true,
 };
 
 const objectSingle = { a: 1 };

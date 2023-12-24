@@ -18,6 +18,7 @@ import { noUseExtendNative } from './configs/no-use-extend-native.js';
 import { unicorn } from './configs/unicorn.js';
 import { react } from './configs/react.js';
 import { vue, parseVue } from './configs/vue.js';
+import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
 	options?: Options,
@@ -73,6 +74,7 @@ export const pvtnbr = (
 		...react,
 		...markdown(),
 		jest,
+		customConfigs,
 	].filter(Boolean);
 };
 

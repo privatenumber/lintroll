@@ -12,7 +12,7 @@ It's been enhanced with plugins, cutting edge tooling, and offers a comprehensiv
 
 ### Features
 
-- **Streamlined syntax**: Single quotes, semicolons, tabs, and arrow functions for a clear & intentional coding style.
+- **Streamlined syntax**: Single quotes, semicolons, tabs, and [arrow functions](./src/custom-rules/prefer-arrow-functions/) for a clear & intentional coding style.
 
 - **Versatile language support**: Tailored for TypeScript, React, Vue.js, and even Markdown code blocks, ensuring a wide range of applications.
 
@@ -183,7 +183,6 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 | [node](https://www.npmjs.com/package/eslint-plugin-node) | Node.js coding practices |
 | [@typescript-eslint](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) | TypeScript coding Practices |
 | [@stylistic](https://www.npmjs.com/package/@stylistic/eslint-plugin) | JavaScript & TypeScript code style |
-| [prefer-arrow-functions](https://www.npmjs.com/package/eslint-plugin-prefer-arrow-functions) | Arrow function usage |
 | [promise](https://www.npmjs.com/package/eslint-plugin-promise) | Promises best practices |
 | [regexp](https://www.npmjs.com/package/eslint-plugin-regexp) | Regular Expressions best practices |
 | [import](https://www.npmjs.com/package/eslint-plugin-import) | ES6+ Import/Export |
