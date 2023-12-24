@@ -320,12 +320,20 @@ export default testSuite(({ describe }) => {
 
 				// Class
 				{
-					name: 'class',
+					name: 'class / method',
 					code: '(class{_/*a*/()/*b*/{}})',
 					errors: [{
 						messageId: 'preferArrowFunction',
 					}],
 					output: '(class{_/*a*/=()=>/*b*/{}})',
+				},
+				{
+					name: 'class / async method',
+					code: '(class{async/*a*/_/*b*/()/*c*/{}})',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: '(class{/*a*/_/*b*/=async()=>/*c*/{}})',
 				},
 				{
 					name: 'class / private method',

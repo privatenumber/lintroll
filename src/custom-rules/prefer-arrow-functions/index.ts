@@ -266,6 +266,23 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							&& parent.kind === 'method'
 						) {
 							fixes.push(fixer.insertTextBefore(node, '='));
+
+							if (node.async) {
+								const asyncToken = context.sourceCode.getFirstToken(parent, {
+									filter: token => token.type === 'Identifier' && token.value === 'async',
+								});
+								const asyncTokenRange = getRange(asyncToken!, {
+									rightUntil: Boolean, // Until first comment
+								});
+								const asyncTokenString = context.sourceCode.text.slice(
+									asyncTokenRange[0],
+									asyncTokenRange[1],
+								);
+								fixes.push(
+									fixer.removeRange(asyncTokenRange!),
+									fixer.insertTextBefore(node, asyncTokenString),
+								);
+							}
 						} else {
 							const functionToken = context.sourceCode.getFirstToken(node, {
 								filter: token => token.type === 'Keyword' && token.value === 'function',
