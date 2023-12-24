@@ -9,14 +9,13 @@ export default testSuite(({ describe }) => {
 				const [result] = await eslint.lintFiles(
 					fileURLToPath(new URL('fixtures/pass.js.md', import.meta.url)),
 				);
-				const { messages } = result;
 
 				onTestFail(() => {
-					console.log(messages);
+					console.log(result);
 				});
 
 				expect(result.usedDeprecatedRules.length).toBe(0);
-				expect(messages.length).toBe(0);
+				expect(result.errorCount).toBe(0);
 			});
 
 			test('.ts', async ({ onTestFail }) => {

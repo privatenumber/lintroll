@@ -168,6 +168,14 @@ export const stylistic = defineConfig({
 		// enforces empty lines around comments
 		'@stylistic/lines-around-comment': ['error', {
 			beforeBlockComment: true,
+
+			/**
+			 * Want to be able to add comments below code
+			 *
+			 * For example:
+			 * sum(1, 1)
+			 * // => 2
+			 */
 			beforeLineComment: false,
 			afterHashbangComment: true,
 
