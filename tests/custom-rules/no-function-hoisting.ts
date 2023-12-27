@@ -68,6 +68,7 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'function a(){}export{a}\n',
 				},
+				// It doesn't support nested dependencies. If one is moved up, the rest should be too
 				{
 					name: 'reverse hoisting / preserve scope / nested 5',
 					code: 'b();function a(){}function b(){a();}',
@@ -76,7 +77,6 @@ export default testSuite(({ describe }) => {
 					}],
 					output: 'function a(){}function b(){a();}b();',
 				},
-
 				// Move comment before function too
 			],
 		});
