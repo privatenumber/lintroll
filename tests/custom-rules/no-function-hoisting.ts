@@ -37,7 +37,7 @@ export default testSuite(({ describe }) => {
 					output: 'function a(){}(function(){a()});',
 				},
 				{
-					name: 'reverse hoisting / preserve scope / nested',
+					name: 'reverse hoisting / preserve scope / nested 1',
 					code: '(function(){a();function a(){}})',
 					errors: [{
 						messageId: 'noFunctionHoisting',
@@ -45,7 +45,7 @@ export default testSuite(({ describe }) => {
 					output: '(function(){function a(){}a();})',
 				},
 				{
-					name: 'reverse hoisting / preserve scope / nested',
+					name: 'reverse hoisting / preserve scope / nested 2',
 					code: 'while(a()){}function a(){}',
 					errors: [{
 						messageId: 'noFunctionHoisting',
@@ -53,7 +53,7 @@ export default testSuite(({ describe }) => {
 					output: 'function a(){}while(a()){}',
 				},
 				{
-					name: 'reverse hoisting / preserve scope / nested',
+					name: 'reverse hoisting / preserve scope / nested 3',
 					code: '(a());function a(){}',
 					errors: [{
 						messageId: 'noFunctionHoisting',
@@ -61,7 +61,7 @@ export default testSuite(({ describe }) => {
 					output: 'function a(){}(a());',
 				},
 				{
-					name: 'reverse hoisting / preserve scope / nested',
+					name: 'reverse hoisting / preserve scope / nested 4',
 					code: 'export{a}\nfunction a(){}',
 					errors: [{
 						messageId: 'noFunctionHoisting',
@@ -69,7 +69,7 @@ export default testSuite(({ describe }) => {
 					output: 'function a(){}export{a}\n',
 				},
 				{
-					name: 'reverse hoisting / preserve scope / nested',
+					name: 'reverse hoisting / preserve scope / nested 5',
 					code: 'b();function a(){}function b(){a();}',
 					errors: [{
 						messageId: 'noFunctionHoisting',
