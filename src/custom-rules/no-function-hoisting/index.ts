@@ -47,7 +47,7 @@ const findFirstReference = (
 /**
  * FYI, this is basically the same thing as no-use-before-define
  * without autofix
- * 
+ *
  * Reference: https://github.com/eslint/eslint/blob/d191bdd67214c33e65bd605e616ca7cc947fd045/lib/rules/no-use-before-define.js
  */
 export const noFunctionHoisting = createRule({
