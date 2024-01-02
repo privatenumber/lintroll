@@ -44,6 +44,10 @@ const findFirstReference = (
 	return getClosestInsertion(firstReferenceScope.block);
 };
 
+/**
+ * FYI, this is basically the same thing as no-use-before-define
+ * without autofix
+ */
 export const noFunctionHoisting = createRule({
 	name: 'no-function-hoisting',
 	meta: {
@@ -53,47 +57,45 @@ export const noFunctionHoisting = createRule({
 		type: 'suggestion',
 		schema: [],
 		docs: {
-			description: 'Prefer arrow functions when possible',
+			description: 'Disallow function hoisting',
 		},
 		// fixable: 'code',
 	},
 
 	defaultOptions: ['warning'],
 
-	create: (context) => {
-		return {
-			'FunctionDeclaration': (node) => {
-				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
-				const [firstReference] = functionVariable.references;
+	create: context => ({
+		FunctionDeclaration: (node) => {
+			const [functionVariable] = context.sourceCode.getDeclaredVariables!(node);
+			const [firstReference] = functionVariable.references;
 
-				if (
-					!firstReference
-			
-					// First reference comes after declaration
-					|| node.range[0] < firstReference.identifier.range[0]
-				) {
-					return;
-				}
+			if (
+				!firstReference
 
-				const hoistAboveNode = findFirstReference(functionVariable, firstReference);
-				if (!hoistAboveNode) {
-					return;
-				}
+				// First reference comes after declaration
+				|| node.range[0] < firstReference.identifier.range[0]
+			) {
+				return;
+			}
 
-				context.report({
-					node,
-					messageId: 'noFunctionHoisting',
-					// fix: (fixer) => {
-					// 	const functionCode = context.sourceCode.getText(node);
+			const hoistAboveNode = findFirstReference(functionVariable, firstReference);
+			if (!hoistAboveNode) {
+				return;
+			}
 
-					// 	// Hoist above first usage
-					// 	return [
-					// 		fixer.insertTextBefore(hoistAboveNode, functionCode),
-					// 		fixer.remove(node),
-					// 	];
-					// },
-				});
-			},
-		};
-	},
+			context.report({
+				node,
+				messageId: 'noFunctionHoisting',
+				// fix: (fixer) => {
+				// 	const functionCode = context.sourceCode.getText(node);
+
+				// 	// Hoist above first usage
+				// 	return [
+				// 		fixer.insertTextBefore(hoistAboveNode, functionCode),
+				// 		fixer.remove(node),
+				// 	];
+				// },
+			});
+		},
+	}),
 });
