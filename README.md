@@ -193,7 +193,7 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 | [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown embedded code blocks |
 | [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native prototype extensions |
 | [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous code quality rules |
-
+| [Custom](https://github.com/privatenumber/eslint-config/tree/develop/src/custom-rules) | Custom rules made for this config |
 
 ## API
 
