@@ -55,7 +55,7 @@ export const noFunctionHoisting = createRule({
 		docs: {
 			description: 'Prefer arrow functions when possible',
 		},
-		fixable: 'code',
+		// fixable: 'code',
 	},
 
 	defaultOptions: ['warning'],
@@ -83,15 +83,15 @@ export const noFunctionHoisting = createRule({
 				context.report({
 					node,
 					messageId: 'noFunctionHoisting',
-					fix: (fixer) => {
-						const functionCode = context.sourceCode.getText(node);
+					// fix: (fixer) => {
+					// 	const functionCode = context.sourceCode.getText(node);
 
-						// Hoist above first usage
-						return [
-							fixer.insertTextBefore(hoistAboveNode, functionCode),
-							fixer.remove(node),
-						];
-					},
+					// 	// Hoist above first usage
+					// 	return [
+					// 		fixer.insertTextBefore(hoistAboveNode, functionCode),
+					// 		fixer.remove(node),
+					// 	];
+					// },
 				});
 			},
 		};
