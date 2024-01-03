@@ -27,7 +27,6 @@ console.log(new Buffer(5));
 
 const objectMulti = { a: 1, b: 2 };
 const range = [1, 2];
-const destructure = range[1];
 
 isNaN(1121);
 isFinite(1121);

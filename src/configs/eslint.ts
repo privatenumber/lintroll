@@ -684,7 +684,14 @@ export const eslint = defineConfig({
 			'error',
 			{
 				VariableDeclarator: {
-					array: true,
+					/**
+					 * Prefer to enable this for first or second elements
+					 * but gets too complex for larger indices: [,,,, element] = var;
+					 *
+					 * TODO: Make a new rule that combines this and
+					 * eslint-plugin-unicorn/no-unreadable-array-destructuring
+					 */
+					array: false,
 					object: true,
 				},
 				AssignmentExpression: {

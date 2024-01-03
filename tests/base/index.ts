@@ -91,11 +91,6 @@ export default testSuite(({ describe }) => {
 					messageId: 'propertiesOnNewline',
 				}),
 				expect.objectContaining({
-					ruleId: 'prefer-destructuring',
-					messageId: 'preferDestructuring',
-					line: 30,
-				}),
-				expect.objectContaining({
 					ruleId: 'curly',
 					messageId: 'missingCurlyAfterCondition',
 				}),

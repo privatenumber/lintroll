@@ -19,8 +19,9 @@ const objectMulti = {
 	b: 2,
 };
 
-const range = [1, 2];
+const range = [1, 2, 3, 4];
 const [destructure] = range;
+const allowIndexAccess = range[3]; // Destructuring this would be too complex
 objectMulti.a = range[1];
 const { a: destructure2 } = objectMulti;
 
@@ -111,6 +112,7 @@ console.log(
 	writeFile,
 	destructure,
 	destructure2,
+	allowIndexAccess,
 	stat,
 	objectMethods,
 	objectSingle,
