@@ -129,7 +129,7 @@ export const eslint = defineConfig({
 		}],
 
 		// https://eslint.org/docs/latest/rules/max-nested-callbacks
-		'max-nested-callbacks': ['warn', 4],
+		'max-nested-callbacks': ['warn', 6],
 
 		// https://eslint.org/docs/latest/rules/max-params
 		'max-params': ['warn', 5],
