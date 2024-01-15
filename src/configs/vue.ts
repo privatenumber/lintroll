@@ -121,6 +121,11 @@ export const vue = defineConfig({
 			],
 		}],
 
+		// https://eslint.vuejs.org/rules/comment-directive.html#vue-comment-directive
+		'vue/comment-directive': ['error', {
+			reportUnusedDisableDirectives: true,
+		}],
+
 		// Deprecated
 		'vue/component-tags-order': 'off',
 

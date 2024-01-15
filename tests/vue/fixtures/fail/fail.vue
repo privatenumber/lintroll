@@ -1,4 +1,5 @@
 <template>
+	<!-- eslint-disable-next-line vue/max-attributes-per-line -->
 	<div class='some-class'>
 		Hello world
 	</div>

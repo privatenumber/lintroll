@@ -60,6 +60,10 @@ export default testSuite(({ describe }) => {
 						message: 'Filename is not in pascal case. Rename it to `Fail.vue`.',
 					}),
 					expect.objectContaining({
+						ruleId: 'vue/comment-directive',
+						messageId: 'unusedRule',
+					}),
+					expect.objectContaining({
 						ruleId: 'vue/html-quotes',
 						message: 'Expected to be enclosed by double quotes.',
 					}),
