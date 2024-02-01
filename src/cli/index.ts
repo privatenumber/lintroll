@@ -1,6 +1,8 @@
 import 'tsx/esm';
+import path from 'path';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
+import { execa } from 'execa';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
 
@@ -18,6 +20,10 @@ const argv = cli({
 		fix: {
 			type: Boolean,
 			description: 'Automatically fix problems',
+		},
+		staged: {
+			type: Boolean,
+			description: 'Only lint staged files within the files passed in',
 		},
 		quiet: {
 			type: Boolean,
@@ -41,6 +47,7 @@ const argv = cli({
 		},
 	},
 });
+
 const isNodeEnabled = (
 	flag: string[],
 ) => {
@@ -69,7 +76,32 @@ const isNodeEnabled = (
 		ignorePatterns: argv.flags.ignorePattern,
 	});
 
-	const results = await eslint.lintFiles(argv._.files);
+	let files = argv._.files.map(filePath => path.resolve(filePath));
+
+	if (argv.flags.staged) {
+		try {
+			const { stdout: gitRoot } = await execa('git', ['rev-parse', '--show-toplevel']);
+			const { stdout: stagedFilesText } = await execa('git', [
+				'diff',
+				'--staged',
+				'--name-only',
+				'--diff-filter=ACMR',
+			]);
+
+			const stagedFiles = stagedFilesText
+				.split('\n')
+				.filter(Boolean)
+				.map(filePath => path.resolve(gitRoot, filePath))
+				.filter(filePath => files.some(file => filePath.startsWith(file)));
+
+			files = stagedFiles;
+		} catch {
+			console.error('Error: Failed to detect staged files from git');
+			process.exit(1);
+		}
+	}
+
+	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {
 		await FlatESLint.outputFixes(results);
