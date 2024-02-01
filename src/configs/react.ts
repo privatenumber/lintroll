@@ -36,12 +36,13 @@ export const react = [
 			: []
 	),
 
-	defineConfig({
-		plugins: {
-			'react-hooks': reactHooksPlugin,
-		},
-		rules: reactHooksPlugin.configs.recommended.rules,
-	}),
+	// Temporarily disable -- was confusing Vue use functions for hooks
+	// defineConfig({
+	// 	plugins: {
+	// 		'react-hooks': reactHooksPlugin,
+	// 	},
+	// 	rules: reactHooksPlugin.configs.recommended.rules,
+	// }),
 
 	defineConfig({
 		files: ['**/*.{jsx,tsx}'],

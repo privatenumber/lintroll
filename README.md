@@ -189,7 +189,7 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 | [jsonc](https://www.npmjs.com/package/eslint-plugin-jsonc) | JSON, JSON5, and JSONC style |
 | [yml](https://www.npmjs.com/package/eslint-plugin-yml) | YAML style |
 | [vue](https://www.npmjs.com/package/eslint-plugin-vue) | Vue.js Templates & Scripts |
-| [react](https://www.npmjs.com/package/eslint-plugin-react) & [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks) | React & React Hooks |
+| [react](https://www.npmjs.com/package/eslint-plugin-react) <!--& [react-hooks](https://www.npmjs.com/package/eslint-plugin-react-hooks)--> | React best practices<!--& React Hooks--> |
 | [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown embedded code blocks |
 | [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native prototype extensions |
 | [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous code quality rules |
