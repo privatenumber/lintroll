@@ -82,7 +82,7 @@ const cjs = defineConfig({
 });
 
 export const node = (
-	options: Options,
+	options: Options = {},
 ) => {
 	const config: Linter.FlatConfig[] = [
 		defineConfig({

@@ -22,61 +22,59 @@ import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
 	options?: Options,
-): Linter.FlatConfig[] => {
-	const normalizedOptions = {
-		...options,
-		node: options?.node,
-	};
+): Linter.FlatConfig[] => [
+	defineConfig({
+		ignores: [
+			'**/package-lock.json',
+			'**/pnpm-lock.yaml',
+			'{tmp,temp}/**',
+			'**/*.min.js',
+			'**/dist/**',
+			'**/node_modules/**',
+			'**/vendor/**',
+		],
+	}),
+	defineConfig({
+		linterOptions: {
+			reportUnusedDisableDirectives: true,
+		},
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+		},
+	}),
 
-	return [
-		defineConfig({
-			ignores: [
-				'**/package-lock.json',
-				'**/pnpm-lock.yaml',
-				'{tmp,temp}/**',
-				'**/*.min.js',
-				'**/dist/**',
-				'**/node_modules/**',
-				'**/vendor/**',
-			],
-		}),
-		defineConfig({
-			linterOptions: {
-				reportUnusedDisableDirectives: true,
-			},
-			languageOptions: {
-				ecmaVersion: 'latest',
-				sourceType: 'module',
-			},
-		}),
+	/**
+	 * Separating the parsers allows to test individual rules
+	 * without applying the rules associated with the parsers
+	 */
+	parseVue,
+	parseTypescript,
 
-		/**
-		 * Separating the parsers allows to test individual rules
-		 * without applying the rules associated with the parsers
-		 */
-		parseVue,
-		parseTypescript,
+	eslint,
+	serviceWorkers,
+	eslintComments,
+	...imports,
+	...unicorn,
+	typescript,
+	stylistic,
+	...regexp,
+	...promise,
+	...node(options),
+	...noUseExtendNative,
+	...json,
+	yml,
 
-		eslint,
-		serviceWorkers,
-		eslintComments,
-		...imports,
-		...unicorn,
-		typescript,
-		stylistic,
-		...regexp,
-		...promise,
-		...node(normalizedOptions),
-		...noUseExtendNative,
-		...json,
-		yml,
-		vue,
-		...react,
-		...markdown(),
-		jest,
-		customConfigs,
-	].filter(Boolean);
-};
+	/**
+	 * No options.vue because if *.vue files are detected, they
+	 * should be linted regardless of whether `vue` is installed
+	 */
+	vue,
+	...react,
+	...markdown(),
+	jest,
+	customConfigs,
+].filter(Boolean);
 
 export default pvtnbr();
 export { defineConfig };

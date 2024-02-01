@@ -210,22 +210,6 @@ Default: `false`
 
 Whether to lint Node.js code. When `true`, it will treat all files as Node.js files. You can also pass in an array of glob patterns to specify which files are Node.js files.
 
-#### options.vue
-
-Type: `boolean`
-
-Default: `isInstalled('vue')`
-
-Whether to lint Vue code.
-
-#### options.react
-
-Type: `boolean`
-
-Default: `isInstalled('react')`
-
-Whether to lint React code.
-
 ### defineConfig(configs)
 
 An identity function to enforce type checking on the config.
