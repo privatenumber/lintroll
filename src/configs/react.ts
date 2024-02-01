@@ -1,5 +1,5 @@
 import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
+// import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { getTsconfig } from 'get-tsconfig';
 import { defineConfig } from '../utils/define-config.js';
 

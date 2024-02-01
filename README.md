@@ -20,10 +20,8 @@ It's been enhanced with plugins, cutting edge tooling, and offers a comprehensiv
 
 - **Extended plugin support**: A rich set of plugins to lint ESlint comments, imports, JSON, YAML and more.
 
-<!--
-### What does the styled code look like?
-Playground
--->
+### What does the linted code look like?
+Checkout the code fixtures from the passing tests [here](https://github.com/search?q=repo%3Aprivatenumber%2Feslint-config+path%3Atests%2F**%2Ffixtures%2Fpass*&type=code).
 
 ## Install
 
@@ -33,7 +31,7 @@ pnpm i -D @pvtnbr/eslint-config
 
 ## Quick usage
 
-This package includes a streamlined `lint` CLI command. It's is a direct alternative to `eslint`, allowing you to lint your code with this config without the need for any configuration.
+This package includes a streamlined `lint` CLI command. It's a direct alternative to `eslint`, allowing you to lint your code with this config without any configuration or setup.
 
 #### Lint files in the current directory
 
@@ -54,7 +52,7 @@ pnpm lint --cache .
 
 #### Add it to your `package.json` scripts
 
-In addition to documenting the available commands in a central place, adding it to `package.json#scripts` also gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead.
+Adding it to `package.json#scripts` gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead. Also follows best practice of documenting available commands in a central place.
 
 ```diff
   "scripts": {
@@ -72,17 +70,18 @@ If you'd like to customize the linting rules further, you can add one of these E
 
 - `eslint.config.js`: A standard JavaScript file for ESLint configuration, suitable for projects not using TypeScript.
 
-Note: when creating an ESLint config file, you must manually add the `pvtnbr` config. Read the section below to learn how.
+> [!NOTE]
+> When creating your own ESLint config file, you must manually add the `pvtnbr` config. Read the section below to learn how.
 
 ## ESLint setup
 
-When using `eslint`, the [flat configuration format](https://eslint.org/docs/latest/use/configure/configuration-files-new) requires that a `eslint.config.js` is created at your project root. This file is used to configure ESLint, and is where you can add the `pvtnbr` config.
+To use the `eslint` command, create a [flat configuration](https://eslint.org/docs/latest/use/configure/configuration-files-new) file `eslint.config.js` at your project root.
 
 > [!TIP]
-> If you're using TypeScript, you can use `eslint.config.ts` with the `lint` command from the previous section.
+> If you'd like to use TypeScript for your config file (`eslint.config.ts`), use the `lint` command from the previous section. The `eslint` command only supports `eslint.config.js`.
 
 ### Simple config
-If you want a simple setup with no customizations, create the following `eslint.config.js`:
+If you want a simple setup with no customization, create the following `eslint.config.js`:
 
 Module:
 ```js
@@ -95,8 +94,6 @@ module.exports = require('@pvtnbr/eslint-config')
 ```
 
 ### Extended config
-
-If you're using TypeScript, you can add [`@ts-check`](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html#ts-check) to the top of the file to enable type checking.
 
 In `eslint.config.js`:
 
@@ -155,6 +152,10 @@ module.exports = defineConfig([
     // Other configs...
 ])
 ```
+
+> [!TIP]
+> If you'd like to type check your `eslint.config.js` file, you can add [`// @ts-check`](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html#ts-check) to the top.
+
 
 ## Linting coverage
 
@@ -235,11 +236,9 @@ Type: `FlatConfig | FlatConfig[]`
 
 ## Other ESLint configs
 
-Also check out these awesome ESLint configs. They have inspired me and are great alternatives to consider.
+Make sure you also check out these awesome ESLint configs. They are a constant source of inspiration for me, and are great alternatives to consider.
 
 - [antfu/eslint-config](https://github.com/antfu/eslint-config) by [@antfu](https://github.com/antfu)
 - [sxzz/eslint-config](https://github.com/sxzz/eslint-config) by [@sxzz](https://github.com/sxzz)
 - [@ota-meshi/eslint-plugin](https://github.com/ota-meshi/eslint-plugin) by [@ota-meshi](https://github.com/ota-meshi)
 - [standard config](https://github.com/standard/eslint-config-standard) by [@feross](https://github.com/feross)
-
-Hope they also inspire you to create your own ESLint config!
