@@ -32,6 +32,9 @@ export const pvtnbr = (
 			'**/dist/**',
 			'**/node_modules/**',
 			'**/vendor/**',
+
+			// Ignore VitePress cache
+			'**/.vitepress',
 		],
 	}),
 	defineConfig({
