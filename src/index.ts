@@ -70,7 +70,7 @@ export const pvtnbr = (
 	 * should be linted regardless of whether `vue` is installed
 	 */
 	vue,
-	...react,
+	react,
 	...markdown(),
 	jest,
 	customConfigs,
