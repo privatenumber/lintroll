@@ -102,7 +102,7 @@ export const typescript = defineConfig({
 
 		'prefer-rest-params': 'off',
 
-		// TS disallows .ts extension
+		// Always require a file extension except from packages
 		// https://github.com/Microsoft/TypeScript/issues/27481
 		'import/extensions': ['error', 'ignorePackages', {
 			ts: 'never',
