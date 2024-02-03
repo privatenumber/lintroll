@@ -322,6 +322,14 @@ export default testSuite(({ describe }) => {
 					output: '({ /*a*/a/*b*/:async(b)=>/*c*/{} })',
 				},
 				{
+					name: 'object property / async method / removes space',
+					code: '({ async /*a*/a/*b*/(b)/*c*/{} })',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: '({ /*a*/a/*b*/:async(b)=>/*c*/{} })',
+				},
+				{
 					name: 'object property / method',
 					code: '({ /*a*/["a"]/*b*/(b)/*c*/{} })',
 					errors: [{
