@@ -142,11 +142,8 @@ module.exports = defineConfig([
     // Configure the pvtnbr config
     ...pvtnbr({
 
-        // Indicate Node.js project
+        // Indicate Node.js project or pass in file paths
         node: true,
-
-        // Indicate Vue.js project (auto-detected by default)
-        vue: true
     })
 
     // Other configs...
