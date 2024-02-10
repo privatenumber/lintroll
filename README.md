@@ -29,9 +29,9 @@ Checkout the code fixtures from the passing tests [here](https://github.com/sear
 pnpm i -D @pvtnbr/eslint-config
 ```
 
-## Quick usage
+## `lint` Command
 
-This package includes a streamlined `lint` CLI command. It's a direct alternative to `eslint`, allowing you to lint your code with this config without any configuration or setup.
+This package includes a `lint` CLI command as a direct alternative to `eslint`, allowing you to lint your code with this config without any configuration or setup.
 
 #### Lint files in the current directory
 
@@ -50,9 +50,19 @@ pnpm lint . --fix
 pnpm lint --cache .
 ```
 
-#### Add it to your `package.json` scripts
+#### Lint only staged files
+```sh
+pnpm lint --staged .
+```
 
-Adding it to `package.json#scripts` gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead. Also follows best practice of documenting available commands in a central place.
+#### Specify Node.js files
+```sh
+pnpm lint --node ./build .
+```
+
+### Optional `package.json` script
+
+Adding it to `package.json#scripts` gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead. Also follows the best practice of documenting available commands in a central place.
 
 ```diff
   "scripts": {
@@ -61,7 +71,6 @@ Adding it to `package.json#scripts` gives you the convenience of not needing to 
     "dev": "..."
   }
 ```
-
 ### Configuration
 
 If you'd like to customize the linting rules further, you can add one of these ESLint config files to your project root and `lint` will detect them automatically:
@@ -72,6 +81,26 @@ If you'd like to customize the linting rules further, you can add one of these E
 
 > [!NOTE]
 > When creating your own ESLint config file, you must manually add the `pvtnbr` config. Read the section below to learn how.
+
+### `--help`
+```
+lint
+
+by @pvtnbr/eslint-config
+
+Usage:
+  lint [flags...] <files...>
+
+Flags:
+      --cache                          Only check changed files
+      --cache-location <string>        Path to the cache file or directory
+      --fix                            Automatically fix problems
+  -h, --help                           Show help
+      --ignore-pattern <string>        Pattern of files to ignore
+      --node <string>                  Enable Node.js rules. Pass in a glob to specify files
+      --quiet                          Report errors only
+      --staged                         Only lint staged files within the files passed in
+```
 
 ## ESLint setup
 
