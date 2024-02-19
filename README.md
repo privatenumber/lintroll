@@ -172,7 +172,7 @@ module.exports = defineConfig([
     ...pvtnbr({
 
         // Indicate Node.js project or pass in file paths
-        node: true,
+        node: true
     })
 
     // Other configs...
