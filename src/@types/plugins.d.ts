@@ -195,11 +195,11 @@ declare module 'eslint-plugin-markdown' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			recommended: ESLint.ConfigData & {
-				overrides: [{
-					rules: Linter.RulesRecord;
-				}];
-			};
+			recommended: [
+				Linter.FlatConfig,
+				Linter.FlatConfig,
+				Linter.FlatConfig
+			];
 		};
 		processors: {
 			markdown: Linter.Processor;

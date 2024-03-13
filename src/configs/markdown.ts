@@ -1,7 +1,7 @@
 import markdownPlugin from 'eslint-plugin-markdown';
 import { defineConfig } from '../utils/define-config.js';
 
-const [, baseMdSubfiles] = markdownPlugin.configs.recommended.overrides!;
+const { recommended } = markdownPlugin.configs;
 
 export const markdown = () => [
 	defineConfig({
@@ -9,19 +9,10 @@ export const markdown = () => [
 		plugins: {
 			markdown: markdownPlugin,
 		},
-		processor: {
-			name: 'markdown/markdown',
-			...markdownPlugin.processors.markdown,
-		},
+		processor: 'markdown/markdown',
 	}),
 
-	defineConfig({
-		files: ['**/*.md/**'],
-		languageOptions: {
-			parserOptions: baseMdSubfiles.parserOptions,
-		},
-		rules: baseMdSubfiles.rules,
-	}),
+	defineConfig(recommended[2]),
 
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
