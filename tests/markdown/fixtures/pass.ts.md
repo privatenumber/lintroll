@@ -1,6 +1,8 @@
 # test readme
 
 ```ts
+// Not vaid in TS: https://github.com/microsoft/TypeScript/issues/40594
+// import { 'foo-bar' as fooBar } from 'file'
 import A from 'b'
 
 type SomeType = {

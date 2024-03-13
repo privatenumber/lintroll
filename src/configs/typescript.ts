@@ -16,6 +16,9 @@ export const parseTypescript = defineConfig({
 	files: ['**/*.{ts,tsx,mts,cts}'],
 	languageOptions: {
 		parser: tsParser,
+		parserOptions: {
+			ecmaVersion: 'latest',
+		},
 	},
 	settings: importPlugin.configs.typescript.settings,
 });

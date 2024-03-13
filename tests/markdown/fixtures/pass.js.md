@@ -1,6 +1,7 @@
 # test readme
 
 ```js
+import { 'foo-bar' as fooBar } from 'file'
 import A from 'b'
 
 const noop = () => {}
