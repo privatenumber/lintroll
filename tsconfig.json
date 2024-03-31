@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"jsx": "react-jsx",
+		"lib": ["ESNext"],
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 		"allowJs": true,
@@ -8,7 +9,7 @@
 		"noEmit": true,
 		"esModuleInterop": true,
 		"isolatedModules": true,
-		"skipLibCheck": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"src",
