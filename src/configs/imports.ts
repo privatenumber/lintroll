@@ -114,6 +114,7 @@ export const importsConfig = defineConfig({
 			devDependencies: [
 				// Source directory - implies bundled
 				'src/**',
+				'**/@types/**',
 
 				// Build configuration related files
 				'build/**',
