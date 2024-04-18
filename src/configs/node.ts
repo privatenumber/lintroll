@@ -114,13 +114,13 @@ export const node = (
 				rules: {
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/file-extension-in-import.md
 					// TODO: Defer to import plugin
-					'n/file-extension-in-import': ['error', 'always', {
+					// 'n/file-extension-in-import': ['error', 'always', {
 
-						// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
-						// Use .js instead
-						'.ts': 'never',
-						'.tsx': 'never',
-					}],
+					// 	// TypeScript doesn't allow extensions https://github.com/Microsoft/TypeScript/issues/27481
+					// 	// Use .js instead
+					// 	'.ts': 'never',
+					// 	'.tsx': 'never',
+					// }],
 
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/global-require.md
 					'n/global-require': 'error',

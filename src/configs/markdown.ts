@@ -28,7 +28,7 @@ export const markdown = () => [
 			// Can be snippets that don't fully work
 			'no-undef': 'off',
 
-			'n/shebang': 'off',
+			'n/hashbang': 'off',
 
 			// Allow unused expressions like: argv.command // => "install" (string)
 			'no-unused-expressions': 'off',

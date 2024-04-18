@@ -19,3 +19,9 @@ const data = A({
 
 console.log(data)
 ```
+
+```js
+#!/usr/bin/env node
+
+console.log(1)
+```
