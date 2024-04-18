@@ -56,6 +56,8 @@ export const react = defineConfig({
 				'\\.spec\\.tsx$',
 			],
 		}],
-	},
 
+		// Until this plugin is compatible with ESLint v9
+		'react/jsx-uses-vars': 'off',
+	},
 });
