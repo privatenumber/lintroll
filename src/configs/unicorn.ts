@@ -6,9 +6,8 @@ export const unicorn = [
 		plugins: {
 			unicorn: unicornPlugin,
 		},
-		ignores: ['**/*.{json,json5,jsonc,yml,yaml}'],
 		rules: {
-			...unicornPlugin.configs.recommended.rules,
+			...unicornPlugin.configs['flat/recommended'].rules,
 
 			// Disable in favor of eslint-plugin-regexp
 			'unicorn/better-regex': 'off',

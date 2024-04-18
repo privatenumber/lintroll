@@ -71,7 +71,7 @@ declare module 'eslint-plugin-unicorn' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			recommended: ESLint.ConfigData & {
+			'flat/recommended': ESLint.ConfigData & {
 				rules: Linter.RulesRecord;
 			};
 		};

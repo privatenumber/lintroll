@@ -37,6 +37,7 @@ export const markdown = () => [
 			// Loose on example code
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/prefer-object-from-entries': 'off',
+			'unicorn/no-anonymous-default-export': 'off',
 
 			// Style
 			'@stylistic/indent': ['error', 4],

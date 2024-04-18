@@ -18,6 +18,8 @@ const data = A({
 })
 
 console.log(data)
+
+export default () => 1
 ```
 
 ```js
