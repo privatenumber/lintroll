@@ -1,7 +1,7 @@
 import 'tsx/esm';
 import path from 'path';
 import { cli } from 'cleye';
-import eslintApi from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
 import { execa } from 'execa';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
@@ -60,9 +60,7 @@ const isNodeEnabled = (
 };
 
 (async () => {
-	const { FlatESLint } = eslintApi;
-
-	const eslint = new FlatESLint({
+	const eslint = new ESLint({
 		baseConfig: await getConfig({
 			node: isNodeEnabled(argv.flags.node),
 		}),
@@ -104,12 +102,12 @@ const isNodeEnabled = (
 	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {
-		await FlatESLint.outputFixes(results);
+		await ESLint.outputFixes(results);
 	}
 
 	let resultsToPrint = results;
 	if (argv.flags.quiet) {
-		resultsToPrint = FlatESLint.getErrorResults(results);
+		resultsToPrint = ESLint.getErrorResults(results);
 	}
 
 	const resultCounts = countErrors(results);

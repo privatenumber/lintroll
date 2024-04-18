@@ -1,0 +1,22 @@
+diff --git a/index.d.ts b/index.d.ts
+index 3703c13895f9552959edc9650e62e180e6e8d87f..13c373025ccc29cf106031d599b4209e2cc2da8b 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1390,14 +1390,15 @@ export namespace ESLint {
+ 
+         // Linting
+         allowInlineConfig?: boolean | undefined;
+-        baseConfig?: Linter.Config | undefined;
++        baseConfig?: Linter.FlatConfig[] | undefined;
+         overrideConfig?: Linter.Config | undefined;
+-        overrideConfigFile?: string | undefined;
++        overrideConfigFile?: boolean | string | undefined;
+         plugins?: Record<string, Plugin> | undefined;
+         reportUnusedDisableDirectives?: Linter.StringSeverity | undefined;
+         resolvePluginsRelativeTo?: string | undefined;
+         rulePaths?: string[] | undefined;
+         useEslintrc?: boolean | undefined;
++        ignorePatterns?: string[];
+ 
+         // Autofix
+         fix?: boolean | ((message: Linter.LintMessage) => boolean) | undefined;

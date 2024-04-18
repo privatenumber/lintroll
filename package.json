@@ -110,5 +110,10 @@
 		"read-package-up": "^11.0.0",
 		"type-fest": "^4.15.0",
 		"typescript": "^5.4.5"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"@types/eslint@8.56.9": "patches/@types__eslint@8.56.9.patch"
+		}
 	}
 }

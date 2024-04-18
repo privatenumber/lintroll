@@ -1,11 +1,11 @@
 import { fileURLToPath } from 'url';
-import eslintApi from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
 import { execaNode } from 'execa';
 import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
 	options?: Options,
-) => new eslintApi.FlatESLint({
+) => new ESLint({
 	baseConfig: pvtnbr(options),
 
 	// Don't look up config file

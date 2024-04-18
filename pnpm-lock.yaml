@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@types/eslint@8.56.9':
+    hash: mfnzxln43e2y7qp5gh3oe5k6wu
+    path: patches/@types__eslint@8.56.9.patch
+
 importers:
 
   .:
@@ -101,7 +106,7 @@ importers:
         version: 1.0.3
       '@types/eslint':
         specifier: ^8.56.9
-        version: 8.56.9
+        version: 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -2885,7 +2890,7 @@ snapshots:
 
   '@stylistic/eslint-plugin-js@1.7.2(eslint@9.0.0)':
     dependencies:
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       acorn: 8.11.3
       escape-string-regexp: 4.0.0
       eslint: 9.0.0
@@ -2895,14 +2900,14 @@ snapshots:
   '@stylistic/eslint-plugin-jsx@1.7.2(eslint@9.0.0)':
     dependencies:
       '@stylistic/eslint-plugin-js': 1.7.2(eslint@9.0.0)
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       eslint: 9.0.0
       estraverse: 5.3.0
       picomatch: 4.0.2
 
   '@stylistic/eslint-plugin-plus@1.7.2(eslint@9.0.0)(typescript@5.4.5)':
     dependencies:
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       '@typescript-eslint/utils': 6.21.0(eslint@9.0.0)(typescript@5.4.5)
       eslint: 9.0.0
     transitivePeerDependencies:
@@ -2912,7 +2917,7 @@ snapshots:
   '@stylistic/eslint-plugin-ts@1.7.2(eslint@9.0.0)(typescript@5.4.5)':
     dependencies:
       '@stylistic/eslint-plugin-js': 1.7.2(eslint@9.0.0)
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       '@typescript-eslint/utils': 6.21.0(eslint@9.0.0)(typescript@5.4.5)
       eslint: 9.0.0
     transitivePeerDependencies:
@@ -2925,7 +2930,7 @@ snapshots:
       '@stylistic/eslint-plugin-jsx': 1.7.2(eslint@9.0.0)
       '@stylistic/eslint-plugin-plus': 1.7.2(eslint@9.0.0)(typescript@5.4.5)
       '@stylistic/eslint-plugin-ts': 1.7.2(eslint@9.0.0)(typescript@5.4.5)
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
       eslint: 9.0.0
     transitivePeerDependencies:
       - supports-color
@@ -2935,14 +2940,14 @@ snapshots:
 
   '@types/confusing-browser-globals@1.0.3': {}
 
-  '@types/eslint@8.56.9':
+  '@types/eslint@8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)':
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
 
   '@types/eslint__js@8.42.3':
     dependencies:
-      '@types/eslint': 8.56.9
+      '@types/eslint': 8.56.9(patch_hash=mfnzxln43e2y7qp5gh3oe5k6wu)
 
   '@types/estree@1.0.5': {}
 
@@ -3196,11 +3201,11 @@ snapshots:
 
   array.prototype.findlastindex@1.2.3:
     dependencies:
-      call-bind: 1.0.5
+      call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.3
+      es-abstract: 1.22.5
       es-shim-unscopables: 1.0.2
-      get-intrinsic: 1.2.2
+      get-intrinsic: 1.2.4
 
   array.prototype.flat@1.3.2:
     dependencies:
@@ -3760,7 +3765,7 @@ snapshots:
       eslint: 9.0.0
       eslint-import-resolver-node: 0.3.9
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@7.7.0(eslint@9.0.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.7.0(eslint@9.0.0)(typescript@5.4.5))(eslint-plugin-import@2.29.1)(eslint@9.0.0))(eslint@9.0.0)
-      hasown: 2.0.0
+      hasown: 2.0.2
       is-core-module: 2.13.1
       is-glob: 4.0.3
       minimatch: 3.1.2
@@ -4648,10 +4653,10 @@ snapshots:
 
   object.groupby@1.0.1:
     dependencies:
-      call-bind: 1.0.5
+      call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.3
-      get-intrinsic: 1.2.2
+      es-abstract: 1.22.5
+      get-intrinsic: 1.2.4
 
   object.hasown@1.1.3:
     dependencies:
