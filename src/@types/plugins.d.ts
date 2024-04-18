@@ -5,7 +5,7 @@ declare module '@stylistic/eslint-plugin' {
 	export default plugin;
 }
 
-declare module 'eslint-plugin-import' {
+declare module 'eslint-plugin-import-x' {
 	import type { ESLint, Linter } from 'eslint';
 
 	const plugin: ESLint.Plugin & {
@@ -16,7 +16,7 @@ declare module 'eslint-plugin-import' {
 			typescript: ESLint.ConfigData & {
 				rules: Linter.RulesRecord;
 				settings: {
-					'import/resolver': object;
+					'import-x/resolver': object;
 				};
 			};
 		};

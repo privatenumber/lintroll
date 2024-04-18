@@ -17,9 +17,9 @@ export const markdown = () => [
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
 		rules: {
-			'import/extensions': 'off',
-			'import/no-extraneous-dependencies': 'off',
-			'import/no-unresolved': 'off',
+			'import-x/extensions': 'off',
+			'import-x/no-extraneous-dependencies': 'off',
+			'import-x/no-unresolved': 'off',
 			'no-console': 'off',
 			'no-new': 'off',
 			'no-empty-function': 'off',

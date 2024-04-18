@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'url';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import { defineConfig } from '../utils/define-config';
 
 const pkgMapsResolver = fileURLToPath(
@@ -8,15 +8,15 @@ const pkgMapsResolver = fileURLToPath(
 
 export const importsConfig = defineConfig({
 	plugins: {
-		import: importPlugin,
+		'import-x': importPlugin,
 	},
 
 	settings: {
-		'import/ignore': [
+		'import-x/ignore': [
 			'node_modules',
 			'\\.(css|svg|json)$',
 		],
-		'import/resolver': {
+		'import-x/resolver': {
 			node: {},
 			[pkgMapsResolver]: {},
 		},
@@ -26,11 +26,11 @@ export const importsConfig = defineConfig({
 		...importPlugin.configs.recommended.rules,
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
-		'import/default': 'off',
+		'import-x/default': 'off',
 
 		// dynamic imports require a leading comment with a webpackChunkName
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/dynamic-import-chunkname.md
-		'import/dynamic-import-chunkname': ['off', {
+		'import-x/dynamic-import-chunkname': ['off', {
 			importFunctions: [],
 			webpackChunknameFormat: '[0-9a-zA-Z-_/.]+',
 		}],
@@ -39,49 +39,49 @@ export const importsConfig = defineConfig({
 
 		// disallow invalid exports, e.g. multiple defaults
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/export.md
-		'import/export': 'error',
+		'import-x/export': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/exports-last.md
 		// Hard to expect this when the grouped exports can't be enabled.
 		// In TS, if a type needs to be exported inline, it's dependent types should be right above it
-		'import/exports-last': 'off',
+		'import-x/exports-last': 'off',
 
 		// Always require a file extension except from packages
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/extensions.md
-		'import/extensions': ['error', 'ignorePackages'],
+		'import-x/extensions': ['error', 'ignorePackages'],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/first.md
-		'import/first': 'error',
+		'import-x/first': 'error',
 
 		// https://githubis.com/benmosher/eslint-plugin-import/blob/e6f6018/docs/rules/group-exports.md
 		// Excessive. Also, not suppored in TS w/ isolatedModules:
 		// Re-exporting a type when the 'isolatedModules' flag is provided requires using 'export type'
-		'import/group-exports': 'off',
+		'import-x/group-exports': 'off',
 
 		// Forbid modules to have too many dependencies
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/max-dependencies.md
-		'import/max-dependencies': ['warn', { max: 15 }],
+		'import-x/max-dependencies': ['warn', { max: 15 }],
 
 		// ensure named imports coupled with named exports
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/named.md#when-not-to-use-it
-		'import/named': 'error',
+		'import-x/named': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/namespace.md
-		'import/namespace': 'off',
+		'import-x/namespace': 'off',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/newline-after-import.md
-		'import/newline-after-import': 'error',
+		'import-x/newline-after-import': 'error',
 
 		// Forbid import of modules using absolute paths
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-absolute-path.md
-		'import/no-absolute-path': 'error',
+		'import-x/no-absolute-path': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-amd.md
-		'import/no-amd': 'error',
+		'import-x/no-amd': 'error',
 
 		// Reports if a module's default export is unnamed
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-anonymous-default-export.md
-		'import/no-anonymous-default-export': ['off', {
+		'import-x/no-anonymous-default-export': ['off', {
 			allowAnonymousClass: false,
 			allowAnonymousFunction: false,
 			allowArray: false,
@@ -91,26 +91,26 @@ export const importsConfig = defineConfig({
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-commonjs.md
-		'import/no-commonjs': 'off',
+		'import-x/no-commonjs': 'off',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-cycle.md
-		'import/no-cycle': ['error', {
+		'import-x/no-cycle': ['error', {
 			ignoreExternal: true,
 			maxDepth: '∞',
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-duplicates.md
-		'import/no-duplicates': 'error',
+		'import-x/no-duplicates': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-deprecated.md
 		// Very slow based on TIMING=ALL npx eslint .
 		// High cost, low value
-		// 'import/no-deprecated': 'error',
+		// 'import-x/no-deprecated': 'error',
 
 		// Forbid the use of extraneous packages
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-extraneous-dependencies.md
 		// paths are treated both as absolute paths, and relative to process.cwd()
-		'import/no-extraneous-dependencies': ['error', {
+		'import-x/no-extraneous-dependencies': ['error', {
 			devDependencies: [
 				// Source directory - implies bundled
 				'src/**',
@@ -144,23 +144,23 @@ export const importsConfig = defineConfig({
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-mutable-exports.md
-		'import/no-mutable-exports': 'error',
+		'import-x/no-mutable-exports': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-named-as-default.md
-		'import/no-named-as-default': 'error',
+		'import-x/no-named-as-default': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-named-as-default-member.md
-		'import/no-named-as-default-member': 'error',
+		'import-x/no-named-as-default-member': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-named-default.md
-		'import/no-named-default': 'error',
+		'import-x/no-named-default': 'error',
 
 		// Forbid a module from importing itself
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-self-import.md
-		'import/no-self-import': 'error',
+		'import-x/no-self-import': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-unresolved.md
-		'import/no-unresolved': ['error', {
+		'import-x/no-unresolved': ['error', {
 			caseSensitive: true,
 			commonjs: true,
 			ignore: [
@@ -169,17 +169,17 @@ export const importsConfig = defineConfig({
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-useless-path-segments.md
-		'import/no-useless-path-segments': ['error', { commonjs: true }],
+		'import-x/no-useless-path-segments': ['error', { commonjs: true }],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-webpack-loader-syntax.md
-		'import/no-webpack-loader-syntax': 'error',
+		'import-x/no-webpack-loader-syntax': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/order.md
-		'import/order': 'error',
+		'import-x/order': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/prefer-default-export.md
 		// Excessive. Also, named exports help enforce readable imports.
-		'import/prefer-default-export': 'off',
+		'import-x/prefer-default-export': 'off',
 	},
 });
 
@@ -192,7 +192,7 @@ export const imports = [
 		rules: {
 			// Disallow dynamic imports if compiled
 			// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-dynamic-require.md
-			'import/no-dynamic-require': 'error',
+			'import-x/no-dynamic-require': 'error',
 		},
 	}),
 ];

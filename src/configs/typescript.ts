@@ -5,12 +5,12 @@
  */
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import { defineConfig } from '../utils/define-config';
 import { importsConfig } from './imports.js';
 import { eslint } from './eslint.js';
 
-const [, noExtraneousDependenciesConfig] = importsConfig.rules['import/no-extraneous-dependencies'];
+const [, noExtraneousDependenciesConfig] = importsConfig.rules['import-x/no-extraneous-dependencies'];
 
 export const parseTypescript = defineConfig({
 	files: ['**/*.{ts,tsx,mts,cts}'],
@@ -33,8 +33,8 @@ export const typescript = defineConfig({
 	settings: {
 		...importPlugin.configs.typescript.settings,
 
-		'import/resolver': {
-			...importPlugin.configs.typescript.settings['import/resolver'],
+		'import-x/resolver': {
+			...importPlugin.configs.typescript.settings['import-x/resolver'],
 
 			// this loads <rootdir>/tsconfig.json to eslint
 			typescript: {},
@@ -107,7 +107,7 @@ export const typescript = defineConfig({
 
 		// Always require a file extension except from packages
 		// https://github.com/Microsoft/TypeScript/issues/27481
-		'import/extensions': ['error', 'ignorePackages', {
+		'import-x/extensions': ['error', 'ignorePackages', {
 			ts: 'never',
 			tsx: 'never',
 			cts: 'never',
@@ -118,7 +118,7 @@ export const typescript = defineConfig({
 		// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
 		// '@typescript-eslint/return-await': ['error', 'always'],
 
-		'import/no-extraneous-dependencies': ['error', {
+		'import-x/no-extraneous-dependencies': ['error', {
 			...noExtraneousDependenciesConfig,
 			devDependencies: noExtraneousDependenciesConfig.devDependencies.map(
 				pattern => pattern.replace('.js', '.{js,ts}'),

@@ -103,12 +103,12 @@ export default testSuite(({ describe }) => {
 					messageId: 'unexpected',
 				}),
 				expect.objectContaining({
-					ruleId: 'import/max-dependencies',
+					ruleId: 'import-x/max-dependencies',
 					severity: 1,
 					message: 'Maximum number of dependencies (15) exceeded.',
 				}),
 				expect.objectContaining({
-					ruleId: 'import/extensions',
+					ruleId: 'import-x/extensions',
 					message: 'Missing file extension "js" for "./some-file"',
 				}),
 				expect.objectContaining({

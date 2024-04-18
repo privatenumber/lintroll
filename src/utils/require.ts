@@ -15,6 +15,6 @@ export const isInstalled = (specifier: string) => {
 export const getExports = (
 	moduleName: string,
 ) => Object.keys(
-	// eslint-disable-next-line import/no-dynamic-require
+	// eslint-disable-next-line import-x/no-dynamic-require
 	require(moduleName),
 );

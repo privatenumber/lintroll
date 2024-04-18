@@ -31,7 +31,7 @@ export default testSuite(({ describe }) => {
 			expect(result.messages).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						ruleId: 'import/no-dynamic-require',
+						ruleId: 'import-x/no-dynamic-require',
 						nodeType: 'CallExpression',
 						severity: 2,
 					}),
@@ -55,7 +55,7 @@ export default testSuite(({ describe }) => {
 					severity: 2,
 				}),
 				expect.objectContaining({
-					ruleId: 'import/no-dynamic-require',
+					ruleId: 'import-x/no-dynamic-require',
 					nodeType: 'CallExpression',
 					severity: 2,
 				}),
