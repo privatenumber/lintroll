@@ -6,9 +6,11 @@ const require = createRequire(`${process.cwd()}/`);
 export const isInstalled = (specifier: string) => {
 	try {
 		require.resolve(specifier);
+		console.log('isInstalled', specifier, true);
 		return true;
 	} catch {}
 
+	console.log('isInstalled', specifier, false);
 	return false;
 };
 
