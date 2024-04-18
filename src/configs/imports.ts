@@ -113,7 +113,7 @@ export const importsConfig = defineConfig({
 		'import-x/no-extraneous-dependencies': ['error', {
 			devDependencies: [
 				// Source directory - implies bundled
-				'src/**',
+				'**/src/**',
 				'**/@types/**',
 
 				// Build configuration related files
@@ -124,9 +124,8 @@ export const importsConfig = defineConfig({
 				'**/scripts/**',
 
 				// Tests
-				'{test,tests,test-d}/**',
-				'test.js',
-				'test-*.js',
+				'**/{test,tests,test-d}/**',
+				'**/{test,test-*}.js',
 				'**/*{.,_}{test,spec}.js', // tests where the extension or filename suffix denotes that it is a test
 				'**/__{tests,mocks}__/**', // jest pattern
 
