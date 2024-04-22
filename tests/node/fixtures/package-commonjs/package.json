@@ -1,6 +1,0 @@
-{
-	"type": "commonjs",
-	"engines": {
-		"node": ">=14"
-	}
-}
