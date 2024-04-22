@@ -3,6 +3,7 @@ import { pathToFileURL } from 'url';
 import fs from 'fs/promises';
 import type { Linter } from 'eslint';
 import type { Options } from '../types.js';
+import { name } from '../../package.json';
 import { pvtnbr } from '#pvtnbr';
 
 const exists = async (
@@ -28,7 +29,7 @@ export const getConfig = async (
 		const configModule: ConfigModule = await import(pathToFileURL(configFilePath).toString());
 
 		if (configModule.default) {
-			console.log('[@pvtnbr/eslint-config]: Using config file:', configFilePath);
+			console.log(`[${name}]: Using config file: ${configFilePath}`);
 			return configModule.default;
 		}
 	}
