@@ -1,9 +1,9 @@
 {
-  "name": "20x",
+  "name": "lintroll",
   "version": "0.0.0-semantic-release",
   "license": "MIT",
-  "repository": "privatenumber/20x",
-  "funding": "https://github.com/privatenumber/20x?sponsor=1",
+  "repository": "privatenumber/lintroll",
+  "funding": "https://github.com/privatenumber/lintroll?sponsor=1",
   "author": {
     "name": "Hiroki Osame",
     "email": "hiroki.osame@gmail.com"
@@ -15,9 +15,7 @@
     "dist"
   ],
   "type": "module",
-  "bin": {
-    "lint": "./dist/cli/index.mjs"
-  },
+  "bin": "./dist/cli/index.mjs",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.cts",
