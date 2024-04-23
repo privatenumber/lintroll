@@ -27,7 +27,7 @@ Checkout the code fixtures from the passing tests [here](https://github.com/sear
 ## Install
 
 ```sh
-pnpm i -D lintroll
+npm i -D lintroll
 ```
 
 ## Using as a CLI command
@@ -63,7 +63,7 @@ lintroll --node=./build .
 
 ### Optional `package.json` script
 
-Adding it to `package.json#scripts` allows you to simply run `pnpm lint` without needing to pass in the current directory (`.`) every time.
+Adding it to `package.json#scripts` allows you to simply run `npm run lint` (or `pnpm lint`) without needing to pass in the current directory (`.`) every time.
 
 This also follows the best practice of documenting available commands in a central place.
 
