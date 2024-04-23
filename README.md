@@ -1,24 +1,25 @@
-
 <p align="center">
-	<img src="./.github/logo.webp" width="240">
+	<img src="./.github/logo.webp" width="120">
 </p>
 <h2 align="center">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ESLint config <sub><em>by pvtnbr</em></sub>
+lintroll
+<br>
+<a href="https://npm.im/lintroll"><img src="https://badgen.net/npm/v/lintroll"></a>
 </h2>
 
-This ESLint configuration was originally forked from Airbnb's ESLint config, taking inspiration from their comprehensive [JavaScript style guide](https://github.com/airbnb/javascript).
+An opinionated JavaScript, TypeScript, Vue.js, React, etc. linter.
 
-It's been enhanced with plugins, cutting edge tooling, and offers a comprehensive linting solution for a wide range of JavaScript ecosystems, including TypeScript, React, Vue.js, and Markdown code blocks.
+Powered by ESLint that's enhanced with 12 plugins, covering a wide scope including TypeScript, React, Vue.js, JSON & YAML, and even Markdown code blocks.
 
 ### Features
 
 - **Streamlined syntax**: Single quotes, semicolons, tabs, and [arrow functions](./src/custom-rules/prefer-arrow-functions/) for a clear & intentional coding style.
 
-- **Versatile language support**: Tailored for TypeScript, React, Vue.js, and even Markdown code blocks, ensuring a wide range of applications.
+- **Versatile language support**: Lints TypeScript, Vue.js, React, JSON & YAML, and even Markdown code blocks ensuring a wide scope of code.
 
-- **Handy CLI command** Comes with a quick and easy-to-use CLI command, which even supports `eslint.config.ts`.
+- **CLI command** Comes with a quick and easy-to-use CLI command, which even supports `eslint.config.ts`.
 
-- **Extended plugin support**: A rich set of plugins to lint ESlint comments, imports, JSON, YAML and more.
+- **ESLint config**: Also exports an ESLint config so you can itegrate it into your own config!
 
 ### What does the linted code look like?
 Checkout the code fixtures from the passing tests [here](https://github.com/search?q=repo%3Aprivatenumber%2Feslint-config+path%3Atests%2F**%2Ffixtures%2Fpass*&type=code).
@@ -26,47 +27,49 @@ Checkout the code fixtures from the passing tests [here](https://github.com/sear
 ## Install
 
 ```sh
-pnpm i -D @pvtnbr/eslint-config
+pnpm i -D lintroll
 ```
 
-## `lint` Command
+## Using as a CLI command
 
-This package includes a `lint` CLI command as a direct alternative to `eslint`, allowing you to lint your code with this config without any configuration or setup.
+The `lintroll` command can be used as drop-in replacement for `eslint`, allowing you to lint your code with this config without any extra configuration.
 
 #### Lint files in the current directory
 
 ```sh
-pnpm lint .
+lintroll .
 ```
 
 #### Apply auto fix
 
 ```sh
-pnpm lint . --fix
+lintroll . --fix
 ```
 
 #### Lint with caching enabled
 ```sh
-pnpm lint --cache .
+lintroll --cache .
 ```
 
 #### Lint only staged files
 ```sh
-pnpm lint --staged .
+lintroll --staged .
 ```
 
 #### Specify Node.js files
 ```sh
-pnpm lint --node ./build .
+lintroll --node=./build .
 ```
 
 ### Optional `package.json` script
 
-Adding it to `package.json#scripts` gives you the convenience of not needing to pass in the current directory (`.`) every time so you can simply run `pnpm lint` instead. Also follows the best practice of documenting available commands in a central place.
+Adding it to `package.json#scripts` allows you to simply run `pnpm lint` without needing to pass in the current directory (`.`) every time.
+
+This also follows the best practice of documenting available commands in a central place.
 
 ```diff
   "scripts": {
-+   "lint": "lint .",
++   "lint": "lintroll .",
     "build": "..."
     "dev": "..."
   }
@@ -84,12 +87,12 @@ If you'd like to customize the linting rules further, you can add one of these E
 
 ### `--help`
 ```
-lint
+lintroll
 
-by @pvtnbr/eslint-config
+by @privatenumber (Hiroki Osame)
 
 Usage:
-  lint [flags...] <files...>
+  lintroll [flags...] <files...>
 
 Flags:
       --cache                          Only check changed files
@@ -102,7 +105,7 @@ Flags:
       --staged                         Only lint staged files within the files passed in
 ```
 
-## ESLint setup
+## Using as an ESLint config
 
 To use the `eslint` command, create a [flat configuration](https://eslint.org/docs/latest/use/configure/configuration-files-new) file `eslint.config.js` at your project root.
 
@@ -114,12 +117,12 @@ If you want a simple setup with no customization, create the following `eslint.c
 
 Module:
 ```js
-export { default } from '@pvtnbr/eslint-config'
+export { default } from 'lintroll'
 ```
 
 CommonJS:
 ```js
-module.exports = require('@pvtnbr/eslint-config')
+module.exports = require('lintroll')
 ```
 
 ### Extended config
@@ -130,7 +133,7 @@ Module:
 ```js
 // @ts-check
 
-import { defineConfig, pvtnbr } from '@pvtnbr/eslint-config'
+import { defineConfig, pvtnbr } from 'lintroll'
 
 export default defineConfig([
     {
@@ -158,7 +161,7 @@ CommonJS:
 ```js
 // @ts-check
 
-const { defineConfig, pvtnbr } = require('@pvtnbr/eslint-config')
+const { defineConfig, pvtnbr } = require('lintroll')
 
 module.exports = defineConfig([
     {
@@ -244,7 +247,7 @@ An identity function to enforce type checking on the config.
 
 Type: `FlatConfig | FlatConfig[]`
 
-## Other ESLint configs
+## Awesome ESLint configs
 
 Make sure you also check out these awesome ESLint configs. They are a constant source of inspiration for me, and are great alternatives to consider.
 

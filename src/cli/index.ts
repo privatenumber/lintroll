@@ -3,6 +3,7 @@ import path from 'path';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { execa } from 'execa';
+import { name } from '../../package.json';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
 
@@ -11,10 +12,10 @@ import { getExitCode, countErrors } from './handle-errors.js';
  * https://github.com/eslint/eslint/blob/main/lib/cli.js
  */
 const argv = cli({
-	name: 'lint',
+	name,
 	parameters: ['<files...>'],
 	help: {
-		description: 'by @pvtnbr/eslint-config',
+		description: 'Opinionated ESLint by @privatenumber (Hiroki Osame)',
 	},
 	flags: {
 		fix: {
