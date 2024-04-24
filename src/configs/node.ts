@@ -163,6 +163,8 @@ export const node = (
 
 					// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/prefer-promises/fs.md
 					'n/prefer-promises/fs': 'error',
+
+					'n/no-unsupported-features/node-builtins': 'warn',
 				},
 			}),
 		);
