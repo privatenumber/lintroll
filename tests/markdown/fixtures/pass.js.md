@@ -16,6 +16,10 @@ const data = A({
 })
 
 console.log(data)
+
+setTimeout(() => {
+    require('./file.ts')
+})
 ```
 
 ```json5

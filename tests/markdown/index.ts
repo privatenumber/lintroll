@@ -1,12 +1,25 @@
 import { fileURLToPath } from 'url';
 import { testSuite, expect } from 'manten';
-import { eslint } from '../utils/eslint.js';
+import { eslint, createEslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
 	describe('markdown', ({ describe }) => {
 		describe('Pass', ({ test }) => {
 			test('.js', async ({ onTestFail }) => {
 				const [result] = await eslint.lintFiles(
+					fileURLToPath(new URL('fixtures/pass.js.md', import.meta.url)),
+				);
+
+				onTestFail(() => {
+					console.log(result);
+				});
+
+				expect(result.usedDeprecatedRules.length).toBe(0);
+				expect(result.errorCount).toBe(0);
+			});
+
+			test('.js with node', async ({ onTestFail }) => {
+				const [result] = await createEslint({ node: true }).lintFiles(
 					fileURLToPath(new URL('fixtures/pass.js.md', import.meta.url)),
 				);
 

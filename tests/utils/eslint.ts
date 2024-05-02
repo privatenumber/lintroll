@@ -12,7 +12,7 @@ export const createEslint = (
 	overrideConfigFile: true,
 });
 
-export const eslint = createEslint({});
+export const eslint = createEslint();
 
 export const eslintCli = (
 	file: string,
