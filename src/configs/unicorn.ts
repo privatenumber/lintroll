@@ -95,4 +95,10 @@ export const unicorn = [
 			'unicorn/no-abusive-eslint-disable': 'off',
 		},
 	}),
+	defineConfig({
+		files: ['FUNDING.json'],
+		rules: {
+			'unicorn/filename-case': 'off',
+		},
+	}),
 ];
