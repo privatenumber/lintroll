@@ -1,4 +1,3 @@
-import 'tsx/esm';
 import path from 'path';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';

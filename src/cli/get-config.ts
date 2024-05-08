@@ -1,6 +1,6 @@
-import 'tsx/esm';
 import { pathToFileURL } from 'url';
 import fs from 'fs/promises';
+import { tsImport } from 'tsx/esm/api';
 import type { Linter } from 'eslint';
 import type { Options } from '../types.js';
 import { name } from '../../package.json';
@@ -26,7 +26,10 @@ export const getConfig = async (
 	);
 
 	if (configFilePath) {
-		const configModule: ConfigModule = await import(pathToFileURL(configFilePath).toString());
+		const configModule: ConfigModule = await tsImport(
+			pathToFileURL(configFilePath).toString(),
+			import.meta.url,
+		);
 
 		if (configModule.default) {
 			console.log(`[${name}]: Using config file: ${configFilePath}`);

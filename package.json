@@ -80,10 +80,10 @@
 		"eslint-plugin-yml": "^1.14.0",
 		"execa": "^8.0.1",
 		"get-conditions": "^1.0.0",
-		"get-tsconfig": "^4.7.3",
+		"get-tsconfig": "^4.7.4",
 		"globals": "^15.1.0",
 		"resolve-pkg-maps": "^1.0.0",
-		"tsx": "^4.7.3",
+		"tsx": "^4.9.3",
 		"vue-eslint-parser": "^9.4.2",
 		"yaml-eslint-parser": "^1.2.2"
 	},
