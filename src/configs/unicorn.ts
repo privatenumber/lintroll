@@ -101,4 +101,10 @@ export const unicorn = [
 			'unicorn/filename-case': 'off',
 		},
 	}),
+	defineConfig({
+		files: ['**/*.d.ts'],
+		rules: {
+			'unicorn/prevent-abbreviations': 'off',
+		},
+	}),
 ];
