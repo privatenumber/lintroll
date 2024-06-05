@@ -78,6 +78,8 @@ export const unicorn = [
 					pkg: false,
 					prop: false,
 					props: false,
+					// Common abbreviation (e.g. URLSearchParams)
+					params: false,
 					ref: false,
 					src: false,
 				},
