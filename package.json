@@ -48,6 +48,7 @@
 			"default": "./dist/cli/index.mjs"
 		}
 	},
+	"packageManager": "pnpm@9.2.0",
 	"scripts": {
 		"build": "pkgroll --export-condition=node --export-condition=development --minify",
 		"type-check": "tsc --noEmit",
@@ -106,6 +107,5 @@
 		"read-package-up": "^11.0.0",
 		"type-fest": "^4.20.1",
 		"typescript": "^5.5.2"
-	},
-	"packageManager": "pnpm@9.2.0"
+	}
 }

@@ -65,6 +65,7 @@ export const json = [
 						'unpkg',
 
 						// Development meta
+						'packageManager',
 						'scripts',
 						'husky',
 						'simple-git-hooks',
