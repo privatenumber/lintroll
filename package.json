@@ -106,5 +106,6 @@
 		"read-package-up": "^11.0.0",
 		"type-fest": "^4.18.0",
 		"typescript": "^5.4.5"
-	}
+	},
+	"packageManager": "pnpm@9.2.0"
 }
