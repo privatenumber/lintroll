@@ -14,7 +14,7 @@ export const importsConfig = defineConfig({
 	settings: {
 		'import-x/ignore': [
 			'node_modules',
-			'\\.(css|svg|json)$',
+			String.raw`\.(css|svg|json)$`,
 		],
 		'import-x/resolver': {
 			node: {},

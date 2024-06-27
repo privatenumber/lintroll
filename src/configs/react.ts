@@ -53,7 +53,7 @@ export const react = defineConfig({
 		'unicorn/filename-case': ['error', {
 			case: 'pascalCase',
 			ignore: [
-				'\\.spec\\.tsx$',
+				String.raw`\.spec\.tsx$`,
 			],
 		}],
 	},

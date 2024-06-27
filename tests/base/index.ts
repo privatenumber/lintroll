@@ -125,7 +125,7 @@ export default testSuite(({ describe }) => {
 				}),
 				expect.objectContaining({
 					ruleId: 'regexp/prefer-d',
-					message: 'Unexpected character class \'[0-9]\'. Use \'\\d\' instead.',
+					message: String.raw`Unexpected character class '[0-9]'. Use '\d' instead.`,
 				}),
 				expect.objectContaining({
 					ruleId: 'regexp/prefer-w',
