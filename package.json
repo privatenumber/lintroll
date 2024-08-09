@@ -71,7 +71,7 @@
 		"eslint-plugin-jsonc": "^2.16.0",
 		"eslint-plugin-markdown": "^5.1.0",
 		"eslint-plugin-n": "^17.10.2",
-		"eslint-plugin-no-use-extend-native": "^0.5.0",
+		"eslint-plugin-no-use-extend-native": "^0.7.2",
 		"eslint-plugin-promise": "^6.6.0",
 		"eslint-plugin-react": "^7.35.0",
 		"eslint-plugin-react-hooks": "^4.6.2",

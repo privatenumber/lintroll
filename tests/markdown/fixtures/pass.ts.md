@@ -17,7 +17,9 @@ const data = A({
     b: 2
 })
 
-console.log(data)
+console.log(data);
+
+(() => {})
 
 export default () => 1
 ```

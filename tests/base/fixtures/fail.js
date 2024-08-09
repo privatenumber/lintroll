@@ -44,3 +44,9 @@ const ternary2 = true ?
 	2;
 
 const regex = /[0-9]\.[a-zA-Z0-9_]\-[^0-9]/i;
+
+// Extending native prototypes - no-extend-native
+String.prototype.shortHash = function() {};
+
+// Using non-native prototypes - no-use-extend-native
+'50bda47b09923e045759db8e8dd01a0bacd97370'.shortHash();

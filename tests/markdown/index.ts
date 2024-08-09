@@ -42,7 +42,7 @@ export default testSuite(({ describe }) => {
 				});
 
 				expect(result.usedDeprecatedRules.length).toBe(0);
-				expect(messages.length).toBe(1);
+				expect(messages.length).toBe(2);
 				expect(messages).toEqual(
 					expect.arrayContaining([
 						expect.objectContaining({

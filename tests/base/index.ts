@@ -130,6 +130,12 @@ export default testSuite(({ describe }) => {
 				expect.objectContaining({
 					ruleId: 'regexp/prefer-w',
 				}),
+				expect.objectContaining({
+					ruleId: 'no-extend-native',
+				}),
+				expect.objectContaining({
+					ruleId: 'no-use-extend-native/no-use-extend-native',
+				}),
 			].forEach((matcher) => {
 				expect(result.messages).toEqual(
 					expect.arrayContaining([matcher]),
