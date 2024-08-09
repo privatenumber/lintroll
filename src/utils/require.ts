@@ -1,4 +1,4 @@
-import { createRequire } from 'module';
+import { createRequire } from 'node:module';
 
 // Require from the context of the current project
 const require = createRequire(`${process.cwd()}/`);

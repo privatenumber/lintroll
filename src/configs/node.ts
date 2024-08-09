@@ -165,6 +165,8 @@ export const node = (
 					'n/prefer-promises/fs': 'error',
 
 					'n/no-unsupported-features/node-builtins': 'warn',
+
+					'n/prefer-node-protocol': 'error',
 				},
 			}),
 		);

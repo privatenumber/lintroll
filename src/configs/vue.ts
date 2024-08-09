@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import type { ESLint } from 'eslint';
 import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';

@@ -1,6 +1,6 @@
 'some-directive';
 
-import { readFile, writeFile, stat } from 'fs';
+import { readFile, writeFile, stat } from 'node:fs';
 import './some-file.js';
 
 // require('./some-file');

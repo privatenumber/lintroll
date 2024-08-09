@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import importPlugin from 'eslint-plugin-import-x';
 import { defineConfig } from '../utils/define-config';
 

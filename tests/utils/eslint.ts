@@ -1,4 +1,4 @@
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { execaNode } from 'execa';
 import { pvtnbr, type Options } from '#pvtnbr';

@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { cli } from 'cleye';
 import eslintApi from 'eslint/use-at-your-own-risk';
 import { execa } from 'execa';

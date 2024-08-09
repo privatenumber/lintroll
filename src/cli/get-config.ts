@@ -1,5 +1,5 @@
-import { pathToFileURL } from 'url';
-import fs from 'fs/promises';
+import { pathToFileURL } from 'node:url';
+import fs from 'node:fs/promises';
 import { tsImport } from 'tsx/esm/api';
 import type { Linter } from 'eslint';
 import type { Options } from '../types.js';
