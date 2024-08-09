@@ -12,8 +12,10 @@ import { eslint } from './eslint.js';
 
 const [, noExtraneousDependenciesConfig] = importsConfig.rules['import-x/no-extraneous-dependencies'];
 
+export const tsFiles = '**/*.{ts,tsx,mts,cts}';
+
 export const parseTypescript = defineConfig({
-	files: ['**/*.{ts,tsx,mts,cts}'],
+	files: [tsFiles],
 	languageOptions: {
 		parser: tsParser,
 		parserOptions: {
@@ -24,7 +26,7 @@ export const parseTypescript = defineConfig({
 });
 
 export const typescript = defineConfig({
-	files: ['**/*.{ts,tsx,mts,cts}'],
+	files: [tsFiles],
 
 	plugins: {
 		'@typescript-eslint': tsPlugin,

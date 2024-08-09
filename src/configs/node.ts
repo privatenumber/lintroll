@@ -5,6 +5,7 @@ import { findUpSync } from 'find-up-simple';
 import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
 import type { Options } from '../types.js';
+import { tsFiles } from './typescript.js';
 
 const scriptExtensions = 'js,ts,mjs,cjs,mts,cts';
 
@@ -167,6 +168,13 @@ export const node = (
 					'n/no-unsupported-features/node-builtins': 'warn',
 
 					'n/prefer-node-protocol': 'error',
+				},
+			}),
+			defineConfig({
+				files: [tsFiles],
+				rules: {
+					// Disable in favor of @typescript-eslint/no-require-imports
+					'n/global-require': 'off',
 				},
 			}),
 		);
