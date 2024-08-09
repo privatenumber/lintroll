@@ -36,8 +36,8 @@ importers:
         specifier: ^3.6.1
         version: 3.6.1(@typescript-eslint/parser@8.0.1(eslint@8.57.0)(typescript@5.5.4))(eslint-plugin-import@2.29.1)(eslint@8.57.0)
       eslint-plugin-import-x:
-        specifier: ^0.5.3
-        version: 0.5.3(eslint@8.57.0)(typescript@5.5.4)
+        specifier: ^3.1.0
+        version: 3.1.0(eslint@8.57.0)(typescript@5.5.4)
       eslint-plugin-jsonc:
         specifier: ^2.16.0
         version: 2.16.0(eslint@8.57.0)
@@ -1200,8 +1200,8 @@ packages:
     peerDependencies:
       eslint: '>=8'
 
-  eslint-plugin-import-x@0.5.3:
-    resolution: {integrity: sha512-hJ/wkMcsLQXAZL3+txXIDpbW5cqwdm1rLTqV4VRY03aIbzE3zWE7rPZKW6Gzf7xyl1u3V1iYC6tOG77d9NF4GQ==}
+  eslint-plugin-import-x@3.1.0:
+    resolution: {integrity: sha512-/UbPA+bYY7nIxcjL3kpcDY3UNdoLHFhyBFzHox2M0ypcUoueTn6woZUUmzzi5et/dXChksasYYFeKE2wshOrhg==}
     engines: {node: '>=16'}
     peerDependencies:
       eslint: ^8.56.0 || ^9.0.0-0
@@ -1920,10 +1920,6 @@ packages:
 
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
-
-  minimatch@9.0.4:
-    resolution: {integrity: sha512-KqWh+VchfxcMNRAJjj2tnsSJdNbHsVgnkBhTNrW7AjVo6OvLtxw8zfT9oLw1JSohlFzJ8jCoTgaoXvJ+kHt6fw==}
-    engines: {node: '>=16 || 14 >=14.17'}
 
   minimatch@9.0.5:
     resolution: {integrity: sha512-G6T0ZX48xgozx7587koeX9Ys2NYy6Gmv//P89sEte9V9whIapMNF4idKxnW2QtCcLiTWlb/wfCabAtAFWhhBow==}
@@ -3773,7 +3769,7 @@ snapshots:
   eslint-import-resolver-node@0.3.9:
     dependencies:
       debug: 3.2.7
-      is-core-module: 2.13.1
+      is-core-module: 2.15.0
       resolve: 1.22.8
     transitivePeerDependencies:
       - supports-color
@@ -3823,17 +3819,17 @@ snapshots:
       eslint: 8.57.0
       eslint-compat-utils: 0.5.0(eslint@8.57.0)
 
-  eslint-plugin-import-x@0.5.3(eslint@8.57.0)(typescript@5.5.4):
+  eslint-plugin-import-x@3.1.0(eslint@8.57.0)(typescript@5.5.4):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.0)(typescript@5.5.4)
-      debug: 4.3.4
+      debug: 4.3.6
       doctrine: 3.0.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
       get-tsconfig: 4.7.6
       is-glob: 4.0.3
-      minimatch: 9.0.4
-      semver: 7.6.0
+      minimatch: 9.0.5
+      semver: 7.6.3
       stable-hash: 0.0.4
       tslib: 2.6.3
     transitivePeerDependencies:
@@ -4697,10 +4693,6 @@ snapshots:
   minimatch@3.1.2:
     dependencies:
       brace-expansion: 1.1.11
-
-  minimatch@9.0.4:
-    dependencies:
-      brace-expansion: 2.0.1
 
   minimatch@9.0.5:
     dependencies:
