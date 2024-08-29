@@ -536,8 +536,8 @@ export const eslint = defineConfig({
 		 * https://eslint.org/docs/latest/rules/no-template-curly-in-string
 		 *
 		 * Needed for TypeScript ${configDir} in tsconfig.json
-		 * But also, IDE have syntax highlighting that make it obvious when template string interpolation is working
-		 * And tests should also catch this.
+		 * But also, IDE have syntax highlighting that make it obvious when template string
+		 * interpolation is working. And tests should also catch this.
 		 */
 		// 'no-template-curly-in-string': 'error',
 
