@@ -45,6 +45,10 @@ const argv = cli({
 			type: [String],
 			description: 'Enable Node.js rules. Pass in a glob to specify files',
 		},
+		allowAbbreviation: {
+			type: [String],
+			description: 'Allow abbreviations',
+		},
 	},
 });
 
@@ -65,6 +69,10 @@ const isNodeEnabled = (
 	const eslint = new FlatESLint({
 		baseConfig: await getConfig({
 			node: isNodeEnabled(argv.flags.node),
+			allowAbbreviations: {
+				exactWords: argv.flags.allowAbbreviation,
+				substrings: argv.flags.allowAbbreviation,
+			},
 		}),
 
 		// Don't look up config file
