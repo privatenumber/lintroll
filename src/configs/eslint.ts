@@ -532,9 +532,14 @@ export const eslint = defineConfig({
 		// disallow sparse arrays
 		'no-sparse-arrays': 'error',
 
-		// Disallow template literal placeholder syntax in regular strings
-		// https://eslint.org/docs/latest/rules/no-template-curly-in-string
-		'no-template-curly-in-string': 'error',
+		/**
+		 * https://eslint.org/docs/latest/rules/no-template-curly-in-string
+		 *
+		 * Needed for TypeScript ${configDir} in tsconfig.json
+		 * But also, IDE have syntax highlighting that make it obvious when template string interpolation is working
+		 * And tests should also catch this.
+		 */
+		// 'no-template-curly-in-string': 'error',
 
 		// disallow to use this/super before super() calling in constructors.
 		// https://eslint.org/docs/latest/rules/no-this-before-super
