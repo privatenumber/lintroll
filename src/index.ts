@@ -58,7 +58,7 @@ export const pvtnbr = (
 	serviceWorkers,
 	eslintComments,
 	...imports,
-	...unicorn,
+	...unicorn(options),
 	typescript,
 	stylistic,
 	...regexp,
