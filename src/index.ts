@@ -22,7 +22,7 @@ import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
 	options?: Options,
-): Linter.FlatConfig[] => [
+): Linter.Config[] => [
 	defineConfig({
 		ignores: [
 			'**/package-lock.json',
