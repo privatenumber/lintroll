@@ -7,9 +7,7 @@ export default testSuite(({ describe }) => {
 		RuleTester.describe = describe;
 		RuleTester.it = test;
 		RuleTester.afterAll = () => {};
-		const ruleTester = new RuleTester({
-			parser: '@typescript-eslint/parser',
-		});
+		const ruleTester = new RuleTester();
 
 		ruleTester.run('no-function-hoisting', noFunctionHoisting, {
 			valid: [

@@ -11,7 +11,7 @@ export const json = [
 			jsonc: jsoncPlugin as unknown as ESLint.Plugin,
 		},
 		languageOptions: {
-			parser: jsoncPlugin as unknown as Linter.ParserModule,
+			parser: jsoncPlugin as unknown as Linter.Parser,
 		},
 		rules: {
 			...base.rules as Linter.RulesRecord,

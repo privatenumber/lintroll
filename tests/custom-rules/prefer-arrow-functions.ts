@@ -5,11 +5,20 @@ import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functi
 export default testSuite(({ describe }) => {
 	describe('prefer-arrow-functions', ({ describe, test }) => {
 		RuleTester.describe = describe;
-		RuleTester.it = test;
+		RuleTester.it = (name, testFunction) => {
+			test(name, async ({ onTestFail }) => {
+				onTestFail((error) => {
+					console.dir(error, {
+						colors: true,
+						depth: null,
+						maxArrayLength: null,
+					});
+				});
+				return await testFunction();
+			});
+		};
 		RuleTester.afterAll = () => {};
-		const ruleTester = new RuleTester({
-			parser: '@typescript-eslint/parser',
-		});
+		const ruleTester = new RuleTester();
 
 		ruleTester.run('prefer-arrow-functions', preferArrowFunctions, {
 			valid: [
@@ -291,9 +300,10 @@ export default testSuite(({ describe }) => {
 							messageId: 'preferArrowFunction',
 						},
 					],
-
-					// Ideally, it removes the inner function too
-					output: '( (b = (function (){}))=>{})',
+					output: [
+						'( (b = (function (){}))=>{})',
+						'( (b = ( ()=>{}))=>{})',
+					],
 				},
 
 				// Object property

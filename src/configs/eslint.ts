@@ -376,8 +376,8 @@ export const eslint = defineConfig({
 		// disallow use of the Object constructor
 		'no-object-constructor': 'error',
 
-		// https://eslint.org/docs/latest/rules/no-new-symbol
-		'no-new-symbol': 'error',
+		// https://eslint.org/docs/latest/rules/no-new-native-nonconstructor
+		'no-new-native-nonconstructor': 'error',
 
 		// disallows creating new instances of String, Number, and Boolean
 		'no-new-wrappers': 'error',
