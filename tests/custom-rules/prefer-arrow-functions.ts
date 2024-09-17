@@ -5,12 +5,16 @@ import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functi
 export default testSuite(({ describe }) => {
 	describe('prefer-arrow-functions', ({ describe, test }) => {
 		RuleTester.describe = describe;
-		RuleTester.it = (name, fn) => {
+		RuleTester.it = (name, testFunction) => {
 			test(name, async ({ onTestFail }) => {
-				onTestFail((err) => {
-					console.dir(err, { colors: true, depth: null, maxArrayLength: null });
+				onTestFail((error) => {
+					console.dir(error, {
+						colors: true,
+						depth: null,
+						maxArrayLength: null,
+					});
 				});
-				return await fn();
+				return await testFunction();
 			});
 		};
 		RuleTester.afterAll = () => {};
