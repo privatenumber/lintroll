@@ -196,9 +196,9 @@ declare module 'eslint-plugin-markdown' {
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: [
-				Linter.FlatConfig,
-				Linter.FlatConfig,
-				Linter.FlatConfig
+				Linter.Config,
+				Linter.Config,
+				Linter.Config
 			];
 		};
 		processors: {
@@ -221,7 +221,7 @@ declare module 'eslint-plugin-n' {
 	const plugin: ESLint.Plugin & {
 		configs: {
 			recommended: ESLint.ConfigData;
-			'flat/mixed-esm-and-cjs': Linter.FlatConfig[];
+			'flat/mixed-esm-and-cjs': Linter.Config[];
 		};
 	};
 	export default plugin;

@@ -10,17 +10,19 @@ const properties = [
 	'settings',
 ] as const;
 
-const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
+const deepFreeze = <Config extends Linter.Config>(
+	config: Config,
+) => {
 	for (const property of properties) {
 		const value = config[property];
-		if (!value) {
+		if (typeof value !== 'object' || value === null) {
 			continue;
 		}
 
 		Object.freeze(value);
 
 		if (property === 'rules') {
-			const rules = value as Linter.FlatConfig['rules'];
+			const rules = value as Linter.Config['rules'];
 			for (const ruleName in rules) {
 				if (Object.hasOwn(rules, ruleName)) {
 					const rule = rules[ruleName];
@@ -32,7 +34,7 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 		}
 
 		if (property === 'languageOptions') {
-			const languageOptions = value as NonNullable<Linter.FlatConfig['languageOptions']>;
+			const languageOptions = value as NonNullable<Linter.Config['languageOptions']>;
 			if (languageOptions.parserOptions) {
 				Object.freeze(languageOptions.parserOptions);
 			}
@@ -45,15 +47,14 @@ const deepFreeze = <T extends Linter.FlatConfig>(config: T) => {
 	return Object.freeze(config);
 };
 
-interface DefineConfig {
-	<Config extends Linter.FlatConfig>(config: Config): Config;
-	<Configs extends Linter.FlatConfig[]>(config: Configs): Configs;
-}
-
-export const defineConfig: DefineConfig = (
-	config: Linter.FlatConfig | Linter.FlatConfig[],
-): Linter.FlatConfig | Linter.FlatConfig[] => (
-	Array.isArray(config)
-		? config.map(deepFreeze)
-		: deepFreeze(config)
-);
+/**
+ * Applies type and seals the config by freezing it to prevent
+ * inadvertent mutation of the config
+ */
+export const defineConfig = <Config extends Linter.Config | Linter.Config[]>(
+	config: Config,
+) => (
+		Array.isArray(config)
+			? config.map(deepFreeze)
+			: deepFreeze(config)
+	) as Config;

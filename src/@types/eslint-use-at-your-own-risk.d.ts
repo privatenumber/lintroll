@@ -4,7 +4,7 @@ declare module 'eslint/use-at-your-own-risk' {
 	// Defined here: https://github.com/eslint/eslint/blob/54c3ca6f2dcd2a7afd53f42fc32055a25587259e/lib/eslint/flat-eslint.js#L66-L88
 	type FlatESLintOptions = {
 		allowInlineConfig?: boolean;
-		baseConfig?: Linter.FlatConfig[];
+		baseConfig?: Linter.Config[];
 		cache?: boolean;
 		cacheLocation?: string;
 		cacheStrategy?: 'metadata' | 'content';
@@ -15,7 +15,7 @@ declare module 'eslint/use-at-your-own-risk' {
 		globInputPaths?: boolean;
 		ignore?: boolean;
 		ignorePatterns?: string[];
-		overrideConfig?: Linter.FlatConfig[];
+		overrideConfig?: Linter.Config[];
 		overrideConfigFile?: boolean | string;
 		plugins?: Record<string, Plugin>;
 		reportUnusedDisableDirectives?: 'error' | 'warn' | 'off';

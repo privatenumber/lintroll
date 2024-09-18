@@ -10,11 +10,11 @@ const exists = async (
 	path: string,
 ) => fs.access(path).then(() => path, () => {});
 
-type ConfigModule = { default?: Linter.FlatConfig[] };
+type ConfigModule = { default?: Linter.Config[] };
 
 export const getConfig = async (
 	options: Options,
-): Promise<Linter.FlatConfig[]> => {
+): Promise<Linter.Config[]> => {
 	/**
 	 * Only checks cwd. I considerered find-up,
 	 * but I'm not sure if it's expected to detect config files far up
