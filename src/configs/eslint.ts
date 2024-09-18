@@ -13,10 +13,6 @@ export const eslint = defineConfig({
 		// https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
 		...js.configs.recommended.rules,
 
-		// Turn off deprecated rules enabled by recommended
-		'no-mixed-spaces-and-tabs': 'off',
-		'no-extra-semi': 'off',
-
 		'accessor-pairs': 'error',
 
 		// https://eslint.org/docs/latest/rules/array-callback-return
