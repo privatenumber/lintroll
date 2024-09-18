@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { cli } from 'cleye';
-import eslintApi from 'eslint/use-at-your-own-risk';
+import { ESLint } from 'eslint';
 import { execa } from 'execa';
 import { name } from '../../package.json';
 import { getConfig } from './get-config.js';
@@ -64,9 +64,7 @@ const isNodeEnabled = (
 };
 
 (async () => {
-	const { FlatESLint } = eslintApi;
-
-	const eslint = new FlatESLint({
+	const eslint = new ESLint({
 		baseConfig: await getConfig({
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
@@ -112,12 +110,12 @@ const isNodeEnabled = (
 	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {
-		await FlatESLint.outputFixes(results);
+		await ESLint.outputFixes(results);
 	}
 
 	let resultsToPrint = results;
 	if (argv.flags.quiet) {
-		resultsToPrint = FlatESLint.getErrorResults(results);
+		resultsToPrint = ESLint.getErrorResults(results);
 	}
 
 	const resultCounts = countErrors(results);
