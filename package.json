@@ -1,6 +1,13 @@
 {
 	"name": "lintroll",
 	"version": "0.0.0-semantic-release",
+	"description": "privatenumber's linting CLI",
+	"keywords": [
+		"lint",
+		"eslint",
+		"typescript eslint",
+		"eslint-config"
+	],
 	"license": "MIT",
 	"repository": "privatenumber/lintroll",
 	"funding": "https://github.com/privatenumber/lintroll?sponsor=1",
