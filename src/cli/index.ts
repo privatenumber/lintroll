@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
-import { execa } from 'execa';
+import spawn from 'nano-spawn';
 import { name } from '../../package.json';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
@@ -86,8 +86,8 @@ const isNodeEnabled = (
 
 	if (argv.flags.staged) {
 		try {
-			const { stdout: gitRoot } = await execa('git', ['rev-parse', '--show-toplevel']);
-			const { stdout: stagedFilesText } = await execa('git', [
+			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+			const { stdout: stagedFilesText } = await spawn('git', [
 				'diff',
 				'--staged',
 				'--name-only',

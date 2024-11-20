@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
-import { execaNode } from 'execa';
+import spawn from 'nano-spawn';
 import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
@@ -17,9 +17,10 @@ export const eslint = createEslint();
 export const eslintCli = (
 	file: string,
 	cwd: string,
-) => execaNode(
-	fileURLToPath(import.meta.resolve('#cli')),
+) => spawn(
+	process.execPath,
 	[
+		fileURLToPath(import.meta.resolve('#cli')),
 		'--node=true',
 		file,
 	],

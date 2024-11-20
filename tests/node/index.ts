@@ -18,7 +18,6 @@ export default testSuite(({ describe }) => {
 						fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
 					);
 
-					expect(linted.failed).toBe(false);
 					expect(linted.stdout).toBe('');
 					expect(linted.stderr).toBe('');
 				});
