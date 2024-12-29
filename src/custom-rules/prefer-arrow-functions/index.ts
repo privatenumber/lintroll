@@ -92,7 +92,9 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				);
 
 				if (functionNameVariable) {
-					const recursiveReference = functionNameVariable.references.some(({ from }) => from === scope);
+					const recursiveReference = functionNameVariable.references.some(
+						({ from }) => from === scope,
+					);
 					if (recursiveReference) {
 						return false;
 					}
