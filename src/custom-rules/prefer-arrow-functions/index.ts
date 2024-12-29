@@ -92,8 +92,19 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				);
 
 				if (functionNameVariable) {
+					const isInsideScope = (
+						parentScope: TSESLint.Scope.Scope,
+						childScope: TSESLint.Scope.Scope,
+					) => {
+						let currentScope: null | TSESLint.Scope.Scope = childScope;
+						while (currentScope && currentScope !== parentScope) {
+							currentScope = currentScope.upper;
+						}
+
+						return currentScope === parentScope;
+					};
 					const recursiveReference = functionNameVariable.references.some(
-						({ from }) => from === scope,
+						({ from }) => isInsideScope(scope, from),
 					);
 					if (recursiveReference) {
 						return false;

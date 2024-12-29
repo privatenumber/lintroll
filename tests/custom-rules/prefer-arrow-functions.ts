@@ -73,6 +73,14 @@ export default testSuite(({ describe }) => {
 					name: 'recursive expression',
 					code: '(function foo(){foo()})',
 				},
+				{
+					name: 'recursive expression with block',
+					code: '(function foo(){{foo()}})',
+				},
+				{
+					name: 'recursive expression with function block',
+					code: '(function foo(){(() => foo())()})',
+				},
 
 				// Object getters & setters
 				{
