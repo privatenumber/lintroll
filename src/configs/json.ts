@@ -1,20 +1,66 @@
-import type { Linter, ESLint } from 'eslint';
+import type { Linter } from 'eslint';
 import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.js';
+import { stylistic } from './stylistic.js';
 
-const [base] = jsoncPlugin.configs.base.overrides;
+const pick = <T extends Record<string, unknown>, K extends keyof T>(
+	object: T,
+	keys: K[],
+) => Object.fromEntries(
+		keys.map(key => [key, object[key]]),
+	) as Pick<T, K>;
 
-export const json = [
-	defineConfig({
-		files: ['**/*.{json,json5,jsonc}'],
-		plugins: {
-			jsonc: jsoncPlugin as unknown as ESLint.Plugin,
-		},
-		languageOptions: {
-			parser: jsoncPlugin as unknown as Linter.Parser,
-		},
+const vscodeConfigs = '**/.vscode/*.json';
+const tsconfigFiles = [
+	'**/tsconfig.json',
+	'**/tsconfig.*.json',
+	'**/tsconfig-*.json',
+];
+const nxConfigs = [
+	'**/project.json',
+	'**/nx.json',
+];
+const jsoncFiles = [
+	vscodeConfigs,
+	...tsconfigFiles,
+	...nxConfigs,
+];
+
+const jsoncCommaDangle = pick(
+	stylistic.rules['@stylistic/comma-dangle'][1],
+	['arrays', 'objects'],
+);
+const jsoncConfigs = jsoncPlugin.configs;
+
+const jsoncRecommended = jsoncConfigs['recommended-with-jsonc'].rules as Linter.RulesRecord;
+
+export const json = defineConfig([
+	...jsoncConfigs['flat/base'] as Linter.Config[],
+	{
+		files: ['**/*.json'],
+		ignores: jsoncFiles,
+		rules: jsoncConfigs['recommended-with-json'].rules as Linter.RulesRecord,
+	},
+	{
+		files: [
+			'**/*.jsonc',
+			...jsoncFiles,
+		],
 		rules: {
-			...base.rules as Linter.RulesRecord,
+			...jsoncRecommended,
+			'jsonc/comma-dangle': ['error', jsoncCommaDangle],
+		},
+	},
+	{
+		files: ['**/*.json5'],
+		rules: {
+			...jsoncConfigs['recommended-with-json5'].rules as Linter.RulesRecord,
+			'jsonc/comma-dangle': ['error', jsoncCommaDangle],
+		},
+	},
+	{
+		files: ['**/*.{json,json5,jsonc}'],
+		rules: {
 			'jsonc/indent': ['error', 'tab'],
 			'jsonc/key-spacing': [
 				'error',
@@ -24,10 +70,27 @@ export const json = [
 					mode: 'strict',
 				},
 			],
+			'jsonc/object-curly-newline': ['error', { minProperties: 1 }],
+			'jsonc/object-curly-spacing': ['error', 'always'],
 			'jsonc/object-property-newline': 'error',
+
+			// This must be `always` because JSON stringification produces new lines
+			'jsonc/array-bracket-newline': ['error', { minItems: 1 }],
+			'jsonc/array-bracket-spacing': ['error', 'never'],
+			'jsonc/array-element-newline': ['error', 'always'],
+
+			'eol-last': 'error',
+
+			...pick(
+				stylistic.rules,
+				[
+					'@stylistic/no-trailing-spaces',
+					'@stylistic/no-multiple-empty-lines',
+				],
+			),
 		},
-	}),
-	defineConfig({
+	},
+	{
 		files: ['**/package.json'],
 		rules: {
 			'jsonc/sort-keys': [
@@ -60,6 +123,7 @@ export const json = [
 						'main',
 						'module',
 						'types',
+						'typings',
 						'exports',
 						'imports',
 						'unpkg',
@@ -73,17 +137,20 @@ export const json = [
 
 						// Dependencies
 						'engines',
-						'peerDependencies',
-						'peerDependenciesMeta',
 						'dependencies',
 						'optionalDependencies',
+						'peerDependencies',
+						'peerDependenciesMeta',
 						'devDependencies',
-						'bundledDependencies',
-						'bundleDependencies',
 
 						// Miscellaneous
 						'overrides',
+						'bundledDependencies',
+						'bundleDependencies',
 						'eslintConfig',
+
+						// Nx
+						'generators',
 					],
 				},
 				{
@@ -92,11 +159,12 @@ export const json = [
 				},
 			],
 		},
-	}),
-	defineConfig({
-		files: ['**/tsconfig.json', '**/tsconfig.*.json'],
+	},
+	{
+		files: tsconfigFiles,
 		rules: {
-			...jsoncPlugin.configs['recommended-with-jsonc'].rules as Linter.RulesRecord,
+			...jsoncRecommended,
+			'jsonc/comma-dangle': ['error', jsoncCommaDangle],
 			'jsonc/sort-keys': [
 				'error',
 				{
@@ -136,14 +204,14 @@ export const json = [
 						'experimentalDecorators',
 
 						// Modules
-						'baseUrl',
 						'rootDir',
 						'rootDirs',
-						'customConditions',
 						'module',
 						'moduleResolution',
 						'moduleSuffixes',
+						'customConditions',
 						'noResolve',
+						'baseUrl',
 						'paths',
 						'resolveJsonModule',
 						'resolvePackageJsonExports',
@@ -220,5 +288,35 @@ export const json = [
 				},
 			],
 		},
-	}),
-];
+	},
+	{
+		files: nxConfigs,
+		rules: {
+			...jsoncRecommended,
+			'jsonc/sort-keys': [
+				'error',
+				{
+					pathPattern: '^$',
+					order: [
+						'$schema',
+						'name',
+						'metadata',
+						'projectType',
+						'root',
+						'sourceRoot',
+						'generators',
+						'namedInputs',
+						'tags',
+						'implicitDependencies',
+						'release',
+						'targets',
+					],
+				},
+				{
+					pathPattern: '^targets$',
+					order: { type: 'asc' },
+				},
+			],
+		},
+	},
+]);

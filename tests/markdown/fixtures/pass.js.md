@@ -24,7 +24,7 @@ setTimeout(() => {
 
 ```json5
 {
-    "name": "test"
+    "name": "test",
 }
 ```
 
