@@ -1,8 +1,9 @@
-import './some-file';
+import { TypeA } from './some-file';
+import { type TypeB } from './some-file';
 
 const unusedVar = 1
 
-type UnusedType = string;
+type UnusedType = TypeB;
 
 // Promise
 const sleep = ms => new Promise((resolve) => {
@@ -23,6 +24,6 @@ type SomeObject = {
 })();
 
 const someNumber = 1;
-console.log(<string>someNumber);
+console.log(<TypeA>someNumber);
 
 export {};

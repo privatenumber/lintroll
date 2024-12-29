@@ -100,7 +100,7 @@ export const importsConfig = defineConfig({
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-duplicates.md
-		'import-x/no-duplicates': 'error',
+		'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-deprecated.md
 		// Very slow based on TIMING=ALL npx eslint .

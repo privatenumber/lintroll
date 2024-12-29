@@ -99,6 +99,13 @@ export const typescript = defineConfig({
 			ignoreRestArgs: true,
 		}],
 
+		// If an imported name is only used as a type, it should be imported as a type
+		'@typescript-eslint/consistent-type-imports': ['error', {
+			fixStyle: 'inline-type-imports',
+		}],
+
+		'@typescript-eslint/no-import-type-side-effects': 'error',
+
 		// Function expression can be used to type a function
 		'func-style': 'off',
 

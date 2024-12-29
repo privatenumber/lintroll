@@ -58,6 +58,22 @@ export default testSuite(({ describe }) => {
 				// 	severity: 2,
 				// }),
 				expect.objectContaining({
+					ruleId: '@typescript-eslint/consistent-type-imports',
+					severity: 2,
+					message: 'All imports in the declaration are only used as types. Use `import type`.',
+					messageId: 'typeOverValue',
+				}),
+				expect.objectContaining({
+					ruleId: 'import-x/no-duplicates',
+					severity: 2,
+					messageId: 'duplicate',
+				}),
+				expect.objectContaining({
+					ruleId: '@typescript-eslint/no-import-type-side-effects',
+					severity: 2,
+					messageId: 'useTopLevelQualifier',
+				}),
+				expect.objectContaining({
 					ruleId: '@typescript-eslint/no-unused-vars',
 					messageId: 'unusedVar',
 					severity: 2,
