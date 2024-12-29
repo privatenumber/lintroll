@@ -69,6 +69,10 @@ export default testSuite(({ describe }) => {
 					name: 'nested new.target',
 					code: '(function(){(() => new.target)})',
 				},
+				{
+					name: 'recursive expression',
+					code: '(function foo(){foo()})',
+				},
 
 				// Object getters & setters
 				{
@@ -217,6 +221,14 @@ export default testSuite(({ describe }) => {
 						messageId: 'preferArrowFunction',
 					}],
 					output: 'const a= ()=>{};a()',
+				},
+				{
+					name: 'recursive declaration',
+					code: 'function a(){a()}',
+					errors: [{
+						messageId: 'preferArrowFunction',
+					}],
+					output: 'const a= ()=>{a()}',
 				},
 
 				// Function expression

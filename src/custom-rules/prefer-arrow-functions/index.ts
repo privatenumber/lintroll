@@ -87,9 +87,16 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 
 				references = functionNameVariable.references;
 			} else if (node.type === 'FunctionExpression') {
-				const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
+				const functionNameVariable = context.sourceCode.getDeclaredVariables!(node).find(
+					variable => variable.identifiers[0].parent.type === 'FunctionExpression',
+				);
 
 				if (functionNameVariable) {
+					const recursiveReference = functionNameVariable.references.some(({ from }) => from === scope);
+					if (recursiveReference) {
+						return false;
+					}
+
 					references.push(...functionNameVariable.references);
 				}
 
