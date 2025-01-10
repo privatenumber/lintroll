@@ -27,7 +27,7 @@ const jsoncFiles = [
 ];
 
 const jsoncCommaDangle = pick(
-	stylistic.rules['@stylistic/comma-dangle'][1],
+	stylistic[1].rules['@stylistic/comma-dangle'][1],
 	['arrays', 'objects'],
 );
 const jsoncConfigs = jsoncPlugin.configs;
@@ -82,7 +82,7 @@ export const json = defineConfig([
 			'eol-last': 'error',
 
 			...pick(
-				stylistic.rules,
+				stylistic[1].rules,
 				[
 					'@stylistic/no-trailing-spaces',
 					'@stylistic/no-multiple-empty-lines',
