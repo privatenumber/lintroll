@@ -86,7 +86,7 @@ If you'd like to customize the linting rules further, you can add one of these E
 > When creating your own ESLint config file, you must manually add the `pvtnbr` config. Read the section below to learn how.
 
 ### `--help`
-```
+```plaintext
 lintroll
 
 by @privatenumber (Hiroki Osame)

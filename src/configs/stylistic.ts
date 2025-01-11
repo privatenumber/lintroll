@@ -271,7 +271,6 @@ export const stylistic = [
 				ignoreEOLComments: false,
 			}],
 
-			// disallow multiple empty lines, only one newline at the end, and no new lines at the beginning
 			// https://eslint.style/rules/default/no-multiple-empty-lines
 			'@stylistic/no-multiple-empty-lines': ['error', {
 				max: 1,

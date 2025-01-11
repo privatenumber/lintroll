@@ -195,9 +195,7 @@ declare module '@eslint/markdown' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			recommended: [
-				ESLint.ConfigData
-			];
+			processor: Linter.Config[];
 		};
 	};
 	export default plugin;

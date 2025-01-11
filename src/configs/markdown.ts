@@ -2,29 +2,18 @@ import markdownPlugin from '@eslint/markdown';
 import { defineConfig } from '../utils/define-config.js';
 
 export const markdown = () => [
-	...markdownPlugin.configs.recommended,
+	...markdownPlugin.configs.processor,
 
 	defineConfig({
 		files: ['**/*.md'],
-		plugins: {
-			markdown: markdownPlugin,
-		},
 		language: 'markdown/gfm',
 		rules: {
-			'no-irregular-whitespace': 'off',
-			// 'disable-enable-pair': 'off',
+			// https://github.com/eslint/markdown/issues/294
+			'markdown/no-missing-label-refs': 'off',
+
+			'markdown/heading-increment': 'off',
 		},
 	}),
-
-	// defineConfig({
-	// 	files: ['**/*.md'],
-	// 	plugins: {
-	// 		markdown: markdownPlugin,
-	// 	},
-	// 	processor: 'markdown/markdown',
-	// }),
-
-	// defineConfig(recommended[2]),
 
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
