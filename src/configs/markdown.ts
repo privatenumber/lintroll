@@ -100,7 +100,6 @@ export const markdown = () => [
 		files: ['**/*.md/*.{json,json5}'],
 		rules: {
 			'jsonc/indent': ['error', 4],
-			// 'unicorn/filename-case': 'off',
 		},
 	}),
 ];
