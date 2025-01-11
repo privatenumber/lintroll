@@ -1,18 +1,19 @@
-import markdownPlugin from 'eslint-plugin-markdown';
+import markdownPlugin from '@eslint/markdown';
 import { defineConfig } from '../utils/define-config.js';
 
-const { recommended } = markdownPlugin.configs;
-
 export const markdown = () => [
+	...markdownPlugin.configs.processor,
+
 	defineConfig({
 		files: ['**/*.md'],
-		plugins: {
-			markdown: markdownPlugin,
-		},
-		processor: 'markdown/markdown',
-	}),
+		language: 'markdown/gfm',
+		rules: {
+			// https://github.com/eslint/markdown/issues/294
+			'markdown/no-missing-label-refs': 'off',
 
-	defineConfig(recommended[2]),
+			'markdown/heading-increment': 'off',
+		},
+	}),
 
 	defineConfig({
 		files: ['**/*.md/*.{js,jsx,ts,tsx,vue}'],
@@ -99,7 +100,6 @@ export const markdown = () => [
 		files: ['**/*.md/*.{json,json5}'],
 		rules: {
 			'jsonc/indent': ['error', 4],
-			'unicorn/filename-case': 'off',
 		},
 	}),
 ];

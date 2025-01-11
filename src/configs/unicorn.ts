@@ -1,5 +1,6 @@
 import unicornPlugin from 'eslint-plugin-unicorn';
 import { defineConfig } from '../utils/define-config';
+import { jsAndTs } from '../utils/globs.js';
 
 export type Options = {
 	allowAbbreviations?: {
@@ -53,6 +54,7 @@ export const unicorn = (
 
 	return [
 		defineConfig({
+			files: jsAndTs,
 			plugins: {
 				unicorn: unicornPlugin,
 			},
@@ -126,12 +128,6 @@ export const unicorn = (
 				// Disabled in favor of
 				// https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html
 				'unicorn/no-abusive-eslint-disable': 'off',
-			},
-		}),
-		defineConfig({
-			files: ['FUNDING.json'],
-			rules: {
-				'unicorn/filename-case': 'off',
 			},
 		}),
 		defineConfig({
