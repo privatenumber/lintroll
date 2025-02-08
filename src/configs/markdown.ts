@@ -100,6 +100,7 @@ export const markdown = () => [
 		files: ['**/*.md/*.{json,json5}'],
 		rules: {
 			'jsonc/indent': ['error', 4],
+			'jsonc/object-curly-newline': ['error', { consistent: true }],
 		},
 	}),
 ];

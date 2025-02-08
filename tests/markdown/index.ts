@@ -74,6 +74,20 @@ export default testSuite(({ describe }) => {
 					]),
 				);
 			});
+
+			test('.json', async ({ onTestFail }) => {
+				const [result] = await eslint.lintFiles(
+					fileURLToPath(new URL('fixtures/pass.json.md', import.meta.url)),
+				);
+				const { messages } = result;
+
+				onTestFail(() => {
+					console.log(messages);
+				});
+
+				expect(result.usedDeprecatedRules.length).toBe(0);
+				expect(result.errorCount).toBe(0);
+			});
 		});
 
 		describe('Fail', ({ test }) => {
