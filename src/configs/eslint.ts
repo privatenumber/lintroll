@@ -89,10 +89,6 @@ const customRules = {
 	// enforce or disallow variable initializations at definition
 	'init-declarations': 'off',
 
-	// enforce a maximum number of classes per file
-	// https://eslint.org/docs/latest/rules/max-classes-per-file
-	'max-classes-per-file': ['error', 1],
-
 	// specify the maximum depth that blocks can be nested
 	'max-depth': ['off', 4],
 
