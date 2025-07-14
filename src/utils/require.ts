@@ -34,7 +34,17 @@ export const isInstalled = (specifier: string) => {
 
 export const getExports = (
 	moduleName: string,
-) => Object.keys(
-	// eslint-disable-next-line import-x/no-dynamic-require
-	require(moduleName),
-);
+) => {
+	let exports;
+	try {
+		// eslint-disable-next-line import-x/no-dynamic-require
+		exports = require(moduleName);
+	} catch (error) {
+		const nodeError = error as NodeJS.ErrnoException;
+		if (nodeError.code === 'ERR_REQUIRE_ESM') {
+			console.warn(`Error requiring module "${moduleName}":`, error);
+		}
+		return [];
+	}
+	return Object.keys(exports);
+};
