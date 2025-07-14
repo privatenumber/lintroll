@@ -58,7 +58,7 @@
 	"packageManager": "pnpm@10.12.1",
 	"scripts": {
 		"build": "pkgroll --export-condition=node --export-condition=development --minify",
-		"type-check": "tsc --noEmit",
+		"type-check": "tsc",
 		"lint": "tsx -C development ./src/cli/index.ts .",
 		"dev": "tsx watch -C development tests",
 		"test": "tsx tests",
