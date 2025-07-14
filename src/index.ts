@@ -72,7 +72,7 @@ export const pvtnbr = (
 	 * No options.vue because if *.vue files are detected, they
 	 * should be linted regardless of whether `vue` is installed
 	 */
-	vue,
+	...vue,
 	react,
 	...markdown(),
 	jest,

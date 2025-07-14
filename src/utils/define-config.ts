@@ -54,7 +54,7 @@ const deepFreeze = <Config extends Linter.Config>(
 export const defineConfig = <Config extends Linter.Config | Linter.Config[]>(
 	config: Config,
 ) => (
-		Array.isArray(config)
-			? config.map(deepFreeze)
-			: deepFreeze(config)
-	) as Config;
+	Array.isArray(config)
+		? config.map(deepFreeze)
+		: deepFreeze(config)
+) as Config;

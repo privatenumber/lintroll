@@ -85,28 +85,10 @@ declare module 'eslint-plugin-vue' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			base: ESLint.ConfigData & {
-				rules: Linter.RulesRecord;
-			};
-			'vue3-essential': ESLint.ConfigData & {
-				rules: Linter.RulesRecord;
-			};
-			'vue3-strongly-recommended': ESLint.ConfigData & {
-				rules: Linter.RulesRecord;
-			};
-			'vue3-recommended': ESLint.ConfigData & {
-				rules: Linter.RulesRecord;
-			};
+			'flat/recommended': Linter.Config[];
 		};
-
 		processors: {
 			'.vue': Linter.Processor;
-		};
-
-		environments: {
-			'setup-compiler-macros': {
-				globals: ESLint.Environment['globals'];
-			};
 		};
 	};
 

@@ -7,8 +7,8 @@ const pick = <T extends Record<string, unknown>, K extends keyof T>(
 	object: T,
 	keys: K[],
 ) => Object.fromEntries(
-		keys.map(key => [key, object[key]]),
-	) as Pick<T, K>;
+	keys.map(key => [key, object[key]]),
+) as Pick<T, K>;
 
 const vscodeConfigs = '**/.vscode/*.json';
 const tsconfigFiles = [

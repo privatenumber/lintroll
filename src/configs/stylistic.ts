@@ -81,7 +81,7 @@ export const stylistic = [
 
 			// enforce spacing between functions and their invocations
 			// https://eslint.style/rules/default/func-call-spacing
-			'@stylistic/func-call-spacing': ['error', 'never'],
+			'@stylistic/function-call-spacing': ['error', 'never'],
 
 			// https://eslint.style/rules/default/function-call-argument-newline
 			'@stylistic/function-call-argument-newline': ['error', 'consistent'],

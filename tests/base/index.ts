@@ -75,7 +75,7 @@ export default testSuite(({ describe }) => {
 					messageId: 'missing',
 				}),
 				expect.objectContaining({
-					ruleId: '@stylistic/func-call-spacing',
+					ruleId: '@stylistic/function-call-spacing',
 					messageId: 'unexpectedWhitespace',
 				}),
 				expect.objectContaining({

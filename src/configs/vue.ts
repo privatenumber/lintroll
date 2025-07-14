@@ -6,13 +6,6 @@ import globals from 'globals';
 import { isInstalled, getExports } from '../utils/require.js';
 import { defineConfig } from '../utils/define-config.js';
 
-const vue3Rules = {
-	...vuePlugin.configs.base.rules,
-	...vuePlugin.configs['vue3-essential'].rules,
-	...vuePlugin.configs['vue3-strongly-recommended'].rules,
-	...vuePlugin.configs['vue3-recommended'].rules,
-};
-
 const detectAutoImport = () => {
 	if (!isInstalled('unplugin-auto-import')) {
 		return {};
@@ -75,8 +68,6 @@ export const parseVue = defineConfig({
 		globals: {
 			...globals.browser,
 
-			...vuePlugin.environments['setup-compiler-macros'].globals,
-
 			// Types incorrect: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/67852
 			...detectAutoImport() as unknown as ESLint.Environment['globals'],
 		},
@@ -90,51 +81,54 @@ export const parseVue = defineConfig({
 	},
 });
 
-export const vue = defineConfig({
-	files: ['**/*.vue'],
+export const vue = defineConfig([
+	...vuePlugin.configs['flat/recommended'],
+	{
+		files: ['**/*.vue'],
 
-	plugins: {
-		vue: vuePlugin,
+		plugins: {
+			vue: vuePlugin,
+		},
+
+		rules: {
+		// ...pluginVue.configs['flat/recommended'].rules,
+
+			// For Vue 2
+			// 'vue/no-deprecated-slot-attribute': ['error'],
+			// 'vue/no-deprecated-slot-scope-attribute': ['error'],
+			// 'vue/no-deprecated-scope-attribute': ['error'],
+
+			'unicorn/filename-case': ['error', {
+				case: 'pascalCase',
+			}],
+
+			'vue/html-indent': ['error', 'tab'],
+
+			'vue/multi-word-component-names': 'off',
+
+			'vue/no-undef-components': ['error', {
+				ignorePatterns: [
+					'router-view',
+					'router-link',
+					...detectAutoImportComponents(),
+				],
+			}],
+
+			// https://eslint.vuejs.org/rules/comment-directive.html#vue-comment-directive
+			'vue/comment-directive': ['error', {
+				reportUnusedDisableDirectives: true,
+			}],
+
+			// Deprecated
+			'vue/component-tags-order': 'off',
+
+			'vue/block-order': ['error', {
+				order: [
+					'script[setup]',
+					['script', 'template'],
+					'style',
+				],
+			}],
+		},
 	},
-
-	rules: {
-		...vue3Rules,
-
-		// For Vue 2
-		// 'vue/no-deprecated-slot-attribute': ['error'],
-		// 'vue/no-deprecated-slot-scope-attribute': ['error'],
-		// 'vue/no-deprecated-scope-attribute': ['error'],
-
-		'unicorn/filename-case': ['error', {
-			case: 'pascalCase',
-		}],
-
-		'vue/html-indent': ['error', 'tab'],
-
-		'vue/multi-word-component-names': 'off',
-
-		'vue/no-undef-components': ['error', {
-			ignorePatterns: [
-				'router-view',
-				'router-link',
-				...detectAutoImportComponents(),
-			],
-		}],
-
-		// https://eslint.vuejs.org/rules/comment-directive.html#vue-comment-directive
-		'vue/comment-directive': ['error', {
-			reportUnusedDisableDirectives: true,
-		}],
-
-		// Deprecated
-		'vue/component-tags-order': 'off',
-
-		'vue/block-order': ['error', {
-			order: [
-				'script[setup]',
-				['script', 'template'],
-				'style',
-			],
-		}],
-	},
-});
+]);
