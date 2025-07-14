@@ -108,7 +108,7 @@
 		"clean-pkg-json": "^1.3.0",
 		"find-up-simple": "^1.0.1",
 		"manten": "^1.3.0",
-		"pkgroll": "^2.8.2",
+		"pkgroll": "^2.14.3",
 		"react": "^19.1.0",
 		"read-package-up": "^11.0.0",
 		"type-fest": "^4.41.0",
