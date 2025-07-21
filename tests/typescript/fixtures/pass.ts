@@ -17,6 +17,14 @@ type SomeObject = {
 
 type _AllowUnused = number;
 
+export type Factory = <
+	A,
+	B,
+>() => {
+	a: A;
+	b: B;
+};
+
 const anySpread = (...args: any[]) => args;
 
 const isNumber = (n): n is number => typeof n === 'number';

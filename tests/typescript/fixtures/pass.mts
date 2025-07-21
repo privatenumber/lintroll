@@ -16,6 +16,14 @@ type SomeObject = {
 
 type _AllowUnused = number;
 
+export type Factory = <
+	A,
+	B,
+>() => {
+	a: A;
+	b: B;
+};
+
 const isNumber = (n): n is number => typeof n === 'number';
 
 const filtered = [1, '2'].filter(isNumber);

@@ -86,6 +86,11 @@ export default testSuite(({ describe }) => {
 					ruleId: '@stylistic/member-delimiter-style',
 					messageId: 'expectedSemi',
 				}),
+				expect.not.objectContaining({
+					ruleId: '@stylistic/comma-dangle',
+					nodeType: 'TSTypeParameter',
+					messageId: 'missing',
+				}),
 			].forEach((matcher) => {
 				expect(result.messages).toEqual(
 					expect.arrayContaining([matcher]),

@@ -26,10 +26,7 @@ const jsoncFiles = [
 	...nxConfigs,
 ];
 
-const jsoncCommaDangle = pick(
-	stylistic[1].rules['@stylistic/comma-dangle'][1],
-	['arrays', 'objects'],
-);
+const jsoncCommaDangle = stylistic[1].rules['@stylistic/comma-dangle'][1];
 const jsoncConfigs = jsoncPlugin.configs;
 
 const jsoncRecommended = jsoncConfigs['recommended-with-jsonc'].rules as Linter.RulesRecord;

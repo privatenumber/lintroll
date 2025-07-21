@@ -19,6 +19,11 @@ type SomeObject = {
 	propertyB: number,
 };
 
+export type BadGeneric = <
+  X,
+  Y // ← missing comma
+>() => void;
+
 (async () => {
 	await someAsyncFunction();
 })();

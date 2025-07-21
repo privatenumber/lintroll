@@ -39,13 +39,7 @@ export const stylistic = [
 			'@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: true }],
 
 			// require trailing commas in multiline object literals
-			'@stylistic/comma-dangle': ['error', {
-				arrays: 'always-multiline',
-				exports: 'always-multiline',
-				functions: 'always-multiline',
-				imports: 'always-multiline',
-				objects: 'always-multiline',
-			}],
+			'@stylistic/comma-dangle': ['error', 'always-multiline'],
 
 			// enforce spacing before and after comma
 			'@stylistic/comma-spacing': ['error', {
