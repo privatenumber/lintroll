@@ -44,9 +44,9 @@ export const react = defineConfig({
 		// https://eslint.org/docs/latest/rules/jsx-quotes
 		'@stylistic/jsx-quotes': ['error', 'prefer-double'],
 
-		'react/jsx-indent-props': ['error', 'tab'],
+		'@stylistic/jsx-indent-props': ['error', 'tab'],
 
-		'react/jsx-max-props-per-line': ['error', {
+		'@stylistic/jsx-max-props-per-line': ['error', {
 			maximum: 1,
 		}],
 

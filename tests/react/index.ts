@@ -37,7 +37,7 @@ export default testSuite(({ describe }) => {
 					messageId: 'missingPropType',
 				}),
 				expect.objectContaining({
-					ruleId: 'react/jsx-max-props-per-line',
+					ruleId: '@stylistic/jsx-max-props-per-line',
 					messageId: 'newLine',
 				}),
 			].forEach((matcher) => {
