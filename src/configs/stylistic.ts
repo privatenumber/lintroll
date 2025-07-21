@@ -117,24 +117,6 @@ export const stylistic = [
 				ignoredNodes: [
 					// Don't fix indentations in template literals
 					'TemplateLiteral > *',
-
-					// From https://github.com/benjamn/ast-types/blob/HEAD/def/jsx.js
-					'JSXElement',
-					'JSXElement > *',
-					'JSXAttribute',
-					'JSXIdentifier',
-					'JSXNamespacedName',
-					'JSXMemberExpression',
-					'JSXSpreadAttribute',
-					'JSXExpressionContainer',
-					'JSXOpeningElement',
-					'JSXClosingElement',
-					'JSXFragment',
-					'JSXOpeningFragment',
-					'JSXClosingFragment',
-					'JSXText',
-					'JSXEmptyExpression',
-					'JSXSpreadChild',
 				],
 				ImportDeclaration: 1,
 				ObjectExpression: 1,
