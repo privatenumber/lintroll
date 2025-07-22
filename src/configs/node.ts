@@ -40,7 +40,10 @@ const mjs = defineConfig({
 const mts = defineConfig({
 	...mjsConfig,
 	files: ['**/*.mts'],
-	rules: tsOverrides,
+	rules: {
+		...mjsConfig.rules,
+		...tsOverrides,
+	},
 });
 
 const cjs = defineConfig({
@@ -51,7 +54,10 @@ const cjs = defineConfig({
 const cts = defineConfig({
 	...cjsConfig,
 	files: ['**/*.cts'],
-	rules: tsOverrides,
+	rules: {
+		...cjsConfig.rules,
+		...tsOverrides,
+	},
 });
 
 type Options = {
@@ -100,7 +106,10 @@ export const node = (
 			defineConfig({
 				...autoConfig,
 				files: ['**/*.ts'],
-				rules: tsOverrides,
+				rules: {
+					...autoConfig.rules,
+					...tsOverrides,
+				},
 			}),
 			mjs,
 			mts,

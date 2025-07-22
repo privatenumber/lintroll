@@ -12,7 +12,7 @@ import { getExitCode, countErrors } from './handle-errors.js';
  */
 const argv = cli({
 	name,
-	parameters: ['[files...]'],
+	parameters: ['<files...>'],
 	help: {
 		description: 'Opinionated ESLint by @privatenumber (Hiroki Osame)',
 	},
@@ -82,12 +82,7 @@ const isNodeEnabled = (
 		ignorePatterns: argv.flags.ignorePattern,
 	});
 
-	let { files } = argv._;
-	if (files.length === 0) {
-		files = ['.'];
-	}
-
-	files = files.map(filePath => path.resolve(filePath));
+	let files = argv._.files.map(filePath => path.resolve(filePath));
 
 	if (argv.flags.staged) {
 		try {

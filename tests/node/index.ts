@@ -112,131 +112,129 @@ export default testSuite(({ describe }) => {
 			});
 		});
 
-		describe('Fail cases', ({ describe }) => {
-			describe('module', ({ test }) => {
-				test('mjs', async ({ onTestFail }) => {
-					const fixturePath = fileURLToPath(new URL('fixtures/fail.mjs', import.meta.url));
-					const [result] = await eslintNode.lintFiles(fixturePath);
+		describe('Fail cases', ({ test }) => {
+			test('mjs', async ({ onTestFail }) => {
+				const fixturePath = fileURLToPath(new URL('fixtures/fail.mjs', import.meta.url));
+				const [result] = await eslintNode.lintFiles(fixturePath);
 
-					onTestFail(() => {
-						console.log(result);
-					});
-
-					[
-						expect.objectContaining({
-							ruleId: 'no-undef',
-							messageId: 'undef',
-							message: "'__dirname' is not defined.",
-						}),
-
-						expect.objectContaining({
-							ruleId: 'n/prefer-promises/fs',
-							messageId: 'preferPromises',
-						}),
-
-						expect.objectContaining({
-							ruleId: 'n/no-deprecated-api',
-							messageId: 'deprecated',
-						}),
-
-						expect.objectContaining({
-							ruleId: 'n/no-process-exit',
-							messageId: 'noProcessExit',
-						}),
-
-						expect.objectContaining({
-							ruleId: 'n/no-deprecated-api',
-							messageId: 'deprecated',
-							message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
-						}),
-					].forEach((matcher) => {
-						expect(result.messages).toEqual(
-							expect.arrayContaining([matcher]),
-						);
-					});
+				onTestFail(() => {
+					console.log(result);
 				});
 
-				test('cts', async ({ onTestFail }) => {
-					const fixturePath = fileURLToPath(new URL('fixtures/fail.cts', import.meta.url));
-					const [result] = await eslintNode.lintFiles(fixturePath);
+				[
+					expect.objectContaining({
+						ruleId: 'no-undef',
+						messageId: 'undef',
+						message: "'__dirname' is not defined.",
+					}),
 
-					onTestFail(() => {
-						console.log(result);
-					});
+					expect.objectContaining({
+						ruleId: 'n/prefer-promises/fs',
+						messageId: 'preferPromises',
+					}),
 
-					[
-						// Disabled by TypeScript plugin
-						// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
-						// expect.objectContaining({
-						// 	ruleId: 'no-undef',
-						// 	messageId: 'undef',
-						// 	message: "'__dirname' is not defined.",
-						// }),
+					expect.objectContaining({
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+					}),
 
-						// In .cts files, TS compiles ESM imports to require
-						// TODO: Unless verbatimModuleSyntax is enabled
-						expect.objectContaining({
-							ruleId: '@typescript-eslint/no-require-imports',
-							messageId: 'noRequireImports',
-						}),
+					expect.objectContaining({
+						ruleId: 'n/no-process-exit',
+						messageId: 'noProcessExit',
+					}),
 
-						expect.objectContaining({
-							ruleId: 'n/prefer-node-protocol',
-							messageId: 'preferNodeProtocol',
-						}),
+					expect.objectContaining({
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+						message: "'new Buffer()' was deprecated since v6.0.0. Use 'Buffer.alloc()' or 'Buffer.from()' instead.",
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
+				});
+			});
 
-						expect.objectContaining({
-							ruleId: 'n/prefer-promises/fs',
-							messageId: 'preferPromises',
-						}),
+			test('cts', async ({ onTestFail }) => {
+				const fixturePath = fileURLToPath(new URL('fixtures/fail.cts', import.meta.url));
+				const [result] = await eslintNode.lintFiles(fixturePath);
 
-						expect.objectContaining({
-							ruleId: 'n/no-deprecated-api',
-							messageId: 'deprecated',
-						}),
-					].forEach((matcher) => {
-						expect(result.messages).toEqual(
-							expect.arrayContaining([matcher]),
-						);
-					});
+				onTestFail(() => {
+					console.log(result);
 				});
 
-				test('mts', async ({ onTestFail }) => {
-					const fixturePath = fileURLToPath(new URL('fixtures/fail.mts', import.meta.url));
-					const [result] = await eslintNode.lintFiles(fixturePath);
+				[
+					// Disabled by TypeScript plugin
+					// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
+					// expect.objectContaining({
+					// 	ruleId: 'no-undef',
+					// 	messageId: 'undef',
+					// 	message: "'__dirname' is not defined.",
+					// }),
 
-					onTestFail(() => {
-						console.log(result);
-					});
+					// In .cts files, TS compiles ESM imports to require
+					// TODO: Unless verbatimModuleSyntax is enabled
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/no-require-imports',
+						messageId: 'noRequireImports',
+					}),
 
-					[
-						// Disabled by TypeScript plugin
-						// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
-						// expect.objectContaining({
-						// 	ruleId: 'no-undef',
-						// 	messageId: 'undef',
-						// 	message: "'__dirname' is not defined.",
-						// }),
+					expect.objectContaining({
+						ruleId: 'n/prefer-node-protocol',
+						messageId: 'preferNodeProtocol',
+					}),
 
-						expect.objectContaining({
-							ruleId: 'n/prefer-node-protocol',
-							messageId: 'preferNodeProtocol',
-						}),
+					expect.objectContaining({
+						ruleId: 'n/prefer-promises/fs',
+						messageId: 'preferPromises',
+					}),
 
-						expect.objectContaining({
-							ruleId: 'n/prefer-promises/fs',
-							messageId: 'preferPromises',
-						}),
+					expect.objectContaining({
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
+				});
+			});
 
-						expect.objectContaining({
-							ruleId: 'n/no-deprecated-api',
-							messageId: 'deprecated',
-						}),
-					].forEach((matcher) => {
-						expect(result.messages).toEqual(
-							expect.arrayContaining([matcher]),
-						);
-					});
+			test('mts', async ({ onTestFail }) => {
+				const fixturePath = fileURLToPath(new URL('fixtures/fail.mts', import.meta.url));
+				const [result] = await eslintNode.lintFiles(fixturePath);
+
+				onTestFail(() => {
+					console.log(result);
+				});
+
+				[
+					// Disabled by TypeScript plugin
+					// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
+					// expect.objectContaining({
+					// 	ruleId: 'no-undef',
+					// 	messageId: 'undef',
+					// 	message: "'__dirname' is not defined.",
+					// }),
+
+					expect.objectContaining({
+						ruleId: 'n/prefer-node-protocol',
+						messageId: 'preferNodeProtocol',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'n/prefer-promises/fs',
+						messageId: 'preferPromises',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
 				});
 			});
 		});
