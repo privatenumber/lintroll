@@ -113,6 +113,51 @@ export default testSuite(({ describe }) => {
 		});
 
 		describe('Fail cases', ({ test }) => {
+			test('cts', async ({ onTestFail }) => {
+				const fixturePath = fileURLToPath(new URL('fixtures/fail.cts', import.meta.url));
+				const [result] = await eslintNode.lintFiles(fixturePath);
+
+				onTestFail(() => {
+					console.log(result);
+				});
+
+				[
+					// Disabled by TypeScript plugin - espected to be caught by type checking
+					// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
+					// expect.objectContaining({
+					// 	ruleId: 'no-undef',
+					// 	messageId: 'undef',
+					// 	message: "'__dirname' is not defined.",
+					// }),
+
+					// In .cts files, TS compiles ESM imports to require
+					// TODO: Unless verbatimModuleSyntax is enabled
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/no-require-imports',
+						messageId: 'noRequireImports',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'n/prefer-node-protocol',
+						messageId: 'preferNodeProtocol',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'n/prefer-promises/fs',
+						messageId: 'preferPromises',
+					}),
+
+					expect.objectContaining({
+						ruleId: 'n/no-deprecated-api',
+						messageId: 'deprecated',
+					}),
+				].forEach((matcher) => {
+					expect(result.messages).toEqual(
+						expect.arrayContaining([matcher]),
+					);
+				});
+			});
+
 			test('mjs', async ({ onTestFail }) => {
 				const fixturePath = fileURLToPath(new URL('fixtures/fail.mjs', import.meta.url));
 				const [result] = await eslintNode.lintFiles(fixturePath);
@@ -155,51 +200,6 @@ export default testSuite(({ describe }) => {
 				});
 			});
 
-			test('cts', async ({ onTestFail }) => {
-				const fixturePath = fileURLToPath(new URL('fixtures/fail.cts', import.meta.url));
-				const [result] = await eslintNode.lintFiles(fixturePath);
-
-				onTestFail(() => {
-					console.log(result);
-				});
-
-				[
-					// Disabled by TypeScript plugin
-					// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
-					// expect.objectContaining({
-					// 	ruleId: 'no-undef',
-					// 	messageId: 'undef',
-					// 	message: "'__dirname' is not defined.",
-					// }),
-
-					// In .cts files, TS compiles ESM imports to require
-					// TODO: Unless verbatimModuleSyntax is enabled
-					expect.objectContaining({
-						ruleId: '@typescript-eslint/no-require-imports',
-						messageId: 'noRequireImports',
-					}),
-
-					expect.objectContaining({
-						ruleId: 'n/prefer-node-protocol',
-						messageId: 'preferNodeProtocol',
-					}),
-
-					expect.objectContaining({
-						ruleId: 'n/prefer-promises/fs',
-						messageId: 'preferPromises',
-					}),
-
-					expect.objectContaining({
-						ruleId: 'n/no-deprecated-api',
-						messageId: 'deprecated',
-					}),
-				].forEach((matcher) => {
-					expect(result.messages).toEqual(
-						expect.arrayContaining([matcher]),
-					);
-				});
-			});
-
 			test('mts', async ({ onTestFail }) => {
 				const fixturePath = fileURLToPath(new URL('fixtures/fail.mts', import.meta.url));
 				const [result] = await eslintNode.lintFiles(fixturePath);
@@ -209,7 +209,7 @@ export default testSuite(({ describe }) => {
 				});
 
 				[
-					// Disabled by TypeScript plugin
+					// Disabled by TypeScript plugin - espected to be caught by type checking
 					// https://github.com/typescript-eslint/typescript-eslint/blob/f25a94fa75e497/packages/eslint-plugin/src/configs/eslint-recommended.ts#L24
 					// expect.objectContaining({
 					// 	ruleId: 'no-undef',
