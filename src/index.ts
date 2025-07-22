@@ -22,62 +22,69 @@ import { customConfigs } from './configs/custom-configs.js';
 
 export const pvtnbr = (
 	options?: Options,
-): Linter.Config[] => [
-	defineConfig({
-		ignores: [
-			'**/package-lock.json',
-			'**/pnpm-lock.yaml',
-			'{tmp,temp}/**',
-			'**/*.min.js',
-			'**/dist/**',
-			'**/node_modules/**',
-			'**/vendor/**',
+): Linter.Config[] => {
+	const cwd = options?.cwd ?? process.cwd();
 
-			// Ignore VitePress cache
-			'**/.vitepress',
-		],
-	}),
-	defineConfig({
-		linterOptions: {
-			reportUnusedDisableDirectives: true,
-		},
-		languageOptions: {
-			ecmaVersion: 'latest',
-			sourceType: 'module',
-		},
-	}),
+	return [
+		defineConfig({
+			ignores: [
+				'**/package-lock.json',
+				'**/pnpm-lock.yaml',
+				'{tmp,temp}/**',
+				'**/*.min.js',
+				'**/dist/**',
+				'**/node_modules/**',
+				'**/vendor/**',
 
-	/**
-	 * Separating the parsers allows to test individual rules
-	 * without applying the rules associated with the parsers
-	 */
-	parseVue,
-	parseTypescript,
+				// Ignore VitePress cache
+				'**/.vitepress',
+			],
+		}),
+		defineConfig({
+			linterOptions: {
+				reportUnusedDisableDirectives: true,
+			},
+			languageOptions: {
+				ecmaVersion: 'latest',
+				sourceType: 'module',
+			},
+		}),
 
-	eslint,
-	serviceWorkers,
-	eslintComments,
-	...imports,
-	...unicorn(options),
-	typescript,
-	...stylistic,
-	regexp,
-	promise,
-	...node(options),
-	...noUseExtendNative,
-	...json,
-	yml,
+		/**
+		 * Separating the parsers allows to test individual rules
+		 * without applying the rules associated with the parsers
+		 */
+		parseVue,
+		parseTypescript,
 
-	/**
-	 * No options.vue because if *.vue files are detected, they
-	 * should be linted regardless of whether `vue` is installed
-	 */
-	...vue,
-	react,
-	...markdown(),
-	jest,
-	customConfigs,
-].filter(Boolean);
+		eslint,
+		serviceWorkers,
+		eslintComments,
+		...imports,
+		...unicorn(options),
+		typescript,
+		...stylistic,
+		regexp,
+		promise,
+		...node({
+			...options,
+			cwd,
+		}),
+		...noUseExtendNative,
+		...json,
+		yml,
+
+		/**
+		 * No options.vue because if *.vue files are detected, they
+		 * should be linted regardless of whether `vue` is installed
+		 */
+		...vue,
+		react,
+		...markdown(),
+		jest,
+		customConfigs,
+	].filter(Boolean);
+};
 
 export default pvtnbr();
 export { defineConfig };

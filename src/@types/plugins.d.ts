@@ -195,8 +195,8 @@ declare module 'eslint-plugin-n' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			recommended: ESLint.ConfigData;
-			'flat/mixed-esm-and-cjs': Linter.Config[];
+			'flat/recommended-script': Linter.Config;
+			'flat/recommended-module': Linter.Config;
 		};
 	};
 	export default plugin;
