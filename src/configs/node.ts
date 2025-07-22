@@ -4,13 +4,15 @@ import { readPackageUpSync } from 'read-package-up';
 import { findUpSync } from 'find-up-simple';
 import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
-import type { Options } from '../types.js';
+import type { Options as PvtnbrOptions } from '../types.js';
 import { tsFiles } from './typescript.js';
 
 const scriptExtensions = 'js,ts,mjs,cjs,mts,cts';
 
-const getNodeVersion = () => {
-	const foundNvmrc = findUpSync('.nvmrc');
+const getNodeVersion = (
+	cwd: string,
+) => {
+	const foundNvmrc = findUpSync('.nvmrc', { cwd });
 	if (foundNvmrc) {
 		let version = fs.readFileSync(foundNvmrc, 'utf8');
 		version = version.trim();
@@ -20,8 +22,7 @@ const getNodeVersion = () => {
 		return version;
 	}
 
-	// Oldest LTS: https://endoflife.date/nodejs
-	return '18.19.0';
+	return process.version;
 };
 
 const foundPackageJson = readPackageUpSync()!;
@@ -82,8 +83,16 @@ const cjs = defineConfig({
 	},
 });
 
+type Options = {
+	cwd: string;
+	node?: PvtnbrOptions['node'];
+};
+
 export const node = (
-	options: Options = {},
+	{
+		cwd,
+		node,
+	}: Options,
 ) => {
 	const config: Linter.Config[] = [
 		defineConfig({
@@ -92,7 +101,7 @@ export const node = (
 			},
 			settings: {
 				node: {
-					version: `>=${getNodeVersion()}`,
+					version: `>=${getNodeVersion(cwd)}`,
 				},
 			},
 		}),
@@ -101,15 +110,15 @@ export const node = (
 		cjs,
 	];
 
-	if (options?.node) {
+	if (node) {
 		config.push(
 			base,
 			mjs,
 			defineConfig({
 				files: (
-					options.node === true
+					node === true
 						? [`**/*.{${scriptExtensions}}`] // all JS files
-						: options.node
+						: node
 				),
 
 				rules: {

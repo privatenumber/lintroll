@@ -1,8 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
-import {
-	eslint, createEslint, eslintCli,
-} from '../utils/eslint.js';
+import { eslint, createEslint, lintroll } from '../utils/eslint.js';
 
 const eslintNode = createEslint({
 	node: true,
@@ -12,19 +10,36 @@ export default testSuite(({ describe }) => {
 	describe('node', ({ describe }) => {
 		describe('Pass cases', ({ describe }) => {
 			describe('CommonJS', ({ test }) => {
-				test('.js file', async () => {
-					const linted = await eslintCli(
-						'pass.js',
-						fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
-					);
+				const eslintCjs = createEslint({
+					cwd: fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
+				});
 
-					expect(linted.stdout).toBe('');
-					expect(linted.stderr).toBe('');
+				// test('cli', async () => {
+				// 	const linted = await lintroll(
+				// 		'pass.js',
+				// 		fileURLToPath(new URL('fixtures/package-commonjs/', import.meta.url)),
+				// 	);
+
+				// 	expect(linted.stdout).toBe('');
+				// 	expect(linted.stderr).toBe('');
+				// });
+
+				test('.js file', async ({ onTestFail }) => {
+					const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.js', import.meta.url));
+					const [result] = await eslintCjs.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
 				});
 
 				test('.cjs file', async ({ onTestFail }) => {
 					const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.cjs', import.meta.url));
-					const [result] = await eslint.lintFiles(fixturePath);
+					const [result] = await eslintCjs.lintFiles(fixturePath);
 
 					onTestFail(() => {
 						console.log(result);
