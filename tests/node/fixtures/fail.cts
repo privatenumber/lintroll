@@ -1,7 +1,5 @@
-import fs from 'fs';
+const fs = require('fs');
 
 fs.readFile('filePath');
 
 fs.exists('./foo.js');
-
-console.log(__filename);

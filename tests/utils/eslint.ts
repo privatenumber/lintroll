@@ -14,7 +14,7 @@ export const createEslint = (
 
 export const eslint = createEslint();
 
-export const eslintCli = (
+export const lintroll = (
 	file: string,
 	cwd: string,
 ) => spawn(

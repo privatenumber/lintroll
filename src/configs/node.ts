@@ -4,13 +4,15 @@ import { readPackageUpSync } from 'read-package-up';
 import { findUpSync } from 'find-up-simple';
 import type { Linter } from 'eslint';
 import { defineConfig } from '../utils/define-config.js';
-import type { Options } from '../types.js';
+import type { Options as PvtnbrOptions } from '../types.js';
 import { tsFiles } from './typescript.js';
 
 const scriptExtensions = 'js,ts,mjs,cjs,mts,cts';
 
-const getNodeVersion = () => {
-	const foundNvmrc = findUpSync('.nvmrc');
+const getNodeVersion = (
+	cwd: string,
+) => {
+	const foundNvmrc = findUpSync('.nvmrc', { cwd });
 	if (foundNvmrc) {
 		let version = fs.readFileSync(foundNvmrc, 'utf8');
 		version = version.trim();
@@ -20,71 +22,64 @@ const getNodeVersion = () => {
 		return version;
 	}
 
-	// Oldest LTS: https://endoflife.date/nodejs
-	return '18.19.0';
+	return process.version;
 };
 
-const foundPackageJson = readPackageUpSync()!;
-const hasCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
-
-const [
-	defaultAmbiguous,
-	defaultMjs,
-	defaultCjs,
-] = nodePlugin.configs['flat/mixed-esm-and-cjs'];
-
-const disableRules = {
-	// https://github.com/eslint-community/eslint-plugin-n/blob/master/docs/rules/no-missing-import.md
-	// Defer to import plugin
+const tsOverrides: Linter.RulesRecord = {
+	// Can't resolve implicit extensionss that are valid in TS. Defer to import plugin
 	'n/no-missing-import': 'off',
-	'n/no-missing-require': 'off',
+};
 
-	/**
-	 * 1. Doesn't support import maps
-	 * 2. Disabling in favor of https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-unresolved.md
-	 */
-	'n/no-extraneous-import': 'off',
-} as const;
-
-/**
-* Overwrite eslint-plugin-n/recommended's CommonJS configuration in parserOptions
-* because often times, ESM is compiled to CJS at runtime using tools like tsx:
-* https://github.com/eslint-community/eslint-plugin-n/blob/15.5.1/lib/configs/recommended-script.js#L14-L18
-*/
-const base = defineConfig({
-	...defaultAmbiguous,
-	files: [...defaultAmbiguous.files!, '**/*.ts'],
-	languageOptions: {
-		...defaultAmbiguous.languageOptions,
-		sourceType: 'module',
-	},
-	rules: {
-		...defaultAmbiguous.rules,
-		...disableRules,
-	},
+const cjsConfig = nodePlugin.configs['flat/recommended-script'];
+const mjsConfig = nodePlugin.configs['flat/recommended-module'];
+const mjs = defineConfig({
+	...mjsConfig,
+	files: ['**/*.mjs'],
 });
 
-const mjs = defineConfig({
-	...defaultMjs,
-	files: [...defaultMjs.files!, '**/*.mts'],
+const mts = defineConfig({
+	...mjsConfig,
+	files: ['**/*.mts'],
 	rules: {
-		...defaultMjs.rules,
-		...disableRules,
+		...mjsConfig.rules,
+		...tsOverrides,
 	},
 });
 
 const cjs = defineConfig({
-	...defaultCjs,
-	files: [...defaultCjs.files!, '**/*.cts'],
+	...cjsConfig,
+	files: ['**/*.cjs'],
+});
+
+const cts = defineConfig({
+	...cjsConfig,
+	files: ['**/*.cts'],
 	rules: {
-		...defaultCjs.rules,
-		...disableRules,
+		...cjsConfig.rules,
+		...tsOverrides,
 	},
 });
 
+type Options = {
+	cwd: string;
+	node?: PvtnbrOptions['node'];
+};
+
 export const node = (
-	options: Options = {},
+	{
+		cwd,
+		node: isNodeProject,
+	}: Options,
 ) => {
+	const foundPackageJson = readPackageUpSync({ cwd });
+	const isModule = foundPackageJson?.packageJson?.type === 'module';
+	const autoConfig = (
+		isModule
+			? mjsConfig
+			: cjsConfig
+	);
+	const hasCli = foundPackageJson && ('bin' in foundPackageJson.packageJson);
+
 	const config: Linter.Config[] = [
 		defineConfig({
 			plugins: {
@@ -92,24 +87,37 @@ export const node = (
 			},
 			settings: {
 				node: {
-					version: `>=${getNodeVersion()}`,
+					version: `>=${getNodeVersion(cwd)}`,
 				},
 			},
 		}),
 
 		// .cjs files can be assumed to be Node
 		cjs,
+		cts,
 	];
 
-	if (options?.node) {
+	if (isNodeProject) {
 		config.push(
-			base,
+			defineConfig({
+				...autoConfig,
+				files: ['**/*.js'],
+			}),
+			defineConfig({
+				...autoConfig,
+				files: ['**/*.ts'],
+				rules: {
+					...autoConfig.rules,
+					...tsOverrides,
+				},
+			}),
 			mjs,
+			mts,
 			defineConfig({
 				files: (
-					options.node === true
+					isNodeProject === true
 						? [`**/*.{${scriptExtensions}}`] // all JS files
-						: options.node
+						: isNodeProject
 				),
 
 				rules: {
@@ -183,13 +191,13 @@ export const node = (
 	if (hasCli) {
 		config.push(
 			defineConfig({
-				...base,
+				...autoConfig,
 				files: [
 					`**/cli.{${scriptExtensions}}`,
 					`**/cli/**/*.{${scriptExtensions}}`,
 				],
 				rules: {
-					...base.rules,
+					...autoConfig.rules,
 					'n/no-process-exit': 'off',
 				},
 			}),
