@@ -35,7 +35,7 @@ export const pvtnbr = (
 				'**/dist/**',
 				'**/node_modules/**',
 				'**/vendor/**',
-	
+
 				// Ignore VitePress cache
 				'**/.vitepress',
 			],
@@ -49,14 +49,14 @@ export const pvtnbr = (
 				sourceType: 'module',
 			},
 		}),
-	
+
 		/**
 		 * Separating the parsers allows to test individual rules
 		 * without applying the rules associated with the parsers
 		 */
 		parseVue,
 		parseTypescript,
-	
+
 		eslint,
 		serviceWorkers,
 		eslintComments,
@@ -73,7 +73,7 @@ export const pvtnbr = (
 		...noUseExtendNative,
 		...json,
 		yml,
-	
+
 		/**
 		 * No options.vue because if *.vue files are detected, they
 		 * should be linted regardless of whether `vue` is installed

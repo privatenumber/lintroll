@@ -31,6 +31,7 @@ export const markdown = () => [
 
 			'n/hashbang': 'off',
 			'n/global-require': 'off',
+			'n/no-missing-import': 'off',
 
 			// Allow unused expressions like: argv.command // => "install" (string)
 			'no-unused-expressions': 'off',
