@@ -8,7 +8,7 @@ export default testSuite(({ describe }) => {
 			const cwd = fileURLToPath(new URL('fixtures/', import.meta.url));
 			const results = await lintroll([], cwd);
 
-			expect(results.output).toContain('/fail.js');
+			expect(results.output).toContain('fail.js');
 		});
 
 		describe('config files', ({ test }) => {
