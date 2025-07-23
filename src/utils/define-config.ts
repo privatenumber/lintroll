@@ -50,6 +50,10 @@ const deepFreeze = <Config extends Linter.Config>(
 /**
  * Applies type and seals the config by freezing it to prevent
  * inadvertent mutation of the config
+ *
+ * Note: there's eslint/config defineConfig but I feel like this
+ * is more versatile as it can handle both objects/arrays and
+ * freezes the config
  */
 export const defineConfig = <Config extends Linter.Config | Linter.Config[]>(
 	config: Config,
