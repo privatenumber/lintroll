@@ -193,8 +193,8 @@ export const node = (
 			defineConfig({
 				...autoConfig,
 				files: [
-					`**/cli.{${scriptExtensions}}`,
-					`**/cli/**/*.{${scriptExtensions}}`,
+					'**/cli.{js,ts}',
+					'**/cli/**/*.{js,ts}',
 				],
 				rules: {
 					...autoConfig.rules,
