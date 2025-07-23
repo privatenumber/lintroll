@@ -99,6 +99,7 @@ export const node = (
 
 	if (isNodeProject) {
 		config.push(
+			// TODO: These should only be applied to the Node files
 			defineConfig({
 				...autoConfig,
 				files: ['**/*.js'],
@@ -178,6 +179,8 @@ export const node = (
 					'n/prefer-node-protocol': 'error',
 				},
 			}),
+
+			// TODO: shouldnt this be in the ts overrides?
 			defineConfig({
 				files: [tsFiles],
 				rules: {
@@ -190,6 +193,7 @@ export const node = (
 
 	if (hasCli) {
 		config.push(
+			// TODO: Also needs the mjs/cjs equialents
 			defineConfig({
 				...autoConfig,
 				files: [
