@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { ESLint } from 'eslint';
-import spawn from 'nano-spawn';
+import spawn, { type SubprocessError } from 'nano-spawn';
 import { pvtnbr, type Options } from '#pvtnbr';
 
 export const createEslint = (
@@ -15,14 +15,13 @@ export const createEslint = (
 export const eslint = createEslint();
 
 export const lintroll = (
-	file: string,
+	args: string[],
 	cwd: string,
 ) => spawn(
 	process.execPath,
 	[
 		fileURLToPath(import.meta.resolve('#cli')),
-		'--node=true',
-		file,
+		...args,
 	],
 	{
 		cwd,
@@ -30,4 +29,4 @@ export const lintroll = (
 			NODE_OPTIONS: '--import tsx',
 		},
 	},
-);
+).catch(error => error as SubprocessError);

@@ -10,7 +10,9 @@ const exists = async (
 	path: string,
 ) => fs.access(path).then(() => path, () => {});
 
-type ConfigModule = { default?: Linter.Config[] };
+type ConfigModule = Linter.Config[] | {
+	default: ConfigModule;
+};
 
 export const getConfig = async (
 	options: Options,
@@ -21,19 +23,31 @@ export const getConfig = async (
 	 * given this is an opinionated CLI command
 	 */
 	const configFilePath = (
-		await exists('eslint.config.ts')
+		await exists('eslint.config.mts')
+		?? await exists('eslint.config.mjs')
+		?? await exists('eslint.config.cts')
+		?? await exists('eslint.config.cjs')
+		?? await exists('eslint.config.ts')
 		?? await exists('eslint.config.js')
 	);
 
 	if (configFilePath) {
-		const configModule: ConfigModule = await tsImport(
+		let configModule: ConfigModule = await tsImport(
 			pathToFileURL(configFilePath).toString(),
 			import.meta.url,
 		);
 
-		if (configModule.default) {
+		/*
+		When ESM TypeScript file is loaded in CJS mode, it's double wrapped:
+		{ default: { default: module } }
+		*/
+		while ('default' in configModule && configModule.default) {
+			configModule = configModule.default;
+		}
+
+		if (configModule) {
 			console.log(`[${name}]: Using config file: ${configFilePath}`);
-			return configModule.default;
+			return configModule as Linter.Config[];
 		}
 	}
 
