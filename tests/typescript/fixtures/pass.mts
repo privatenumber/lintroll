@@ -38,5 +38,3 @@ const filtered = [1, '2'].filter(isNumber);
 console.log(
 	filtered,
 );
-
-export {};

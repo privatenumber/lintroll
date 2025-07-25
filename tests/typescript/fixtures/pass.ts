@@ -42,5 +42,3 @@ console.log(
 	anySpread,
 	filtered,
 );
-
-export {};
