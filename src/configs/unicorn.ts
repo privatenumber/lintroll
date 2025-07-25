@@ -35,6 +35,7 @@ export const unicorn = (
 		params: false,
 		ref: false,
 		src: false,
+		utils: false,
 	};
 
 	if (option?.allowAbbreviations) {
