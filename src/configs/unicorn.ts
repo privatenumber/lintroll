@@ -129,6 +129,8 @@ export const unicorn = (
 				// Disabled in favor of
 				// https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html
 				'unicorn/no-abusive-eslint-disable': 'off',
+
+				'unicorn/no-array-reverse': 'warn',
 			},
 		}),
 		defineConfig({
