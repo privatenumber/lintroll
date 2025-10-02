@@ -73,6 +73,14 @@ export const typescript = defineConfig({
 
 		'@stylistic/member-delimiter-style': 'error',
 
+		'no-useless-constructor': 'off',
+		'@typescript-eslint/no-useless-constructor': 'error',
+
+		'no-empty-function': 'off',
+		'@typescript-eslint/no-empty-function': ['error', {
+			allow: eslint.rules['no-empty-function'][1].allow,
+		}],
+
 		'@typescript-eslint/no-shadow': eslint.rules['no-shadow'],
 
 		'@typescript-eslint/no-unused-vars': [

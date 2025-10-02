@@ -106,6 +106,39 @@ export default testSuite(({ describe }) => {
 					expect.not.arrayContaining([matcher]),
 				);
 			});
+
+			// Check that TypeScript-aware rules catch truly useless constructors
+			expect(result.messages).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/no-useless-constructor',
+						severity: 2,
+					}),
+				]),
+			);
+
+			expect(result.messages).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						ruleId: '@typescript-eslint/no-empty-function',
+						severity: 2,
+					}),
+				]),
+			);
+
+			// Ensure base rules are disabled for TypeScript files
+			[
+				expect.objectContaining({
+					ruleId: 'no-useless-constructor',
+				}),
+				expect.objectContaining({
+					ruleId: 'no-empty-function',
+				}),
+			].forEach((matcher) => {
+				expect(result.messages).toEqual(
+					expect.not.arrayContaining([matcher]),
+				);
+			});
 		});
 	});
 });

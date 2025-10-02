@@ -42,3 +42,36 @@ console.log(
 	anySpread,
 	filtered,
 );
+
+// Parameter properties should not trigger no-useless-constructor or no-empty-function
+export class PathBase {
+	constructor(readonly path: string) {}
+}
+
+class _MultipleParams {
+	constructor(
+		public name: string,
+		private age: number,
+		protected readonly id: number,
+	) {}
+}
+
+class _MixedParams {
+	constructor(
+		public name: string,
+		normalParameter: boolean,
+	) {
+		if (!normalParameter) {
+			throw new Error('Invalid');
+		}
+	}
+}
+
+// Empty function with parameter property is valid
+class _EmptyWithProperty {
+	constructor(private value: number) {}
+
+	getValue() {
+		return this.value;
+	}
+}

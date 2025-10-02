@@ -94,6 +94,8 @@ export const markdown = () => [
 			],
 			'@typescript-eslint/no-unused-vars': 'warn',
 			'@typescript-eslint/no-unused-expressions': 'warn',
+			'@typescript-eslint/no-empty-function': 'off',
+			'@typescript-eslint/no-useless-constructor': 'off',
 		},
 	}),
 

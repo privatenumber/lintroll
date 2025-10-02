@@ -31,4 +31,20 @@ export type BadGeneric = <
 const someNumber = 1;
 console.log(<TypeA>someNumber);
 
+// Truly useless constructor (no parameter properties)
+class ActuallyUseless {
+	name: string;
+
+	constructor(name: string) {
+		this.name = name;
+	}
+}
+
+// Empty constructor without parameter properties
+class EmptyUseless {
+	constructor() {}
+}
+
+console.log(ActuallyUseless, EmptyUseless);
+
 export {};
