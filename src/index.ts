@@ -41,6 +41,7 @@ export const pvtnbr = (
 
 				// Ignore AI assistant documentation files
 				'**/CLAUDE.md',
+				'**/.claude',
 				'**/AI.md',
 				'**/AGENT.md',
 				'**/PROMPT.md',
