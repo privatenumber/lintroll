@@ -38,6 +38,24 @@ export const pvtnbr = (
 
 				// Ignore VitePress cache
 				'**/.vitepress',
+
+				// Ignore AI assistant documentation files
+				'**/CLAUDE.md',
+				'**/AI.md',
+				'**/AGENT.md',
+				'**/PROMPT.md',
+				'**/PROMPTING.md',
+
+				// Cursor IDE
+				'**/.cursorrules',
+				'**/.cursorignore',
+				'**/.cursormem.json',
+				'**/.cursorhistory',
+
+				// GitHub Copilot
+				'**/copilot.json',
+				'**/copilot.config.json',
+				'**/copilot.md',
 			],
 		}),
 		defineConfig({
