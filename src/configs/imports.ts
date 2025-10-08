@@ -6,23 +6,23 @@ const pkgMapsResolver = fileURLToPath(
 	import.meta.resolve('#pkg-maps-resolver'),
 );
 
-export const importsConfig = defineConfig({
-	plugins: {
-		'import-x': importPlugin,
-	},
-
-	settings: {
-		'import-x/ignore': [
-			'node_modules',
-			String.raw`\.(css|svg|json)$`,
-		],
-		'import-x/resolver': {
-			node: {},
-			[pkgMapsResolver]: {},
+export const createImportsConfig = (cwd: string) => defineConfig({
+		plugins: {
+			'import-x': importPlugin,
 		},
-	},
 
-	rules: {
+		settings: {
+			'import-x/ignore': [
+				'node_modules',
+				String.raw`\.(css|svg|json)$`,
+			],
+			'import-x/resolver': {
+				node: {},
+				[pkgMapsResolver]: {},
+			},
+		},
+
+		rules: {
 		...importPlugin.configs.recommended.rules,
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/default.md#when-not-to-use-it
@@ -179,11 +179,15 @@ export const importsConfig = defineConfig({
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/prefer-default-export.md
 		// Excessive. Also, named exports help enforce readable imports.
 		'import-x/prefer-default-export': 'off',
-	},
-});
+		},
+	});
+};
 
-export const imports = [
-	importsConfig,
+// For backward compatibility and use in other configs
+export const importsConfig = createImportsConfig(process.cwd());
+
+export const imports = (cwd: string) => [
+	createImportsConfig(cwd),
 
 	// Bundled files
 	defineConfig({
@@ -195,3 +199,4 @@ export const imports = [
 		},
 	}),
 ];
+

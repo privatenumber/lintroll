@@ -6,6 +6,7 @@
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import-x';
+import { getTsconfig } from 'get-tsconfig';
 import { defineConfig } from '../utils/define-config';
 import { importsConfig } from './imports.js';
 import { eslint } from './eslint.js';
@@ -25,7 +26,12 @@ export const parseTypescript = defineConfig({
 	settings: importPlugin.configs.typescript.settings,
 });
 
-export const typescript = defineConfig({
+export const createTypescriptConfig = (cwd: string) => {
+	// Check if rewriteRelativeImportExtensions is enabled
+	const tsconfig = getTsconfig(cwd);
+	const hasRewriteExtensions = tsconfig?.config?.compilerOptions?.rewriteRelativeImportExtensions === true;
+
+	return defineConfig({
 	files: [tsFiles],
 
 	plugins: {
@@ -150,5 +156,14 @@ export const typescript = defineConfig({
 
 		// Could be used to pass in an explicit `undefined` to a required parameter
 		'unicorn/no-useless-undefined': 'off',
+
+		// When rewriteRelativeImportExtensions is enabled, disable import-x/extensions rule
+		// since .ts extensions in imports are valid and will be rewritten by TypeScript
+		...(hasRewriteExtensions ? {
+			'import-x/extensions': 'off',
+		} : {}),
 	},
-});
+	});
+};
+
+export const typescript = createTypescriptConfig(process.cwd());

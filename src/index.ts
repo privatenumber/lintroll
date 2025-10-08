@@ -6,7 +6,7 @@ import { serviceWorkers } from './configs/service-workers.js';
 import { eslintComments } from './configs/eslint-comments.js';
 import { stylistic } from './configs/stylistic.js';
 import { imports } from './configs/imports.js';
-import { typescript, parseTypescript } from './configs/typescript.js';
+import { createTypescriptConfig, parseTypescript } from './configs/typescript.js';
 import { regexp } from './configs/regexp.js';
 import { node } from './configs/node.js';
 import { promise } from './configs/promise.js';
@@ -80,9 +80,9 @@ export const pvtnbr = (
 		eslint,
 		serviceWorkers,
 		eslintComments,
-		...imports,
+		...imports(cwd),
 		...unicorn(options),
-		typescript,
+		createTypescriptConfig(cwd),
 		...stylistic,
 		regexp,
 		promise,

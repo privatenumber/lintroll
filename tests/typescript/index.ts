@@ -1,11 +1,12 @@
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
-import { eslint } from '../utils/eslint.js';
+import { eslint, createEslint } from '../utils/eslint.js';
 
 const passFixtureTs = fileURLToPath(new URL('fixtures/pass.ts', import.meta.url));
 const passFixtureDTs = fileURLToPath(new URL('fixtures/pass.d.ts', import.meta.url));
 const passFixtureMts = fileURLToPath(new URL('fixtures/pass.mts', import.meta.url));
 const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
+const rewriteExtensionsFixture = fileURLToPath(new URL('fixtures/rewrite-extensions/import-ts-extension.ts', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {
@@ -46,6 +47,20 @@ export default testSuite(({ describe }) => {
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBe(0);
 			expect(result.usedDeprecatedRules.length).toBe(0);
+		});
+
+		test('Pass ts with rewriteRelativeImportExtensions', async ({ onTestFail }) => {
+			const rewriteExtensionsDir = fileURLToPath(new URL('fixtures/rewrite-extensions', import.meta.url));
+			const eslintWithCwd = createEslint({ cwd: rewriteExtensionsDir });
+			const results = await eslintWithCwd.lintFiles(rewriteExtensionsFixture);
+			const [result] = results;
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			expect(result.errorCount).toBe(0);
+			expect(result.warningCount).toBe(0);
 		});
 
 		test('Fail cases', async () => {
