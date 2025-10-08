@@ -35,6 +35,7 @@ export const pvtnbr = (
 				'**/dist/**',
 				'**/node_modules/**',
 				'**/vendor/**',
+				'**/.cache/**',
 
 				// Ignore VitePress cache
 				'**/.vitepress',
