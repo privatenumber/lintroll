@@ -130,12 +130,16 @@ export const createTypescriptConfig = (cwd: string) => {
 
 			// Always require a file extension except from packages
 			// https://github.com/Microsoft/TypeScript/issues/27481
-			'import-x/extensions': ['error', 'ignorePackages', {
-				ts: 'never',
-				tsx: 'never',
-				cts: 'never',
-				mts: 'never',
-			}],
+			// When rewriteRelativeImportExtensions is enabled, allow .ts extensions
+			// since TypeScript will rewrite them to .js at compile time
+			'import-x/extensions': hasRewriteExtensions
+				? 'off'
+				: ['error', 'ignorePackages', {
+					ts: 'never',
+					tsx: 'never',
+					cts: 'never',
+					mts: 'never',
+				}],
 
 			// Always require await when returning promise
 			// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
@@ -156,14 +160,6 @@ export const createTypescriptConfig = (cwd: string) => {
 
 			// Could be used to pass in an explicit `undefined` to a required parameter
 			'unicorn/no-useless-undefined': 'off',
-
-			// When rewriteRelativeImportExtensions is enabled, disable import-x/extensions rule
-			// since .ts extensions in imports are valid and will be rewritten by TypeScript
-			...(hasRewriteExtensions
-				? {
-					'import-x/extensions': 'off',
-				}
-				: {}),
 		},
 	});
 };

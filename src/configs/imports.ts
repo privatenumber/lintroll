@@ -6,7 +6,7 @@ const pkgMapsResolver = fileURLToPath(
 	import.meta.resolve('#pkg-maps-resolver'),
 );
 
-export const createImportsConfig = (cwd: string) => defineConfig({
+export const importsConfig = defineConfig({
 	plugins: {
 		'import-x': importPlugin,
 	},
@@ -182,11 +182,8 @@ export const createImportsConfig = (cwd: string) => defineConfig({
 	},
 });
 
-// For backward compatibility and use in other configs
-export const importsConfig = createImportsConfig(process.cwd());
-
-export const imports = (cwd: string) => [
-	createImportsConfig(cwd),
+export const imports = [
+	importsConfig,
 
 	// Bundled files
 	defineConfig({

@@ -80,7 +80,7 @@ export const pvtnbr = (
 		eslint,
 		serviceWorkers,
 		eslintComments,
-		...imports(cwd),
+		...imports,
 		...unicorn(options),
 		createTypescriptConfig(cwd),
 		...stylistic,
