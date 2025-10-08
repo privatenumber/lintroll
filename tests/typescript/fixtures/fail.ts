@@ -1,5 +1,6 @@
 import { TypeA } from './some-file';
 import { type TypeB } from './some-file';
+import { something } from './module.ts';
 
 const unusedVar = 1
 
@@ -45,6 +46,6 @@ class EmptyUseless {
 	constructor() {}
 }
 
-console.log(ActuallyUseless, EmptyUseless);
+console.log(ActuallyUseless, EmptyUseless, something);
 
 export {};

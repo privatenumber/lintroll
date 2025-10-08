@@ -67,11 +67,11 @@ export default testSuite(({ describe }) => {
 			const [result] = await eslint.lintFiles(failFixture);
 
 			[
-				// expect.objectContaining({
-				// 	ruleId: 'import/extensions',
-				// 	message: 'Missing file extension "js" for "./some-file"',
-				// 	severity: 2,
-				// }),
+				expect.objectContaining({
+					ruleId: 'import-x/extensions',
+					message: 'Unexpected use of file extension "ts" for "./module.ts"',
+					severity: 2,
+				}),
 				expect.objectContaining({
 					ruleId: '@typescript-eslint/consistent-type-imports',
 					severity: 2,
