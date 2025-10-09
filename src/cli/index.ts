@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
 import spawn from 'nano-spawn';
@@ -67,9 +68,79 @@ const isNodeEnabled = (
 	return (globs.length > 0) ? globs : true;
 };
 
+// Normalize paths to forward slashes for consistent cross-platform comparison
+const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
+
+const filterGitFiles = (
+	gitFilesText: string,
+	gitRoot: string,
+	targetFiles: string[],
+) => gitFilesText
+	.split('\n')
+	.filter(Boolean)
+	.map(
+		// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+		filePath => normalizePath(fs.realpathSync.native(path.resolve(gitRoot, filePath))),
+	)
+	// Only keep files that are within the target files (e.g. cwd)
+	.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
+
+const gitRootPath = async () => {
+	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+	// Git already returns the real path - just trim whitespace
+	return gitRoot.trim();
+};
+
 (async () => {
+	let { files } = argv._;
+	if (files.length === 0) {
+		files = ['.'];
+	}
+
+	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+	files = files.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(filePath))));
+
+	if (argv.flags.staged) {
+		try {
+			const gitRoot = await gitRootPath();
+			const { stdout: stagedFilesText } = await spawn('git', [
+				'diff',
+				'--staged',
+				'--name-only',
+				'--diff-filter=ACMR',
+			]);
+
+			files = filterGitFiles(stagedFilesText, gitRoot, files);
+		} catch {
+			console.error('Error: Failed to detect staged files from git');
+			process.exit(1);
+		}
+	}
+
+	if (argv.flags.git) {
+		try {
+			const gitRoot = await gitRootPath();
+			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+
+			files = filterGitFiles(trackedFilesText, gitRoot, files);
+		} catch {
+			console.error('Error: Failed to detect tracked files from git');
+			process.exit(1);
+		}
+	}
+
+	if (files.length === 0) {
+		process.exitCode = 0;
+		return;
+	}
+
+	// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+	// This ensures ESLint's base path matches the canonicalized file paths
+	const cwd = fs.realpathSync.native(process.cwd());
 	const eslint = new ESLint({
+		cwd,
 		baseConfig: await getConfig({
+			cwd,
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
 				exactWords: argv.flags.allowAbbreviation,
@@ -85,60 +156,6 @@ const isNodeEnabled = (
 		cacheLocation: argv.flags.cacheLocation,
 		ignorePatterns: argv.flags.ignorePattern,
 	});
-
-	let { files } = argv._;
-	if (files.length === 0) {
-		files = ['.'];
-	}
-
-	files = files.map(filePath => path.resolve(filePath));
-
-	if (argv.flags.staged) {
-		try {
-			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-			const { stdout: stagedFilesText } = await spawn('git', [
-				'diff',
-				'--staged',
-				'--name-only',
-				'--diff-filter=ACMR',
-			]);
-
-			const stagedFiles = stagedFilesText
-				.split('\n')
-				.filter(Boolean)
-				.map(filePath => path.resolve(gitRoot, filePath))
-				.filter(filePath => files.some(file => filePath.startsWith(file)));
-
-			files = stagedFiles;
-		} catch {
-			console.error('Error: Failed to detect staged files from git');
-			process.exit(1);
-		}
-	}
-
-	if (argv.flags.git) {
-		try {
-			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
-
-			const trackedFiles = trackedFilesText
-				.split('\n')
-				.filter(Boolean)
-				.map(filePath => path.resolve(gitRoot.trim(), filePath))
-				.filter(filePath => files.some(file => filePath.startsWith(file)));
-
-			files = trackedFiles;
-		} catch {
-			console.error('Error: Failed to detect tracked files from git');
-			process.exit(1);
-		}
-	}
-
-	if (files.length === 0) {
-		process.exitCode = 0;
-		return;
-	}
-
 	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {
