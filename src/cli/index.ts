@@ -70,6 +70,19 @@ const isNodeEnabled = (
 // Normalize paths to forward slashes for consistent cross-platform comparison
 const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 
+const filterGitFiles = (
+	gitFilesText: string,
+	gitRoot: string,
+	targetFiles: string[],
+) => gitFilesText
+	.split('\n')
+	.filter(Boolean)
+	.map(filePath => normalizePath(path.resolve(gitRoot.trim(), filePath)))
+	.filter((filePath) => targetFiles.some((file) => {
+		const normalizedFile = normalizePath(file);
+		return filePath.startsWith(normalizedFile);
+	}));
+
 (async () => {
 	let { files } = argv._;
 	if (files.length === 0) {
@@ -88,19 +101,7 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 				'--diff-filter=ACMR',
 			]);
 
-			const stagedFiles = stagedFilesText
-				.split('\n')
-				.filter(Boolean)
-				.map(filePath => path.resolve(gitRoot.trim(), filePath))
-				.filter((filePath) => {
-					const normalizedFilePath = normalizePath(filePath);
-					return files.some((file) => {
-						const normalizedFile = normalizePath(file);
-						return normalizedFilePath.startsWith(normalizedFile);
-					});
-				});
-
-			files = stagedFiles;
+			files = filterGitFiles(stagedFilesText, gitRoot, files);
 		} catch {
 			console.error('Error: Failed to detect staged files from git');
 			process.exit(1);
@@ -112,19 +113,7 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
-			const trackedFiles = trackedFilesText
-				.split('\n')
-				.filter(Boolean)
-				.map(filePath => path.resolve(gitRoot.trim(), filePath))
-				.filter((filePath) => {
-					const normalizedFilePath = normalizePath(filePath);
-					return files.some((file) => {
-						const normalizedFile = normalizePath(file);
-						return normalizedFilePath.startsWith(normalizedFile);
-					});
-				});
-
-			files = trackedFiles;
+			files = filterGitFiles(trackedFilesText, gitRoot, files);
 		} catch {
 			console.error('Error: Failed to detect tracked files from git');
 			process.exit(1);
