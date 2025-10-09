@@ -26,7 +26,8 @@ export default testSuite(({ describe }) => {
 				await git.init();
 				await git('add', ['tracked.js']);
 
-				const { output } = await lintroll(['--git', '.'], fixture.path);
+				const { output } = await lintroll(['--git'], fixture.path);
+				console.log({ output });
 
 				expect(output).toContain('tracked.js');
 				expect(output).not.toContain('untracked.js');
@@ -42,7 +43,7 @@ export default testSuite(({ describe }) => {
 				const git = createGit(fixture.path);
 				await git.init();
 
-				const result = await lintroll(['--git', '.'], fixture.path);
+				const result = await lintroll(['--git'], fixture.path);
 
 				// Successful processes don't have exitCode property, only errors do
 				expect('exitCode' in result ? result.exitCode : 0).toBe(0);
