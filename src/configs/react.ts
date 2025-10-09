@@ -1,61 +1,62 @@
+import type { TsConfigResult } from 'get-tsconfig';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import { getTsconfig } from 'get-tsconfig';
 import { defineConfig } from '../utils/define-config.js';
 
-const tsconfig = getTsconfig();
-const jsx = tsconfig?.config.compilerOptions?.jsx;
+export const react = (tsconfig: TsConfigResult | null) => {
+	const jsx = tsconfig?.config.compilerOptions?.jsx;
 
-// React automatically imported in JSX files
-const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
+	// React automatically imported in JSX files
+	const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
 
-export const react = defineConfig({
-	files: ['**/*.{jsx,tsx}'],
+	return defineConfig({
+		files: ['**/*.{jsx,tsx}'],
 
-	plugins: {
-		react: reactPlugin,
-		'react-hooks': reactHooksPlugin,
-	},
-
-	languageOptions: {
-		parserOptions: (
-			autoJsx
-				? reactPlugin.configs['jsx-runtime'].parserOptions
-				: reactPlugin.configs.recommended.parserOptions
-		),
-	},
-
-	settings: {
-		react: {
-			version: 'detect',
+		plugins: {
+			react: reactPlugin,
+			'react-hooks': reactHooksPlugin,
 		},
-	},
 
-	rules: {
-		...reactPlugin.configs.recommended.rules,
-		...(
-			autoJsx
-				? reactPlugin.configs['jsx-runtime'].rules
-				: {}
-		),
+		languageOptions: {
+			parserOptions: (
+				autoJsx
+					? reactPlugin.configs['jsx-runtime'].parserOptions
+					: reactPlugin.configs.recommended.parserOptions
+			),
+		},
 
-		...reactHooksPlugin.configs.recommended.rules,
+		settings: {
+			react: {
+				version: 'detect',
+			},
+		},
 
-		// https://eslint.org/docs/latest/rules/jsx-quotes
-		'@stylistic/jsx-quotes': ['error', 'prefer-double'],
+		rules: {
+			...reactPlugin.configs.recommended.rules,
+			...(
+				autoJsx
+					? reactPlugin.configs['jsx-runtime'].rules
+					: {}
+			),
 
-		'@stylistic/jsx-indent-props': ['error', 'tab'],
+			...reactHooksPlugin.configs.recommended.rules,
 
-		'@stylistic/jsx-max-props-per-line': ['error', {
-			maximum: 1,
-		}],
+			// https://eslint.org/docs/latest/rules/jsx-quotes
+			'@stylistic/jsx-quotes': ['error', 'prefer-double'],
 
-		'unicorn/filename-case': ['error', {
-			case: 'pascalCase',
-			ignore: [
-				String.raw`\.spec\.tsx$`,
-			],
-		}],
-	},
+			'@stylistic/jsx-indent-props': ['error', 'tab'],
 
-});
+			'@stylistic/jsx-max-props-per-line': ['error', {
+				maximum: 1,
+			}],
+
+			'unicorn/filename-case': ['error', {
+				case: 'pascalCase',
+				ignore: [
+					String.raw`\.spec\.tsx$`,
+				],
+			}],
+		},
+
+	});
+};

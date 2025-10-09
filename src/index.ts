@@ -1,4 +1,5 @@
 import type { Linter } from 'eslint';
+import { getTsconfig } from 'get-tsconfig';
 import type { Options } from './types.js';
 import { defineConfig } from './utils/define-config.js';
 import { eslint } from './configs/eslint.js';
@@ -24,6 +25,7 @@ export const pvtnbr = (
 	options?: Options,
 ): Linter.Config[] => {
 	const cwd = options?.cwd ?? process.cwd();
+	const tsconfig = getTsconfig(cwd);
 
 	return [
 		defineConfig({
@@ -82,7 +84,7 @@ export const pvtnbr = (
 		eslintComments,
 		...imports,
 		...unicorn(options),
-		typescript(cwd),
+		typescript(tsconfig),
 		...stylistic,
 		regexp,
 		promise,
@@ -99,7 +101,7 @@ export const pvtnbr = (
 		 * should be linted regardless of whether `vue` is installed
 		 */
 		...vue,
-		react,
+		react(tsconfig),
 		...markdown(),
 		jest,
 		customConfigs,
