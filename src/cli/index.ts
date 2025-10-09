@@ -67,25 +67,10 @@ const isNodeEnabled = (
 	return (globs.length > 0) ? globs : true;
 };
 
+// Normalize paths to forward slashes for consistent cross-platform comparison
+const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
+
 (async () => {
-	const eslint = new ESLint({
-		baseConfig: await getConfig({
-			node: isNodeEnabled(argv.flags.node),
-			allowAbbreviations: {
-				exactWords: argv.flags.allowAbbreviation,
-				substrings: argv.flags.allowAbbreviation,
-			},
-		}),
-
-		// Don't look up config file
-		overrideConfigFile: true,
-
-		fix: argv.flags.fix,
-		cache: argv.flags.cache,
-		cacheLocation: argv.flags.cacheLocation,
-		ignorePatterns: argv.flags.ignorePattern,
-	});
-
 	let { files } = argv._;
 	if (files.length === 0) {
 		files = ['.'];
@@ -106,8 +91,14 @@ const isNodeEnabled = (
 			const stagedFiles = stagedFilesText
 				.split('\n')
 				.filter(Boolean)
-				.map(filePath => path.resolve(gitRoot, filePath))
-				.filter(filePath => files.some(file => filePath.startsWith(file)));
+				.map(filePath => path.resolve(gitRoot.trim(), filePath))
+				.filter((filePath) => {
+					const normalizedFilePath = normalizePath(filePath);
+					return files.some((file) => {
+						const normalizedFile = normalizePath(file);
+						return normalizedFilePath.startsWith(normalizedFile);
+					});
+				});
 
 			files = stagedFiles;
 		} catch {
@@ -121,11 +112,20 @@ const isNodeEnabled = (
 			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
+			console.log({
+				trackedFilesText,
+			});
 			const trackedFiles = trackedFilesText
 				.split('\n')
 				.filter(Boolean)
 				.map(filePath => path.resolve(gitRoot.trim(), filePath))
-				.filter(filePath => files.some(file => filePath.startsWith(file)));
+				.filter((filePath) => {
+					const normalizedFilePath = normalizePath(filePath);
+					return files.some((file) => {
+						const normalizedFile = normalizePath(file);
+						return normalizedFilePath.startsWith(normalizedFile);
+					});
+				});
 
 			files = trackedFiles;
 		} catch {
@@ -139,6 +139,23 @@ const isNodeEnabled = (
 		return;
 	}
 
+	const eslint = new ESLint({
+		baseConfig: await getConfig({
+			node: isNodeEnabled(argv.flags.node),
+			allowAbbreviations: {
+				exactWords: argv.flags.allowAbbreviation,
+				substrings: argv.flags.allowAbbreviation,
+			},
+		}),
+
+		// Don't look up config file
+		overrideConfigFile: true,
+
+		fix: argv.flags.fix,
+		cache: argv.flags.cache,
+		cacheLocation: argv.flags.cacheLocation,
+		ignorePatterns: argv.flags.ignorePattern,
+	});
 	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {

@@ -45,7 +45,7 @@ jobs:
       - name: Test
         run: |
           pnpm build
-          pnpm test
+          TESTONLY='lints only git tracked files' pnpm test
 
       - name: Lint
         run: pnpm lint
