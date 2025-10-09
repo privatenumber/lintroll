@@ -113,6 +113,10 @@ const filterGitFiles = (
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
 			files = filterGitFiles(trackedFilesText, gitRoot, files);
+			console.log({
+				trackedFilesText,
+				files
+			});
 		} catch {
 			console.error('Error: Failed to detect tracked files from git');
 			process.exit(1);
