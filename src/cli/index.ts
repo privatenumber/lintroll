@@ -78,10 +78,7 @@ const filterGitFiles = (
 	.split('\n')
 	.filter(Boolean)
 	.map(filePath => normalizePath(path.resolve(gitRoot.trim(), filePath)))
-	.filter((filePath) => targetFiles.some((file) => {
-		const normalizedFile = normalizePath(file);
-		return filePath.startsWith(normalizedFile);
-	}));
+	.filter(filePath => targetFiles.some(file => filePath.startsWith(normalizePath(file))));
 
 (async () => {
 	let { files } = argv._;
