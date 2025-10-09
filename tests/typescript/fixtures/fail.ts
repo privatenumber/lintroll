@@ -48,4 +48,9 @@ class EmptyUseless {
 
 console.log(ActuallyUseless, EmptyUseless, something);
 
-export {};
+// Interface should fail (prefer type over interface)
+interface BadInterface {
+	foo: string;
+}
+
+export type { BadInterface };

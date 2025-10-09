@@ -106,6 +106,10 @@ export default testSuite(({ describe }) => {
 					nodeType: 'TSTypeParameter',
 					messageId: 'missing',
 				}),
+				expect.objectContaining({
+					ruleId: '@typescript-eslint/consistent-type-definitions',
+					severity: 2,
+				}),
 			].forEach((matcher) => {
 				expect(result.messages).toEqual(
 					expect.arrayContaining([matcher]),

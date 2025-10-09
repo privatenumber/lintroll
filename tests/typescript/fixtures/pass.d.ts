@@ -1,5 +1,5 @@
 declare module 'module' {
-	interface LoadFnOutput {
+	type LoadFnOutput = {
 		foo: string;
-	}
+	};
 }

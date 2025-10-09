@@ -78,6 +78,9 @@ export const typescript = (tsconfig: TsConfigResult | null) => {
 		 */
 			// '@typescript-eslint/consistent-type-assertions': 'error',
 
+			// Enforce type over interface for consistency
+			'@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+
 			'@stylistic/member-delimiter-style': 'error',
 
 			'no-useless-constructor': 'off',
