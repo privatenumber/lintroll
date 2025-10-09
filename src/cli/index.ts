@@ -91,7 +91,8 @@ const filterGitFiles = (
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	return gitRoot;
+	// Windows returns it with forward slashes but needs to be trimmed
+	return gitRoot.trim();
 };
 
 (async () => {
