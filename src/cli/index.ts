@@ -76,19 +76,28 @@ const filterGitFiles = (
 	gitRoot: string,
 	targetFiles: string[],
 ) => {
+	// Normalize target files for comparison
+	const normalizedTargetFiles = targetFiles.map(f => normalizePath(f));
+
 	const gitFiles = gitFilesText
 		.split('\n')
 		.filter(Boolean)
-		.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(gitRoot, filePath))));
+		.map((filePath) => {
+			const resolved = path.resolve(gitRoot, filePath);
+			return fs.realpathSync.native(resolved);
+		})
+		// Only keep files that are within the target files (e.g. cwd)
+		.filter((gitFile) => {
+			const normalized = normalizePath(gitFile);
+			return normalizedTargetFiles.some(targetFile => normalized.startsWith(targetFile));
+		});
 
 	console.log({
 		gitRoot,
 		gitFiles,
-		targetFiles,
+		normalizedTargetFiles,
 	});
-	return gitFiles
-		// Only keep files that are within the target files (e.g. cwd)
-		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
+	return gitFiles;
 };
 
 const gitRootPath = async () => {
@@ -96,9 +105,8 @@ const gitRootPath = async () => {
 	const trimmed = gitRoot.trim();
 	const realpath = fs.realpathSync(trimmed);
 	const realpathNative = fs.realpathSync.native(trimmed);
-	const normalized = normalizePath(realpathNative);
-	console.log('gitRootPath:', { trimmed, realpath, realpathNative, normalized });
-	return normalized;
+	console.log('gitRootPath:', { trimmed, realpath, realpathNative });
+	return realpathNative;
 };
 
 (async () => {
@@ -111,9 +119,8 @@ const gitRootPath = async () => {
 		const resolved = path.resolve(filePath);
 		const realpath = fs.realpathSync(resolved);
 		const realpathNative = fs.realpathSync.native(resolved);
-		const normalized = normalizePath(realpathNative);
-		console.log({ filePath, resolved, realpath, realpathNative, normalized });
-		return normalized;
+		console.log({ filePath, resolved, realpath, realpathNative });
+		return realpathNative;
 	});
 
 	if (argv.flags.staged) {
@@ -155,7 +162,13 @@ const gitRootPath = async () => {
 		return;
 	}
 
+	const canonicalCwd = fs.realpathSync.native(process.cwd());
+	console.log('ESLint cwd:', { processCwd: process.cwd(), canonicalCwd });
+
 	const eslint = new ESLint({
+		// Use canonicalized cwd to handle Windows 8.3 short paths
+		cwd: canonicalCwd,
+
 		baseConfig: await getConfig({
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
