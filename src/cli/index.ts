@@ -77,8 +77,10 @@ const filterGitFiles = (
 ) => gitFilesText
 	.split('\n')
 	.filter(Boolean)
-	.map(filePath => normalizePath(path.resolve(gitRoot.trim(), filePath)))
-	.filter(filePath => targetFiles.some(file => filePath.startsWith(normalizePath(file))));
+	.map(filePath => normalizePath(path.resolve(gitRoot, filePath)))
+
+	// Only keep files that are within the target files (e.g. cwd)
+	.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(normalizePath(targetFile))));
 
 (async () => {
 	let { files } = argv._;
