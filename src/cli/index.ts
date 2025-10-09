@@ -74,13 +74,18 @@ const filterGitFiles = (
 	gitFilesText: string,
 	gitRoot: string,
 	targetFiles: string[],
-) => gitFilesText
-	.split('\n')
-	.filter(Boolean)
-	.map(filePath => normalizePath(path.resolve(gitRoot, filePath)))
+) => {
+	const asdf = gitFilesText
+		.split('\n')
+		.filter(Boolean)
+		.map(filePath => normalizePath(path.resolve(gitRoot, filePath)));
 
-	// Only keep files that are within the target files (e.g. cwd)
-	.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(normalizePath(targetFile))));
+	console.log({ asdf });
+	return asdf
+
+		// Only keep files that are within the target files (e.g. cwd)
+		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(normalizePath(targetFile))))
+};
 
 (async () => {
 	let { files } = argv._;
