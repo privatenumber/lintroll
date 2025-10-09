@@ -93,8 +93,8 @@ const filterGitFiles = (
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	// Windows returns it with forward slashes but needs to be trimmed
-	return gitRoot.trim();
+	// Canonicalize to handle Windows 8.3 short paths
+	return fs.realpathSync(gitRoot.trim());
 };
 
 (async () => {
