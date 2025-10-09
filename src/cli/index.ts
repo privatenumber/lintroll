@@ -96,8 +96,8 @@ const filterGitFiles = (
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-	return fs.realpathSync.native(gitRoot.trim());
+	// Git already returns the real path - just trim whitespace
+	return gitRoot.trim();
 };
 
 (async () => {
