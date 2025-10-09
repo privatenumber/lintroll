@@ -37,33 +37,33 @@ The `lintroll` command can be used as drop-in replacement for `eslint`, allowing
 #### Lint files in the current directory
 
 ```sh
-lintroll .
+lintroll
 ```
 
 #### Apply auto fix
 
 ```sh
-lintroll . --fix
+lintroll --fix
 ```
 
 #### Lint with caching enabled
 ```sh
-lintroll --cache .
+lintroll --cache
 ```
 
 #### Lint only staged files
 ```sh
-lintroll --staged .
+lintroll --staged
 ```
 
 #### Lint only git tracked files
 ```sh
-lintroll --git .
+lintroll --git
 ```
 
 #### Specify Node.js files
 ```sh
-lintroll --node=./build .
+lintroll --node=./build
 ```
 
 ### Optional `package.json` script
