@@ -43,9 +43,11 @@ jobs:
         run: pnpm type-check
 
       - name: Test
+        env:
+          TESTONLY: 'lints only git tracked files'
         run: |
           pnpm build
-          TESTONLY='lints only git tracked files' pnpm test
+          pnpm test
 
       - name: Lint
         run: pnpm lint
