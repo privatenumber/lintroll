@@ -79,7 +79,7 @@ const filterGitFiles = (
 	const gitFiles = gitFilesText
 		.split('\n')
 		.filter(Boolean)
-		.map(filePath => normalizePath(path.resolve(gitRoot, filePath)));
+		.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(gitRoot, filePath))));
 
 	console.log({
 		gitRoot,
@@ -93,7 +93,12 @@ const filterGitFiles = (
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	return gitRoot.trim();
+	const trimmed = gitRoot.trim();
+	const realpath = fs.realpathSync(trimmed);
+	const realpathNative = fs.realpathSync.native(trimmed);
+	const normalized = normalizePath(realpathNative);
+	console.log('gitRootPath:', { trimmed, realpath, realpathNative, normalized });
+	return normalized;
 };
 
 (async () => {
@@ -104,9 +109,10 @@ const gitRootPath = async () => {
 
 	files = files.map((filePath) => {
 		const resolved = path.resolve(filePath);
-		const real = fs.realpathSync(resolved);
-		const normalized = normalizePath(real);
-		console.log({ filePath, resolved, real, normalized });
+		const realpath = fs.realpathSync(resolved);
+		const realpathNative = fs.realpathSync.native(resolved);
+		const normalized = normalizePath(realpathNative);
+		console.log({ filePath, resolved, realpath, realpathNative, normalized });
 		return normalized;
 	});
 
