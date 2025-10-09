@@ -26,7 +26,7 @@ export const parseTypescript = defineConfig({
 	settings: importPlugin.configs.typescript.settings,
 });
 
-export const createTypescriptConfig = (cwd: string) => {
+export const typescript = (cwd: string) => {
 	// Check if rewriteRelativeImportExtensions is enabled
 	const tsconfig = getTsconfig(cwd);
 	const hasRewriteExtensions = (
@@ -165,5 +165,3 @@ export const createTypescriptConfig = (cwd: string) => {
 		},
 	});
 };
-
-export const typescript = createTypescriptConfig(process.cwd());
