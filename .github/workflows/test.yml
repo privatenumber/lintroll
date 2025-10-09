@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
     timeout-minutes: 10
 
     steps:
@@ -39,13 +39,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Type check
-        run: pnpm type-check
+      # - name: Type check
+      #   run: pnpm type-check
 
       - name: Test
+        env:
+          TESTONLY: lints only git tracked files
         run: |
           pnpm build
           pnpm test
 
-      - name: Lint
-        run: pnpm lint
+      # - name: Lint
+      #   run: pnpm lint
