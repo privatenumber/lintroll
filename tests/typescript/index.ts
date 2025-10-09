@@ -50,8 +50,8 @@ export default testSuite(({ describe }) => {
 		});
 
 		test('Pass ts with rewriteRelativeImportExtensions', async ({ onTestFail }) => {
-			const rewriteExtensionsDir = fileURLToPath(new URL('fixtures/rewrite-extensions', import.meta.url));
-			const eslintWithCwd = createEslint({ cwd: rewriteExtensionsDir });
+			const rewriteExtensionsDirectory = fileURLToPath(new URL('fixtures/rewrite-extensions', import.meta.url));
+			const eslintWithCwd = createEslint({ cwd: rewriteExtensionsDirectory });
 			const results = await eslintWithCwd.lintFiles(rewriteExtensionsFixture);
 			const [result] = results;
 

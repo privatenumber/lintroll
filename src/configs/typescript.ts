@@ -29,7 +29,9 @@ export const parseTypescript = defineConfig({
 export const createTypescriptConfig = (cwd: string) => {
 	// Check if rewriteRelativeImportExtensions is enabled
 	const tsconfig = getTsconfig(cwd);
-	const hasRewriteExtensions = tsconfig?.config?.compilerOptions?.rewriteRelativeImportExtensions === true;
+	const hasRewriteExtensions = (
+		tsconfig?.config?.compilerOptions?.rewriteRelativeImportExtensions === true
+	);
 
 	return defineConfig({
 		files: [tsFiles],
