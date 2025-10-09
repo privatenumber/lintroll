@@ -80,11 +80,11 @@ const filterGitFiles = (
 		.filter(Boolean)
 		.map(filePath => normalizePath(path.resolve(gitRoot, filePath)));
 
-	console.log({ asdf });
+	console.log({ asdf, targetFiles });
 	return asdf
 
 		// Only keep files that are within the target files (e.g. cwd)
-		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(normalizePath(targetFile))))
+		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)))
 };
 
 (async () => {
