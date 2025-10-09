@@ -112,9 +112,6 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
-			console.log({
-				trackedFilesText,
-			});
 			const trackedFiles = trackedFilesText
 				.split('\n')
 				.filter(Boolean)
