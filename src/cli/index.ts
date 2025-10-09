@@ -143,12 +143,13 @@ const gitRootPath = async () => {
 		return;
 	}
 
+	// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+	// This ensures ESLint's base path matches the canonicalized file paths
+	const cwd = fs.realpathSync.native(process.cwd());
 	const eslint = new ESLint({
-		// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-		// This ensures ESLint's base path matches the canonicalized file paths
-		cwd: fs.realpathSync.native(process.cwd()),
-
+		cwd,
 		baseConfig: await getConfig({
+			cwd,
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
 				exactWords: argv.flags.allowAbbreviation,
