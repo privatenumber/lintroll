@@ -76,14 +76,15 @@ const filterGitFiles = (
 	gitRoot: string,
 	targetFiles: string[],
 ) => {
-	// Canonicalize git root to handle Windows 8.3 short paths
-	const canonicalGitRoot = normalizePath(fs.realpathSync(gitRoot));
-
 	const gitFiles = gitFilesText
 		.split('\n')
 		.filter(Boolean)
-		.map(filePath => normalizePath(path.resolve(canonicalGitRoot, filePath)));
+		.map(filePath => normalizePath(path.resolve(gitRoot, filePath)));
 
+	console.log({
+		gitRoot,
+		gitFiles
+	});
 	return gitFiles
 		// Only keep files that are within the target files (e.g. cwd)
 		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
@@ -106,7 +107,7 @@ const gitRootPath = async () => {
 	if (argv.flags.staged) {
 		try {
 			const gitRoot = await gitRootPath();
-			console.log({ gitRoot });
+			console.log({ gitRoot, files });
 			const { stdout: stagedFilesText } = await spawn('git', [
 				'diff',
 				'--staged',
