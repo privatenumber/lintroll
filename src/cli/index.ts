@@ -75,24 +75,15 @@ const filterGitFiles = (
 	gitFilesText: string,
 	gitRoot: string,
 	targetFiles: string[],
-) => {
-	// Normalize target files for cross-platform comparison (forward slashes)
-	const normalizedTargetFiles = targetFiles.map(f => normalizePath(f));
-
-	return gitFilesText
-		.split('\n')
-		.filter(Boolean)
-		.map((filePath) => {
-			const resolved = path.resolve(gitRoot, filePath);
-			// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-			return fs.realpathSync.native(resolved);
-		})
-		// Only keep files that are within the target files (e.g. cwd)
-		.filter((gitFile) => {
-			const normalized = normalizePath(gitFile);
-			return normalizedTargetFiles.some(targetFile => normalized.startsWith(targetFile));
-		});
-};
+) => gitFilesText
+	.split('\n')
+	.filter(Boolean)
+	.map(
+		// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+		filePath => normalizePath(fs.realpathSync.native(path.resolve(gitRoot, filePath))),
+	)
+	// Only keep files that are within the target files (e.g. cwd)
+	.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
