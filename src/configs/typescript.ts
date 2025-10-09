@@ -52,13 +52,13 @@ export const typescript = (cwd: string) => {
 		},
 
 		/**
-	 * Slow and cant disable for markdown files
-	 * Was only using for @typescript-eslint/return-await
-	 *
-	 * Let's see if:
-	 *  - We can detect tsconfig.json and only enable this for the files in `include`
-	 *  - We can generate a fallback tsconfig.json that just has strict mode enabled
-	 */
+		 * Slow and cant disable for markdown files
+		 * Was only using for @typescript-eslint/return-await
+		 *
+		 * Let's see if:
+		 *  - We can detect tsconfig.json and only enable this for the files in `include`
+		 *  - We can generate a fallback tsconfig.json that just has strict mode enabled
+		 */
 		// parserOptions: {
 		// 	// Gets closest tsconfig.json
 		// 	project: '**/tsconfig.json',
@@ -100,9 +100,9 @@ export const typescript = (cwd: string) => {
 					caughtErrorsIgnorePattern: '^_',
 
 					/**
-				 * TypeScript ignores any variables that are prefixed with _
-				 * https://github.com/microsoft/TypeScript/pull/9464
-				 */
+					 * TypeScript ignores any variables that are prefixed with _
+					 * https://github.com/microsoft/TypeScript/pull/9464
+					 */
 					varsIgnorePattern: '^_',
 				},
 			],
@@ -130,18 +130,22 @@ export const typescript = (cwd: string) => {
 
 			'prefer-rest-params': 'off',
 
-			// Always require a file extension except from packages
-			// https://github.com/Microsoft/TypeScript/issues/27481
 			// When rewriteRelativeImportExtensions is enabled, allow .ts extensions
 			// since TypeScript will rewrite them to .js at compile time
 			'import-x/extensions': hasRewriteExtensions
 				? 'off'
-				: ['error', 'ignorePackages', {
-					ts: 'never',
-					tsx: 'never',
-					cts: 'never',
-					mts: 'never',
-				}],
+				: [
+					'error',
+					// Always require a file extension except from packages
+					// https://github.com/Microsoft/TypeScript/issues/27481
+					'ignorePackages',
+					{
+						ts: 'never',
+						tsx: 'never',
+						cts: 'never',
+						mts: 'never',
+					},
+				],
 
 			// Always require await when returning promise
 			// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
