@@ -88,7 +88,7 @@ const filterGitFiles = (
 		files = ['.'];
 	}
 
-	files = files.map(filePath => path.resolve(filePath));
+	files = files.map(filePath => normalizePath(path.resolve(filePath)));
 
 	if (argv.flags.staged) {
 		try {
