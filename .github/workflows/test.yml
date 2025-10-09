@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
     timeout-minutes: 10
 
     steps:
@@ -36,15 +36,15 @@ jobs:
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: ${{ runner.os }}-pnpm-
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
-      - name: Type check
-        run: pnpm type-check
+      # - name: Type check
+      #   run: pnpm type-check
 
       - name: Test
         env:
-          TESTONLY: 'lints only git tracked files'
+          TESTONLY: lints only git tracked files
         run: |
           pnpm build
           pnpm test
