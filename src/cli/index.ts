@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
 import spawn from 'nano-spawn';
@@ -75,16 +76,22 @@ const filterGitFiles = (
 	gitRoot: string,
 	targetFiles: string[],
 ) => {
-	const asdf = gitFilesText
+	// Canonicalize git root to handle Windows 8.3 short paths
+	const canonicalGitRoot = normalizePath(fs.realpathSync(gitRoot));
+
+	const gitFiles = gitFilesText
 		.split('\n')
 		.filter(Boolean)
-		.map(filePath => normalizePath(path.resolve(gitRoot, filePath)));
+		.map(filePath => normalizePath(path.resolve(canonicalGitRoot, filePath)));
 
-	console.log({ asdf, targetFiles });
-	return asdf
-
+	return gitFiles
 		// Only keep files that are within the target files (e.g. cwd)
-		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)))
+		.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
+};
+
+const gitRootPath = async () => {
+	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+	return gitRoot;
 };
 
 (async () => {
@@ -93,11 +100,12 @@ const filterGitFiles = (
 		files = ['.'];
 	}
 
-	files = files.map(filePath => normalizePath(path.resolve(filePath)));
+	files = files.map(filePath => normalizePath(fs.realpathSync(path.resolve(filePath))));
 
 	if (argv.flags.staged) {
 		try {
-			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+			const gitRoot = await gitRootPath();
+			console.log({ gitRoot });
 			const { stdout: stagedFilesText } = await spawn('git', [
 				'diff',
 				'--staged',
@@ -105,7 +113,7 @@ const filterGitFiles = (
 				'--diff-filter=ACMR',
 			]);
 
-			files = filterGitFiles(stagedFilesText, gitRoot, files);
+			files = filterGitFiles(stagedFilesText, gitRoot.trim(), files);
 		} catch {
 			console.error('Error: Failed to detect staged files from git');
 			process.exit(1);
@@ -114,16 +122,11 @@ const filterGitFiles = (
 
 	if (argv.flags.git) {
 		try {
-			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+			const gitRoot = await gitRootPath();
+			console.log({ gitRoot });
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
-			console.log('before', { files});
-			files = filterGitFiles(trackedFilesText, gitRoot, files);
-			console.log({
-				gitRoot,
-				trackedFilesText,
-				files,
-			});
+			files = filterGitFiles(trackedFilesText, gitRoot.trim(), files);
 		} catch {
 			console.error('Error: Failed to detect tracked files from git');
 			process.exit(1);
