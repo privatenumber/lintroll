@@ -76,14 +76,15 @@ const filterGitFiles = (
 	gitRoot: string,
 	targetFiles: string[],
 ) => {
-	// Normalize target files for comparison
+	// Normalize target files for cross-platform comparison (forward slashes)
 	const normalizedTargetFiles = targetFiles.map(f => normalizePath(f));
 
-	const gitFiles = gitFilesText
+	return gitFilesText
 		.split('\n')
 		.filter(Boolean)
 		.map((filePath) => {
 			const resolved = path.resolve(gitRoot, filePath);
+			// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
 			return fs.realpathSync.native(resolved);
 		})
 		// Only keep files that are within the target files (e.g. cwd)
@@ -91,22 +92,12 @@ const filterGitFiles = (
 			const normalized = normalizePath(gitFile);
 			return normalizedTargetFiles.some(targetFile => normalized.startsWith(targetFile));
 		});
-
-	console.log({
-		gitRoot,
-		gitFiles,
-		normalizedTargetFiles,
-	});
-	return gitFiles;
 };
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	const trimmed = gitRoot.trim();
-	const realpath = fs.realpathSync(trimmed);
-	const realpathNative = fs.realpathSync.native(trimmed);
-	console.log('gitRootPath:', { trimmed, realpath, realpathNative });
-	return realpathNative;
+	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+	return fs.realpathSync.native(gitRoot.trim());
 };
 
 (async () => {
@@ -115,18 +106,12 @@ const gitRootPath = async () => {
 		files = ['.'];
 	}
 
-	files = files.map((filePath) => {
-		const resolved = path.resolve(filePath);
-		const realpath = fs.realpathSync(resolved);
-		const realpathNative = fs.realpathSync.native(resolved);
-		console.log({ filePath, resolved, realpath, realpathNative });
-		return realpathNative;
-	});
+	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+	files = files.map(filePath => fs.realpathSync.native(path.resolve(filePath)));
 
 	if (argv.flags.staged) {
 		try {
 			const gitRoot = await gitRootPath();
-			console.log({ gitRoot, files });
 			const { stdout: stagedFilesText } = await spawn('git', [
 				'diff',
 				'--staged',
@@ -144,13 +129,9 @@ const gitRootPath = async () => {
 	if (argv.flags.git) {
 		try {
 			const gitRoot = await gitRootPath();
-			console.log({ gitRoot });
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
 			files = filterGitFiles(trackedFilesText, gitRoot, files);
-			console.log({
-				files,
-			});
 		} catch {
 			console.error('Error: Failed to detect tracked files from git');
 			process.exit(1);
@@ -162,12 +143,10 @@ const gitRootPath = async () => {
 		return;
 	}
 
-	const canonicalCwd = fs.realpathSync.native(process.cwd());
-	console.log('ESLint cwd:', { processCwd: process.cwd(), canonicalCwd });
-
 	const eslint = new ESLint({
-		// Use canonicalized cwd to handle Windows 8.3 short paths
-		cwd: canonicalCwd,
+		// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
+		// This ensures ESLint's base path matches the canonicalized file paths
+		cwd: fs.realpathSync.native(process.cwd()),
 
 		baseConfig: await getConfig({
 			node: isNodeEnabled(argv.flags.node),

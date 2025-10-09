@@ -27,7 +27,6 @@ export default testSuite(({ describe }) => {
 				await git('add', ['tracked.js']);
 
 				const { output } = await lintroll(['--git'], fixture.path);
-				console.log({ output});
 
 				expect(output).toContain('tracked.js');
 				expect(output).not.toContain('untracked.js');
