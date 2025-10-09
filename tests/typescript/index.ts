@@ -6,7 +6,7 @@ const passFixtureTs = fileURLToPath(new URL('fixtures/pass.ts', import.meta.url)
 const passFixtureDTs = fileURLToPath(new URL('fixtures/pass.d.ts', import.meta.url));
 const passFixtureMts = fileURLToPath(new URL('fixtures/pass.mts', import.meta.url));
 const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
-const rewriteExtensionsFixture = fileURLToPath(new URL('fixtures/rewrite-extensions/import-ts-extension.ts', import.meta.url));
+const rewriteExtensionsFixture = fileURLToPath(new URL('fixtures/import-ts-extension/import-ts-extension.ts', import.meta.url));
 
 export default testSuite(({ describe }) => {
 	describe('typescript', ({ test }) => {
@@ -49,8 +49,8 @@ export default testSuite(({ describe }) => {
 			expect(result.usedDeprecatedRules.length).toBe(0);
 		});
 
-		test('Pass ts with rewriteRelativeImportExtensions', async ({ onTestFail }) => {
-			const rewriteExtensionsDirectory = fileURLToPath(new URL('fixtures/rewrite-extensions', import.meta.url));
+		test('Pass ts imports with .ts extension when rewriteRelativeImportExtensions is enabled', async ({ onTestFail }) => {
+			const rewriteExtensionsDirectory = fileURLToPath(new URL('fixtures/import-ts-extension', import.meta.url));
 			const eslintWithCwd = createEslint({ cwd: rewriteExtensionsDirectory });
 			const results = await eslintWithCwd.lintFiles(rewriteExtensionsFixture);
 			const [result] = results;
