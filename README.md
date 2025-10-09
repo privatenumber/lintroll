@@ -56,6 +56,11 @@ lintroll --cache .
 lintroll --staged .
 ```
 
+#### Lint only git tracked files
+```sh
+lintroll --git .
+```
+
 #### Specify Node.js files
 ```sh
 lintroll --node=./build .
@@ -98,6 +103,7 @@ Flags:
       --cache                          Only check changed files
       --cache-location <string>        Path to the cache file or directory
       --fix                            Automatically fix problems
+      --git                            Only lint git tracked files within the files passed in
   -h, --help                           Show help
       --ignore-pattern <string>        Pattern of files to ignore
       --node <string>                  Enable Node.js rules. Pass in a glob to specify files

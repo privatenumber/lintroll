@@ -14,6 +14,8 @@ export const createEslint = (
 
 export const eslint = createEslint();
 
+const tsxLoader = fileURLToPath(import.meta.resolve('tsx'));
+
 export const lintroll = (
 	args: string[],
 	cwd: string,
@@ -26,7 +28,8 @@ export const lintroll = (
 	{
 		cwd,
 		env: {
-			NODE_OPTIONS: '--import tsx',
+			...process.env,
+			NODE_OPTIONS: `--import ${tsxLoader}`,
 		},
 	},
 ).catch(error => error as SubprocessError);

@@ -1,6 +1,8 @@
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
+import { createFixture } from 'fs-fixture';
 import { lintroll } from '../utils/eslint.js';
+import { createGit } from '../utils/create-git.js';
 
 export default testSuite(({ describe }) => {
 	describe('cli', ({ test, describe }) => {
@@ -9,6 +11,42 @@ export default testSuite(({ describe }) => {
 			const results = await lintroll([], cwd);
 
 			expect(results.output).toContain('fail.js');
+		});
+
+		describe('--git flag', ({ test }) => {
+			test('lints only git tracked files', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'tracked.js': 'const x = "unquoted"',
+					'untracked.js': 'const y = "also-unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['tracked.js']);
+
+				const { output } = await lintroll(['--git', '.'], fixture.path);
+
+				expect(output).toContain('tracked.js');
+				expect(output).not.toContain('untracked.js');
+			});
+
+			test('handles empty result when no tracked files match', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'untracked.js': 'const x = "unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+
+				const result = await lintroll(['--git', '.'], fixture.path);
+
+				// Successful processes don't have exitCode property, only errors do
+				expect('exitCode' in result ? result.exitCode : 0).toBe(0);
+			});
 		});
 
 		describe('config files', ({ test }) => {

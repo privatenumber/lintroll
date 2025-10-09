@@ -25,6 +25,10 @@ const argv = cli({
 			type: Boolean,
 			description: 'Only lint staged files within the files passed in',
 		},
+		git: {
+			type: Boolean,
+			description: 'Only lint git tracked files within the files passed in',
+		},
 		quiet: {
 			type: Boolean,
 			description: 'Report errors only',
@@ -110,6 +114,29 @@ const isNodeEnabled = (
 			console.error('Error: Failed to detect staged files from git');
 			process.exit(1);
 		}
+	}
+
+	if (argv.flags.git) {
+		try {
+			const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+
+			const trackedFiles = trackedFilesText
+				.split('\n')
+				.filter(Boolean)
+				.map(filePath => path.resolve(gitRoot.trim(), filePath))
+				.filter(filePath => files.some(file => filePath.startsWith(file)));
+
+			files = trackedFiles;
+		} catch {
+			console.error('Error: Failed to detect tracked files from git');
+			process.exit(1);
+		}
+	}
+
+	if (files.length === 0) {
+		process.exitCode = 0;
+		return;
 	}
 
 	const results = await eslint.lintFiles(files);
