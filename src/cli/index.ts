@@ -98,7 +98,7 @@ const gitRootPath = async () => {
 	}
 
 	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-	files = files.map(filePath => fs.realpathSync.native(path.resolve(filePath)));
+	files = files.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(filePath))));
 
 	if (argv.flags.staged) {
 		try {
