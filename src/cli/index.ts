@@ -93,8 +93,7 @@ const filterGitFiles = (
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	// Canonicalize to handle Windows 8.3 short paths
-	return fs.realpathSync(gitRoot.trim());
+	return gitRoot.trim();
 };
 
 (async () => {
@@ -103,7 +102,13 @@ const gitRootPath = async () => {
 		files = ['.'];
 	}
 
-	files = files.map(filePath => normalizePath(fs.realpathSync(path.resolve(filePath))));
+	files = files.map((filePath) => {
+		const resolved = path.resolve(filePath);
+		const real = fs.realpathSync(resolved);
+		const normalized = normalizePath(real);
+		console.log({ filePath, resolved, real, normalized });
+		return normalized;
+	});
 
 	if (argv.flags.staged) {
 		try {
