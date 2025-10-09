@@ -1,22 +1,22 @@
 catalogs:
   eslint-plugins:
-    '@eslint-community/eslint-plugin-eslint-comments': ^4.5.0
-    '@eslint/js': ^9.31.0
-    '@eslint/markdown': ^7.1.0
-    '@stylistic/eslint-plugin': ^5.2.2
-    '@typescript-eslint/eslint-plugin': ^8.38.0
-    '@typescript-eslint/parser': ^8.38.0
+    "@eslint-community/eslint-plugin-eslint-comments": ^4.5.0
+    "@eslint/js": ^9.37.0
+    "@eslint/markdown": ^7.4.0
+    "@stylistic/eslint-plugin": ^5.4.0
+    "@typescript-eslint/eslint-plugin": ^8.46.0
+    "@typescript-eslint/parser": ^8.46.0
     eslint-import-resolver-typescript: ^4.4.4
     eslint-plugin-import-x: ^4.16.1
-    eslint-plugin-jsonc: ^2.20.1
-    eslint-plugin-n: ^17.21.0
+    eslint-plugin-jsonc: ^2.21.0
+    eslint-plugin-n: ^17.23.1
     eslint-plugin-no-use-extend-native: 0.7.2
     eslint-plugin-promise: ^7.2.1
     eslint-plugin-react: ^7.37.5
     eslint-plugin-react-hooks: ^5.2.0
-    eslint-plugin-regexp: ^2.9.0
+    eslint-plugin-regexp: ^2.10.0
     eslint-plugin-unicorn: ^60.0.0
-    eslint-plugin-vue: ^10.3.0
-    eslint-plugin-yml: ^1.18.0
+    eslint-plugin-vue: ^10.5.0
+    eslint-plugin-yml: ^1.19.0
     vue-eslint-parser: ^10.2.0
     yaml-eslint-parser: ^1.3.0

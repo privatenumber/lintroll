@@ -13,7 +13,7 @@ export default testSuite(({ describe }) => {
 				expect.arrayContaining([
 					expect.objectContaining({
 						ruleId: 'jsonc/sort-keys',
-						message: "Expected object keys to be in specified order. 'version' should be before 'description'.",
+						message: "Expected object keys to be in specified order. 'description' should be after 'version'.",
 					}),
 					expect.objectContaining({
 						ruleId: 'jsonc/sort-keys',
@@ -21,7 +21,7 @@ export default testSuite(({ describe }) => {
 					}),
 					expect.objectContaining({
 						ruleId: 'jsonc/sort-keys',
-						message: "Expected object keys to be in ascending order. 'a' should be before 'c'.",
+						message: "Expected object keys to be in ascending order. 'b' should be after 'a'.",
 					}),
 					expect.objectContaining({
 						ruleId: 'jsonc/indent',
