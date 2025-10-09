@@ -83,7 +83,8 @@ const filterGitFiles = (
 
 	console.log({
 		gitRoot,
-		gitFiles
+		gitFiles,
+		targetFiles,
 	});
 	return gitFiles
 		// Only keep files that are within the target files (e.g. cwd)
@@ -115,7 +116,7 @@ const gitRootPath = async () => {
 				'--diff-filter=ACMR',
 			]);
 
-			files = filterGitFiles(stagedFilesText, gitRoot.trim(), files);
+			files = filterGitFiles(stagedFilesText, gitRoot, files);
 		} catch {
 			console.error('Error: Failed to detect staged files from git');
 			process.exit(1);
@@ -128,7 +129,10 @@ const gitRootPath = async () => {
 			console.log({ gitRoot });
 			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
 
-			files = filterGitFiles(trackedFilesText, gitRoot.trim(), files);
+			files = filterGitFiles(trackedFilesText, gitRoot, files);
+			console.log({
+				files,
+			});
 		} catch {
 			console.error('Error: Failed to detect tracked files from git');
 			process.exit(1);
