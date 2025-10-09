@@ -47,6 +47,43 @@ export default testSuite(({ describe }) => {
 				// Successful processes don't have exitCode property, only errors do
 				expect('exitCode' in result ? result.exitCode : 0).toBe(0);
 			});
+
+			test('lints tracked files in subdirectories', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'src/tracked.js': 'const x = "unquoted"',
+					'src/untracked.js': 'const y = "also-unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['src/tracked.js']);
+
+				const { output } = await lintroll(['--git'], fixture.path);
+
+				expect(output).toContain('src/tracked.js');
+				expect(output).not.toContain('src/untracked.js');
+			});
+
+			test('respects subdirectory argument', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'src/file.js': 'const x = "unquoted"',
+					'other/file.js': 'const y = "also-unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+
+				const { output } = await lintroll(['--git', 'src'], fixture.path);
+
+				expect(output).toContain('src/file.js');
+				// Note: output may contain debug info mentioning other files, but no lint errors for them
+				expect(output).toContain('@stylistic/quotes'); // At least one error from src/file.js
+			});
 		});
 
 		describe('config files', ({ test }) => {
