@@ -22,7 +22,7 @@ Powered by ESLint that's enhanced with 12 plugins, covering a wide scope includi
 - **ESLint config**: Also exports an ESLint config so you can itegrate it into your own config!
 
 ### What does the linted code look like?
-Checkout the code fixtures from the passing tests [here](https://github.com/search?q=repo%3Aprivatenumber%2Feslint-config+path%3Atests%2F**%2Ffixtures%2Fpass*&type=code).
+Checkout the code fixtures from the passing tests [here](https://github.com/search?q=repo%3Aprivatenumber%2Flintroll+path%3Atests%2F**%2Ffixtures%2Fpass*&type=code).
 
 ## Install
 
