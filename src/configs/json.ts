@@ -88,6 +88,15 @@ export const json = defineConfig([
 			),
 		},
 	},
+	// Renovate supports JSONC without trailing commas
+	{
+		files: ['**/renovate.json'],
+		rules: {
+			...jsoncRecommended,
+			'jsonc/comma-dangle': ['error', 'never'],
+			'jsonc/no-comments': 'off',
+		},
+	},
 	{
 		files: ['**/package.json'],
 		rules: {
