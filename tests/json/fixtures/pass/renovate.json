@@ -1,0 +1,7 @@
+{
+	// Comment is allowed in renovate.json
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:base",
+	],
+}

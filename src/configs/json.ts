@@ -24,6 +24,7 @@ const jsoncFiles = [
 	vscodeConfigs,
 	...tsconfigFiles,
 	...nxConfigs,
+	'**/renovate.json',
 ];
 
 const jsoncCommaDangle = stylistic[1].rules['@stylistic/comma-dangle'][1];

@@ -47,5 +47,18 @@ export default testSuite(({ describe }) => {
 				);
 			});
 		});
+
+		test('renovate.json allows comments', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/pass/renovate.json', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result);
+			});
+
+			expect(result.errorCount).toBe(0);
+			expect(result.warningCount).toBe(0);
+		});
 	});
 });
