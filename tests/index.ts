@@ -10,6 +10,7 @@ describe('eslint config', ({ runTestSuite }) => {
 	runTestSuite(import('./react/index.js'));
 	runTestSuite(import('./node/index.js'));
 	runTestSuite(import('./bundle/index.js'));
+	runTestSuite(import('./unicorn/index.js'));
 	runTestSuite(import('./custom-rules/index.js'));
 	runTestSuite(import('./cli/index.js'));
 });

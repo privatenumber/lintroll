@@ -131,6 +131,7 @@ export const unicorn = (
 				'unicorn/no-abusive-eslint-disable': 'off',
 
 				'unicorn/no-array-reverse': 'warn',
+				'unicorn/no-array-sort': 'warn',
 			},
 		}),
 		defineConfig({
