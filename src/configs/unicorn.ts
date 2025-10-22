@@ -117,10 +117,12 @@ export const unicorn = (
 				'unicorn/prevent-abbreviations': ['error', {
 					allowList,
 					replacements,
+
 					/**
 					 * Allow "e2e" in filenames like "test-name.e2e.js" (end-to-end tests)
 					 * Using `ignore` instead of `allowList` or `replacements` because:
-					 * - `allowList` only matches exact full identifiers (doesn't work for filenames like "e2e.test.ts")
+					 * - `allowList` only matches exact full identifiers
+					 *   (doesn't work for filenames like "e2e.test.ts")
 					 * - `replacements` matches substrings in code but not reliably in filenames
 					 * - `ignore` uses regex patterns that work for both filenames and code
 					 * Pattern matches: *.e2e.* (e.g., foo.e2e.js, bar.e2e.test.ts)

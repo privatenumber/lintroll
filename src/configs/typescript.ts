@@ -27,9 +27,9 @@ export const parseTypescript = defineConfig({
 });
 
 export const typescript = (tsconfig: TsConfigResult | null) => {
-	// Check if rewriteRelativeImportExtensions is enabled
-	const hasRewriteExtensions = (
-		tsconfig?.config?.compilerOptions?.rewriteRelativeImportExtensions === true
+	// Check if allowImportingTsExtensions is enabled
+	const hasAllowImportingTsExtensions = (
+		tsconfig?.config?.compilerOptions?.allowImportingTsExtensions === true
 	);
 
 	return defineConfig({
@@ -132,9 +132,8 @@ export const typescript = (tsconfig: TsConfigResult | null) => {
 
 			'prefer-rest-params': 'off',
 
-			// When rewriteRelativeImportExtensions is enabled, allow .ts extensions
-			// since TypeScript will rewrite them to .js at compile time
-			'import-x/extensions': hasRewriteExtensions
+			// When hasAllowImportingTsExtensions is enabled, allow .ts extensions
+			'import-x/extensions': hasAllowImportingTsExtensions
 				? 'off'
 				: [
 					'error',
