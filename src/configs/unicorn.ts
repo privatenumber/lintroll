@@ -119,7 +119,7 @@ export const unicorn = (
 					replacements,
 
 					/**
-					 * Allow "e2e" in filenames like "test-name.e2e.js" (end-to-end tests)
+					 * Allow "e2e" in filenames like "test-name.e2e.js" (end-to-end tests) or "e2e.test.ts"
 					 * Using `ignore` instead of `allowList` or `replacements` because:
 					 * - `allowList` only matches exact full identifiers
 					 *   (doesn't work for filenames like "e2e.test.ts")
@@ -127,7 +127,7 @@ export const unicorn = (
 					 * - `ignore` uses regex patterns that work for both filenames and code
 					 * Pattern matches: *.e2e.* (e.g., foo.e2e.js, bar.e2e.test.ts)
 					 */
-					ignore: [/\.e2e\./],
+					ignore: [/\be2e\b/],
 				}],
 
 				/**
