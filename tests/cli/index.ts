@@ -6,7 +6,7 @@ import { lintroll } from '../utils/eslint.js';
 import { createGit } from '../utils/create-git.js';
 
 // Normalize path separators for platform (forward slash on Unix, backslash on Windows)
-const toPlatformPath = (filePath: string) => filePath.replaceAll('/', path.sep);
+const slash = (filePath: string) => filePath.replaceAll('/', path.sep);
 
 export default testSuite(({ describe }) => {
 	describe('cli', ({ test, describe }) => {
@@ -66,8 +66,8 @@ export default testSuite(({ describe }) => {
 
 				const { output } = await lintroll(['--git'], fixture.path);
 
-				expect(output).toContain(toPlatformPath('src/tracked.js'));
-				expect(output).not.toContain(toPlatformPath('src/untracked.js'));
+				expect(output).toContain(slash('src/tracked.js'));
+				expect(output).not.toContain(slash('src/untracked.js'));
 			});
 
 			test('respects subdirectory argument', async ({ onTestFail }) => {
@@ -84,7 +84,7 @@ export default testSuite(({ describe }) => {
 
 				const { output } = await lintroll(['--git', 'src'], fixture.path);
 
-				expect(output).toContain(toPlatformPath('src/file.js'));
+				expect(output).toContain(slash('src/file.js'));
 				// Note: output may contain debug info mentioning other files, but no lint errors for them
 				expect(output).toContain('@stylistic/quotes'); // At least one error from src/file.js
 			});
