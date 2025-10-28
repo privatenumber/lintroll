@@ -26,5 +26,23 @@ export default testSuite(({ describe }) => {
 			expect(result.errorCount).toBe(0);
 			expect(result.warningCount).toBeGreaterThan(0);
 		});
+
+		test('allows temp and dir abbreviations', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/temp-dir.js', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			// Should not have any errors about prevent-abbreviations
+			const abbreviationErrors = result.messages.filter(
+				message => message.ruleId === 'unicorn/prevent-abbreviations',
+			);
+
+			expect(abbreviationErrors.length).toBe(0);
+			expect(result.errorCount).toBe(0);
+		});
 	});
 });

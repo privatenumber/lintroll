@@ -23,9 +23,11 @@ export const unicorn = (
 	const replacements: Record<string, boolean> = {
 		args: false,
 		dev: false,
+		dir: false,
 		dist: false,
 		env: false,
 		pkg: false,
+		temp: false,
 
 		// Vue.js
 		prop: false,
