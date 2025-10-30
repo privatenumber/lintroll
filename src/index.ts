@@ -32,7 +32,7 @@ export const pvtnbr = (
 			ignores: [
 				'**/package-lock.json',
 				'**/pnpm-lock.yaml',
-				'{tmp,temp}/**',
+				'{tmp,temp,.tmp,.temp,__tmp__,__temp__}/**',
 				'**/*.min.js',
 				'**/dist/**',
 				'**/node_modules/**',
