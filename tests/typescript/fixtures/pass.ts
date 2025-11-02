@@ -17,6 +17,11 @@ type SomeObject = {
 
 type _AllowUnused = number;
 
+export type List =
+	| 1
+	| 2
+	| 3;
+
 export type Factory = <
 	A,
 	B,

@@ -83,6 +83,13 @@ export const typescript = (tsconfig: TsConfigResult | null) => {
 
 			'@stylistic/member-delimiter-style': 'error',
 
+			// Allow linebreaks after = for TypeScript union/intersection types
+			'@stylistic/operator-linebreak': ['error', 'before', {
+				overrides: {
+					'=': 'after',
+				},
+			}],
+
 			'no-useless-constructor': 'off',
 			'@typescript-eslint/no-useless-constructor': 'error',
 
