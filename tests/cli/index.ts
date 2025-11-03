@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
@@ -87,6 +88,28 @@ export default testSuite(({ describe }) => {
 				expect(output).toContain(slash('src/file.js'));
 				// Note: output may contain debug info mentioning other files, but no lint errors for them
 				expect(output).toContain('@stylistic/quotes'); // At least one error from src/file.js
+			});
+
+			test('handles manually deleted files gracefully', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'tracked.js': 'const x = "unquoted"',
+					'deleted.js': 'const y = "also-unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+				await git('commit', ['-m', 'Initial commit']);
+
+				// Manually delete the file (not with git rm) - file is still tracked but doesn't exist
+				await fs.unlink(path.join(fixture.path, 'deleted.js'));
+
+				const { output } = await lintroll(['--git'], fixture.path);
+
+				expect(output).toContain('tracked.js');
+				expect(output).not.toContain('deleted.js');
 			});
 		});
 

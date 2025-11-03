@@ -78,12 +78,21 @@ const filterGitFiles = (
 ) => gitFilesText
 	.split('\n')
 	.filter(Boolean)
-	.map(
+	.map((filePath) => {
+		const resolvedPath = path.resolve(gitRoot, filePath);
+		// Check if file exists before resolving (file may be deleted but still tracked)
+		if (!fs.existsSync(resolvedPath)) {
+			return null;
+		}
 		// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-		filePath => normalizePath(fs.realpathSync.native(path.resolve(gitRoot, filePath))),
-	)
-	// Only keep files that are within the target files (e.g. cwd)
-	.filter(gitFile => targetFiles.some(targetFile => gitFile.startsWith(targetFile)));
+		return normalizePath(fs.realpathSync.native(resolvedPath));
+	})
+	.filter((gitFile): gitFile is string => (
+		// Filter out null values (deleted files)
+		gitFile !== null
+		// Only keep files that are within the target files (e.g. cwd)
+		&& targetFiles.some(targetFile => gitFile.startsWith(targetFile))
+	));
 
 const gitRootPath = async () => {
 	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
