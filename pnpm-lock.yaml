@@ -27,8 +27,8 @@ importers:
         specifier: ^8.46.2
         version: 8.46.2(eslint@9.37.0)(typescript@5.9.3)
       cleye:
-        specifier: ^1.3.4
-        version: 1.3.4
+        specifier: ^2.0.0
+        version: 2.0.0
       confusing-browser-globals:
         specifier: ^1.0.11
         version: 1.0.11
@@ -1300,8 +1300,8 @@ packages:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
 
-  cleye@1.3.4:
-    resolution: {integrity: sha512-Rd6M8ecBDtdYdPR22h6gG37lPqqJ3hSOaplaGwuGYey9xKmEElOvTgupqfyLSlISshroRpVhYjDtW3vwNUNBaQ==}
+  cleye@2.0.0:
+    resolution: {integrity: sha512-O4pienLd7x3kzjdhzz0nIEmPuX84I1C1UjLPdMe+0TebP2aTuPoXx15zvLMgSUIn+ZAJJzH9cH4aEVA1bDdmsA==}
 
   color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -3034,8 +3034,8 @@ packages:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
 
-  terminal-columns@1.4.1:
-    resolution: {integrity: sha512-IKVL/itiMy947XWVv4IHV7a0KQXvKjj4ptbi7Ew9MPMcOLzkiQeyx3Gyvh62hKrfJ0RZc4M1nbhzjNM39Kyujw==}
+  terminal-columns@2.0.0:
+    resolution: {integrity: sha512-6IByuUjyNZJXUtwDNm+OIe62zgwwaRbH+WMNTcx05O2G5V9WhvluAAHJY8OvUdwmzMPpqAD/7EUpGdI6ae1aiQ==}
 
   tinyglobby@0.2.14:
     resolution: {integrity: sha512-tX5e7OM1HnYr2+a2C/4V0htOcSQcoSTH9KgJnVvNm5zm/cyEWKJ7j7YutsH9CxMdtOkkLFy2AHrMci9IM8IPZQ==}
@@ -3085,6 +3085,9 @@ packages:
 
   type-flag@3.0.0:
     resolution: {integrity: sha512-3YaYwMseXCAhBB14RXW5cRQfJQlEknS6i4C8fCfeUdS3ihG9EdccdR9kt3vP73ZdeTGmPb4bZtkDn5XMIn1DLA==}
+
+  type-flag@4.0.2:
+    resolution: {integrity: sha512-diALGSg9wBpvowixHbIeCJtXNxUKJHUNR8oE67K9zuPkpBe5FMmg+dpevDWmEwGQDmn/RJD3m7szs6Ssdz5A4w==}
 
   typed-array-buffer@1.0.0:
     resolution: {integrity: sha512-Y8KTSIglk9OZEr8zywiIHG/kmQ7KWyjseXs1CbSo8vC42w7hg2HgYTxSWwP0+is7bWDc1H+Fo026CpHFwm8tkw==}
@@ -4352,10 +4355,10 @@ snapshots:
     dependencies:
       escape-string-regexp: 1.0.5
 
-  cleye@1.3.4:
+  cleye@2.0.0:
     dependencies:
-      terminal-columns: 1.4.1
-      type-flag: 3.0.0
+      terminal-columns: 2.0.0
+      type-flag: 4.0.2
 
   color-convert@1.9.3:
     dependencies:
@@ -6861,7 +6864,7 @@ snapshots:
 
   tapable@2.3.0: {}
 
-  terminal-columns@1.4.1: {}
+  terminal-columns@2.0.0: {}
 
   tinyglobby@0.2.14:
     dependencies:
@@ -6914,6 +6917,8 @@ snapshots:
       tagged-tag: 1.0.0
 
   type-flag@3.0.0: {}
+
+  type-flag@4.0.2: {}
 
   typed-array-buffer@1.0.0:
     dependencies:
