@@ -19,6 +19,19 @@ export default testSuite(({ describe }) => {
 		});
 
 		describe('--git flag', ({ test }) => {
+			test('errors when not in a git repository', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'file.js': 'const x = "unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const result = await lintroll(['--git'], fixture.path);
+
+				expect(result.exitCode).toBe(1);
+				expect(result.stderr).toContain('Not a git repository');
+			});
+
 			test('lints only git tracked files', async ({ onTestFail }) => {
 				await using fixture = await createFixture({
 					'tracked.js': 'const x = "unquoted"',

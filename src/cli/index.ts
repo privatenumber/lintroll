@@ -95,9 +95,13 @@ const filterGitFiles = (
 	));
 
 const gitRootPath = async () => {
-	const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-	// Git already returns the real path - just trim whitespace
-	return gitRoot.trim();
+	try {
+		const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
+		// Git already returns the real path - just trim whitespace
+		return gitRoot.trim();
+	} catch (error) {
+		throw new Error('Not a git repository');
+	}
 };
 
 (async () => {
@@ -112,20 +116,15 @@ const gitRootPath = async () => {
 	// For --staged flag, we directly pass the staged files to ESLint
 	// This is because staged files are already a specific list that we want to lint
 	if (argv.flags.staged) {
-		try {
-			const gitRoot = await gitRootPath();
-			const { stdout: stagedFilesText } = await spawn('git', [
-				'diff',
-				'--staged',
-				'--name-only',
-				'--diff-filter=ACMR',
-			]);
+		const gitRoot = await gitRootPath();
+		const { stdout: stagedFilesText } = await spawn('git', [
+			'diff',
+			'--staged',
+			'--name-only',
+			'--diff-filter=ACMR',
+		]);
 
-			files = filterGitFiles(stagedFilesText, gitRoot, files);
-		} catch {
-			console.error('Error: Failed to detect staged files from git');
-			process.exit(1);
-		}
+		files = filterGitFiles(stagedFilesText, gitRoot, files);
 
 		if (files.length === 0) {
 			process.exitCode = 0;
@@ -158,30 +157,24 @@ const gitRootPath = async () => {
 
 	// For --git flag, filter to only git-tracked files that ESLint can lint
 	if (argv.flags.git) {
-		try {
-			const gitRoot = await gitRootPath();
-			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+		const gitRoot = await gitRootPath();
+		const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+		const gitTrackedFiles = filterGitFiles(trackedFilesText, gitRoot, files);
 
-			const gitTrackedFiles = filterGitFiles(trackedFilesText, gitRoot, files);
-
-			// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
-			const lintableFiles = [];
-			for (const file of gitTrackedFiles) {
-				const isIgnored = await eslint.isPathIgnored(file);
-				if (!isIgnored) {
-					lintableFiles.push(file);
-				}
+		// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
+		const lintableFiles = [];
+		for (const file of gitTrackedFiles) {
+			const isIgnored = await eslint.isPathIgnored(file);
+			if (!isIgnored) {
+				lintableFiles.push(file);
 			}
+		}
 
-			files = lintableFiles;
+		files = lintableFiles;
 
-			// If no tracked files match, exit early
-			if (files.length === 0) {
-				return;
-			}
-		} catch {
-			console.error('Error: Failed to detect tracked files from git');
-			process.exit(1);
+		// If no tracked files match, exit early
+		if (files.length === 0) {
+			return;
 		}
 	}
 
@@ -205,4 +198,7 @@ const gitRootPath = async () => {
 	}
 
 	process.exitCode = getExitCode(resultCounts);
-})();
+})().catch((error) => {
+	console.error(`Error: ${error.message}`);
+	process.exit(1);
+});
