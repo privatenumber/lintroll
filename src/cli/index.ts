@@ -109,6 +109,8 @@ const gitRootPath = async () => {
 	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
 	files = files.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(filePath))));
 
+	// For --staged flag, we directly pass the staged files to ESLint
+	// This is because staged files are already a specific list that we want to lint
 	if (argv.flags.staged) {
 		try {
 			const gitRoot = await gitRootPath();
@@ -124,23 +126,11 @@ const gitRootPath = async () => {
 			console.error('Error: Failed to detect staged files from git');
 			process.exit(1);
 		}
-	}
 
-	if (argv.flags.git) {
-		try {
-			const gitRoot = await gitRootPath();
-			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
-
-			files = filterGitFiles(trackedFilesText, gitRoot, files);
-		} catch {
-			console.error('Error: Failed to detect tracked files from git');
-			process.exit(1);
+		if (files.length === 0) {
+			process.exitCode = 0;
+			return;
 		}
-	}
-
-	if (files.length === 0) {
-		process.exitCode = 0;
-		return;
 	}
 
 	// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
@@ -165,6 +155,36 @@ const gitRootPath = async () => {
 		cacheLocation: argv.flags.cacheLocation,
 		ignorePatterns: argv.flags.ignorePattern,
 	});
+
+	// For --git flag, filter to only git-tracked files that ESLint can lint
+	if (argv.flags.git) {
+		try {
+			const gitRoot = await gitRootPath();
+			const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+
+			const gitTrackedFiles = filterGitFiles(trackedFilesText, gitRoot, files);
+
+			// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
+			const lintableFiles = [];
+			for (const file of gitTrackedFiles) {
+				const isIgnored = await eslint.isPathIgnored(file);
+				if (!isIgnored) {
+					lintableFiles.push(file);
+				}
+			}
+
+			files = lintableFiles;
+
+			// If no tracked files match, exit early
+			if (files.length === 0) {
+				return;
+			}
+		} catch {
+			console.error('Error: Failed to detect tracked files from git');
+			process.exit(1);
+		}
+	}
+
 	const results = await eslint.lintFiles(files);
 
 	if (argv.flags.fix) {

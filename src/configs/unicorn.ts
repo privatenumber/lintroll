@@ -1,3 +1,4 @@
+import type { Linter } from 'eslint';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import { defineConfig } from '../utils/define-config';
 import { jsAndTs } from '../utils/globs.js';
@@ -11,7 +12,7 @@ export type Options = {
 
 export const unicorn = (
 	option?: Options,
-) => {
+): Linter.Config[] => {
 	// exact-match, case sensitive
 	const allowList: Record<string, boolean> = {
 		// for-loop index
