@@ -1,6 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import assert from 'node:assert/strict';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
 import { lintroll } from '../utils/eslint.js';
@@ -19,6 +20,20 @@ export default testSuite(({ describe }) => {
 		});
 
 		describe('--git flag', ({ test }) => {
+			test('errors when not in a git repository', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'file.js': 'const x = "unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const result = await lintroll(['--git'], fixture.path);
+
+				assert.ok('exitCode' in result);
+				expect(result.exitCode).toBe(1);
+				expect(result.stderr).toContain('The current working directory is not a git repository');
+			});
+
 			test('lints only git tracked files', async ({ onTestFail }) => {
 				await using fixture = await createFixture({
 					'tracked.js': 'const x = "unquoted"',
@@ -110,6 +125,71 @@ export default testSuite(({ describe }) => {
 
 				expect(output).toContain('tracked.js');
 				expect(output).not.toContain('deleted.js');
+			});
+
+			test('filters out git-tracked unsupported files', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'supported.js': 'const x = "unquoted"',
+					'.gitignore': 'node_modules/',
+					'.npmrc': 'registry=https://registry.npmjs.org/',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+
+				const { output } = await lintroll(['--git'], fixture.path);
+
+				// Should lint the JS file
+				expect(output).toContain('supported.js');
+				// Should NOT attempt to lint unsupported files (no errors about them)
+				expect(output).not.toContain('.gitignore');
+				expect(output).not.toContain('.npmrc');
+			});
+
+			test('respects ESLint ignore rules for git-tracked files', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'src/included.js': 'const x = "unquoted"',
+					'dist/ignored.js': 'const y = "also-unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+
+				// ESLint config already ignores dist/ by default in lintroll
+				const { output } = await lintroll(['--git'], fixture.path);
+
+				expect(output).toContain(slash('src/included.js'));
+				// dist/ should be ignored by ESLint, even though it's git-tracked
+				expect(output).not.toContain(slash('dist/ignored.js'));
+			});
+
+			test('with path argument filters ESLint-discovered files', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'src/file.js': 'const x = "unquoted"',
+					'tests/file.test.js': 'const y = "also-unquoted"',
+					'.gitignore': 'node_modules/',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+
+				const { output } = await lintroll(['--git', 'src'], fixture.path);
+
+				// Should lint JS files in src/ that ESLint discovers
+				expect(output).toContain(slash('src/file.js'));
+				// Should NOT lint files outside src/, even though they're git-tracked
+				expect(output).not.toContain(slash('tests/file.test.js'));
+				// Should NOT lint unsupported files, even in src/
+				expect(output).not.toContain('.gitignore');
 			});
 		});
 
