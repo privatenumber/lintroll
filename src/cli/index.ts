@@ -167,7 +167,7 @@ const gitRootPath = async () => {
 
 		// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
 		const ignoredChecks = await Promise.all(
-			gitTrackedFiles.map(async (file) => ({
+			gitTrackedFiles.map(async file => ({
 				file,
 				isIgnored: await eslint.isPathIgnored(file),
 			})),
