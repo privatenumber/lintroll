@@ -2,10 +2,10 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
-import spawn, { type SubprocessError } from 'nano-spawn';
 import { name } from '../../package.json';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
+import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.js';
 
 /**
  * Reference: ESlint CLI
@@ -71,43 +71,6 @@ const isNodeEnabled = (
 // Normalize paths to forward slashes for consistent cross-platform comparison
 const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 
-const filterGitFiles = (
-	gitFilesText: string,
-	gitRoot: string,
-	targetFiles: string[],
-) => gitFilesText
-	.split('\n')
-	.filter(Boolean)
-	.map((filePath) => {
-		const resolvedPath = path.resolve(gitRoot, filePath);
-		// Check if file exists before resolving (file may be deleted but still tracked)
-		if (!fs.existsSync(resolvedPath)) {
-			return null;
-		}
-		// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-		return normalizePath(fs.realpathSync.native(resolvedPath));
-	})
-	.filter((gitFile): gitFile is string => (
-		// Filter out null values (deleted files)
-		gitFile !== null
-		// Only keep files that are within the target files (e.g. cwd)
-		&& targetFiles.some(targetFile => gitFile.startsWith(targetFile))
-	));
-
-const gitRootPath = async () => {
-	try {
-		const { stdout: gitRoot } = await spawn('git', ['rev-parse', '--show-toplevel']);
-		// Git already returns the real path - just trim whitespace
-		return gitRoot.trim();
-	} catch (error) {
-		const subprocessError = error as SubprocessError;
-		if (subprocessError.stderr && subprocessError.stderr.includes('not a git repository')) {
-			throw new Error('The current working directory is not a git repository');
-		}
-		throw error;
-	}
-};
-
 (async () => {
 	let { files } = argv._;
 	if (files.length === 0) {
@@ -120,15 +83,8 @@ const gitRootPath = async () => {
 	// For --staged flag, we directly pass the staged files to ESLint
 	// This is because staged files are already a specific list that we want to lint
 	if (argv.flags.staged) {
-		const gitRoot = await gitRootPath();
-		const { stdout: stagedFilesText } = await spawn('git', [
-			'diff',
-			'--staged',
-			'--name-only',
-			'--diff-filter=ACMR',
-		]);
-
-		files = filterGitFiles(stagedFilesText, gitRoot, files);
+		const gitRoot = await getGitRoot();
+		files = await getStagedFiles(gitRoot, files);
 
 		if (files.length === 0) {
 			process.exitCode = 0;
@@ -161,9 +117,8 @@ const gitRootPath = async () => {
 
 	// For --git flag, filter to only git-tracked files that ESLint can lint
 	if (argv.flags.git) {
-		const gitRoot = await gitRootPath();
-		const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
-		const gitTrackedFiles = filterGitFiles(trackedFilesText, gitRoot, files);
+		const gitRoot = await getGitRoot();
+		const gitTrackedFiles = await getTrackedFiles(gitRoot, files);
 
 		// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
 		const ignoredChecks = await Promise.all(
