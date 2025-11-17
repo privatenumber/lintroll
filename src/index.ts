@@ -108,6 +108,6 @@ export const pvtnbr = (
 	].filter(Boolean);
 };
 
-export default pvtnbr() as Linter.Config[];
+export default pvtnbr();
 export { defineConfig };
 export type { Options };
