@@ -1,6 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import assert from 'node:assert/strict';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
 import { lintroll } from '../utils/eslint.js';
@@ -28,8 +29,9 @@ export default testSuite(({ describe }) => {
 
 				const result = await lintroll(['--git'], fixture.path);
 
+				assert.ok('exitCode' in result);
 				expect(result.exitCode).toBe(1);
-				expect(result.stderr).toContain('Not a git repository');
+				expect(result.stderr).toContain('The current working directory is not a git repository');
 			});
 
 			test('lints only git tracked files', async ({ onTestFail }) => {

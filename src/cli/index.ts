@@ -2,7 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
-import spawn from 'nano-spawn';
+import spawn, { type SubprocessError } from 'nano-spawn';
 import { name } from '../../package.json';
 import { getConfig } from './get-config.js';
 import { getExitCode, countErrors } from './handle-errors.js';
@@ -100,7 +100,11 @@ const gitRootPath = async () => {
 		// Git already returns the real path - just trim whitespace
 		return gitRoot.trim();
 	} catch (error) {
-		throw new Error('Not a git repository');
+		const subprocessError = error as SubprocessError;
+		if (subprocessError.stderr && subprocessError.stderr.includes('not a git repository')) {
+			throw new Error('The current working directory is not a git repository');
+		}
+		throw error;
 	}
 };
 
@@ -199,6 +203,6 @@ const gitRootPath = async () => {
 
 	process.exitCode = getExitCode(resultCounts);
 })().catch((error) => {
-	console.error(`Error: ${error.message}`);
+	console.error(`Error: ${(error as Error).message}`);
 	process.exit(1);
 });
