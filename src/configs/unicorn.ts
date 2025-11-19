@@ -22,6 +22,10 @@ export const unicorn = (
 	// case insensitive and matches substrings
 	const replacements: Record<string, boolean> = {
 		args: false,
+
+		// database
+		db: false,
+
 		dev: false,
 		dir: false,
 		dist: false,

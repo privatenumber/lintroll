@@ -27,9 +27,9 @@ export default testSuite(({ describe }) => {
 			expect(result.warningCount).toBeGreaterThan(0);
 		});
 
-		test('allows temp and dir abbreviations', async ({ onTestFail }) => {
+		test('allows certain abbreviations', async ({ onTestFail }) => {
 			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/temp-dir.js', import.meta.url)),
+				fileURLToPath(new URL('fixtures/abbreviations.js', import.meta.url)),
 			);
 
 			onTestFail(() => {
