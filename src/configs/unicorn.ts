@@ -1,3 +1,4 @@
+import type { Linter } from 'eslint';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import { defineConfig } from '../utils/define-config';
 import { jsAndTs } from '../utils/globs.js';
@@ -59,8 +60,8 @@ export const unicorn = (
 		}
 	}
 
-	return [
-		defineConfig({
+	return defineConfig([
+		{
 			files: jsAndTs,
 			plugins: {
 				unicorn: unicornPlugin,
@@ -150,12 +151,12 @@ export const unicorn = (
 				'unicorn/no-array-reverse': 'warn',
 				'unicorn/no-array-sort': 'warn',
 			},
-		}),
-		defineConfig({
+		},
+		{
 			files: ['**/*.d.ts'],
 			rules: {
 				'unicorn/prevent-abbreviations': 'off',
 			},
-		}),
-	];
+		},
+	]) as Linter.Config[];
 };
