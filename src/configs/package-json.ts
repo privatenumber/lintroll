@@ -18,15 +18,4 @@ export const packageJson = defineConfig([
 			'package-json/exports-subpaths-style': ['error', { prefer: 'implicit' }],
 		},
 	},
-	{
-		// Relax rules for test fixtures - they don't need full package.json metadata
-		files: ['**/tests/**/package.json', '**/fixtures/**/package.json'],
-		rules: {
-			'package-json/require-description': 'off',
-			'package-json/require-license': 'off',
-			'package-json/require-name': 'off',
-			'package-json/require-type': 'off',
-			'package-json/require-version': 'off',
-		},
-	},
 ]);
