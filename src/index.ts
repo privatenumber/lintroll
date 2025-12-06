@@ -14,6 +14,7 @@ import { promise } from './configs/promise.js';
 import { jest } from './configs/jest.js';
 import { markdown } from './configs/markdown.js';
 import { json } from './configs/json.js';
+import { packageJson } from './configs/package-json.js';
 import { yml } from './configs/yml.js';
 import { noUseExtendNative } from './configs/no-use-extend-native.js';
 import { unicorn } from './configs/unicorn.js';
@@ -94,6 +95,7 @@ export const pvtnbr = (
 		}),
 		...noUseExtendNative,
 		...json,
+		...packageJson,
 		yml,
 
 		/**

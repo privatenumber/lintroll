@@ -1,0 +1,14 @@
+{
+	"name": "@scope/test-package",
+	"version": "1.0.0",
+	"description": "Test package",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"type": "module",
+	"exports": "./index.js",
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}
