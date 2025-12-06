@@ -9,10 +9,7 @@
 		"eslint-config"
 	],
 	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/privatenumber/lintroll"
-	},
+	"repository": "privatenumber/lintroll",
 	"funding": "https://github.com/privatenumber/lintroll?sponsor=1",
 	"author": {
 		"name": "Hiroki Osame",

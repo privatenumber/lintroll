@@ -11,6 +11,9 @@ export const packageJson = defineConfig([
 			'package-json/order-properties': 'off',
 			'package-json/sort-collections': 'off',
 
+			// Enforce GitHub shorthand (e.g. "privatenumber/lintroll")
+			'package-json/repository-shorthand': ['error', { form: 'shorthand' }],
+
 			// Enforce implicit format for exports (e.g. "exports": "./index.js")
 			'package-json/exports-subpaths-style': ['error', { prefer: 'implicit' }],
 		},
@@ -24,7 +27,6 @@ export const packageJson = defineConfig([
 			'package-json/require-name': 'off',
 			'package-json/require-type': 'off',
 			'package-json/require-version': 'off',
-			'package-json/repository-shorthand': 'off',
 		},
 	},
 ]);
