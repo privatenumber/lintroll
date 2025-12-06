@@ -233,3 +233,18 @@ declare module 'yaml-eslint-parser' {
 	const parser: Linter.ParserModule;
 	export default parser;
 }
+
+declare module 'eslint-plugin-package-json' {
+	import type { ESLint, Linter } from 'eslint';
+
+	const plugin: ESLint.Plugin & {
+		configs: {
+			recommended: Linter.Config;
+			'recommended-publishable': Linter.Config;
+			stylistic: Linter.Config;
+			'legacy-recommended': ESLint.ConfigData;
+		};
+	};
+
+	export default plugin;
+}

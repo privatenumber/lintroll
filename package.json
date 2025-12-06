@@ -15,9 +15,6 @@
 		"name": "Hiroki Osame",
 		"email": "hiroki.osame@gmail.com"
 	},
-	"publishConfig": {
-		"access": "public"
-	},
 	"files": [
 		"dist"
 	],
@@ -27,15 +24,13 @@
 	"module": "./dist/index.mjs",
 	"types": "./dist/index.d.cts",
 	"exports": {
-		".": {
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
-			},
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			}
+		"require": {
+			"types": "./dist/index.d.cts",
+			"default": "./dist/index.cjs"
+		},
+		"import": {
+			"types": "./dist/index.d.mts",
+			"default": "./dist/index.mjs"
 		}
 	},
 	"imports": {
@@ -78,6 +73,7 @@
 		"eslint-plugin-jsonc": "^2.21.0",
 		"eslint-plugin-n": "^17.23.1",
 		"eslint-plugin-no-use-extend-native": "0.7.2",
+		"eslint-plugin-package-json": "^0.85.0",
 		"eslint-plugin-promise": "^7.2.1",
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^7.0.1",
