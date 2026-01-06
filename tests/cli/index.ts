@@ -193,6 +193,22 @@ export default testSuite(({ describe }) => {
 			});
 		});
 
+		describe('--ignore-pattern flag', ({ test }) => {
+			test('errors when no value is provided', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'file.js': 'const x = 1;',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const result = await lintroll(['--ignore-pattern'], fixture.path);
+
+				assert.ok('exitCode' in result);
+				expect(result.exitCode).toBe(1);
+				expect(result.stderr).toContain("'ignorePatterns' must be an array of non-empty strings or null");
+			});
+		});
+
 		describe('config files', ({ test }) => {
 			test('picks up .js config in module context', async () => {
 				const cwd = fileURLToPath(new URL('fixtures/js-config-module/', import.meta.url));
