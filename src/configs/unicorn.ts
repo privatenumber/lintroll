@@ -149,7 +149,10 @@ export const unicorn = (
 				'unicorn/no-abusive-eslint-disable': 'off',
 
 				'unicorn/no-array-reverse': 'warn',
-				'unicorn/no-array-sort': 'warn',
+
+				// Disabled: suggests toSorted() which is ES2023
+				// Prefer slice().sort() for ES2022 compatibility
+				'unicorn/no-array-sort': 'off',
 			},
 		},
 		{

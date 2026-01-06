@@ -120,12 +120,8 @@ const customRules = {
 	// 'max-statements': ['warn', 10],
 
 	// require a capital letter for constructors
-	'new-cap': ['error', {
-		capIsNew: false,
-		capIsNewExceptions: ['Immutable.Map', 'Immutable.Set', 'Immutable.List'],
-		newIsCap: true,
-		newIsCapExceptions: [],
-	}],
+	// Disabled: packages may have lowercase constructors that we can't control
+	'new-cap': 'off',
 
 	// allow/disallow an empty newline after var statement
 	'newline-after-var': 'off',
