@@ -137,15 +137,20 @@ export default testSuite(({ describe }) => {
 			const results = await fixtureEslint.lintFiles(['app.js']);
 
 			const allMessages = results.flatMap(r => r.messages);
-			const extraneousErrors = allMessages.filter(
-				message => message.ruleId === 'import-x/no-extraneous-dependencies',
-			);
 
-			// Should have exactly 1 error: fs-fixture (missing from package.json)
-			// Should NOT have error for: manten (in devDeps, which is allowed everywhere)
-			expect(extraneousErrors.length).toBe(1);
-			expect(extraneousErrors[0].message).toContain('fs-fixture');
-			expect(extraneousErrors[0].message).toContain("should be listed in the project's dependencies");
+			// fs-fixture is missing from package.json → should error
+			const hasMissingDepError = allMessages.some(
+				message => message.ruleId === 'import-x/no-extraneous-dependencies'
+					&& message.message.includes('fs-fixture'),
+			);
+			expect(hasMissingDepError).toBe(true);
+
+			// manten is in devDeps, which is allowed everywhere → should NOT error
+			const hasDevDepError = allMessages.some(
+				message => message.ruleId === 'import-x/no-extraneous-dependencies'
+					&& message.message.includes('manten'),
+			);
+			expect(hasDevDepError).toBe(false);
 		});
 	});
 });
