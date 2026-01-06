@@ -30,6 +30,7 @@ export const unicorn = (
 		dev: false,
 		dir: false,
 		dist: false,
+		docs: false,
 		env: false,
 		pkg: false,
 		temp: false,
