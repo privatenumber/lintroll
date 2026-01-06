@@ -360,7 +360,7 @@ export default testSuite(({ describe }) => {
 					output: '({ /*a*/a/*b*/:async(b)=>/*c*/{} })',
 				},
 				{
-					name: 'object property / method',
+					name: 'object property / computed method',
 					code: '({ /*a*/["a"]/*b*/(b)/*c*/{} })',
 					errors: [{
 						messageId: 'preferArrowFunction',
