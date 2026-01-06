@@ -1,5 +1,3 @@
-import path from 'node:path';
-import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
@@ -124,11 +122,9 @@ export default testSuite(({ describe }) => {
 				// Root level file (not in src/, tests/, etc.)
 				// Tests that devDeps are allowed from ANY file location
 				'app.js': `import { testSuite } from 'manten';\nimport { createFixture } from 'fs-fixture';\n\nexport { testSuite, createFixture };\n`,
+				// Symlink node_modules so imports can be resolved
+				'node_modules': ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
 			});
-
-			// Symlink node_modules so imports can be resolved
-			const mainNodeModules = path.resolve(process.cwd(), 'node_modules');
-			await fs.symlink(mainNodeModules, path.join(fixture.path, 'node_modules'));
 
 			onTestFail(() => console.log('Fixture at:', fixture.path));
 
