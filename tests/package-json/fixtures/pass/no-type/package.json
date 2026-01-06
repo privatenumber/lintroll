@@ -1,0 +1,7 @@
+{
+	"name": "cjs-package",
+	"version": "1.0.0",
+	"description": "Package without type field (CJS default)",
+	"license": "MIT",
+	"exports": "./index.js"
+}

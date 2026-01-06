@@ -11,6 +11,9 @@ export const packageJson = defineConfig([
 			'package-json/order-properties': 'off',
 			'package-json/sort-collections': 'off',
 
+			// Not all packages need to declare type - CJS is still valid default
+			'package-json/require-type': 'off',
+
 			// Skip description requirement for private packages
 			'package-json/require-description': ['error', { ignorePrivate: true }],
 

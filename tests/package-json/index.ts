@@ -94,6 +94,23 @@ export default testSuite(({ describe }) => {
 			expect(hasDescriptionError).toBe(false);
 		});
 
+		// CJS is still valid - not all packages need "type": "module"
+		test('packages do not require type field', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/pass/no-type/package.json', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			const hasTypeError = result.messages.some(
+				message => message.ruleId === 'package-json/require-type',
+			);
+
+			expect(hasTypeError).toBe(false);
+		});
+
 		/**
 		 * Test: no-extraneous-dependencies behavior
 		 *
