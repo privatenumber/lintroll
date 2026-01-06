@@ -2,8 +2,8 @@ import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
 import { ESLint } from 'eslint';
-import { pvtnbr } from '#pvtnbr';
 import { eslint } from '../utils/eslint.js';
+import { pvtnbr } from '#pvtnbr';
 
 export default testSuite(({ describe }) => {
 	describe('package-json', ({ test }) => {
@@ -121,9 +121,9 @@ export default testSuite(({ describe }) => {
 				}),
 				// Root level file (not in src/, tests/, etc.)
 				// Tests that devDeps are allowed from ANY file location
-				'app.js': `import { testSuite } from 'manten';\nimport { createFixture } from 'fs-fixture';\n\nexport { testSuite, createFixture };\n`,
+				'app.js': 'import { testSuite } from \'manten\';\nimport { createFixture } from \'fs-fixture\';\n\nexport { testSuite, createFixture };\n',
 				// Symlink node_modules so imports can be resolved
-				'node_modules': ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
+				node_modules: ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
 			});
 
 			onTestFail(() => console.log('Fixture at:', fixture.path));
