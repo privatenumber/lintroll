@@ -19,6 +19,17 @@ export const packageJson = defineConfig([
 
 			// Enforce implicit format for exports (e.g. "exports": "./index.js")
 			'package-json/exports-subpaths-style': ['error', { prefer: 'implicit' }],
+
+			// Private packages should only use devDependencies since they're never published
+			'package-json/restrict-private-properties': ['error', {
+				blockedProperties: [
+					'files',
+					'publishConfig',
+					'dependencies',
+					'peerDependencies',
+					'optionalDependencies',
+				],
+			}],
 		},
 	},
 ]);

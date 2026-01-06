@@ -8,10 +8,7 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import-x';
 import { defineConfig } from '../utils/define-config';
-import { importsConfig } from './imports.js';
 import { eslint } from './eslint.js';
-
-const [, noExtraneousDependenciesConfig] = importsConfig.rules['import-x/no-extraneous-dependencies'];
 
 export const tsFiles = '**/*.{ts,tsx,mts,cts}';
 
@@ -158,13 +155,6 @@ export const typescript = (tsconfig: TsConfigResult | null) => {
 			// Always require await when returning promise
 			// https://github.com/goldbergyoni/nodebestpractices/blob/5ba537d/sections/errorhandling/returningpromises.md
 			// '@typescript-eslint/return-await': ['error', 'always'],
-
-			'import-x/no-extraneous-dependencies': ['error', {
-				...noExtraneousDependenciesConfig,
-				devDependencies: noExtraneousDependenciesConfig.devDependencies.map(
-					pattern => pattern.replace('.js', '.{js,ts}'),
-				),
-			}],
 
 			// Not always possible to destructue at top-level when the variable is ambigious
 			'unicorn/consistent-destructuring': 'off',

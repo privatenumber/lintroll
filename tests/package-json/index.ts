@@ -1,6 +1,9 @@
 import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
+import { createFixture } from 'fs-fixture';
+import { ESLint } from 'eslint';
 import { eslint } from '../utils/eslint.js';
+import { pvtnbr } from '#pvtnbr';
 
 export default testSuite(({ describe }) => {
 	describe('package-json', ({ test }) => {
@@ -89,6 +92,65 @@ export default testSuite(({ describe }) => {
 			);
 
 			expect(hasDescriptionError).toBe(false);
+		});
+
+		/**
+		 * Test: no-extraneous-dependencies behavior
+		 *
+		 * The rule is configured to allow devDependencies everywhere (devDependencies: ['**\/*'])
+		 * because modern JS apps are bundled and the deps vs devDeps distinction doesn't matter
+		 * at runtime. This also supports private packages where all deps can be in devDeps.
+		 *
+		 * Expected behavior:
+		 * - Importing a package in devDependencies → ALLOWED (no error)
+		 * - Importing a package not in package.json at all → ERROR (catches missing deps)
+		 */
+		test('no-extraneous-dependencies allows devDeps but catches missing deps', async ({ onTestFail }) => {
+			// Create isolated fixture with symlinked node_modules
+			await using fixture = await createFixture({
+				'package.json': JSON.stringify({
+					name: 'private-app',
+					version: '1.0.0',
+					private: true,
+					type: 'module',
+					devDependencies: {
+						// manten is listed - importing it should be ALLOWED
+						manten: '^1.0.0',
+						// fs-fixture is NOT listed - importing it should ERROR
+					},
+				}),
+				// Root level file (not in src/, tests/, etc.)
+				// Tests that devDeps are allowed from ANY file location
+				'app.js': 'import { testSuite } from \'manten\';\nimport { createFixture } from \'fs-fixture\';\n\nexport { testSuite, createFixture };\n',
+				// Symlink node_modules so imports can be resolved
+				node_modules: ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
+			});
+
+			onTestFail(() => console.log('Fixture at:', fixture.path));
+
+			const fixtureEslint = new ESLint({
+				cwd: fixture.path,
+				baseConfig: pvtnbr(),
+				overrideConfigFile: true,
+			});
+
+			const results = await fixtureEslint.lintFiles(['app.js']);
+
+			const allMessages = results.flatMap(r => r.messages);
+
+			// fs-fixture is missing from package.json → should error
+			const hasMissingDepError = allMessages.some(
+				message => message.ruleId === 'import-x/no-extraneous-dependencies'
+					&& message.message.includes('fs-fixture'),
+			);
+			expect(hasMissingDepError).toBe(true);
+
+			// manten is in devDeps, which is allowed everywhere → should NOT error
+			const hasDevDepError = allMessages.some(
+				message => message.ruleId === 'import-x/no-extraneous-dependencies'
+					&& message.message.includes('manten'),
+			);
+			expect(hasDevDepError).toBe(false);
 		});
 	});
 });

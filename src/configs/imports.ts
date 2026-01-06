@@ -109,36 +109,15 @@ export const importsConfig = defineConfig({
 
 		// Forbid the use of extraneous packages
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-extraneous-dependencies.md
-		// paths are treated both as absolute paths, and relative to process.cwd()
+		//
+		// This rule catches imports of packages not listed in package.json.
+		// We allow devDependencies everywhere because:
+		// 1. Modern JS apps are bundled - the deps vs devDeps distinction doesn't affect runtime
+		// 2. Private packages are never published, so all deps are effectively devDeps
+		// 3. For libraries, build tools (pkgroll, rollup) analyze actual imports anyway
+		// 4. This eliminates false positives while still catching missing dependencies
 		'import-x/no-extraneous-dependencies': ['error', {
-			devDependencies: [
-				// Source directory - implies bundled
-				'**/src/**',
-				'**/@types/**',
-
-				// Build configuration related files
-				'build/**',
-				'build.{js,ts}',
-
-				// Scripts
-				'**/scripts/**',
-
-				// Tests
-				'**/{test,tests,test-d}/**',
-				'**/{test,test-*}.js',
-				'**/*{.,_}{test,spec}.js', // tests where the extension or filename suffix denotes that it is a test
-				'**/__{tests,mocks}__/**', // jest pattern
-
-				// Config files
-				'**/*.config.{js,cjs,mjs,ts,cts,mts}', // any config (eg. jest, webpack, rollup, postcss, vue)
-				'**/.*.js', // invisible config files
-
-				// Example snippets
-				'examples/**',
-
-				// Code snippets
-				'README.md',
-			],
+			devDependencies: ['**/*'],
 			optionalDependencies: false,
 		}],
 
