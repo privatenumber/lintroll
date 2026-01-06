@@ -2,6 +2,8 @@
 
 import { readFile, writeFile, stat } from 'node:fs';
 import './some-file.js';
+// Import simulating external package with lowercase constructor (like fdir)
+import mockPackage from './mock-package.js';
 
 // require('./some-file');
 
@@ -106,6 +108,10 @@ try {
 	throw new Error('some error');
 } catch {}
 
+// Test that lowercase constructors from packages are allowed (new-cap is disabled)
+// This simulates using a package like 'fdir' with: new fdir()
+const instance = new mockPackage();
+
 // eslint-disable-next-line no-console
 console.log(
 	readFile,
@@ -121,4 +127,5 @@ console.log(
 	ternaryValue,
 	someFunction,
 	someRegexp,
+	instance,
 );
