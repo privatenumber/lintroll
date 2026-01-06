@@ -11,6 +11,9 @@ export const packageJson = defineConfig([
 			'package-json/order-properties': 'off',
 			'package-json/sort-collections': 'off',
 
+			// Skip description requirement for private packages
+			'package-json/require-description': ['error', { ignorePrivate: true }],
+
 			// Enforce GitHub shorthand (e.g. "privatenumber/lintroll")
 			'package-json/repository-shorthand': ['error', { form: 'shorthand' }],
 

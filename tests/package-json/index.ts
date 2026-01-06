@@ -74,5 +74,21 @@ export default testSuite(({ describe }) => {
 
 			expect(relevantErrors.length).toBe(0);
 		});
+
+		test('private packages do not require description', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/pass/private-no-description/package.json', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			const hasDescriptionError = result.messages.some(
+				message => message.ruleId === 'package-json/require-description',
+			);
+
+			expect(hasDescriptionError).toBe(false);
+		});
 	});
 });
