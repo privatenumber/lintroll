@@ -148,6 +148,10 @@ export const unicorn = (
 				 */
 				'unicorn/template-indent': 'off',
 
+				// False positives on string properties named 'size' or 'length'
+				// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
+				'unicorn/explicit-length-check': 'off',
+
 				// Disabled in favor of
 				// https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html
 				'unicorn/no-abusive-eslint-disable': 'off',

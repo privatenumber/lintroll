@@ -39,5 +39,23 @@ export default testSuite(({ describe }) => {
 			expect(abbreviationErrors.length).toBe(0);
 			expect(result.errorCount).toBe(0);
 		});
+
+		// Disabled due to false positives on string properties named 'size'
+		// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
+		test('explicit-length-check is disabled', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/explicit-length-check.js', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			const hasLengthCheckError = result.messages.some(
+				message => message.ruleId === 'unicorn/explicit-length-check',
+			);
+
+			expect(hasLengthCheckError).toBe(false);
+		});
 	});
 });
