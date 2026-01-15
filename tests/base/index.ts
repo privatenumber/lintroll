@@ -143,6 +143,23 @@ export default testSuite(({ describe }) => {
 			});
 		});
 
+		// External packages may use non-camelCase exports (e.g. Cloudflare's wrangler)
+		test('camelcase ignores imports', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(
+				fileURLToPath(new URL('fixtures/camelcase-imports.js', import.meta.url)),
+			);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			const hasCamelcaseError = result.messages.some(
+				message => message.ruleId === 'camelcase',
+			);
+
+			expect(hasCamelcaseError).toBe(false);
+		});
+
 		test('Service worker', async () => {
 			const [result] = await eslint.lintFiles(
 				fileURLToPath(new URL('fixtures/service-worker.sw.js', import.meta.url)),

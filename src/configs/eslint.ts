@@ -23,6 +23,7 @@ const customRules = {
 	// require camel case names
 	camelcase: ['error', {
 		ignoreDestructuring: false,
+		ignoreImports: true,
 		properties: 'never',
 	}],
 
