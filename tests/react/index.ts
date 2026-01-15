@@ -20,6 +20,21 @@ export default testSuite(({ describe }) => {
 			expect(result.usedDeprecatedRules.length).toBe(0);
 		});
 
+		// React 17+ with new JSX transform doesn't require importing React
+		test('does not require React import for JSX', async ({ onTestFail }) => {
+			const [result] = await eslint.lintFiles(passFixture);
+
+			onTestFail(() => {
+				console.log(result.messages);
+			});
+
+			const hasReactScopeError = result.messages.some(
+				message => message.ruleId === 'react/react-in-jsx-scope',
+			);
+
+			expect(hasReactScopeError).toBe(false);
+		});
+
 		test('Fail cases', async () => {
 			const [result] = await eslint.lintFiles(failFixture);
 

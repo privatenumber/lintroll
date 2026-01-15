@@ -3,60 +3,46 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { defineConfig } from '../utils/define-config.js';
 
-export const react = (tsconfig: TsConfigResult | null) => {
-	const jsx = tsconfig?.config.compilerOptions?.jsx;
+export const react = (_tsconfig: TsConfigResult | null) => defineConfig({
+	files: ['**/*.{jsx,tsx}'],
 
-	// React automatically imported in JSX files
-	const autoJsx = jsx === 'react-jsx' || jsx === 'react-jsxdev';
+	plugins: {
+		react: reactPlugin,
+		'react-hooks': reactHooksPlugin,
+	},
 
-	return defineConfig({
-		files: ['**/*.{jsx,tsx}'],
+	languageOptions: {
+		parserOptions: reactPlugin.configs['jsx-runtime'].parserOptions,
+	},
 
-		plugins: {
-			react: reactPlugin,
-			'react-hooks': reactHooksPlugin,
+	settings: {
+		react: {
+			version: 'detect',
 		},
+	},
 
-		languageOptions: {
-			parserOptions: (
-				autoJsx
-					? reactPlugin.configs['jsx-runtime'].parserOptions
-					: reactPlugin.configs.recommended.parserOptions
-			),
-		},
+	rules: {
+		...reactPlugin.configs.recommended.rules,
+		...reactHooksPlugin.configs.recommended.rules,
 
-		settings: {
-			react: {
-				version: 'detect',
-			},
-		},
+		// React 17+ with new JSX transform doesn't require importing React
+		// https://reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html
+		'react/react-in-jsx-scope': 'off',
 
-		rules: {
-			...reactPlugin.configs.recommended.rules,
-			...(
-				autoJsx
-					? reactPlugin.configs['jsx-runtime'].rules
-					: {}
-			),
+		// https://eslint.org/docs/latest/rules/jsx-quotes
+		'@stylistic/jsx-quotes': ['error', 'prefer-double'],
 
-			...reactHooksPlugin.configs.recommended.rules,
+		'@stylistic/jsx-indent-props': ['error', 'tab'],
 
-			// https://eslint.org/docs/latest/rules/jsx-quotes
-			'@stylistic/jsx-quotes': ['error', 'prefer-double'],
+		'@stylistic/jsx-max-props-per-line': ['error', {
+			maximum: 1,
+		}],
 
-			'@stylistic/jsx-indent-props': ['error', 'tab'],
-
-			'@stylistic/jsx-max-props-per-line': ['error', {
-				maximum: 1,
-			}],
-
-			'unicorn/filename-case': ['error', {
-				case: 'pascalCase',
-				ignore: [
-					String.raw`\.spec\.tsx$`,
-				],
-			}],
-		},
-
-	});
-};
+		'unicorn/filename-case': ['error', {
+			case: 'pascalCase',
+			ignore: [
+				String.raw`\.spec\.tsx$`,
+			],
+		}],
+	},
+});
