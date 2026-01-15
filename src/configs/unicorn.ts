@@ -27,6 +27,9 @@ export const unicorn = (
 		// database
 		db: false,
 
+		// definition (e.g. ColumnDef, TypeDef)
+		def: false,
+
 		dev: false,
 		dir: false,
 		dist: false,
