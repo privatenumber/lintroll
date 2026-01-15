@@ -45,6 +45,10 @@ export const unicorn = (
 		// Common abbreviation (e.g. URLSearchParams)
 		params: false,
 		ref: false,
+
+		// relative (e.g. relX, relY in coordinate/geometry code)
+		rel: false,
+
 		src: false,
 		utils: false,
 	};
