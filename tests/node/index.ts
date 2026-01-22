@@ -109,6 +109,20 @@ export default testSuite(({ describe }) => {
 					expect(result.warningCount).toBe(0);
 					expect(result.usedDeprecatedRules.length).toBe(0);
 				});
+
+				// Scripts are always treated as Node.js (no-console allowed)
+				test('scripts file', async ({ onTestFail }) => {
+					const fixturePath = fileURLToPath(new URL('fixtures/package-module/scripts/build.js', import.meta.url));
+					const [result] = await eslint.lintFiles(fixturePath);
+
+					onTestFail(() => {
+						console.log(result);
+					});
+
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+					expect(result.usedDeprecatedRules.length).toBe(0);
+				});
 			});
 		});
 

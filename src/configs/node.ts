@@ -95,6 +95,16 @@ export const node = (
 		// .cjs files can be assumed to be Node
 		cjs,
 		cts,
+
+		// Scripts are always treated as Node.js code
+		defineConfig({
+			...autoConfig,
+			files: ['**/scripts/**/*.{js,ts}'],
+			rules: {
+				...autoConfig.rules,
+				'no-console': 'off',
+			},
+		}),
 	];
 
 	if (isNodeProject) {
