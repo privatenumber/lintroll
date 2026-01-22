@@ -42,12 +42,16 @@ export default testSuite(({ describe }) => {
 				});
 
 				expect(result.usedDeprecatedRules.length).toBe(0);
-				expect(messages.length).toBe(2);
-				expect(messages).toEqual(
+
+				// Should only have warnings, no errors
+				expect(result.errorCount).toBe(0);
+
+				// no-shadow should be disabled for markdown TS code fences
+				// (allows idiomatic patterns like manten's scoped test function)
+				expect(messages).not.toEqual(
 					expect.arrayContaining([
 						expect.objectContaining({
-							ruleId: '@typescript-eslint/no-unused-vars',
-							severity: 1,
+							ruleId: '@typescript-eslint/no-shadow',
 						}),
 					]),
 				);

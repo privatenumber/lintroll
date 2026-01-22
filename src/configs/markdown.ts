@@ -96,6 +96,9 @@ export const markdown = () => [
 			'@typescript-eslint/no-unused-expressions': 'warn',
 			'@typescript-eslint/no-empty-function': 'off',
 			'@typescript-eslint/no-useless-constructor': 'off',
+
+			// Documentation may show idiomatic patterns like manten's scoped test function
+			'@typescript-eslint/no-shadow': 'off',
 		},
 	}),
 

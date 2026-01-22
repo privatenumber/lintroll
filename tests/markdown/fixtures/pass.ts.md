@@ -29,3 +29,12 @@ export default () => 1
 
 console.log(1)
 ```
+
+```ts
+// Idiomatic manten pattern - test shadows the import (documentation example)
+import { describe, test } from 'manten'
+
+await describe('example', ({ test }) => {
+    await test('works', () => {})
+})
+```
