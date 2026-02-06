@@ -94,6 +94,26 @@ export default testSuite(({ describe }) => {
 			});
 		});
 
+		describe('Instructional markdown', ({ test }) => {
+			test('ignores code blocks in skill files', async ({ onTestFail }) => {
+				const results = await eslint.lintFiles(
+					fileURLToPath(new URL('fixtures/skills/example-skill/SKILL.md', import.meta.url)),
+				);
+
+				onTestFail(() => {
+					console.log(results.map(r => ({
+						filePath: r.filePath,
+						messages: r.messages,
+					})));
+				});
+
+				for (const result of results) {
+					expect(result.errorCount).toBe(0);
+					expect(result.warningCount).toBe(0);
+				}
+			});
+		});
+
 		describe('Fail', ({ test }) => {
 			test('.js', async () => {
 				const [result] = await eslint.lintFiles(
