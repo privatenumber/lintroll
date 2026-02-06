@@ -7,67 +7,75 @@ description: Opinionated ESLint configuration and CLI for TypeScript, Vue, React
 
 Batteries-included ESLint with 12+ plugins for TypeScript, Vue, React, JSON, YAML, and Markdown.
 
-## Quick Reference
-
-| Command | Description |
-|---------|-------------|
-| `lintroll .` | Lint current directory |
-| `lintroll . --fix` | Auto-fix issues |
-| `lintroll . --cache` | Cache for performance |
-| `lintroll --staged` | Lint only staged files |
-| `lintroll --node` | Enable Node.js rules |
-| `lintroll --quiet` | Errors only (no warnings) |
-
-## Style Defaults
-
-| Setting | Value |
-|---------|-------|
-| Indentation | Tabs |
-| Quotes | Single |
-| Semicolons | Always |
-| Line length | 100 chars |
-| Trailing commas | Multiline only |
-| Functions | Arrow preferred |
-
-## CLI Flags
+## CLI
 
 ```bash
-# Common usage
 lintroll .                          # Lint directory
 lintroll . --fix                    # Auto-fix
 lintroll . --fix --cache            # Fix with caching
-
-# Git integration
+lintroll --git .                    # Only git-tracked files
+lintroll --git --fix .              # Fix only tracked files
 lintroll --staged --fix             # Pre-commit hook
-lintroll --git                      # Only tracked files
-
-# Node.js rules
-lintroll . --node                   # Enable for all files
-lintroll . --node=./scripts         # Enable for specific paths
-
-# Abbreviation exceptions
-lintroll . --allow-abbreviation db --allow-abbreviation env
+lintroll . --node                   # Enable Node.js rules
+lintroll . --node=./scripts         # Node.js rules for specific paths
+lintroll . --quiet                  # Errors only (no warnings)
+lintroll . --allow-abbreviation db  # Allow specific abbreviations
 ```
+
+## Style Rules
+
+| Rule | Enforced style |
+|------|---------------|
+| Indentation | Tabs |
+| Quotes | Single |
+| Semicolons | Always |
+| Line length | 100 chars max |
+| Trailing commas | Multiline only |
+| Functions | Arrow (except `this`/`arguments`/generators/hoisting) |
+| Types | `type =` over `interface` |
+| Type imports | Separate `import type` from value imports |
+| No `any` | Use `unknown` and narrow |
+| Unused vars | Prefix with `_` (e.g. `_unused`) |
+| No abbreviations | `db` → `database`, `env` → `environment`, `pkg` → `packageJson` |
+| Import extensions | `.js` not `.ts` (unless `allowImportingTsExtensions: true`) |
+| React filenames | PascalCase (`UserProfile.tsx`) |
+
+### Abbreviation Mapping
+
+Common renames enforced by `unicorn/prevent-abbreviations`:
+
+| Abbreviation | Full name |
+|-------------|-----------|
+| `args` | `arguments_` (reserved word) |
+| `db` | `database` |
+| `env` | `environment` |
+| `pkg` | `packageJson` |
+| `temp` | `temporary` |
+| `res` | `response` |
+| `req` | `request` |
+| `dir` | `directory` |
+| `err` | `error` |
+| `msg` | `message` |
+
+Loop indices `i`, `j` are always allowed. Add more with `--allow-abbreviation`.
 
 ## ESLint Config
 
-Simple setup:
+Zero-config:
 
 ```js
 // eslint.config.js
 export { default } from 'lintroll'
 ```
 
-Custom setup:
+Custom:
 
 ```js
 // eslint.config.ts
 import { defineConfig, pvtnbr } from 'lintroll'
 
 export default defineConfig([
-    {
-        ignores: ['tests/fixtures/**/*']
-    },
+    { ignores: ['tests/fixtures/**/*'] },
     ...pvtnbr({
         node: true,
         allowAbbreviations: {
@@ -78,169 +86,30 @@ export default defineConfig([
 ])
 ```
 
-## Rules That Require Action
-
-### Prefer Arrow Functions
-
-```ts
-// ❌ Bad
-function getData() {
-    return fetch('/api')
-}
-
-async function processItems(items) {
-    return items.map(transform)
-}
-
-// ✅ Good
-const getData = () => fetch('/api')
-
-const processItems = async (items) => items.map(transform)
-```
-
-Traditional functions are only needed for:
-- `this`, `arguments`, `super`, `new.target`
-- Generators (`function*`)
-- Hoisting (called before definition)
-
-### No Abbreviations
-
-```ts
-// ❌ Bad
-const args = []
-const db = createConnection()
-const env = process.env
-const pkg = require('./package.json')
-const temp = getTempValue()
-
-// ✅ Good
-const arguments_ = []       // Use full word + underscore if reserved
-const database = createConnection()
-const environment = process.env
-const packageJson = require('./package.json')
-const temporary = getTempValue()
-```
-
-Loop indices `i`, `j` are always allowed. Add more with `--allow-abbreviation`.
-
-### Type Imports
-
-```ts
-// ❌ Bad
-import { User, createUser } from './user'
-
-// ✅ Good
-import type { User } from './user'
-import { createUser } from './user'
-```
-
-### Type over Interface
-
-```ts
-// ❌ Bad
-interface User {
-    name: string
-}
-
-// ✅ Good
-type User = {
-    name: string
-}
-```
-
-### No `any`
-
-```ts
-// ❌ Bad
-const data: any = response.json()
-
-// ✅ Good
-const data: unknown = response.json()
-```
-
-### Unused Variables
-
-```ts
-// ❌ Bad
-const unused = getValue()  // Error: defined but never used
-
-// ✅ Good - prefix with underscore
-const _unused = getValue()
-```
+For full API types, see `node_modules/lintroll/dist/index.d.mts`.
 
 ## Auto-Detection
 
 | Feature | Detection |
 |---------|-----------|
-| Vue.js | `*.vue` files present |
+| Vue.js | `*.vue` files present — rules apply automatically |
 | TypeScript | `tsconfig.json` present |
 | Node.js | `.cjs`, `.mts`, `scripts/**`, `bin` entries |
-
-Vue rules apply automatically when `.vue` files exist—no config needed.
 
 ## Ignored by Default
 
 - `node_modules/**`, `dist/**`, `vendor/**`
 - `package-lock.json`, `pnpm-lock.yaml`
 - `*.min.js`, `.vitepress`
-- `CLAUDE.md`, `copilot.json`
+- AI assistant files: `CLAUDE.md`, `.claude/`, `copilot.json`, `.cursorrules`
 
-## Common Gotchas
+## JSON/YAML
 
-### Abbreviations in `.d.ts`
+- package.json keys auto-sorted: `name → version → description → ... → scripts → dependencies → devDependencies`
+- JSON style: tabs, trailing commas, spaces around braces `{ "key": "value" }`
 
-Abbreviation rules are disabled in `.d.ts` files since they follow standard conventions.
+## Gotchas
 
-### TypeScript Extensions in Imports
-
-By default, `.ts` extensions are not allowed in imports:
-
-```ts
-// ❌ Bad
-import { foo } from './utils.ts'
-
-// ✅ Good
-import { foo } from './utils.js'
-```
-
-Unless `tsconfig.json` has `allowImportingTsExtensions: true`.
-
-### Pre-commit Hook Setup
-
-```bash
-# lint-staged config
-lintroll --staged --fix
-```
-
-### React PascalCase
-
-React component files must use PascalCase:
-
-```
-// ❌ Bad
-user-profile.tsx
-
-// ✅ Good
-UserProfile.tsx
-UserProfile.spec.tsx  // .spec allowed
-```
-
-## JSON/YAML Formatting
-
-package.json keys are auto-sorted:
-`name → version → description → ... → scripts → dependencies → devDependencies`
-
-Uses tabs, trailing commas, spaces around braces: `{ "key": "value" }`.
-
-## Options Reference
-
-```ts
-type Options = {
-    cwd?: string                              // Working directory
-    node?: boolean | string[]                 // Node.js rules
-    allowAbbreviations?: {
-        exactWords?: string[]                 // Full match: ['i', 'j']
-        substrings?: string[]                 // Partial match: ['db', 'env']
-    }
-}
-```
+- **Abbreviation rules disabled in `.d.ts`** — declaration files follow standard conventions
+- **`.ts` extensions in imports** — use `.js` unless tsconfig has `allowImportingTsExtensions: true`
+- **Markdown code blocks in `skills/` directories** — automatically ignored (not linted as project code)
