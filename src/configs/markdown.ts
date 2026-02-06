@@ -5,7 +5,8 @@ export const markdown = () => [
 	// Ignore code blocks in skill files (e.g. Claude Code agent skills)
 	defineConfig({
 		ignores: [
-			// *.md/** is not a folder — it matches virtual files extracted by the markdown processor (e.g. SKILL.md/0.js)
+			// *.md/** is not a folder — it matches virtual files
+			// extracted by the markdown processor (e.g. SKILL.md/0.js)
 			'**/skills/**/*.md/**',
 		],
 	}),
