@@ -191,6 +191,25 @@ export default testSuite(({ describe }) => {
 				// Should NOT lint unsupported files, even in src/
 				expect(output).not.toContain('.gitignore');
 			});
+
+			test('works when cwd is a subdirectory of git root', async ({ onTestFail }) => {
+				await using fixture = await createFixture({
+					'src/file.js': 'const x = "unquoted"',
+				});
+
+				onTestFail(() => console.log('Fixture at:', fixture.path));
+
+				const git = createGit(fixture.path);
+				await git.init();
+				await git('add', ['.']);
+
+				// Run from src/ subdirectory instead of git root
+				const srcDir = fixture.getPath('src');
+				const { output } = await lintroll(['--git', '.'], srcDir);
+
+				expect(output).toContain('file.js');
+				expect(output).toContain('@stylistic/quotes');
+			});
 		});
 
 		describe('--ignore-pattern flag', ({ test }) => {
