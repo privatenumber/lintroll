@@ -60,7 +60,7 @@ export const getTrackedFiles = async (
 	gitRoot: string,
 	targetFiles: string[],
 ) => {
-	const { stdout: trackedFilesText } = await spawn('git', ['ls-files']);
+	const { stdout: trackedFilesText } = await spawn('git', ['ls-files', '--full-name']);
 
 	return filterGitFiles(trackedFilesText, gitRoot, targetFiles);
 };
