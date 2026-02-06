@@ -204,7 +204,7 @@ export default testSuite(({ describe }) => {
 				await git('add', ['.']);
 
 				// Run from src/ subdirectory instead of git root
-				const srcDir = path.join(fixture.path, 'src');
+				const srcDir = fixture.getPath('src');
 				const { output } = await lintroll(['--git', '.'], srcDir);
 
 				expect(output).toContain('file.js');
