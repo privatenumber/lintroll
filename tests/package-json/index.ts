@@ -2,8 +2,8 @@ import { fileURLToPath } from 'node:url';
 import { testSuite, expect } from 'manten';
 import { createFixture } from 'fs-fixture';
 import { ESLint } from 'eslint';
-import { eslint } from '../utils/eslint.js';
 import { pvtnbr } from '#pvtnbr';
+import { eslint } from '../utils/eslint.js';
 
 export default testSuite(({ describe }) => {
 	describe('package-json', ({ test }) => {

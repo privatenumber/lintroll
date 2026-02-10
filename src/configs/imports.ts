@@ -153,7 +153,11 @@ export const importsConfig = defineConfig({
 		'import-x/no-webpack-loader-syntax': 'error',
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/order.md
-		'import-x/order': 'error',
+		// Default groups omit 'internal', relegating self-referencing package imports
+		// (e.g. `import x from 'my-package'` within my-package) to the end
+		'import-x/order': ['error', {
+			groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/prefer-default-export.md
 		// Excessive. Also, named exports help enforce readable imports.
