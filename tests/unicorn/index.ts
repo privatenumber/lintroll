@@ -1,61 +1,61 @@
 import { fileURLToPath } from 'node:url';
-import { testSuite, expect } from 'manten';
+import {
+	describe, test, expect, onTestFail,
+} from 'manten';
 import { eslint } from '../utils/eslint.js';
 
-export default testSuite(({ describe }) => {
-	describe('unicorn', ({ test }) => {
-		test('allows slice().sort() pattern', async ({ onTestFail }) => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/array-sort.js', import.meta.url)),
-			);
+describe('unicorn', () => {
+	test('allows slice().sort() pattern', async () => {
+		const [result] = await eslint.lintFiles(
+			fileURLToPath(new URL('fixtures/array-sort.js', import.meta.url)),
+		);
 
-			onTestFail(() => {
-				console.log(result.messages);
-			});
-
-			// no-array-sort is disabled, so slice().sort() should pass
-			const hasArraySortError = result.messages.some(
-				message => message.ruleId === 'unicorn/no-array-sort',
-			);
-
-			expect(hasArraySortError).toBe(false);
-			expect(result.errorCount).toBe(0);
+		onTestFail(() => {
+			console.log(result.messages);
 		});
 
-		test('allows certain abbreviations', async ({ onTestFail }) => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/abbreviations.js', import.meta.url)),
-			);
+		// no-array-sort is disabled, so slice().sort() should pass
+		const hasArraySortError = result.messages.some(
+			message => message.ruleId === 'unicorn/no-array-sort',
+		);
 
-			onTestFail(() => {
-				console.log(result.messages);
-			});
+		expect(hasArraySortError).toBe(false);
+		expect(result.errorCount).toBe(0);
+	});
 
-			// Should not have any errors about prevent-abbreviations
-			const abbreviationErrors = result.messages.filter(
-				message => message.ruleId === 'unicorn/prevent-abbreviations',
-			);
+	test('allows certain abbreviations', async () => {
+		const [result] = await eslint.lintFiles(
+			fileURLToPath(new URL('fixtures/abbreviations.js', import.meta.url)),
+		);
 
-			expect(abbreviationErrors.length).toBe(0);
-			expect(result.errorCount).toBe(0);
+		onTestFail(() => {
+			console.log(result.messages);
 		});
 
-		// Disabled due to false positives on string properties named 'size'
-		// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
-		test('explicit-length-check is disabled', async ({ onTestFail }) => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/explicit-length-check.js', import.meta.url)),
-			);
+		// Should not have any errors about prevent-abbreviations
+		const abbreviationErrors = result.messages.filter(
+			message => message.ruleId === 'unicorn/prevent-abbreviations',
+		);
 
-			onTestFail(() => {
-				console.log(result.messages);
-			});
+		expect(abbreviationErrors.length).toBe(0);
+		expect(result.errorCount).toBe(0);
+	});
 
-			const hasLengthCheckError = result.messages.some(
-				message => message.ruleId === 'unicorn/explicit-length-check',
-			);
+	// Disabled due to false positives on string properties named 'size'
+	// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
+	test('explicit-length-check is disabled', async () => {
+		const [result] = await eslint.lintFiles(
+			fileURLToPath(new URL('fixtures/explicit-length-check.js', import.meta.url)),
+		);
 
-			expect(hasLengthCheckError).toBe(false);
+		onTestFail(() => {
+			console.log(result.messages);
 		});
+
+		const hasLengthCheckError = result.messages.some(
+			message => message.ruleId === 'unicorn/explicit-length-check',
+		);
+
+		expect(hasLengthCheckError).toBe(false);
 	});
 });
