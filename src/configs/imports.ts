@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import importPlugin from 'eslint-plugin-import-x';
-import { defineConfig } from '../utils/define-config';
+import { defineConfig } from '../utils/define-config.ts';
 
 const pkgMapsResolver = fileURLToPath(
 	import.meta.resolve('#pkg-maps-resolver'),

@@ -7,8 +7,8 @@ import type { TsConfigResult } from 'get-tsconfig';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import-x';
-import { defineConfig } from '../utils/define-config';
-import { eslint } from './eslint.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { eslint } from './eslint.ts';
 
 export const tsFiles = '**/*.{ts,tsx,mts,cts}';
 

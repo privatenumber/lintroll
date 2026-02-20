@@ -1,6 +1,6 @@
 import regexpPlugin from 'eslint-plugin-regexp';
-import { defineConfig } from '../utils/define-config.js';
-import { jsAndTs } from '../utils/globs.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { jsAndTs } from '../utils/globs.ts';
 
 export const regexp = defineConfig({
 	files: jsAndTs,

@@ -1,7 +1,7 @@
 import type { Linter } from 'eslint';
 import unicornPlugin from 'eslint-plugin-unicorn';
-import { defineConfig } from '../utils/define-config';
-import { jsAndTs } from '../utils/globs.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { jsAndTs } from '../utils/globs.ts';
 
 export type Options = {
 	allowAbbreviations?: {

@@ -3,9 +3,9 @@ import nodePlugin from 'eslint-plugin-n';
 import { readPackageUpSync } from 'read-package-up';
 import { findUpSync } from 'find-up-simple';
 import type { Linter } from 'eslint';
-import { defineConfig } from '../utils/define-config.js';
-import type { Options as PvtnbrOptions } from '../types.js';
-import { tsFiles } from './typescript.js';
+import { defineConfig } from '../utils/define-config.ts';
+import type { Options as PvtnbrOptions } from '../types.ts';
+import { tsFiles } from './typescript.ts';
 
 const scriptExtensions = 'js,ts,mjs,cjs,mts,cts';
 

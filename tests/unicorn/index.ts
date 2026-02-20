@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.js';
+import { eslint } from '../utils/eslint.ts';
 
 describe('unicorn', () => {
 	test('allows slice().sort() pattern', async () => {

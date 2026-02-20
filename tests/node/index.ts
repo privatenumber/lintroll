@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint, createEslint } from '../utils/eslint.js';
+import { eslint, createEslint } from '../utils/eslint.ts';
 
 const eslintNode = createEslint({
 	node: true,

@@ -6,8 +6,8 @@ import {
 	describe, test, expect, onTestFail,
 } from 'manten';
 import { createFixture } from 'fs-fixture';
-import { lintroll } from '../utils/eslint.js';
-import { createGit } from '../utils/create-git.js';
+import { lintroll } from '../utils/eslint.ts';
+import { createGit } from '../utils/create-git.ts';
 
 // Normalize path separators for platform (forward slash on Unix, backslash on Windows)
 const slash = (filePath: string) => filePath.replaceAll('/', path.sep);

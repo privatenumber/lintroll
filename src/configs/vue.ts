@@ -3,8 +3,8 @@ import type { ESLint } from 'eslint';
 import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 import globals from 'globals';
-import { isInstalled, getExports } from '../utils/require.js';
-import { defineConfig } from '../utils/define-config.js';
+import { isInstalled, getExports } from '../utils/require.ts';
+import { defineConfig } from '../utils/define-config.ts';
 
 const detectAutoImport = () => {
 	if (!isInstalled('unplugin-auto-import')) {

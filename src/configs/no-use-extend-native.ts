@@ -1,5 +1,5 @@
 import noUseExtendNativePlugin from 'eslint-plugin-no-use-extend-native';
-import { defineConfig } from '../utils/define-config.js';
+import { defineConfig } from '../utils/define-config.ts';
 
 export const noUseExtendNative = [
 	defineConfig({

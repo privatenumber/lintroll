@@ -1,26 +1,26 @@
 import type { Linter } from 'eslint';
 import { getTsconfig } from 'get-tsconfig';
-import type { Options } from './types.js';
-import { defineConfig } from './utils/define-config.js';
-import { eslint } from './configs/eslint.js';
-import { serviceWorkers } from './configs/service-workers.js';
-import { eslintComments } from './configs/eslint-comments.js';
-import { stylistic } from './configs/stylistic.js';
-import { imports } from './configs/imports.js';
-import { typescript, parseTypescript } from './configs/typescript.js';
-import { regexp } from './configs/regexp.js';
-import { node } from './configs/node.js';
-import { promise } from './configs/promise.js';
-import { jest } from './configs/jest.js';
-import { markdown } from './configs/markdown.js';
-import { json } from './configs/json.js';
-import { packageJson } from './configs/package-json.js';
-import { yml } from './configs/yml.js';
-import { noUseExtendNative } from './configs/no-use-extend-native.js';
-import { unicorn } from './configs/unicorn.js';
-import { react } from './configs/react.js';
-import { vue, parseVue } from './configs/vue.js';
-import { customConfigs } from './configs/custom-configs.js';
+import type { Options } from './types.ts';
+import { defineConfig } from './utils/define-config.ts';
+import { eslint } from './configs/eslint.ts';
+import { serviceWorkers } from './configs/service-workers.ts';
+import { eslintComments } from './configs/eslint-comments.ts';
+import { stylistic } from './configs/stylistic.ts';
+import { imports } from './configs/imports.ts';
+import { typescript, parseTypescript } from './configs/typescript.ts';
+import { regexp } from './configs/regexp.ts';
+import { node } from './configs/node.ts';
+import { promise } from './configs/promise.ts';
+import { jest } from './configs/jest.ts';
+import { markdown } from './configs/markdown.ts';
+import { json } from './configs/json.ts';
+import { packageJson } from './configs/package-json.ts';
+import { yml } from './configs/yml.ts';
+import { noUseExtendNative } from './configs/no-use-extend-native.ts';
+import { unicorn } from './configs/unicorn.ts';
+import { react } from './configs/react.ts';
+import { vue, parseVue } from './configs/vue.ts';
+import { customConfigs } from './configs/custom-configs.ts';
 
 export const pvtnbr = (
 	options?: Options,

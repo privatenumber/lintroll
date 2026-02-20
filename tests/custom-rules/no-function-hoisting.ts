@@ -1,6 +1,6 @@
 import { describe, test } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { noFunctionHoisting } from '../../src/custom-rules/no-function-hoisting/index.js';
+import { noFunctionHoisting } from '../../src/custom-rules/no-function-hoisting/index.ts';
 
 describe('no-function-hoisting', () => {
 	RuleTester.describe = describe;

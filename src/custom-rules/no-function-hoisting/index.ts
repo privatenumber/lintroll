@@ -1,5 +1,5 @@
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
-import { createRule } from '../utils/create-rule.js';
+import { createRule } from '../utils/create-rule.ts';
 
 const getClosestInsertion = (
 	node: TSESTree.Node,

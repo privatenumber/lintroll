@@ -3,7 +3,7 @@ import {
 } from 'manten';
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
-import { eslint } from '../utils/eslint.js';
+import { eslint } from '../utils/eslint.ts';
 
 const orderMessages = (
 	messages: { ruleId: string | null }[],

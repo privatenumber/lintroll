@@ -2,17 +2,17 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
-import { name } from '../../package.json';
-import { getConfig } from './get-config.js';
-import { getExitCode, countErrors } from './handle-errors.js';
-import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.js';
+import packageJson from '../../package.json' with { type: 'json' };
+import { getConfig } from './get-config.ts';
+import { getExitCode, countErrors } from './handle-errors.ts';
+import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.ts';
 
 /**
  * Reference: ESlint CLI
  * https://github.com/eslint/eslint/blob/main/lib/cli.js
  */
 const argv = cli({
-	name,
+	name: packageJson.name,
 	parameters: ['[files...]'],
 	help: {
 		description: 'Opinionated ESLint by @privatenumber (Hiroki Osame)',

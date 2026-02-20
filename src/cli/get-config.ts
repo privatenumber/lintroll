@@ -3,8 +3,8 @@ import fs from 'node:fs/promises';
 import { tsImport } from 'tsx/esm/api';
 import type { Linter } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
-import type { Options } from '../types.js';
-import { name } from '../../package.json';
+import type { Options } from '../types.ts';
+import packageJson from '../../package.json' with { type: 'json' };
 
 const exists = async (
 	path: string,
@@ -46,7 +46,7 @@ export const getConfig = async (
 		}
 
 		if (configModule) {
-			console.log(`[${name}]: Using config file: ${configFilePath}`);
+			console.log(`[${packageJson.name}]: Using config file: ${configFilePath}`);
 			return configModule as Linter.Config[];
 		}
 	}
