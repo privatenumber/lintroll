@@ -1,6 +1,6 @@
 import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { defineConfig } from '../utils/define-config.js';
+import { defineConfig } from '../utils/define-config.ts';
 
 export const serviceWorkers = defineConfig({
 	files: ['**/*.sw.{js,ts}'],

@@ -1,12 +1,12 @@
 import type { ESLint, Rule } from 'eslint';
-import { version } from '../../package.json';
-import { preferArrowFunctions } from './prefer-arrow-functions/index.js';
-// import { noFunctionHoisting } from './no-function-hoisting/index.js';
+import packageJson from '../../package.json' with { type: 'json' };
+import { preferArrowFunctions } from './prefer-arrow-functions/index.ts';
+// import { noFunctionHoisting } from './no-function-hoisting/index.ts';
 
 export const pvtnbrPlugin = {
 	meta: {
 		name: 'pvtnbr/custom-rules',
-		version,
+		version: packageJson.version,
 	},
 	rules: {
 		'prefer-arrow-functions': preferArrowFunctions as unknown as Rule.RuleModule,

@@ -5,7 +5,7 @@ import {
 import { createFixture } from 'fs-fixture';
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
-import { eslint } from '../utils/eslint.js';
+import { eslint } from '../utils/eslint.ts';
 
 describe('package-json', () => {
 	test('no empty dependencies objects', async () => {

@@ -2,8 +2,8 @@ import type { Linter } from 'eslint';
 import js from '@eslint/js';
 import globals from 'globals';
 import confusingBrowserGlobals from 'confusing-browser-globals';
-import { isInstalled } from '../utils/require.js';
-import { defineConfig } from '../utils/define-config.js';
+import { isInstalled } from '../utils/require.ts';
+import { defineConfig } from '../utils/define-config.ts';
 
 // https://github.com/eslint/eslint/blob/v8.55.0/packages/js/src/configs/eslint-recommended.js
 const recommendedRules = js.configs.recommended.rules;

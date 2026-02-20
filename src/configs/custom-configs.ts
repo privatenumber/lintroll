@@ -1,5 +1,5 @@
-import { pvtnbrPlugin } from '../custom-rules';
-import { defineConfig } from '../utils/define-config';
+import { pvtnbrPlugin } from '../custom-rules/index.ts';
+import { defineConfig } from '../utils/define-config.ts';
 
 export const customConfigs = defineConfig({
 	plugins: {

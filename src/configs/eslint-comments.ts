@@ -1,6 +1,6 @@
 import eslintCommentsPlugin from '@eslint-community/eslint-plugin-eslint-comments';
-import { defineConfig } from '../utils/define-config.js';
-import { jsAndTs } from '../utils/globs.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { jsAndTs } from '../utils/globs.ts';
 
 export const eslintComments = defineConfig({
 	files: jsAndTs,

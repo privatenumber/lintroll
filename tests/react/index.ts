@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.js';
+import { eslint } from '../utils/eslint.ts';
 
 const passFixture = fileURLToPath(new URL('fixtures/InputComponent.tsx', import.meta.url));
 const failFixture = fileURLToPath(new URL('fixtures/fail.tsx', import.meta.url));

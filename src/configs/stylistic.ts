@@ -1,6 +1,6 @@
 import stylisticPlugin from '@stylistic/eslint-plugin';
-import { defineConfig } from '../utils/define-config';
-import { jsAndTs } from '../utils/globs.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { jsAndTs } from '../utils/globs.ts';
 
 export const stylistic = [
 	// To make it available to other files

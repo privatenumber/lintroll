@@ -1,5 +1,5 @@
 import markdownPlugin from '@eslint/markdown';
-import { defineConfig } from '../utils/define-config.js';
+import { defineConfig } from '../utils/define-config.ts';
 
 export const markdown = () => [
 	// Ignore code blocks in skill files (e.g. Claude Code agent skills)

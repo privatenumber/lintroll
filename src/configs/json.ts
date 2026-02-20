@@ -1,7 +1,7 @@
 import type { Linter } from 'eslint';
 import jsoncPlugin from 'eslint-plugin-jsonc';
-import { defineConfig } from '../utils/define-config.js';
-import { stylistic } from './stylistic.js';
+import { defineConfig } from '../utils/define-config.ts';
+import { stylistic } from './stylistic.ts';
 
 const pick = <T extends Record<string, unknown>, K extends keyof T>(
 	object: T,

@@ -1,6 +1,6 @@
 import { describe, test, onTestFail } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions/index.js';
+import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions/index.ts';
 
 describe('prefer-arrow-functions', () => {
 	RuleTester.describe = describe;
