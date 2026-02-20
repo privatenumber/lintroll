@@ -1,4 +1,6 @@
-import { testSuite, expect } from 'manten';
+import {
+	describe, test, expect, onTestFail,
+} from 'manten';
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
 import { eslint } from '../utils/eslint.js';
@@ -25,127 +27,125 @@ const eslintWithInternal = new ESLint({
 	overrideConfigFile: true,
 });
 
-export default testSuite(({ describe }) => {
-	describe('imports', ({ describe }) => {
-		describe('import order', ({ test }) => {
-			test('pass: builtin > external > parent > sibling', async ({ onTestFail }) => {
-				const [result] = await eslint.lintText(
-					[
-						"import path from 'node:path'",
-						"import { expect as _expect } from 'manten'",
-						"import { eslint as _eslint } from '../utils/eslint.js'",
-						"import { orderMessages as _orderMessages } from './index.js'",
-						'',
-						'void [path, _expect, _eslint, _orderMessages]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+describe('imports', () => {
+	describe('import order', () => {
+		test('pass: builtin > external > parent > sibling', async () => {
+			const [result] = await eslint.lintText(
+				[
+					"import path from 'node:path'",
+					"import { expect as _expect } from 'manten'",
+					"import { eslint as _eslint } from '../utils/eslint.js'",
+					"import { orderMessages as _orderMessages } from './index.js'",
+					'',
+					'void [path, _expect, _eslint, _orderMessages]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
-
-				expect(orderMessages(result.messages).length).toBe(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
 
-			test('pass: builtin > external > internal > parent > sibling', async ({ onTestFail }) => {
-				const [result] = await eslintWithInternal.lintText(
-					[
-						"import path from 'node:path'",
-						"import { expect as _expect } from 'manten'",
-						"import { foo } from '@internal/utils'",
-						"import { eslint as _eslint } from '../utils/eslint.js'",
-						"import { orderMessages as _orderMessages } from './index.js'",
-						'',
-						'void [path, _expect, foo, _eslint, _orderMessages]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+			expect(orderMessages(result.messages).length).toBe(0);
+		});
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
+		test('pass: builtin > external > internal > parent > sibling', async () => {
+			const [result] = await eslintWithInternal.lintText(
+				[
+					"import path from 'node:path'",
+					"import { expect as _expect } from 'manten'",
+					"import { foo } from '@internal/utils'",
+					"import { eslint as _eslint } from '../utils/eslint.js'",
+					"import { orderMessages as _orderMessages } from './index.js'",
+					'',
+					'void [path, _expect, foo, _eslint, _orderMessages]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				expect(orderMessages(result.messages).length).toBe(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
 
-			test('fail: sibling before external', async ({ onTestFail }) => {
-				const [result] = await eslint.lintText(
-					[
-						"import { orderMessages } from './index.js'",
-						"import { expect as _expect } from 'manten'",
-						'',
-						'void [orderMessages, _expect]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+			expect(orderMessages(result.messages).length).toBe(0);
+		});
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
+		test('fail: sibling before external', async () => {
+			const [result] = await eslint.lintText(
+				[
+					"import { orderMessages } from './index.js'",
+					"import { expect as _expect } from 'manten'",
+					'',
+					'void [orderMessages, _expect]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
 
-			test('fail: parent before external', async ({ onTestFail }) => {
-				const [result] = await eslint.lintText(
-					[
-						"import { eslint as _eslint } from '../utils/eslint.js'",
-						"import { expect as _expect } from 'manten'",
-						'',
-						'void [_eslint, _expect]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+		});
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
+		test('fail: parent before external', async () => {
+			const [result] = await eslint.lintText(
+				[
+					"import { eslint as _eslint } from '../utils/eslint.js'",
+					"import { expect as _expect } from 'manten'",
+					'',
+					'void [_eslint, _expect]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
 
-			test('fail: parent before internal', async ({ onTestFail }) => {
-				const [result] = await eslintWithInternal.lintText(
-					[
-						"import { eslint as _eslint } from '../utils/eslint.js'",
-						"import { foo } from '@internal/utils'",
-						'',
-						'void [_eslint, foo]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+		});
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
+		test('fail: parent before internal', async () => {
+			const [result] = await eslintWithInternal.lintText(
+				[
+					"import { eslint as _eslint } from '../utils/eslint.js'",
+					"import { foo } from '@internal/utils'",
+					'',
+					'void [_eslint, foo]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
 
-			test('fail: external before builtin', async ({ onTestFail }) => {
-				const [result] = await eslint.lintText(
-					[
-						"import { expect as _expect } from 'manten'",
-						"import path from 'node:path'",
-						'',
-						'void [_expect, path]',
-						'',
-					].join('\n'),
-					{ filePath: 'tests/imports/test.ts' },
-				);
+			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+		});
 
-				onTestFail(() => {
-					console.log(orderMessages(result.messages));
-				});
+		test('fail: external before builtin', async () => {
+			const [result] = await eslint.lintText(
+				[
+					"import { expect as _expect } from 'manten'",
+					"import path from 'node:path'",
+					'',
+					'void [_expect, path]',
+					'',
+				].join('\n'),
+				{ filePath: 'tests/imports/test.ts' },
+			);
 
-				expect(orderMessages(result.messages).length).toBeGreaterThan(0);
+			onTestFail(() => {
+				console.log(orderMessages(result.messages));
 			});
+
+			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
 		});
 	});
 });

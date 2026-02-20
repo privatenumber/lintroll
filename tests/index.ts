@@ -1,18 +1,18 @@
 import { describe } from 'manten';
 
-describe('eslint config', ({ runTestSuite }) => {
-	runTestSuite(import('./base/index.js'));
-	runTestSuite(import('./eslint-comments/index.js'));
-	runTestSuite(import('./json/index.js'));
-	runTestSuite(import('./package-json/index.js'));
-	runTestSuite(import('./typescript/index.js'));
-	runTestSuite(import('./markdown/index.js'));
-	runTestSuite(import('./vue/index.js'));
-	runTestSuite(import('./react/index.js'));
-	runTestSuite(import('./node/index.js'));
-	runTestSuite(import('./bundle/index.js'));
-	runTestSuite(import('./unicorn/index.js'));
-	runTestSuite(import('./imports/index.js'));
-	runTestSuite(import('./custom-rules/index.js'));
-	runTestSuite(import('./cli/index.js'));
+describe('eslint config', async () => {
+	await import('./base/index.ts');
+	await import('./eslint-comments/index.ts');
+	await import('./json/index.ts');
+	await import('./package-json/index.ts');
+	await import('./typescript/index.ts');
+	await import('./markdown/index.ts');
+	await import('./vue/index.ts');
+	await import('./react/index.ts');
+	await import('./node/index.ts');
+	await import('./bundle/index.ts');
+	await import('./unicorn/index.ts');
+	await import('./imports/index.ts');
+	await import('./custom-rules/index.ts');
+	await import('./cli/index.ts');
 });
