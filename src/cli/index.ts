@@ -132,10 +132,12 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 			.filter(({ isIgnored }) => !isIgnored)
 			.map(({ file }) => file);
 
-		// If no tracked files match, exit early
 		if (files.length === 0) {
+			console.log('No git-tracked files to lint');
 			return;
 		}
+
+		console.log(`Linting ${files.length} git-tracked ${files.length === 1 ? 'file' : 'files'}...\n`);
 	}
 
 	const results = await eslint.lintFiles(files);
