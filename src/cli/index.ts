@@ -148,7 +148,7 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 		const fixedFiles = results.filter(result => result.output);
 		if (fixedFiles.length > 0) {
 			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
-			console.log(`Fixed ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
+			console.log(`Applied auto-fixes to ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
 			for (const filePath of relativePaths) {
 				console.log(`  ${filePath}`);
 			}

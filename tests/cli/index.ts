@@ -224,7 +224,7 @@ describe('cli', () => {
 
 			const { stdout } = await lintroll(['--fix'], fixture.path);
 
-			expect(stdout).toContain('Fixed 1 file:\n  fixable.mjs');
+			expect(stdout).toContain('Applied auto-fixes to 1 file:\n  fixable.mjs');
 		});
 
 		test('logs multiple fixed files', async () => {
@@ -237,7 +237,7 @@ describe('cli', () => {
 
 			const { stdout } = await lintroll(['--fix'], fixture.path);
 
-			expect(stdout).toContain('Fixed 2 files:');
+			expect(stdout).toContain('Applied auto-fixes to 2 files:');
 			expect(stdout).toContain('  a.mjs');
 			expect(stdout).toContain('  b.mjs');
 		});
@@ -252,7 +252,7 @@ describe('cli', () => {
 
 			const { stdout } = await lintroll(['--fix'], fixture.path);
 
-			expect(stdout).not.toContain('Fixed');
+			expect(stdout).not.toContain('Applied auto-fixes');
 		});
 
 		test('logs fixed files alongside remaining errors', async () => {
@@ -266,7 +266,7 @@ describe('cli', () => {
 			const result = await lintroll(['--fix'], fixture.path);
 
 			// Fixed files are logged before ESLint error output
-			expect(result.stdout).toContain('Fixed 1 file:\n  mixed.js');
+			expect(result.stdout).toContain('Applied auto-fixes to 1 file:\n  mixed.js');
 			expect(result.stdout).toContain('no-unused-vars');
 		});
 	});
