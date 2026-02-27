@@ -213,6 +213,64 @@ describe('cli', () => {
 		});
 	});
 
+	describe('--fix flag', () => {
+		test('logs single fixed file', async () => {
+			await using fixture = await createFixture({
+				// Double quotes → fixable to single quotes by @stylistic/quotes
+				'fixable.mjs': 'export default "hello";\n',
+			});
+
+			onTestFail(() => console.log('Fixture at:', fixture.path));
+
+			const { stdout } = await lintroll(['--fix'], fixture.path);
+
+			expect(stdout).toContain('Applied auto-fixes to 1 file:\n  fixable.mjs');
+		});
+
+		test('logs multiple fixed files', async () => {
+			await using fixture = await createFixture({
+				'a.mjs': 'export default "hello";\n',
+				'b.mjs': 'export default "world";\n',
+			});
+
+			onTestFail(() => console.log('Fixture at:', fixture.path));
+
+			const { stdout } = await lintroll(['--fix'], fixture.path);
+
+			expect(stdout).toContain('Applied auto-fixes to 2 files:');
+			expect(stdout).toContain('  a.mjs');
+			expect(stdout).toContain('  b.mjs');
+		});
+
+		test('does not log when nothing was fixed', async () => {
+			await using fixture = await createFixture({
+				// Already uses single quotes — nothing to fix
+				'clean.mjs': "export default 'hello';\n",
+			});
+
+			onTestFail(() => console.log('Fixture at:', fixture.path));
+
+			const { stdout } = await lintroll(['--fix'], fixture.path);
+
+			expect(stdout).not.toContain('Applied auto-fixes');
+		});
+
+		test('logs fixed files alongside remaining errors', async () => {
+			await using fixture = await createFixture({
+				// Double quotes → fixable, but no-unused-vars is not
+				'mixed.js': 'const x = "hello";\n',
+			});
+
+			onTestFail(() => console.log('Fixture at:', fixture.path));
+
+			const result = await lintroll(['--fix'], fixture.path);
+
+			// Fixed files are logged before ESLint error output
+			expect(result.stdout).toContain('Applied auto-fixes to 1 file:\n  mixed.js');
+			expect(result.stdout).toContain('no-unused-vars');
+		});
+	});
+
 	describe('--ignore-pattern flag', () => {
 		test('errors when no value is provided', async () => {
 			await using fixture = await createFixture({
