@@ -144,6 +144,16 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 
 	if (argv.flags.fix) {
 		await ESLint.outputFixes(results);
+
+		const fixedFiles = results.filter(result => result.output);
+		if (fixedFiles.length > 0) {
+			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
+			console.log(`Fixed ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
+			for (const filePath of relativePaths) {
+				console.log(`  ${filePath}`);
+			}
+			console.log();
+		}
 	}
 
 	let resultsToPrint = results;
