@@ -116,6 +116,109 @@ const categorizeFiles = (files: string[]) => {
 	return { oxlintFiles, eslintOnlyFiles };
 };
 
+const createEslintInstance = async (cwd: string) => new ESLint({
+	cwd,
+	baseConfig: await getConfig({
+		cwd,
+		node: isNodeEnabled(argv.flags.node),
+		allowAbbreviations: {
+			exactWords: argv.flags.allowAbbreviation,
+			substrings: argv.flags.allowAbbreviation,
+		},
+	}),
+	overrideConfigFile: true,
+	fix: argv.flags.fix,
+	cache: argv.flags.cache,
+	cacheLocation: argv.flags.cacheLocation,
+	ignorePatterns: argv.flags.ignorePattern,
+});
+
+/**
+ * ESLint-only mode (legacy, full config)
+ */
+const runEslintOnly = async (cwd: string, files: string[]) => {
+	const eslint = await createEslintInstance(cwd);
+
+	if (argv.flags.git) {
+		const gitRoot = await getGitRoot();
+		const gitTrackedFiles = await getTrackedFiles(gitRoot, files);
+		const ignoredChecks = await Promise.all(
+			gitTrackedFiles.map(async file => ({
+				file,
+				isIgnored: await eslint.isPathIgnored(file),
+			})),
+		);
+		files = ignoredChecks
+			.filter(({ isIgnored }) => !isIgnored)
+			.map(({ file }) => file);
+
+		if (files.length === 0) {
+			console.log('No git-tracked files to lint');
+			return;
+		}
+
+		console.log(`Linting ${files.length} git-tracked ${files.length === 1 ? 'file' : 'files'}...\n`);
+	}
+
+	const results = await eslint.lintFiles(files);
+
+	if (argv.flags.fix) {
+		await ESLint.outputFixes(results);
+		const fixedFiles = results.filter(result => result.output);
+		if (fixedFiles.length > 0) {
+			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
+			console.log(`Applied auto-fixes to ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
+			for (const filePath of relativePaths) {
+				console.log(`  ${filePath}`);
+			}
+			console.log();
+		}
+	}
+
+	let resultsToPrint = results;
+	if (argv.flags.quiet) {
+		resultsToPrint = ESLint.getErrorResults(results);
+	}
+
+	const resultCounts = countErrors(results);
+	const formatter = await eslint.loadFormatter();
+	const output = await formatter.format(resultsToPrint);
+	if (output) {
+		console.log(output);
+	}
+
+	process.exitCode = getExitCode(resultCounts);
+};
+
+/**
+ * Slim ESLint for non-JS files only (JSON, YAML, Markdown)
+ */
+const runEslintForNonJs = async (cwd: string, files: string[]) => {
+	const start = performance.now();
+	const eslint = await createEslintInstance(cwd);
+
+	const results = await eslint.lintFiles(files);
+
+	if (argv.flags.fix) {
+		await ESLint.outputFixes(results);
+	}
+
+	let resultsToPrint = results;
+	if (argv.flags.quiet) {
+		resultsToPrint = ESLint.getErrorResults(results);
+	}
+
+	const resultCounts = countErrors(results);
+	const formatter = await eslint.loadFormatter();
+	const output = await formatter.format(resultsToPrint);
+
+	return {
+		passed: resultCounts.errorCount === 0,
+		output: output || '',
+		duration: performance.now() - start,
+	};
+};
+
 (async () => {
 	const totalStart = performance.now();
 	let { files } = argv._;
@@ -251,120 +354,3 @@ const categorizeFiles = (files: string[]) => {
 	console.error(`Error: ${(error as Error).message}`);
 	process.exit(1);
 });
-
-/**
- * ESLint-only mode (legacy, full config)
- */
-const runEslintOnly = async (cwd: string, files: string[]) => {
-	const eslint = new ESLint({
-		cwd,
-		baseConfig: await getConfig({
-			cwd,
-			node: isNodeEnabled(argv.flags.node),
-			allowAbbreviations: {
-				exactWords: argv.flags.allowAbbreviation,
-				substrings: argv.flags.allowAbbreviation,
-			},
-		}),
-		overrideConfigFile: true,
-		fix: argv.flags.fix,
-		cache: argv.flags.cache,
-		cacheLocation: argv.flags.cacheLocation,
-		ignorePatterns: argv.flags.ignorePattern,
-	});
-
-	if (argv.flags.git) {
-		const gitRoot = await getGitRoot();
-		const gitTrackedFiles = await getTrackedFiles(gitRoot, files);
-		const ignoredChecks = await Promise.all(
-			gitTrackedFiles.map(async file => ({
-				file,
-				isIgnored: await eslint.isPathIgnored(file),
-			})),
-		);
-		files = ignoredChecks
-			.filter(({ isIgnored }) => !isIgnored)
-			.map(({ file }) => file);
-
-		if (files.length === 0) {
-			console.log('No git-tracked files to lint');
-			return;
-		}
-
-		console.log(`Linting ${files.length} git-tracked ${files.length === 1 ? 'file' : 'files'}...\n`);
-	}
-
-	const results = await eslint.lintFiles(files);
-
-	if (argv.flags.fix) {
-		await ESLint.outputFixes(results);
-		const fixedFiles = results.filter(result => result.output);
-		if (fixedFiles.length > 0) {
-			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
-			console.log(`Applied auto-fixes to ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
-			for (const filePath of relativePaths) {
-				console.log(`  ${filePath}`);
-			}
-			console.log();
-		}
-	}
-
-	let resultsToPrint = results;
-	if (argv.flags.quiet) {
-		resultsToPrint = ESLint.getErrorResults(results);
-	}
-
-	const resultCounts = countErrors(results);
-	const formatter = await eslint.loadFormatter();
-	const output = await formatter.format(resultsToPrint);
-	if (output) {
-		console.log(output);
-	}
-
-	process.exitCode = getExitCode(resultCounts);
-};
-
-/**
- * Slim ESLint for non-JS files only (JSON, YAML, Markdown)
- */
-const runEslintForNonJs = async (cwd: string, files: string[]) => {
-	const start = performance.now();
-
-	const eslint = new ESLint({
-		cwd,
-		baseConfig: await getConfig({
-			cwd,
-			node: isNodeEnabled(argv.flags.node),
-			allowAbbreviations: {
-				exactWords: argv.flags.allowAbbreviation,
-				substrings: argv.flags.allowAbbreviation,
-			},
-		}),
-		overrideConfigFile: true,
-		fix: argv.flags.fix,
-		cache: argv.flags.cache,
-		cacheLocation: argv.flags.cacheLocation,
-		ignorePatterns: argv.flags.ignorePattern,
-	});
-
-	const results = await eslint.lintFiles(files);
-
-	if (argv.flags.fix) {
-		await ESLint.outputFixes(results);
-	}
-
-	let resultsToPrint = results;
-	if (argv.flags.quiet) {
-		resultsToPrint = ESLint.getErrorResults(results);
-	}
-
-	const resultCounts = countErrors(results);
-	const formatter = await eslint.loadFormatter();
-	const output = await formatter.format(resultsToPrint);
-
-	return {
-		passed: resultCounts.errorCount === 0,
-		output: output || '',
-		duration: performance.now() - start,
-	};
-};
