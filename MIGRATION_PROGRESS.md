@@ -28,7 +28,7 @@
 
 - [x] Installed oxlint and oxfmt
 - [x] Created `.oxfmtrc.json` matching lintroll's tab/single-quote/semicolon style
-- [x] Created `.oxlintrc.json` with 214 rules mapped from ESLint config
+- [x] Created `.oxlintrc.json` with 214 native rules mapped from ESLint config
 - [x] Modified CLI to orchestrate: oxfmt → oxlint (sequential) || ESLint (parallel)
 - [x] Added `--eslint-only` flag for legacy mode
 - [x] File categorization: JS/TS → oxfmt+oxlint, JSON/YAML/MD → ESLint
@@ -37,12 +37,17 @@
 - [x] Verified all 157 existing tests pass
 - [x] `--fix` mode works end-to-end (oxfmt formats, oxlint fixes, ESLint fixes)
 - [x] Created draft PR #116
+- [x] Added eslint-plugin-regexp as JS plugin (60 rules) — VERIFIED WORKING
+- [x] Added @eslint-community/eslint-plugin-eslint-comments as JS plugin (4 rules)
+- [x] Added eslint-plugin-no-use-extend-native as JS plugin (1 rule)
+- [x] Total: 279 rules (214 native + 65 JS plugin) in ~485ms
 
 ## TODO
 
 ### High priority
 - [ ] Verify oxlint rule option compatibility for complex rules (prevent-abbreviations, no-shadow allow lists, etc.)
-- [ ] Add oxlint JS plugins for gap rules (eslint-plugin-regexp, eslint-plugin-n, eslint-comments)
+- [x] ~~Add oxlint JS plugins for gap rules (eslint-plugin-regexp, eslint-comments)~~
+- [ ] Add eslint-plugin-n as JS plugin for Node.js rules
 - [ ] Port pvtnbr/prefer-arrow-functions to oxlint JS plugin format
 - [ ] Compare oxlint output vs ESLint output for same files (rule parity check)
 
@@ -72,11 +77,11 @@
 - `import/no-extraneous-dependencies` — PR #15703 stalled
 - `import/no-useless-path-segments` — PR #14569 stalled
 
-### Full plugins (need JS plugins or keep in ESLint)
-- eslint-plugin-regexp (68 rules)
-- eslint-plugin-n (node rules, ~15 missing from native)
-- @eslint-community/eslint-plugin-eslint-comments
-- eslint-plugin-no-use-extend-native
+### Full plugins — RESOLVED via JS plugins
+- ~~eslint-plugin-regexp (60 rules)~~ → JS plugin, verified working
+- ~~@eslint-community/eslint-plugin-eslint-comments~~ → JS plugin, verified working
+- ~~eslint-plugin-no-use-extend-native~~ → JS plugin, verified working
+- eslint-plugin-n (node rules) — not yet tested as JS plugin
 
 ## Ideas
 
