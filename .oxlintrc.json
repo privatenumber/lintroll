@@ -8,7 +8,9 @@
 		"react"
 	],
 	"jsPlugins": [
-		"eslint-plugin-regexp"
+		"eslint-plugin-regexp",
+		{ "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
+		"eslint-plugin-no-use-extend-native"
 	],
 	"categories": {
 		"correctness": "error",
@@ -262,7 +264,15 @@
 		"regexp/simplify-set-operations": "error",
 		"regexp/sort-flags": "error",
 		"regexp/strict": "error",
-		"regexp/use-ignore-case": "error"
+		"regexp/use-ignore-case": "error",
+
+		"eslint-comments/disable-enable-pair": "error",
+		"eslint-comments/no-aggregating-enable": "error",
+		"eslint-comments/no-duplicate-disable": "error",
+		"eslint-comments/no-unlimited-disable": "error",
+		"eslint-comments/no-unused-enable": "off",
+
+		"no-use-extend-native/no-use-extend-native": "error"
 	},
 	"overrides": [
 		{
