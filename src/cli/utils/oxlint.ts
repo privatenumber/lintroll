@@ -7,6 +7,13 @@ const oxlintBin = path.resolve(
 	'../bin/oxlint',
 );
 
+// Config file ships with lintroll — resolve relative to this file
+// From src/cli/utils/ or dist/cli/utils/ → 3 levels up to package root
+const oxlintConfig = path.resolve(
+	path.dirname(fileURLToPath(import.meta.url)),
+	'../../../.oxlintrc.json',
+);
+
 type OxlintOptions = {
 	files: string[];
 	fix: boolean;
@@ -44,6 +51,7 @@ export const runOxlint = async ({
 		arguments_.push('--ignore-pattern', pattern);
 	}
 
+	arguments_.push('--config', oxlintConfig);
 	arguments_.push(...files);
 
 	try {

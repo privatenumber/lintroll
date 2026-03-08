@@ -7,6 +7,13 @@ const oxfmtBin = path.resolve(
 	'../bin/oxfmt',
 );
 
+// Config file ships with lintroll — resolve relative to this file
+// From src/cli/utils/ or dist/cli/utils/ → 3 levels up to package root
+const oxfmtConfig = path.resolve(
+	path.dirname(fileURLToPath(import.meta.url)),
+	'../../../.oxfmtrc.json',
+);
+
 type OxfmtOptions = {
 	files: string[];
 	fix: boolean;
@@ -29,7 +36,7 @@ export const runOxfmt = async ({
 	if (fix) {
 		// In fix mode, format files in place
 		try {
-			await spawn(oxfmtBin, ['--write', ...files], { cwd });
+			await spawn(oxfmtBin, ['--config', oxfmtConfig, '--write', ...files], { cwd });
 		} catch (error) {
 			const { stderr, stdout } = error as { stderr: string; stdout: string };
 			throw new Error(`oxfmt format error:\n${stderr || stdout}`);
@@ -44,7 +51,7 @@ export const runOxfmt = async ({
 
 	// In check mode, use --list-different for clean file list
 	try {
-		await spawn(oxfmtBin, ['--list-different', ...files], { cwd });
+		await spawn(oxfmtBin, ['--config', oxfmtConfig, '--list-different', ...files], { cwd });
 		// Exit 0 = all files formatted
 		return {
 			passed: true,

@@ -103,25 +103,36 @@ const oxlintExtensions = new Set([
 	'.vue',
 ]);
 
-// Files to exclude from ESLint in hybrid mode (config files, lock files, etc.)
-const eslintIgnoreBasenames = new Set([
-	'.oxlintrc.json',
-	'.oxfmtrc.json',
-	'package-lock.json',
-	'pnpm-lock.yaml',
+// Directories/patterns to exclude in hybrid mode (matching oxlint/ESLint ignores)
+const ignoredPathSegments = ['/dist/', '/node_modules/', '/vendor/', '/.cache/', '/.vitepress/'];
+const ignoredBasenames = new Set([
+	'.oxlintrc.json', '.oxfmtrc.json',
+	'package-lock.json', 'pnpm-lock.yaml',
 ]);
+
+const isIgnoredFile = (filePath: string) => {
+	const basename = path.basename(filePath);
+	if (ignoredBasenames.has(basename)) {
+		return true;
+	}
+	if (filePath.endsWith('.min.js')) {
+		return true;
+	}
+	return ignoredPathSegments.some(segment => filePath.includes(segment));
+};
 
 const categorizeFiles = (files: string[]) => {
 	const oxlintFiles: string[] = [];
 	const eslintOnlyFiles: string[] = [];
 
 	for (const file of files) {
+		if (isIgnoredFile(file)) {
+			continue;
+		}
+
 		const extension = path.extname(file);
 		if (eslintOnlyExtensions.has(extension)) {
-			const basename = path.basename(file);
-			if (!eslintIgnoreBasenames.has(basename)) {
-				eslintOnlyFiles.push(file);
-			}
+			eslintOnlyFiles.push(file);
 		} else if (oxlintExtensions.has(extension)) {
 			oxlintFiles.push(file);
 		}
@@ -290,10 +301,23 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 		return;
 	}
 
-	// Auto-detect git for hybrid mode when directory arguments are used
-	// This enables the 4.5x speedup by default without requiring --git
 	const hasFileList = argv.flags.git || argv.flags.staged;
+
+	// Auto-detect mode when no --git/--staged flag
 	if (!hasFileList) {
+		// If a user ESLint config exists, use ESLint-only mode to respect it
+		const hasUserConfig = [
+			'eslint.config.mts', 'eslint.config.mjs',
+			'eslint.config.cts', 'eslint.config.cjs',
+			'eslint.config.ts', 'eslint.config.js',
+		].some(name => fs.existsSync(path.resolve(cwd, name)));
+
+		if (hasUserConfig) {
+			await runEslintOnly(cwd, files);
+			return;
+		}
+
+		// Auto-detect git for hybrid mode
 		try {
 			const gitRoot = await getGitRoot();
 			files = await getTrackedFiles(gitRoot, files);

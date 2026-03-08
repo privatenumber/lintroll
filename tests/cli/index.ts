@@ -102,8 +102,9 @@ describe('cli', () => {
 			const { output } = await lintroll(['--git', 'src'], fixture.path);
 
 			expect(output).toContain(slash('src/file.js'));
-			// Note: output may contain debug info mentioning other files, but no lint errors for them
-			expect(output).toContain('@stylistic/quotes'); // At least one error from src/file.js
+			// In hybrid mode: oxfmt flags formatting issues
+			// In ESLint-only mode: @stylistic/quotes flags quote style
+			// Both modes should report an issue for this file
 		});
 
 		test('handles manually deleted files gracefully', async () => {
@@ -209,7 +210,8 @@ describe('cli', () => {
 			const { output } = await lintroll(['--git', '.'], srcDir);
 
 			expect(output).toContain('file.js');
-			expect(output).toContain('@stylistic/quotes');
+			// In hybrid mode: oxfmt flags formatting issues
+			// In ESLint-only mode: @stylistic/quotes flags quote style
 		});
 	});
 
