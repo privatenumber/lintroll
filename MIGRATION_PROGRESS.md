@@ -61,7 +61,19 @@
 - `--node` CLI flag not forwarded to oxlint (n/ rules always active)
 - Formatting style differs from ESLint @stylistic (Prettier-style via oxfmt)
 
+## CI Status
+- All 157 tests pass (Ubuntu + Windows)
+- Lint passes with 0 errors
+- 35 commits on feat/oxc-migration branch
+- PR #116 (draft)
+
+## Next Steps (for merging)
+1. Apply oxfmt formatting to codebase (`lintroll --oxc --git --fix .`)
+2. Commit as "style: adopt oxfmt formatting" + add to `.git-blame-ignore-revs`
+3. Switch `pnpm lint` to `--oxc --git` mode
+4. Remove `@stylistic/eslint-plugin` from ESLint config (or keep for `--eslint-only` compat)
+5. Consider making `--oxc` the default (drop `--eslint-only` fallback)
+
 ## Future Opportunities
 - Contributing gap rules to native oxlint would save ~760ms JS plugin overhead
 - oxlint `--cache` support (not available yet)
-- oxfmt formatting adoption commit (applies Prettier-style to existing code)
