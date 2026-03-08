@@ -12,7 +12,7 @@
  */
 import { createRequire } from 'node:module';
 import type { ESLint, Rule } from 'eslint';
-import oxlintPlugin from './oxlint-plugin.ts';
+import { preferArrowFunctions } from './prefer-arrow-functions/index.ts';
 import eslintGapPlugin from './eslint-gap-plugin.ts';
 
 const require = createRequire(import.meta.url);
@@ -83,8 +83,8 @@ for (const [name, rule] of Object.entries(eslintGapPlugin.rules)) {
 	});
 }
 
-// pvtnbr/prefer-arrow-functions
-rules['prefer-arrow-functions'] = oxlintPlugin.rules['prefer-arrow-functions'];
+// pvtnbr/prefer-arrow-functions (reused from existing ESLint custom rule)
+rules['prefer-arrow-functions'] = preferArrowFunctions as unknown as Rule.RuleModule;
 
 export default {
 	meta: {
