@@ -17,15 +17,17 @@ const projectRoot = path.resolve(
 const customRulesSource = path.join(projectRoot, 'src/custom-rules');
 const customRulesDist = path.join(projectRoot, 'dist/custom-rules');
 
-await fs.mkdir(customRulesDist, { recursive: true });
+;(async () => {
+	await fs.mkdir(customRulesDist, { recursive: true });
 
-const allFiles = await fs.readdir(customRulesSource);
-const cjsFiles = allFiles.filter(file => file.endsWith('.cjs'));
+	const allFiles = await fs.readdir(customRulesSource);
+	const cjsFiles = allFiles.filter(file => file.endsWith('.cjs'));
 
-for (const file of cjsFiles) {
-	await fs.copyFile(
-		path.join(customRulesSource, file),
-		path.join(customRulesDist, file),
-	);
-	console.log(`Copied dist/custom-rules/${file}`);
-}
+	for (const file of cjsFiles) {
+		await fs.copyFile(
+			path.join(customRulesSource, file),
+			path.join(customRulesDist, file),
+		);
+		console.log(`Copied dist/custom-rules/${file}`);
+	}
+})();
