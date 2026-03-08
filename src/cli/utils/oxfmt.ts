@@ -38,7 +38,8 @@ export const runOxfmt = async ({
 		try {
 			await spawn(oxfmtBin, ['--config', oxfmtConfig, '--write', ...files], { cwd });
 		} catch (error) {
-			const { stderr, stdout } = error as { stderr: string; stdout: string };
+			const { stderr, stdout } = error as { stderr: string;
+				stdout: string; };
 			throw new Error(`oxfmt format error:\n${stderr || stdout}`);
 		}
 
@@ -59,7 +60,9 @@ export const runOxfmt = async ({
 			duration: performance.now() - start,
 		};
 	} catch (error) {
-		const { stdout, stderr, exitCode } = error as { stdout: string; stderr: string; exitCode: number | undefined };
+		const { stdout, stderr, exitCode } = error as { stdout: string;
+			stderr: string;
+			exitCode: number | undefined; };
 		if (exitCode === 1) {
 			// Exit 1 = some files need formatting, stdout has the list
 			const unformattedFiles = stdout

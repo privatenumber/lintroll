@@ -51,11 +51,10 @@ export const runOxlint = async ({
 		arguments_.push('--ignore-pattern', pattern);
 	}
 
-	arguments_.push('--config', oxlintConfig);
-	arguments_.push(...files);
+	arguments_.push('--config', oxlintConfig, ...files);
 
 	try {
-		const { stdout } = await spawn(oxlintBin, arguments_, { cwd });
+		await spawn(oxlintBin, arguments_, { cwd });
 		return {
 			passed: true,
 			// Suppress "Found 0 warnings and 0 errors" when clean
@@ -64,7 +63,9 @@ export const runOxlint = async ({
 			duration: performance.now() - start,
 		};
 	} catch (error) {
-		const { stdout, stderr, exitCode } = error as { stdout: string; stderr: string; exitCode: number | undefined };
+		const { stdout, stderr, exitCode } = error as { stdout: string;
+			stderr: string;
+			exitCode: number | undefined; };
 
 		// Exit code 2 = config/internal error (not lint findings)
 		if (exitCode === 2) {

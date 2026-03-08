@@ -9,7 +9,7 @@ const messages = {
 	preferArrowFunction: 'Prefer arrow function',
 };
 
-const disallowedProperties = ['prototype', 'name', 'length'];
+const disallowedProperties = new Set(['prototype', 'name', 'length']);
 
 /** @type {import('eslint').ESLint.Plugin} */
 module.exports = {
@@ -56,7 +56,10 @@ module.exports = {
 						const functionNameVariable = declaredVariables[0];
 						if (functionNameVariable) {
 							const firstReference = functionNameVariable.references[0];
-							const isHoisted = firstReference && node.range[0] > firstReference.identifier.range[0];
+							const isHoisted = (
+								firstReference
+								&& node.range[0] > firstReference.identifier.range[0]
+							);
 							if (isHoisted) {
 								return false;
 							}
@@ -65,7 +68,10 @@ module.exports = {
 					} else if (node.type === 'FunctionExpression') {
 						const declaredVariables = context.sourceCode.getDeclaredVariables(node);
 						const functionNameVariable = declaredVariables.find(
-							(variable) => variable.identifiers[0] && variable.identifiers[0].parent.type === 'FunctionExpression',
+							variable => (
+								variable.identifiers[0]
+								&& variable.identifiers[0].parent.type === 'FunctionExpression'
+							),
 						);
 
 						if (functionNameVariable) {
@@ -98,7 +104,7 @@ module.exports = {
 						if (
 							identifier.parent.type === 'MemberExpression'
 							&& identifier.parent.property.type === 'Identifier'
-							&& disallowedProperties.includes(identifier.parent.property.name)
+							&& disallowedProperties.has(identifier.parent.property.name)
 						) {
 							return false;
 						}
@@ -121,7 +127,7 @@ module.exports = {
 
 				const removeFunctionToken = (node, fixer) => {
 					const functionToken = context.sourceCode.getFirstToken(node, {
-						filter: (token) => token.type === 'Keyword' && token.value === 'function',
+						filter: token => token.type === 'Keyword' && token.value === 'function',
 					});
 					if (functionToken) {
 						return [fixer.remove(functionToken)];
@@ -136,7 +142,7 @@ module.exports = {
 
 				const moveAsyncToken = (node, fixer) => {
 					const asyncToken = context.sourceCode.getFirstToken(node.parent, {
-						filter: (token) => token.type === 'Identifier' && token.value === 'async',
+						filter: token => token.type === 'Identifier' && token.value === 'async',
 					});
 					const getNodeAfter = context.sourceCode.getTokenAfter(asyncToken, {
 						includeComments: true,
@@ -205,7 +211,9 @@ module.exports = {
 									if (parent.type === 'LogicalExpression') {
 										const previousToken = context.sourceCode.getTokenBefore(node);
 										const nextToken = context.sourceCode.getTokenAfter(node);
-										if (!(previousToken && previousToken.value === '(' && nextToken && nextToken.value === ')')) {
+										const isWrapped = previousToken && previousToken.value === '('
+											&& nextToken && nextToken.value === ')';
+										if (!isWrapped) {
 											fixes.push(...wrapInParentheses(node, fixer));
 										}
 									}
@@ -241,10 +249,10 @@ module.exports = {
 								const { parent } = node;
 								if (parent.type === 'ExportDefaultDeclaration' && node.id) {
 									const exportDefaultStart = context.sourceCode.getFirstToken(parent, {
-										filter: (token) => token.type === 'Keyword' && token.value === 'export',
+										filter: token => token.type === 'Keyword' && token.value === 'export',
 									});
 									const exportDefaultEnd = context.sourceCode.getTokenAfter(exportDefaultStart, {
-										filter: (token) => token.type === 'Keyword' && token.value === 'default',
+										filter: token => token.type === 'Keyword' && token.value === 'default',
 									});
 									const exportDefaultRange = [
 										exportDefaultStart.range[0],
@@ -260,7 +268,10 @@ module.exports = {
 								const nextToken = context.sourceCode.getTokenAfter(node, {
 									includeComments: true,
 								});
-								const needsDelimiter = nextToken && !context.sourceCode.isSpaceBetween(node, nextToken);
+								const needsDelimiter = (
+									nextToken
+									&& !context.sourceCode.isSpaceBetween(node, nextToken)
+								);
 								if (needsDelimiter) {
 									fixes.push(fixer.insertTextAfter(node, ';'));
 								}

@@ -17,7 +17,7 @@ let noUseExtendNativeRules;
 const loadNoUseExtendNative = () => {
 	if (!noUseExtendNativeRules) {
 		try {
-			const plugin = require('eslint-plugin-no-use-extend-native');
+			const plugin = require('eslint-plugin-no-use-extend-native'); // eslint-disable-line n/global-require
 			const resolvedPlugin = plugin.default || plugin;
 			noUseExtendNativeRules = resolvedPlugin.rules || {};
 		} catch {
@@ -32,7 +32,7 @@ let eslintCommentsRules;
 const loadEslintComments = () => {
 	if (!eslintCommentsRules) {
 		try {
-			const plugin = require('@eslint-community/eslint-plugin-eslint-comments');
+			const plugin = require('@eslint-community/eslint-plugin-eslint-comments'); // eslint-disable-line n/global-require
 			eslintCommentsRules = plugin.rules || {};
 		} catch {
 			eslintCommentsRules = {};
@@ -60,7 +60,7 @@ let gapRules;
 const loadGapRules = () => {
 	if (!gapRules) {
 		try {
-			const { builtinRules } = require('eslint/use-at-your-own-risk');
+			const { builtinRules } = require('eslint/use-at-your-own-risk'); // eslint-disable-line n/global-require
 			gapRules = {};
 			for (const name of gapRuleNames) {
 				const rule = builtinRules.get(name);
@@ -76,7 +76,7 @@ const loadGapRules = () => {
 };
 
 // === pvtnbr/prefer-arrow-functions ===
-const preferArrowFunctions = require('./oxlint-plugin.cjs').rules['prefer-arrow-functions'];
+const preferArrowFunctions = require('./oxlint-plugin.cjs').rules['prefer-arrow-functions']; // eslint-disable-line n/global-require
 
 // Build combined rules object with lazy loading
 const rules = {};

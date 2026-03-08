@@ -33,7 +33,7 @@ const loadRules = () => {
 
 	try {
 		// eslint/use-at-your-own-risk exports builtinRules Map
-		const { builtinRules } = require('eslint/use-at-your-own-risk');
+		const { builtinRules } = require('eslint/use-at-your-own-risk'); // eslint-disable-line n/global-require
 		loadedRules = {};
 		for (const name of ruleNames) {
 			const rule = builtinRules.get(name);
@@ -53,9 +53,7 @@ const loadRules = () => {
 const rules = {};
 for (const name of ruleNames) {
 	Object.defineProperty(rules, name, {
-		get() {
-			return loadRules()[name];
-		},
+		get: () => loadRules()[name],
 		enumerable: true,
 	});
 }
