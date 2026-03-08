@@ -1,14 +1,16 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import { cli } from 'cleye';
-import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
-import { getConfig } from './get-config.ts';
-import { getNonJsConfig } from './get-non-js-config.ts';
 import { getExitCode, countErrors } from './handle-errors.ts';
 import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.ts';
 import { runOxfmt } from './utils/oxfmt.ts';
 import { runOxlint } from './utils/oxlint.ts';
+
+// Lazy-loaded ESLint dependencies — only imported when ESLint is actually needed
+const lazyESLint = () => import('eslint').then(m => m.ESLint);
+const lazyGetConfig = () => import('./get-config.ts').then(m => m.getConfig);
+const lazyGetNonJsConfig = () => import('./get-non-js-config.ts').then(m => m.getNonJsConfig);
 
 /**
  * Reference: ESlint CLI
@@ -117,27 +119,31 @@ const categorizeFiles = (files: string[]) => {
 	return { oxlintFiles, eslintOnlyFiles };
 };
 
-const createEslintInstance = async (cwd: string) => new ESLint({
-	cwd,
-	baseConfig: await getConfig({
+const createEslintInstance = async (cwd: string) => {
+	const [ESLint, getConfig] = await Promise.all([lazyESLint(), lazyGetConfig()]);
+	return new ESLint({
 		cwd,
-		node: isNodeEnabled(argv.flags.node),
-		allowAbbreviations: {
-			exactWords: argv.flags.allowAbbreviation,
-			substrings: argv.flags.allowAbbreviation,
-		},
-	}),
-	overrideConfigFile: true,
-	fix: argv.flags.fix,
-	cache: argv.flags.cache,
-	cacheLocation: argv.flags.cacheLocation,
-	ignorePatterns: argv.flags.ignorePattern,
-});
+		baseConfig: await getConfig({
+			cwd,
+			node: isNodeEnabled(argv.flags.node),
+			allowAbbreviations: {
+				exactWords: argv.flags.allowAbbreviation,
+				substrings: argv.flags.allowAbbreviation,
+			},
+		}),
+		overrideConfigFile: true,
+		fix: argv.flags.fix,
+		cache: argv.flags.cache,
+		cacheLocation: argv.flags.cacheLocation,
+		ignorePatterns: argv.flags.ignorePattern,
+	});
+};
 
 /**
  * ESLint-only mode (legacy, full config)
  */
 const runEslintOnly = async (cwd: string, files: string[]) => {
+	const ESLint = await lazyESLint();
 	const eslint = await createEslintInstance(cwd);
 
 	if (argv.flags.git) {
@@ -197,6 +203,7 @@ const runEslintOnly = async (cwd: string, files: string[]) => {
  */
 const runEslintForNonJs = async (cwd: string, files: string[]) => {
 	const start = performance.now();
+	const [ESLint, getNonJsConfig] = await Promise.all([lazyESLint(), lazyGetNonJsConfig()]);
 	const eslint = new ESLint({
 		cwd,
 		baseConfig: getNonJsConfig(),
