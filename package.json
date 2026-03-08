@@ -19,6 +19,7 @@
 		"dist",
 		"skills",
 		"oxlint.config.ts",
+		"src/oxlint",
 		"src/custom-rules"
 	],
 	"type": "module",
