@@ -154,22 +154,22 @@ module.exports = {
 
 				return {
 					ThisExpression(node) {
-						const fn = getNearestFunction(node);
-						if (fn) {
-							untransformableFunctions.add(fn);
+						const nearestFunction = getNearestFunction(node);
+						if (nearestFunction) {
+							untransformableFunctions.add(nearestFunction);
 						}
 					},
 					Super(node) {
-						const fn = getNearestFunction(node);
-						if (fn) {
-							untransformableFunctions.add(fn);
+						const nearestFunction = getNearestFunction(node);
+						if (nearestFunction) {
+							untransformableFunctions.add(nearestFunction);
 						}
 					},
 					MetaProperty(node) {
 						if (node.meta.name === 'new' && node.property.name === 'target') {
-							const fn = getNearestFunction(node);
-							if (fn) {
-								untransformableFunctions.add(fn);
+							const nearestFunction = getNearestFunction(node);
+							if (nearestFunction) {
+								untransformableFunctions.add(nearestFunction);
 							}
 						}
 					},
