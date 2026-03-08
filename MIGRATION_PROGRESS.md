@@ -18,9 +18,9 @@
 ### New files
 | File | Purpose |
 |------|---------|
-| `.oxfmtrc.json` | Formatting: tabs, single quotes, semicolons, arrowParens: avoid |
+| `.oxfmtrc.json` | Editor integration only (CLI uses programmatic API) |
 | `.oxlintrc.json` | 306 rules (213 native + 93 JS plugin from 4 plugins) |
-| `src/cli/utils/oxfmt.ts` | oxfmt subprocess wrapper (--list-different / --write) |
+| `src/cli/utils/oxfmt.ts` | oxfmt programmatic API wrapper (no config file needed) |
 | `src/cli/utils/oxlint.ts` | oxlint subprocess wrapper with error handling |
 | `src/cli/get-non-js-config.ts` | Slim ESLint config (JSON/YAML only) |
 | `src/custom-rules/oxlint-plugin.cjs` | Ported prefer-arrow-functions |
