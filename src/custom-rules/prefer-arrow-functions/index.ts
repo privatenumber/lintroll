@@ -1,3 +1,4 @@
+// eslint-disable-next-line n/no-unpublished-import -- bundled by pkgroll
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { createRule } from '../utils/create-rule.ts';
 
