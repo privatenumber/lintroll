@@ -50,7 +50,8 @@ export const runOxlint = async ({
 		const { stdout } = await spawn(oxlintBin, arguments_, { cwd });
 		return {
 			passed: true,
-			output: stdout,
+			// Suppress "Found 0 warnings and 0 errors" when clean
+			output: '',
 			exitCode: 0,
 			duration: performance.now() - start,
 		};
