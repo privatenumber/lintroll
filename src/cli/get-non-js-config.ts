@@ -21,11 +21,23 @@ export const getNonJsConfig = (): Linter.Config[] => [
 			'**/package-lock.json',
 			'**/pnpm-lock.yaml',
 			'{tmp,temp,.tmp,.temp,__tmp__,__temp__}/**',
+			'**/*.min.js',
 			'**/dist/**',
 			'**/node_modules/**',
 			'**/vendor/**',
 			'**/.cache/**',
 			'**/.vitepress',
+
+			// Config files not intended to be linted
+			'**/.oxlintrc.json',
+			'**/.oxfmtrc.json',
+
+			// AI assistant files
+			'**/CLAUDE.md',
+			'**/CLAUDE.local.md',
+			'**/.claude',
+			'**/AI.md',
+			'**/AGENT.md',
 		],
 	}),
 	defineConfig({

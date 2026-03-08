@@ -103,6 +103,14 @@ const oxlintExtensions = new Set([
 	'.vue',
 ]);
 
+// Files to exclude from ESLint in hybrid mode (config files, lock files, etc.)
+const eslintIgnoreBasenames = new Set([
+	'.oxlintrc.json',
+	'.oxfmtrc.json',
+	'package-lock.json',
+	'pnpm-lock.yaml',
+]);
+
 const categorizeFiles = (files: string[]) => {
 	const oxlintFiles: string[] = [];
 	const eslintOnlyFiles: string[] = [];
@@ -110,7 +118,10 @@ const categorizeFiles = (files: string[]) => {
 	for (const file of files) {
 		const extension = path.extname(file);
 		if (eslintOnlyExtensions.has(extension)) {
-			eslintOnlyFiles.push(file);
+			const basename = path.basename(file);
+			if (!eslintIgnoreBasenames.has(basename)) {
+				eslintOnlyFiles.push(file);
+			}
 		} else if (oxlintExtensions.has(extension)) {
 			oxlintFiles.push(file);
 		}
