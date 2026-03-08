@@ -13,7 +13,8 @@
 		"eslint-plugin-no-use-extend-native",
 		"./src/custom-rules/oxlint-plugin.cjs",
 		{ "name": "n", "specifier": "eslint-plugin-n" },
-		{ "name": "unicorn-js", "specifier": "eslint-plugin-unicorn" }
+		{ "name": "unicorn-js", "specifier": "eslint-plugin-unicorn" },
+		"./src/custom-rules/eslint-gap-plugin.cjs"
 	],
 	"categories": {
 		"correctness": "error",
@@ -294,6 +295,35 @@
 		"n/prefer-promises/fs": "error",
 		"n/no-unsupported-features/node-builtins": "warn",
 		"n/prefer-node-protocol": "error",
+
+		"eslint-gap/camelcase": ["error", {
+			"ignoreDestructuring": false,
+			"ignoreImports": true,
+			"properties": "never"
+		}],
+		"eslint-gap/no-implicit-globals": "error",
+		"eslint-gap/no-octal-escape": "error",
+		"eslint-gap/no-restricted-exports": ["error", {
+			"restrictedNamedExports": ["then"]
+		}],
+		"eslint-gap/no-restricted-properties": ["error",
+			{ "message": "arguments.callee is deprecated", "object": "arguments", "property": "callee" },
+			{ "message": "Please use Number.isFinite instead", "object": "global", "property": "isFinite" },
+			{ "message": "Please use Number.isFinite instead", "object": "self", "property": "isFinite" },
+			{ "message": "Please use Number.isFinite instead", "object": "window", "property": "isFinite" },
+			{ "message": "Please use Number.isNaN instead", "object": "global", "property": "isNaN" },
+			{ "message": "Please use Number.isNaN instead", "object": "self", "property": "isNaN" },
+			{ "message": "Please use Number.isNaN instead", "object": "window", "property": "isNaN" },
+			{ "message": "Please use Object.defineProperty instead.", "property": "__defineGetter__" },
+			{ "message": "Please use Object.defineProperty instead.", "property": "__defineSetter__" },
+			{ "message": "Use the exponentiation operator (**) instead.", "object": "Math", "property": "pow" }
+		],
+		"eslint-gap/no-undef-init": "error",
+		"eslint-gap/no-unreachable-loop": "error",
+		"eslint-gap/object-shorthand": ["error", "always", { "ignoreConstructors": false }],
+		"eslint-gap/one-var": ["error", "never"],
+		"eslint-gap/prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
+		"eslint-gap/prefer-regex-literals": ["error", { "disallowRedundantWrapping": true }],
 
 		"unicorn-js/prevent-abbreviations": ["error", {
 			"allowList": { "i": true, "j": true },
