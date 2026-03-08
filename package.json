@@ -50,8 +50,8 @@
 			"default": "./dist/cli/index.mjs"
 		},
 		"#oxlint-config": {
-			"development": "./oxlint.config.ts",
-			"default": "./dist/oxlintrc.json"
+			"development": "./src/oxlint/index.ts",
+			"default": "./dist/oxlint/index.mjs"
 		}
 	},
 	"packageManager": "pnpm@10.27.0",
