@@ -49,7 +49,13 @@ export const runOxlint = async ({
 			duration: performance.now() - start,
 		};
 	} catch (error) {
-		const { stdout, exitCode } = error as { stdout: string; exitCode: number | undefined };
+		const { stdout, stderr, exitCode } = error as { stdout: string; stderr: string; exitCode: number | undefined };
+
+		// Exit code 2 = config/internal error (not lint findings)
+		if (exitCode === 2) {
+			throw new Error(`oxlint configuration error:\n${stderr || stdout}`);
+		}
+
 		return {
 			passed: false,
 			output: stdout,

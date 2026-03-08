@@ -35,7 +35,7 @@ export const runOxfmt = async ({
 			duration: performance.now() - start,
 		};
 	} catch (error) {
-		const { stdout, exitCode } = error as { stdout: string; exitCode: number | undefined };
+		const { stdout, stderr, exitCode } = error as { stdout: string; stderr: string; exitCode: number | undefined };
 		if (exitCode === 1) {
 			// oxfmt --check exits 1 when files need formatting
 			const unformattedFiles = stdout
@@ -48,6 +48,6 @@ export const runOxfmt = async ({
 				duration: performance.now() - start,
 			};
 		}
-		throw error;
+		throw new Error(`oxfmt error (exit ${exitCode}):\n${stderr || stdout}`);
 	}
 };
