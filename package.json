@@ -36,9 +36,9 @@
 	},
 	"imports": {
 		"#pvtnbr": {
-			"types": "./src/index.ts",
-			"development": "./src/index.ts",
-			"default": "./dist/index.mjs"
+			"types": "./src/eslint-config.ts",
+			"development": "./src/eslint-config.ts",
+			"default": "./dist/eslint-config.mjs"
 		},
 		"#pkg-maps-resolver": {
 			"types": "./src/resolvers/pkg-maps-resolver.ts",
