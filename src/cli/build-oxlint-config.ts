@@ -25,7 +25,8 @@ const buildOxlintConfig = async () => {
 	// Rewrite jsPlugins paths: ./src/custom-rules/... → ./custom-rules/...
 	// (relative to dist/ after copying)
 	if (config.jsPlugins) {
-		config.jsPlugins = config.jsPlugins.map((entry: string | { name: string; specifier: string }) => {
+		config.jsPlugins = config.jsPlugins.map((entry: string | { name: string;
+			specifier: string; }) => {
 			if (typeof entry === 'string' && entry.startsWith('./src/custom-rules/')) {
 				return entry.replace('./src/custom-rules/', './custom-rules/');
 			}
@@ -46,8 +47,8 @@ const buildOxlintConfig = async () => {
 	const customRulesDist = path.join(distDirectory, 'custom-rules');
 	await fs.mkdir(customRulesDist, { recursive: true });
 
-	const cjsFiles = (await fs.readdir(customRulesSource))
-		.filter(file => file.endsWith('.cjs'));
+	const allFiles = await fs.readdir(customRulesSource);
+	const cjsFiles = allFiles.filter(file => file.endsWith('.cjs'));
 
 	for (const file of cjsFiles) {
 		await fs.copyFile(
