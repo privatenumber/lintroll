@@ -17,9 +17,9 @@ const projectRoot = path.resolve(
 );
 
 const buildOxlintConfig = async () => {
-	// Dynamic import the TS config — Node with --conditions=development resolves
-	// the source files; in production, we import the built version
-	const configModule = await import('#oxlint-config');
+	// Import the TS config directly (this script runs during build, not at runtime)
+	const configPath = path.join(projectRoot, 'oxlint.config.ts');
+	const configModule = await import(configPath);
 	const config = configModule.default;
 
 	// Rewrite jsPlugins paths: ./src/custom-rules/... → ./custom-rules/...
