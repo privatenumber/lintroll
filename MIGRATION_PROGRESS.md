@@ -1,99 +1,67 @@
 # Oxc Migration Progress
 
-## Benchmarks
+## Performance
 
-### Baseline (ESLint only, `--eslint-only --git .`)
-- **~6.7s wall** on 112 JS/TS + 34 non-JS files (162 total)
+| Mode | Wall time | Speedup |
+|------|-----------|---------|
+| ESLint only (`--eslint-only`) | ~6.1s | baseline |
+| **Hybrid (default)** | **~1.4s** | **4.4x faster** |
+| Hybrid src/ only (no JSON/YAML) | ~1.2s | 5x faster |
 
-### Hybrid v5 (lazy ESLint + parallel: oxfmt+oxlint || slim ESLint)
+### Breakdown
 - oxfmt: ~350ms (format check)
-- oxlint: ~1000ms (lint JS/TS files, 306 rules with 8 JS plugins)
-- ESLint (slim, lazy-loaded): ~400ms (lint JSON/YAML only)
-- **~1.5s wall, ~1.4s internal** (3.9x faster wall, 4.8x internal)
+- oxlint: ~1000ms (306 rules: 213 native + 93 JS plugin)
+- ESLint slim: ~400ms (JSON/YAML only, lazy-loaded)
 
-### Summary
-| Mode | Wall time | Internal | Speedup |
-|------|-----------|----------|---------|
-| ESLint only | ~6.7s | ~6.7s | baseline |
-| **Hybrid v5 (lazy ESLint)** | **~1.5s** | **~1.4s** | **4.5x wall** |
-| Hybrid src/ only (no JSON/YAML) | ~1.2s | ~1.1s | 6x wall |
-
-## Implementation Complete
-
-- [x] `.oxfmtrc.json` — tabs, single quotes, semicolons
-- [x] `.oxlintrc.json` — 306 rules (213 native + 93 JS plugin from 8 plugins)
-- [x] CLI orchestration: oxfmt -> oxlint (sequential) || ESLint (parallel)
-- [x] `--eslint-only` flag for backward compatibility
-- [x] File categorization: JS/TS -> oxfmt+oxlint, JSON/YAML -> slim ESLint
-- [x] Per-tool timing output
-- [x] Parallel execution with lazy ESLint loading
-- [x] All 157 existing tests pass
-- [x] `--fix` mode works end-to-end
-- [x] Draft PR #116
-- [x] `--ignore-pattern` forwarded to oxlint
-- [x] Error handling for config/internal errors
-- [x] Auto-detect git for hybrid mode — no `--git` flag needed
-- [x] Consolidated 4 small JS plugins into combined-plugin.cjs
-- [x] Bridged 11 missing ESLint core rules via eslint-gap wrapper
-
-## JS Plugins (8 total, 93 rules)
-
-| Plugin | Rules | Purpose |
-|--------|-------|---------|
-| eslint-plugin-regexp | 60 | Regexp best practices |
-| eslint-plugin-n | 15 | Node.js rules |
-| @eslint-community/eslint-plugin-eslint-comments | 4 | ESLint directive rules |
-| eslint-plugin-no-use-extend-native | 1 | Native prototype protection |
-| eslint-plugin-unicorn (prevent-abbreviations) | 1 | Abbreviation enforcement |
-| pvtnbr/prefer-arrow-functions (ported to CJS) | 1 | Custom arrow function rule |
-| eslint-gap-plugin (ESLint core wrapper) | 11 | Missing ESLint core rules |
-
-## Rule Gap Status: ZERO GAPS
-
-All ESLint core rules that were missing from oxlint are now covered via
-the `eslint-gap-plugin.cjs` wrapper which extracts rules from ESLint's
-`builtinRules` and exposes them as an oxlint JS plugin:
-
-`camelcase`, `no-implicit-globals`, `no-octal-escape`, `no-restricted-exports`,
-`no-restricted-properties`, `no-undef-init`, `no-unreachable-loop`,
-`object-shorthand`, `one-var`, `prefer-arrow-callback`, `prefer-regex-literals`
-
-### Remaining limitations (by design)
-- `import/no-extraneous-dependencies` — requires resolver context, stalled PR #15703
-- `import/no-useless-path-segments` — stalled PR #14569
-- Markdown code block linting — skipped in hybrid mode (use `--eslint-only`)
-- `no-mixed-operators`, `spaced-comment` — dropped (stylistic, handled by oxfmt)
-- `unicorn/prevent-abbreviations` can't be inlined — uses `context.on()` API not supported by oxlint JS plugin system. Requires full `eslint-plugin-unicorn` as JS plugin.
-
-## Architecture
-
-```
-lintroll --git .
-|
-+-- [parallel branch 1: oxfmt -> oxlint]    ~1.1s total
-|   +-- oxfmt (format check/fix)            ~350ms
-|   +-- oxlint                              ~1.0s
-|       +-- 213 native Rust rules
-|       +-- 93 JS plugin rules (8 plugins)
-|
-+-- [parallel branch 2: slim eslint]        ~400ms (lazy-loaded)
-|   +-- JSON (jsonc, package-json)
-|   +-- YAML (yml)
-|
-+-- Auto-detects git: uses hybrid mode in git repos, ESLint-only otherwise
-```
-
-## Files Changed
+## Implementation (28 commits)
 
 ### New files
-- `.oxfmtrc.json` — oxfmt configuration
-- `.oxlintrc.json` — oxlint configuration with 306 rules
-- `src/cli/utils/oxfmt.ts` — oxfmt subprocess wrapper
-- `src/cli/utils/oxlint.ts` — oxlint subprocess wrapper
-- `src/cli/get-non-js-config.ts` — slim ESLint config for JSON/YAML
-- `src/custom-rules/oxlint-plugin.cjs` — ported prefer-arrow-functions
-- `src/custom-rules/eslint-gap-plugin.cjs` — ESLint core rules wrapper
+| File | Purpose |
+|------|---------|
+| `.oxfmtrc.json` | Formatting: tabs, single quotes, semicolons, arrowParens: avoid |
+| `.oxlintrc.json` | 306 rules (213 native + 93 JS plugin from 4 plugins) |
+| `src/cli/utils/oxfmt.ts` | oxfmt subprocess wrapper (--list-different / --write) |
+| `src/cli/utils/oxlint.ts` | oxlint subprocess wrapper with error handling |
+| `src/cli/get-non-js-config.ts` | Slim ESLint config (JSON/YAML only) |
+| `src/custom-rules/oxlint-plugin.cjs` | Ported prefer-arrow-functions |
+| `src/custom-rules/combined-plugin.cjs` | Consolidates eslint-comments, no-use-extend-native, 11 ESLint core gap rules |
+| `src/custom-rules/eslint-gap-plugin.cjs` | Wraps ESLint builtinRules (standalone, also used by combined-plugin) |
 
 ### Modified files
-- `src/cli/index.ts` — hybrid CLI orchestration
-- `package.json` — added oxlint, oxfmt dependencies
+| File | Change |
+|------|--------|
+| `src/cli/index.ts` | Hybrid CLI orchestration, lazy ESLint, auto-git detection |
+| `package.json` | Added oxlint, oxfmt dependencies |
+
+## Features
+- Auto-detects git repos for hybrid mode (no `--git` flag needed)
+- `--eslint-only` flag for full backward compatibility
+- `--fix` mode: oxfmt formats, oxlint fixes, ESLint fixes (all tools)
+- `--quiet`, `--ignore-pattern` forwarded to oxlint
+- Per-tool timing output
+- Zero rule gaps (306 rules)
+- All 157 existing tests pass
+- Zero oxlint errors on src/
+- Config/lock files excluded from ESLint pass
+
+## JS Plugins (4 entries, 93 rules)
+
+| Plugin | Rules | Notes |
+|--------|-------|-------|
+| eslint-plugin-regexp | 60 | Regexp best practices |
+| eslint-plugin-n | 15 | Node.js rules |
+| eslint-plugin-unicorn | 1 | prevent-abbreviations (needs context.on() API, can't inline) |
+| combined-plugin.cjs | 17 | eslint-comments (4) + no-use-extend-native (1) + ESLint core gap (11) + prefer-arrow-functions (1) |
+
+## Remaining Limitations
+- `import/no-extraneous-dependencies` — stalled oxlint PR #15703
+- `import/no-useless-path-segments` — stalled oxlint PR #14569
+- Markdown code block linting — use `--eslint-only`
+- `--allowAbbreviation` CLI flag not forwarded to oxlint (static config)
+- `--node` CLI flag not forwarded to oxlint (n/ rules always active)
+- Formatting style differs from ESLint @stylistic (Prettier-style via oxfmt)
+
+## Future Opportunities
+- Contributing gap rules to native oxlint would save ~760ms JS plugin overhead
+- oxlint `--cache` support (not available yet)
+- oxfmt formatting adoption commit (applies Prettier-style to existing code)
