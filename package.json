@@ -18,7 +18,7 @@
 	"files": [
 		"dist",
 		"skills",
-		".oxlintrc.json",
+		"oxlint.config.ts",
 		"src/custom-rules"
 	],
 	"type": "module",

@@ -11,7 +11,7 @@ const oxlintBin = path.resolve(
 // From src/cli/utils/ or dist/cli/utils/ → 3 levels up to package root
 const oxlintConfig = path.resolve(
 	path.dirname(fileURLToPath(import.meta.url)),
-	'../../../.oxlintrc.json',
+	'../../../oxlint.config.ts',
 );
 
 type OxlintOptions = {

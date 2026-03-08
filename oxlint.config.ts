@@ -1,5 +1,6 @@
-{
-	"$schema": "./node_modules/oxlint/configuration_schema.json",
+import { defineConfig } from "oxlint";
+
+export default defineConfig({
 	"plugins": [
 		"import",
 		"typescript",
@@ -329,7 +330,6 @@
 		"no-use-before-define": "off",
 		"no-warning-comments": "off",
 		"require-await": "off",
-
 		"@typescript-eslint/consistent-type-definitions": [
 			"error",
 			"type"
@@ -388,7 +388,6 @@
 			}
 		],
 		"@typescript-eslint/no-import-type-side-effects": "error",
-
 		"import/export": "error",
 		"import/first": "error",
 		"import/no-absolute-path": "error",
@@ -409,7 +408,6 @@
 		"import/no-dynamic-require": "error",
 		"import/newline-after-import": "error",
 		"import/no-anonymous-default-export": "off",
-
 		"unicorn/better-regex": "off",
 		"unicorn/consistent-function-scoping": "off",
 		"unicorn/no-array-for-each": "off",
@@ -428,7 +426,6 @@
 		"unicorn/explicit-length-check": "off",
 		"unicorn/no-abusive-eslint-disable": "off",
 		"unicorn/no-array-sort": "off",
-
 		"promise/always-return": "off",
 		"promise/catch-or-return": [
 			"error",
@@ -436,9 +433,7 @@
 				"allowThen": true
 			}
 		],
-
 		"react/react-in-jsx-scope": "off",
-
 		"regexp/confusing-quantifier": "warn",
 		"regexp/control-character-escape": "error",
 		"regexp/match-any": "error",
@@ -499,17 +494,13 @@
 		"regexp/sort-flags": "error",
 		"regexp/strict": "error",
 		"regexp/use-ignore-case": "error",
-
 		"lintroll/comments-disable-enable-pair": "error",
 		"lintroll/comments-no-aggregating-enable": "error",
 		"lintroll/comments-no-duplicate-disable": "error",
 		"lintroll/comments-no-unlimited-disable": "error",
 		"lintroll/comments-no-unused-enable": "off",
-
 		"lintroll/no-use-extend-native": "error",
-
 		"lintroll/prefer-arrow-functions": "error",
-
 		"n/global-require": "error",
 		"n/no-mixed-requires": [
 			"error",
@@ -552,7 +543,6 @@
 		"n/prefer-promises/fs": "error",
 		"n/no-unsupported-features/node-builtins": "warn",
 		"n/prefer-node-protocol": "error",
-
 		"lintroll/camelcase": [
 			"error",
 			{
@@ -648,7 +638,6 @@
 				"disallowRedundantWrapping": true
 			}
 		],
-
 		"unicorn-js/prevent-abbreviations": [
 			"error",
 			{
@@ -749,4 +738,4 @@
 		"**/copilot.config.json",
 		"**/copilot.md"
 	]
-}
+});
