@@ -11,7 +11,8 @@
 		"eslint-plugin-regexp",
 		{ "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
 		"eslint-plugin-no-use-extend-native",
-		"./src/custom-rules/oxlint-plugin.cjs"
+		"./src/custom-rules/oxlint-plugin.cjs",
+		{ "name": "n", "specifier": "eslint-plugin-n" }
 	],
 	"categories": {
 		"correctness": "error",
@@ -275,7 +276,23 @@
 
 		"no-use-extend-native/no-use-extend-native": "error",
 
-		"pvtnbr/prefer-arrow-functions": "error"
+		"pvtnbr/prefer-arrow-functions": "error",
+
+		"n/global-require": "error",
+		"n/no-mixed-requires": ["error", { "allowCall": true, "grouping": true }],
+		"n/no-new-require": "error",
+		"n/no-path-concat": "error",
+		"n/prefer-global/buffer": ["error", "always"],
+		"n/prefer-global/console": ["error", "always"],
+		"n/prefer-global/process": ["error", "always"],
+		"n/prefer-global/text-decoder": ["error", "always"],
+		"n/prefer-global/text-encoder": ["error", "always"],
+		"n/prefer-global/url": ["error", "always"],
+		"n/prefer-global/url-search-params": ["error", "always"],
+		"n/prefer-promises/dns": "error",
+		"n/prefer-promises/fs": "error",
+		"n/no-unsupported-features/node-builtins": "warn",
+		"n/prefer-node-protocol": "error"
 	},
 	"overrides": [
 		{
