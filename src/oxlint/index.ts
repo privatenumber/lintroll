@@ -27,8 +27,9 @@ import { overrides } from './overrides.ts';
 import { ignorePatterns } from './ignores.ts';
 
 // Resolve CJS plugin path relative to this file (works from both src/ and dist/)
+// Resolve via import map — dev: src/.ts, prod: dist/.cjs (built by pkgroll)
 const combinedPluginPath = fileURLToPath(
-	new URL('../custom-rules/combined-plugin.cjs', import.meta.url),
+	import.meta.resolve('#oxlint-combined-plugin'),
 );
 
 export default defineConfig({

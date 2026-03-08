@@ -54,7 +54,7 @@
 			"default": "./dist/oxlint/index.mjs"
 		},
 		"#oxlint-combined-plugin": {
-			"development": "./src/custom-rules/combined-plugin.cjs",
+			"development": "./src/custom-rules/combined-plugin.ts",
 			"default": "./dist/custom-rules/combined-plugin.cjs"
 		}
 	},

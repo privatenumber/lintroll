@@ -1,9 +1,7 @@
 /**
- * pvtnbr custom rules as an oxlint JS plugin.
- *
- * This is a plain JS file (not TS) because oxlint JS plugins
- * load modules directly — no TypeScript transpilation.
+ * pvtnbr/prefer-arrow-functions as an oxlint JS plugin rule.
  */
+import type { ESLint } from 'eslint';
 
 const messages = {
 	preferArrowFunction: 'Prefer arrow function',
@@ -11,8 +9,7 @@ const messages = {
 
 const disallowedProperties = new Set(['prototype', 'name', 'length']);
 
-/** @type {import('eslint').ESLint.Plugin} */
-module.exports = {
+export default {
 	meta: {
 		name: 'pvtnbr',
 	},
@@ -27,10 +24,12 @@ module.exports = {
 				schema: [],
 				messages,
 			},
-			create(context) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- ESLint rule context is complex
+			create(context: any) {
 				const untransformableFunctions = new Set();
 
-				const isConvertable = (node) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- AST node types
+				const isConvertable = (node: any) => {
 					if (node.generator || untransformableFunctions.has(node)) {
 						return false;
 					}
@@ -49,7 +48,7 @@ module.exports = {
 						return false;
 					}
 
-					let references = [];
+					let references: any[] = [];
 
 					if (node.type === 'FunctionDeclaration' && node.id) {
 						const declaredVariables = context.sourceCode.getDeclaredVariables(node);
@@ -68,14 +67,14 @@ module.exports = {
 					} else if (node.type === 'FunctionExpression') {
 						const declaredVariables = context.sourceCode.getDeclaredVariables(node);
 						const functionNameVariable = declaredVariables.find(
-							variable => (
+							(variable: any) => (
 								variable.identifiers[0]
 								&& variable.identifiers[0].parent.type === 'FunctionExpression'
 							),
 						);
 
 						if (functionNameVariable) {
-							const isInsideScope = (parentScope, childScope) => {
+							const isInsideScope = (parentScope: any, childScope: any) => {
 								let currentScope = childScope;
 								while (currentScope && currentScope !== parentScope) {
 									currentScope = currentScope.upper;
@@ -83,7 +82,7 @@ module.exports = {
 								return currentScope === parentScope;
 							};
 							const recursiveReference = functionNameVariable.references.some(
-								({ from }) => isInsideScope(scope, from),
+								({ from }: any) => isInsideScope(scope, from),
 							);
 							if (recursiveReference) {
 								return false;
@@ -113,7 +112,8 @@ module.exports = {
 					return true;
 				};
 
-				const getNearestFunction = (node) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const getNearestFunction = (node: any) => {
 					let scope = context.sourceCode.getScope(node);
 					while (
 						scope
@@ -125,9 +125,10 @@ module.exports = {
 					return scope && scope.block;
 				};
 
-				const removeFunctionToken = (node, fixer) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const removeFunctionToken = (node: any, fixer: any) => {
 					const functionToken = context.sourceCode.getFirstToken(node, {
-						filter: token => token.type === 'Keyword' && token.value === 'function',
+						filter: (token: any) => token.type === 'Keyword' && token.value === 'function',
 					});
 					if (functionToken) {
 						return [fixer.remove(functionToken)];
@@ -135,14 +136,16 @@ module.exports = {
 					return [];
 				};
 
-				const insertArrow = (node, fixer) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const insertArrow = (node: any, fixer: any) => {
 					const parenEnd = context.sourceCode.getTokenBefore(node.body);
 					return [fixer.insertTextAfter(parenEnd, '=>')];
 				};
 
-				const moveAsyncToken = (node, fixer) => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const moveAsyncToken = (node: any, fixer: any) => {
 					const asyncToken = context.sourceCode.getFirstToken(node.parent, {
-						filter: token => token.type === 'Identifier' && token.value === 'async',
+						filter: (token: any) => token.type === 'Identifier' && token.value === 'async',
 					});
 					const getNodeAfter = context.sourceCode.getTokenAfter(asyncToken, {
 						includeComments: true,
@@ -153,25 +156,29 @@ module.exports = {
 					];
 				};
 
-				const wrapInParentheses = (node, fixer) => [
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				const wrapInParentheses = (node: any, fixer: any) => [
 					fixer.insertTextBefore(node, '('),
 					fixer.insertTextAfter(node, ')'),
 				];
 
 				return {
-					ThisExpression(node) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					ThisExpression(node: any) {
 						const nearestFunction = getNearestFunction(node);
 						if (nearestFunction) {
 							untransformableFunctions.add(nearestFunction);
 						}
 					},
-					Super(node) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					Super(node: any) {
 						const nearestFunction = getNearestFunction(node);
 						if (nearestFunction) {
 							untransformableFunctions.add(nearestFunction);
 						}
 					},
-					MetaProperty(node) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					MetaProperty(node: any) {
 						if (node.meta.name === 'new' && node.property.name === 'target') {
 							const nearestFunction = getNearestFunction(node);
 							if (nearestFunction) {
@@ -179,7 +186,8 @@ module.exports = {
 							}
 						}
 					},
-					'FunctionExpression:exit'(node) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					'FunctionExpression:exit'(node: any) {
 						if (!isConvertable(node)) {
 							return;
 						}
@@ -187,7 +195,8 @@ module.exports = {
 						context.report({
 							node,
 							messageId: 'preferArrowFunction',
-							fix(fixer) {
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							fix(fixer: any) {
 								const fixes = [...insertArrow(node, fixer)];
 								const { parent } = node;
 								const isMethod = (
@@ -224,7 +233,8 @@ module.exports = {
 						});
 					},
 
-					'FunctionDeclaration:exit'(node) {
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					'FunctionDeclaration:exit'(node: any) {
 						if (!isConvertable(node)) {
 							return;
 						}
@@ -232,7 +242,8 @@ module.exports = {
 						context.report({
 							node,
 							messageId: 'preferArrowFunction',
-							fix(fixer) {
+							// eslint-disable-next-line @typescript-eslint/no-explicit-any
+							fix(fixer: any) {
 								const fixes = [
 									...insertArrow(node, fixer),
 									...removeFunctionToken(node, fixer),
@@ -249,10 +260,10 @@ module.exports = {
 								const { parent } = node;
 								if (parent.type === 'ExportDefaultDeclaration' && node.id) {
 									const exportDefaultStart = context.sourceCode.getFirstToken(parent, {
-										filter: token => token.type === 'Keyword' && token.value === 'export',
+										filter: (token: any) => token.type === 'Keyword' && token.value === 'export',
 									});
 									const exportDefaultEnd = context.sourceCode.getTokenAfter(exportDefaultStart, {
-										filter: token => token.type === 'Keyword' && token.value === 'default',
+										filter: (token: any) => token.type === 'Keyword' && token.value === 'default',
 									});
 									const exportDefaultRange = [
 										exportDefaultStart.range[0],
@@ -284,4 +295,4 @@ module.exports = {
 			},
 		},
 	},
-};
+} satisfies ESLint.Plugin;

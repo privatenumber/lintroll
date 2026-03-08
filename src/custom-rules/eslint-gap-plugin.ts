@@ -2,12 +2,9 @@
  * Wrapper plugin for ESLint core rules not available natively in oxlint.
  *
  * These rules are extracted from ESLint's builtinRules and exposed as
- * an oxlint JS plugin under the "eslint-gap" namespace.
- *
- * Usage in .oxlintrc.json:
- *   "jsPlugins": ["./src/custom-rules/eslint-gap-plugin.cjs"]
- *   "rules": { "eslint-gap/camelcase": ["error", ...] }
+ * an oxlint JS plugin. Lazy-loaded to avoid importing ESLint at module init.
  */
+import type { ESLint, Rule } from 'eslint';
 
 const ruleNames = [
 	'camelcase',
@@ -21,10 +18,9 @@ const ruleNames = [
 	'one-var',
 	'prefer-arrow-callback',
 	'prefer-regex-literals',
-];
+] as const;
 
-// Lazily load rules from ESLint's internal builtinRules
-let loadedRules;
+let loadedRules: Record<string, Rule.RuleModule>;
 
 const loadRules = () => {
 	if (loadedRules) {
@@ -32,8 +28,10 @@ const loadRules = () => {
 	}
 
 	try {
-		// eslint/use-at-your-own-risk exports builtinRules Map
-		const { builtinRules } = require('eslint/use-at-your-own-risk'); // eslint-disable-line n/global-require
+		// eslint-disable-next-line n/no-unpublished-import -- bundled by pkgroll
+		const { builtinRules } = require('eslint/use-at-your-own-risk') as {
+			builtinRules: Map<string, Rule.RuleModule>;
+		};
 		loadedRules = {};
 		for (const name of ruleNames) {
 			const rule = builtinRules.get(name);
@@ -42,15 +40,13 @@ const loadRules = () => {
 			}
 		}
 	} catch {
-		// If ESLint is not available, return empty rules
 		loadedRules = {};
 	}
 
 	return loadedRules;
 };
 
-// Build rules object with lazy getters
-const rules = {};
+const rules: Record<string, Rule.RuleModule> = {};
 for (const name of ruleNames) {
 	Object.defineProperty(rules, name, {
 		get: () => loadRules()[name],
@@ -58,9 +54,9 @@ for (const name of ruleNames) {
 	});
 }
 
-module.exports = {
+export default {
 	meta: {
 		name: 'eslint-gap',
 	},
 	rules,
-};
+} satisfies ESLint.Plugin;
