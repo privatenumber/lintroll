@@ -18,8 +18,8 @@ const loadNoUseExtendNative = () => {
 	if (!noUseExtendNativeRules) {
 		try {
 			const plugin = require('eslint-plugin-no-use-extend-native');
-			const mod = plugin.default || plugin;
-			noUseExtendNativeRules = mod.rules || {};
+			const resolvedPlugin = plugin.default || plugin;
+			noUseExtendNativeRules = resolvedPlugin.rules || {};
 		} catch {
 			noUseExtendNativeRules = {};
 		}

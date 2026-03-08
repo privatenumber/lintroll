@@ -372,6 +372,13 @@
 			"rules": {
 				"no-console": "off"
 			}
+		},
+		{
+			"files": ["**/*.cjs"],
+			"rules": {
+				"n/global-require": "off",
+				"lintroll/prefer-arrow-functions": "off"
+			}
 		}
 	],
 	"ignorePatterns": [
