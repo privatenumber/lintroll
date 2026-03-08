@@ -10,7 +10,8 @@
 	"jsPlugins": [
 		"eslint-plugin-regexp",
 		{ "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
-		"eslint-plugin-no-use-extend-native"
+		"eslint-plugin-no-use-extend-native",
+		"./src/custom-rules/oxlint-plugin.cjs"
 	],
 	"categories": {
 		"correctness": "error",
@@ -272,7 +273,9 @@
 		"eslint-comments/no-unlimited-disable": "error",
 		"eslint-comments/no-unused-enable": "off",
 
-		"no-use-extend-native/no-use-extend-native": "error"
+		"no-use-extend-native/no-use-extend-native": "error",
+
+		"pvtnbr/prefer-arrow-functions": "error"
 	},
 	"overrides": [
 		{
