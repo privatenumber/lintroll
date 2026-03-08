@@ -9,7 +9,7 @@
 	"trailingComma": "all",
 	"bracketSpacing": true,
 	"bracketSameLine": false,
-	"arrowParens": "as-needed",
+	"arrowParens": "avoid",
 	"endOfLine": "lf",
 	"quoteProps": "as-needed",
 	"singleAttributePerLine": false

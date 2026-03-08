@@ -25,10 +25,27 @@ export const runOxfmt = async ({
 	cwd,
 }: OxfmtOptions): Promise<OxfmtResult> => {
 	const start = performance.now();
-	const arguments_ = fix ? [...files] : ['--check', ...files];
 
+	if (fix) {
+		// In fix mode, format files in place
+		try {
+			await spawn(oxfmtBin, ['--write', ...files], { cwd });
+		} catch (error) {
+			const { stderr, stdout } = error as { stderr: string; stdout: string };
+			throw new Error(`oxfmt format error:\n${stderr || stdout}`);
+		}
+
+		return {
+			passed: true,
+			unformattedFiles: [],
+			duration: performance.now() - start,
+		};
+	}
+
+	// In check mode, use --list-different for clean file list
 	try {
-		await spawn(oxfmtBin, arguments_, { cwd });
+		await spawn(oxfmtBin, ['--list-different', ...files], { cwd });
+		// Exit 0 = all files formatted
 		return {
 			passed: true,
 			unformattedFiles: [],
@@ -37,11 +54,10 @@ export const runOxfmt = async ({
 	} catch (error) {
 		const { stdout, stderr, exitCode } = error as { stdout: string; stderr: string; exitCode: number | undefined };
 		if (exitCode === 1) {
-			// oxfmt --check exits 1 when files need formatting
+			// Exit 1 = some files need formatting, stdout has the list
 			const unformattedFiles = stdout
 				.split('\n')
-				.filter(Boolean)
-				.filter(line => !line.startsWith('Format') && !line.startsWith('Finished'));
+				.filter(Boolean);
 			return {
 				passed: false,
 				unformattedFiles,
