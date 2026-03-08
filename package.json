@@ -57,7 +57,7 @@
 	"scripts": {
 		"build": "pkgroll --export-condition=node --export-condition=development --minify --clean-dist",
 		"type-check": "tsc",
-		"lint": "node -C development ./src/cli/index.ts --git",
+		"lint": "node -C development ./src/cli/index.ts --oxc --git",
 		"dev": "node --watch -C development tests/index.ts",
 		"test": "node tests/index.ts",
 		"prepack": "pnpm build && clean-pkg-json"

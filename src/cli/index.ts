@@ -63,6 +63,10 @@ const argv = cli({
 			type: Boolean,
 			description: 'Use ESLint only (skip oxfmt and oxlint)',
 		},
+		oxc: {
+			type: Boolean,
+			description: 'Use oxfmt + oxlint for JS/TS (faster). Requires --git or --staged',
+		},
 	},
 });
 
@@ -301,36 +305,11 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 		return;
 	}
 
+	// Hybrid mode (oxfmt + oxlint) requires --oxc flag and --git/--staged
 	const hasFileList = argv.flags.git || argv.flags.staged;
-
-	// Auto-detect mode when no --git/--staged flag
-	if (!hasFileList) {
-		// If a user ESLint config exists, use ESLint-only mode to respect it
-		const hasUserConfig = [
-			'eslint.config.mts', 'eslint.config.mjs',
-			'eslint.config.cts', 'eslint.config.cjs',
-			'eslint.config.ts', 'eslint.config.js',
-		].some(name => fs.existsSync(path.resolve(cwd, name)));
-
-		if (hasUserConfig) {
-			await runEslintOnly(cwd, files);
-			return;
-		}
-
-		// Auto-detect git for hybrid mode
-		try {
-			const gitRoot = await getGitRoot();
-			files = await getTrackedFiles(gitRoot, files);
-
-			if (files.length === 0) {
-				console.log('No git-tracked files to lint');
-				return;
-			}
-		} catch {
-			// Not in a git repo — fall back to ESLint-only mode
-			await runEslintOnly(cwd, files);
-			return;
-		}
+	if (!argv.flags.oxc || !hasFileList) {
+		await runEslintOnly(cwd, files);
+		return;
 	}
 
 	// Hybrid mode: oxfmt + oxlint + ESLint (for non-JS files)
