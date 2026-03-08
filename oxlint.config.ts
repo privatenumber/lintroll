@@ -1,6 +1,34 @@
+/**
+ * oxlint configuration for lintroll
+ *
+ * This config mirrors the ESLint config from src/configs/ as closely
+ * as possible. Rules not available natively in oxlint are loaded via
+ * JS plugins (eslint-plugin-regexp, eslint-plugin-n, etc.) or wrapped
+ * from ESLint's builtinRules (combined-plugin.cjs).
+ *
+ * Architecture:
+ *   213 native Rust rules (fast)
+ *   + 93 JS plugin rules (via NAPI bridge)
+ *   = 306 total rules
+ */
+/* eslint-disable n/no-unpublished-import */
 import { defineConfig } from 'oxlint';
+import { eslintRules } from './src/oxlint/rules/eslint.ts';
+import { typescriptRules } from './src/oxlint/rules/typescript.ts';
+import { importRules } from './src/oxlint/rules/imports.ts';
+import { unicornRules } from './src/oxlint/rules/unicorn.ts';
+import { regexpRules } from './src/oxlint/rules/regexp.ts';
+import { nodeRules } from './src/oxlint/rules/node.ts';
+import {
+	lintrollPluginRules,
+	preventAbbreviationsRule,
+} from './src/oxlint/rules/plugins.ts';
+import { overrides } from './src/oxlint/overrides.ts';
+import { ignorePatterns } from './src/oxlint/ignores.ts';
+/* eslint-enable n/no-unpublished-import */
 
 export default defineConfig({
+	// Native Rust plugins (fast, parallelized)
 	plugins: [
 		'import',
 		'typescript',
@@ -8,18 +36,28 @@ export default defineConfig({
 		'promise',
 		'react',
 	],
+
+	// JS plugins loaded via NAPI bridge
 	jsPlugins: [
+		// Regexp best practices (60 rules)
 		'eslint-plugin-regexp',
+
+		// Node.js rules (15 rules) — aliased to avoid conflict with native "node" plugin
 		{
 			name: 'n',
 			specifier: 'eslint-plugin-n',
 		},
+
+		// unicorn/prevent-abbreviations — needs full plugin (uses context.on() API)
 		{
 			name: 'unicorn-js',
 			specifier: 'eslint-plugin-unicorn',
 		},
+
+		// Combined: eslint-comments, no-use-extend-native, ESLint gap, prefer-arrow-functions
 		'./src/custom-rules/combined-plugin.cjs',
 	],
+
 	categories: {
 		correctness: 'error',
 		suspicious: 'warn',
@@ -28,714 +66,25 @@ export default defineConfig({
 		style: 'off',
 		restriction: 'off',
 	},
+
 	rules: {
-		'accessor-pairs': 'error',
-		'array-callback-return': [
-			'error',
-			{
-				allowImplicit: true,
-			},
-		],
-		'arrow-body-style': [
-			'error',
-			'as-needed',
-		],
-		'block-scoped-var': 'error',
-		curly: 'error',
-		'default-case': 'error',
-		'default-case-last': 'error',
-		'default-param-last': 'error',
-		'dot-notation': [
-			'error',
-			{
-				allowKeywords: true,
-			},
-		],
-		eqeqeq: [
-			'error',
-			'always',
-			{
-				null: 'ignore',
-			},
-		],
-		'func-names': 'warn',
-		'func-style': [
-			'error',
-			'declaration',
-			{
-				allowArrowFunctions: true,
-			},
-		],
-		'getter-return': [
-			'error',
-			{
-				allowImplicit: true,
-			},
-		],
-		'grouped-accessor-pairs': [
-			'error',
-			'getBeforeSet',
-		],
-		'guard-for-in': 'error',
-		'no-array-constructor': 'error',
-		'no-bitwise': 'error',
-		'no-caller': 'error',
-		'no-cond-assign': [
-			'error',
-			'always',
-		],
-		'no-constructor-return': 'error',
-		'no-else-return': [
-			'error',
-			{
-				allowElseIf: false,
-			},
-		],
-		'no-empty': [
-			'error',
-			{
-				allowEmptyCatch: true,
-			},
-		],
-		'no-empty-function': [
-			'error',
-			{
-				allow: [
-					'arrowFunctions',
-					'functions',
-					'methods',
-				],
-			},
-		],
-		'no-eq-null': 'error',
-		'no-eval': 'error',
-		'no-extend-native': 'error',
-		'no-extra-bind': 'error',
-		'no-extra-label': 'error',
-		'no-implied-eval': 'error',
-		'no-iterator': 'error',
-		'no-label-var': 'error',
-		'no-labels': [
-			'error',
-			{
-				allowLoop: true,
-				allowSwitch: false,
-			},
-		],
-		'no-lone-blocks': 'error',
-		'no-lonely-if': 'error',
-		'no-loop-func': 'error',
-		'no-multi-assign': 'error',
-		'no-multi-str': 'error',
-		'no-nested-ternary': 'error',
-		'no-new': 'error',
-		'no-new-func': 'error',
-		'no-object-constructor': 'error',
-		'no-new-wrappers': 'error',
-		'no-plusplus': 'error',
-		'no-promise-executor-return': 'error',
-		'no-proto': 'error',
-		'no-return-assign': [
-			'error',
-			'always',
-		],
-		'no-script-url': 'error',
-		'no-self-assign': [
-			'error',
-			{
-				props: true,
-			},
-		],
-		'no-self-compare': 'error',
-		'no-sequences': 'error',
-		'no-shadow': [
-			'error',
-			{
-				allow: [
-					'test',
-					'describe',
-					'runTestSuite',
-					'onFinish',
-					'fixture',
-					'task',
-					'setTitle',
-					'setError',
-					'setWarning',
-					'setStatus',
-					'setOutput',
-				],
-			},
-		],
-		'no-throw-literal': 'error',
-		'no-unneeded-ternary': [
-			'error',
-			{
-				defaultAssignment: false,
-			},
-		],
-		'no-unused-expressions': [
-			'error',
-			{
-				allowShortCircuit: false,
-				allowTaggedTemplates: false,
-				allowTernary: false,
-			},
-		],
-		'no-unused-vars': [
-			'error',
-			{
-				args: 'after-used',
-				ignoreRestSiblings: true,
-				vars: 'all',
-			},
-		],
-		'no-useless-call': 'off',
-		'no-useless-computed-key': 'error',
-		'no-useless-concat': 'error',
-		'no-useless-constructor': 'error',
-		'no-useless-rename': 'error',
-		'no-useless-return': 'error',
-		'no-var': 'error',
-		'no-void': 'error',
-		'operator-assignment': [
-			'error',
-			'always',
-		],
-		'prefer-const': [
-			'error',
-			{
-				destructuring: 'any',
-				ignoreReadBeforeAssign: true,
-			},
-		],
-		'prefer-destructuring': [
-			'error',
-			{
-				VariableDeclarator: {
-					array: false,
-					object: true,
-				},
-				AssignmentExpression: {
-					array: false,
-					object: false,
-				},
-			},
-		],
-		'prefer-exponentiation-operator': 'error',
-		'prefer-numeric-literals': 'error',
-		'prefer-object-spread': 'error',
-		'prefer-promise-reject-errors': [
-			'error',
-			{
-				allowEmptyReject: true,
-			},
-		],
-		'prefer-rest-params': 'off',
-		'prefer-spread': 'error',
-		'prefer-template': 'error',
-		radix: 'error',
-		'symbol-description': 'error',
-		'unicode-bom': [
-			'error',
-			'never',
-		],
-		'valid-typeof': [
-			'error',
-			{
-				requireStringLiterals: true,
-			},
-		],
-		'vars-on-top': 'error',
-		yoda: 'error',
-		complexity: [
-			'warn',
-			10,
-		],
-		'max-nested-callbacks': [
-			'warn',
-			6,
-		],
-		'max-params': [
-			'warn',
-			5,
-		],
-		'no-alert': 'warn',
-		'no-console': 'warn',
-		'no-constant-condition': 'warn',
-		'no-restricted-globals': [
-			'error',
-			'addEventListener',
-			'blur',
-			'close',
-			'closed',
-			'confirm',
-			'defaultStatus',
-			'defaultstatus',
-			'event',
-			'external',
-			'find',
-			'focus',
-			'frameElement',
-			'frames',
-			'history',
-			'innerHeight',
-			'innerWidth',
-			'isFinite',
-			'isNaN',
-			'length',
-			'location',
-			'locationbar',
-			'menubar',
-			'moveBy',
-			'moveTo',
-			'name',
-			'onblur',
-			'onerror',
-			'onfocus',
-			'onload',
-			'onresize',
-			'onunload',
-			'open',
-			'opener',
-			'opera',
-			'origin',
-			'outerHeight',
-			'outerWidth',
-			'pageXOffset',
-			'pageYOffset',
-			'parent',
-			'print',
-			'removeEventListener',
-			'resizeBy',
-			'resizeTo',
-			'screen',
-			'screenLeft',
-			'screenTop',
-			'screenX',
-			'screenY',
-			'scroll',
-			'scrollbars',
-			'scrollBy',
-			'scrollTo',
-			'scrollX',
-			'scrollY',
-			'self',
-			'status',
-			'statusbar',
-			'stop',
-			'toolbar',
-			'top',
-		],
-		'no-duplicate-imports': 'off',
-		'no-use-before-define': 'off',
-		'no-warning-comments': 'off',
-		'require-await': 'off',
-		'@typescript-eslint/consistent-type-definitions': [
-			'error',
-			'type',
-		],
-		'@typescript-eslint/no-useless-constructor': 'error',
-		'@typescript-eslint/no-empty-function': [
-			'error',
-			{
-				allow: [
-					'arrowFunctions',
-					'functions',
-					'methods',
-				],
-			},
-		],
-		'@typescript-eslint/no-shadow': [
-			'error',
-			{
-				allow: [
-					'test',
-					'describe',
-					'runTestSuite',
-					'onFinish',
-					'fixture',
-					'task',
-					'setTitle',
-					'setError',
-					'setWarning',
-					'setStatus',
-					'setOutput',
-				],
-			},
-		],
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{
-				argsIgnorePattern: '^_',
-				caughtErrorsIgnorePattern: '^_',
-				varsIgnorePattern: '^_',
-				args: 'after-used',
-				ignoreRestSiblings: true,
-				vars: 'all',
-			},
-		],
-		'@typescript-eslint/no-explicit-any': [
-			'error',
-			{
-				fixToUnknown: false,
-				ignoreRestArgs: true,
-			},
-		],
-		'@typescript-eslint/consistent-type-imports': [
-			'error',
-			{
-				fixStyle: 'inline-type-imports',
-			},
-		],
-		'@typescript-eslint/no-import-type-side-effects': 'error',
-		'import/export': 'error',
-		'import/first': 'error',
-		'import/no-absolute-path': 'error',
-		'import/no-duplicates': 'error',
-		'import/no-mutable-exports': 'error',
-		'import/no-named-as-default': 'error',
-		'import/no-named-as-default-member': 'off',
-		'import/no-named-default': 'error',
-		'import/no-self-import': 'error',
-		'import/no-webpack-loader-syntax': 'error',
-		'import/no-amd': 'error',
-		'import/max-dependencies': [
-			'warn',
-			{
-				max: 15,
-			},
-		],
-		'import/no-dynamic-require': 'error',
-		'import/newline-after-import': 'error',
-		'import/no-anonymous-default-export': 'off',
-		'unicorn/better-regex': 'off',
-		'unicorn/consistent-function-scoping': 'off',
-		'unicorn/no-array-for-each': 'off',
-		'unicorn/no-for-loop': 'off',
-		'unicorn/no-new-buffer': 'off',
-		'unicorn/no-null': 'off',
-		'unicorn/no-process-exit': 'off',
-		'unicorn/prefer-export-from': 'off',
-		'unicorn/prefer-json-parse-buffer': 'off',
-		'unicorn/prefer-module': 'off',
-		'unicorn/prefer-node-protocol': 'off',
-		'unicorn/prefer-spread': 'off',
-		'unicorn/prefer-ternary': 'off',
-		'unicorn/prefer-top-level-await': 'off',
-		'unicorn/template-indent': 'off',
-		'unicorn/explicit-length-check': 'off',
-		'unicorn/no-abusive-eslint-disable': 'off',
-		'unicorn/no-array-sort': 'off',
+		...eslintRules,
+		...typescriptRules,
+		...importRules,
+		...unicornRules,
+		...regexpRules,
+		...nodeRules,
+		...lintrollPluginRules,
+		...preventAbbreviationsRule,
+
+		// Promise rules — matches src/configs/promise.ts
 		'promise/always-return': 'off',
-		'promise/catch-or-return': [
-			'error',
-			{
-				allowThen: true,
-			},
-		],
+		'promise/catch-or-return': ['error', { allowThen: true }],
+
+		// React rules — matches src/configs/react.ts
 		'react/react-in-jsx-scope': 'off',
-		'regexp/confusing-quantifier': 'warn',
-		'regexp/control-character-escape': 'error',
-		'regexp/match-any': 'error',
-		'regexp/negation': 'error',
-		'regexp/no-contradiction-with-assertion': 'error',
-		'regexp/no-dupe-characters-character-class': 'error',
-		'regexp/no-dupe-disjunctions': 'error',
-		'regexp/no-empty-alternative': 'warn',
-		'regexp/no-empty-capturing-group': 'error',
-		'regexp/no-empty-character-class': 'error',
-		'regexp/no-empty-group': 'error',
-		'regexp/no-empty-lookarounds-assertion': 'error',
-		'regexp/no-empty-string-literal': 'error',
-		'regexp/no-escape-backspace': 'error',
-		'regexp/no-extra-lookaround-assertions': 'error',
-		'regexp/no-invalid-regexp': 'error',
-		'regexp/no-invisible-character': 'error',
-		'regexp/no-lazy-ends': 'warn',
-		'regexp/no-legacy-features': 'error',
-		'regexp/no-misleading-capturing-group': 'error',
-		'regexp/no-misleading-unicode-character': 'error',
-		'regexp/no-missing-g-flag': 'error',
-		'regexp/no-non-standard-flag': 'error',
-		'regexp/no-obscure-range': 'error',
-		'regexp/no-optional-assertion': 'error',
-		'regexp/no-potentially-useless-backreference': 'warn',
-		'regexp/no-super-linear-backtracking': 'error',
-		'regexp/no-trivially-nested-assertion': 'error',
-		'regexp/no-trivially-nested-quantifier': 'error',
-		'regexp/no-unused-capturing-group': 'error',
-		'regexp/no-useless-assertions': 'error',
-		'regexp/no-useless-backreference': 'error',
-		'regexp/no-useless-character-class': 'error',
-		'regexp/no-useless-dollar-replacements': 'error',
-		'regexp/no-useless-escape': 'error',
-		'regexp/no-useless-flag': 'warn',
-		'regexp/no-useless-lazy': 'error',
-		'regexp/no-useless-non-capturing-group': 'error',
-		'regexp/no-useless-quantifier': 'error',
-		'regexp/no-useless-range': 'error',
-		'regexp/no-useless-set-operand': 'error',
-		'regexp/no-useless-string-literal': 'error',
-		'regexp/no-useless-two-nums-quantifier': 'error',
-		'regexp/no-zero-quantifier': 'error',
-		'regexp/optimal-lookaround-quantifier': 'warn',
-		'regexp/optimal-quantifier-concatenation': 'error',
-		'regexp/prefer-character-class': 'error',
-		'regexp/prefer-d': 'error',
-		'regexp/prefer-plus-quantifier': 'error',
-		'regexp/prefer-predefined-assertion': 'error',
-		'regexp/prefer-question-quantifier': 'error',
-		'regexp/prefer-range': 'error',
-		'regexp/prefer-set-operation': 'error',
-		'regexp/prefer-star-quantifier': 'error',
-		'regexp/prefer-unicode-codepoint-escapes': 'error',
-		'regexp/prefer-w': 'error',
-		'regexp/simplify-set-operations': 'error',
-		'regexp/sort-flags': 'error',
-		'regexp/strict': 'error',
-		'regexp/use-ignore-case': 'error',
-		'lintroll/comments-disable-enable-pair': 'error',
-		'lintroll/comments-no-aggregating-enable': 'error',
-		'lintroll/comments-no-duplicate-disable': 'error',
-		'lintroll/comments-no-unlimited-disable': 'error',
-		'lintroll/comments-no-unused-enable': 'off',
-		'lintroll/no-use-extend-native': 'error',
-		'lintroll/prefer-arrow-functions': 'error',
-		'n/global-require': 'error',
-		'n/no-mixed-requires': [
-			'error',
-			{
-				allowCall: true,
-				grouping: true,
-			},
-		],
-		'n/no-new-require': 'error',
-		'n/no-path-concat': 'error',
-		'n/prefer-global/buffer': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/console': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/process': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/text-decoder': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/text-encoder': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/url': [
-			'error',
-			'always',
-		],
-		'n/prefer-global/url-search-params': [
-			'error',
-			'always',
-		],
-		'n/prefer-promises/dns': 'error',
-		'n/prefer-promises/fs': 'error',
-		'n/no-unsupported-features/node-builtins': 'warn',
-		'n/prefer-node-protocol': 'error',
-		'lintroll/camelcase': [
-			'error',
-			{
-				ignoreDestructuring: false,
-				ignoreImports: true,
-				properties: 'never',
-			},
-		],
-		'lintroll/no-implicit-globals': 'error',
-		'lintroll/no-octal-escape': 'error',
-		'lintroll/no-restricted-exports': [
-			'error',
-			{
-				restrictedNamedExports: [
-					'then',
-				],
-			},
-		],
-		'lintroll/no-restricted-properties': [
-			'error',
-			{
-				message: 'arguments.callee is deprecated',
-				object: 'arguments',
-				property: 'callee',
-			},
-			{
-				message: 'Please use Number.isFinite instead',
-				object: 'global',
-				property: 'isFinite',
-			},
-			{
-				message: 'Please use Number.isFinite instead',
-				object: 'self',
-				property: 'isFinite',
-			},
-			{
-				message: 'Please use Number.isFinite instead',
-				object: 'window',
-				property: 'isFinite',
-			},
-			{
-				message: 'Please use Number.isNaN instead',
-				object: 'global',
-				property: 'isNaN',
-			},
-			{
-				message: 'Please use Number.isNaN instead',
-				object: 'self',
-				property: 'isNaN',
-			},
-			{
-				message: 'Please use Number.isNaN instead',
-				object: 'window',
-				property: 'isNaN',
-			},
-			{
-				message: 'Please use Object.defineProperty instead.',
-				property: '__defineGetter__',
-			},
-			{
-				message: 'Please use Object.defineProperty instead.',
-				property: '__defineSetter__',
-			},
-			{
-				message: 'Use the exponentiation operator (**) instead.',
-				object: 'Math',
-				property: 'pow',
-			},
-		],
-		'lintroll/no-undef-init': 'error',
-		'lintroll/no-unreachable-loop': 'error',
-		'lintroll/object-shorthand': [
-			'error',
-			'always',
-			{
-				ignoreConstructors: false,
-			},
-		],
-		'lintroll/one-var': [
-			'error',
-			'never',
-		],
-		'lintroll/prefer-arrow-callback': [
-			'error',
-			{
-				allowNamedFunctions: false,
-				allowUnboundThis: true,
-			},
-		],
-		'lintroll/prefer-regex-literals': [
-			'error',
-			{
-				disallowRedundantWrapping: true,
-			},
-		],
-		'unicorn-js/prevent-abbreviations': [
-			'error',
-			{
-				allowList: {
-					i: true,
-					j: true,
-				},
-				replacements: {
-					args: false,
-					db: false,
-					def: false,
-					dev: false,
-					dir: false,
-					dist: false,
-					docs: false,
-					env: false,
-					pkg: false,
-					temp: false,
-					prop: false,
-					props: false,
-					params: false,
-					ref: false,
-					rel: false,
-					src: false,
-					utils: false,
-				},
-				ignore: [
-					String.raw`\be2e\b`,
-				],
-			},
-		],
 	},
-	overrides: [
-		{
-			files: [
-				'**/*.{ts,tsx,mts,cts}',
-			],
-			rules: {
-				'no-useless-constructor': 'off',
-				'no-empty-function': 'off',
-				'no-shadow': 'off',
-				'no-unused-vars': 'off',
-				'func-style': 'off',
-				'prefer-rest-params': 'off',
-				'unicorn/consistent-destructuring': 'off',
-				'unicorn/no-array-callback-reference': 'off',
-				'unicorn/no-useless-undefined': 'off',
-			},
-		},
-		{
-			files: [
-				'**/*.d.ts',
-			],
-			rules: {
-				'unicorn/prevent-abbreviations': 'off',
-			},
-		},
-		{
-			files: [
-				'**/scripts/**/*.{js,ts}',
-			],
-			rules: {
-				'no-console': 'off',
-			},
-		},
-		{
-			files: [
-				'**/*.cjs',
-			],
-			rules: {
-				'n/global-require': 'off',
-				'lintroll/prefer-arrow-functions': 'off',
-			},
-		},
-	],
-	ignorePatterns: [
-		'**/package-lock.json',
-		'**/pnpm-lock.yaml',
-		'{tmp,temp,.tmp,.temp,__tmp__,__temp__}/**',
-		'**/*.min.js',
-		'**/dist/**',
-		'**/node_modules/**',
-		'**/vendor/**',
-		'**/.cache/**',
-		'**/.vitepress',
-		'**/CLAUDE.md',
-		'**/CLAUDE.local.md',
-		'**/.claude',
-		'**/AI.md',
-		'**/AGENT.md',
-		'**/PROMPT.md',
-		'**/PROMPTING.md',
-		'**/.cursorrules',
-		'**/.cursorignore',
-		'**/.cursormem.json',
-		'**/.cursorhistory',
-		'**/copilot.json',
-		'**/copilot.config.json',
-		'**/copilot.md',
-	],
+
+	overrides,
+	ignorePatterns,
 });

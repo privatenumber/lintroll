@@ -7,12 +7,8 @@ const oxlintBin = path.resolve(
 	'../bin/oxlint',
 );
 
-// Config file ships with lintroll — resolve relative to this file
-// From src/cli/utils/ or dist/cli/utils/ → 3 levels up to package root
-const oxlintConfig = path.resolve(
-	path.dirname(fileURLToPath(import.meta.url)),
-	'../../../oxlint.config.ts',
-);
+// Config file ships with lintroll — resolved via import map
+const oxlintConfig = fileURLToPath(import.meta.resolve('#oxlint-config'));
 
 type OxlintOptions = {
 	files: string[];

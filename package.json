@@ -50,7 +50,8 @@
 		"#cli": {
 			"development": "./src/cli/index.ts",
 			"default": "./dist/cli/index.mjs"
-		}
+		},
+		"#oxlint-config": "./oxlint.config.ts"
 	},
 	"packageManager": "pnpm@10.27.0",
 	"scripts": {
