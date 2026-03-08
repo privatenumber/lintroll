@@ -7,20 +7,14 @@
 | ESLint only | ~6.1s | baseline |
 | **Hybrid (`--oxc --git`)** | **~1.5s** | **4x faster** |
 
-### Breakdown (hybrid mode)
-- oxfmt: ~450ms (programmatic API, no config file)
-- oxlint: ~1100ms (306 rules via oxlint.config.ts)
-- ESLint slim: ~400ms (JSON/YAML only, lazy-loaded)
-- All three run in parallel
-
 ## Architecture
 
 ```
 lintroll --oxc --git .
 |
 +-- [parallel] oxfmt -> oxlint
-|   +-- oxfmt (programmatic format() API)
-|   +-- oxlint -c oxlint.config.ts
+|   +-- oxfmt (programmatic format() API, inline options)
+|   +-- oxlint -c #oxlint-config (306 rules)
 |       +-- 213 native Rust rules
 |       +-- 93 JS plugin rules (4 plugins)
 |
@@ -29,46 +23,63 @@ lintroll --oxc --git .
     +-- YAML (yml)
 ```
 
-## Config Files
+## Source Structure
 
-| File | Format | Shipped | Notes |
-|------|--------|---------|-------|
-| `oxlint.config.ts` | TypeScript | Yes | Type-checked via defineConfig(), split into src/oxlint/ modules |
-| `.oxfmtrc.json` | JSON | No | Editor integration only — CLI uses programmatic API with inline options |
-| `src/oxlint/` | TypeScript | Yes | Rule modules with JSDoc comments |
-| `src/custom-rules/*.cjs` | CJS | Yes | JS plugins for oxlint |
-
-### oxlint config structure
 ```
-oxlint.config.ts                    # Main composition (imports + defineConfig)
-src/oxlint/
+src/oxlint/                         # oxlint config (built by pkgroll)
+  index.ts                          # Main config composition → dist/oxlint/index.mjs
   rules/
-    eslint.ts                       # ESLint core rules (confusing globals, shadow allow list)
+    eslint.ts                       # ESLint core rules
     typescript.ts                   # TypeScript extension rules
     imports.ts                      # import plugin rules
-    unicorn.ts                      # unicorn overrides with rationale
+    unicorn.ts                      # unicorn overrides
     regexp.ts                       # regexp recommended config
-    node.ts                         # Node.js rules via eslint-plugin-n
-    plugins.ts                      # lintroll combined plugin + prevent-abbreviations
-  overrides.ts                      # File-specific rule overrides
+    node.ts                         # Node.js rules
+    plugins.ts                      # lintroll combined plugin rules
+  overrides.ts                      # File-specific overrides
   ignores.ts                        # Shared ignore patterns
+
+src/custom-rules/                   # oxlint JS plugins
+  combined-plugin.ts                # Bundles all custom rules → dist/custom-rules/combined-plugin.cjs
+  eslint-gap-plugin.ts              # 11 ESLint builtinRules wrapper
+  prefer-arrow-functions/index.ts   # Reused by both ESLint and oxlint configs
+
+src/cli/
+  utils/oxfmt.ts                    # Programmatic oxfmt API (inline options, no config file)
+  utils/oxlint.ts                   # oxlint subprocess wrapper
+  get-non-js-config.ts              # Slim ESLint config for JSON/YAML
+  index.ts                          # CLI orchestration
+```
+
+## Package.json Integration
+
+```jsonc
+{
+	"imports": {
+		"#oxlint-config": {
+			"development": "./src/oxlint/index.ts",
+			"default": "./dist/oxlint/index.mjs",
+		},
+		"#oxlint-combined-plugin": {
+			"development": "./src/custom-rules/combined-plugin.ts",
+			"default": "./dist/custom-rules/combined-plugin.cjs",
+		},
+	},
+	"files": [
+		"dist",
+		"skills",
+	],   // No source files shipped
+}
 ```
 
 ## JS Plugins (4 entries, 93 rules)
 
 | Plugin | Rules | Notes |
 |--------|-------|-------|
-| eslint-plugin-regexp | 60 | Regexp best practices |
-| eslint-plugin-n | 15 | Node.js rules (aliased as "n") |
+| eslint-plugin-regexp | 60 | npm package, resolved by name |
+| eslint-plugin-n | 15 | npm package, aliased as "n" |
 | eslint-plugin-unicorn | 1 | prevent-abbreviations (uses context.on() API) |
-| combined-plugin.cjs | 17 | eslint-comments (4) + no-use-extend-native (1) + ESLint gap (11) + prefer-arrow-functions (1) |
-
-## Remaining Limitations
-- `import/no-extraneous-dependencies` — stalled oxlint PR #15703
-- `import/no-useless-path-segments` — stalled oxlint PR #14569
-- Markdown code block linting — use `--eslint-only`
-- `--allowAbbreviation` CLI flag — static config in oxlint, not dynamic
-- Formatting: oxfmt uses Prettier-style (arrowParens: avoid), differs from @stylistic
+| combined-plugin | 17 | eslint-comments (4) + no-use-extend-native (1) + ESLint gap (11) + prefer-arrow-functions (1) |
 
 ## CI Status
 - All 157 tests pass (Ubuntu + Windows)
