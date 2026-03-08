@@ -18,7 +18,6 @@
 	"files": [
 		"dist",
 		"skills",
-		".oxfmtrc.json",
 		".oxlintrc.json",
 		"src/custom-rules"
 	],

@@ -1,79 +1,67 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import spawn from 'nano-spawn';
+import fs from 'node:fs/promises';
 
-const oxfmtBin = path.resolve(
-	path.dirname(fileURLToPath(import.meta.resolve('oxfmt'))),
-	'../bin/oxfmt',
-);
+// Lazy-load oxfmt to avoid startup cost when not needed
+const lazyFormat = () => import('oxfmt').then(m => m.format);
 
-// Config file ships with lintroll — resolve relative to this file
-// From src/cli/utils/ or dist/cli/utils/ → 3 levels up to package root
-const oxfmtConfig = path.resolve(
-	path.dirname(fileURLToPath(import.meta.url)),
-	'../../../.oxfmtrc.json',
-);
+// Formatting options matching lintroll's style
+const formatOptions = {
+	printWidth: 100,
+	tabWidth: 1,
+	useTabs: true,
+	semi: true,
+	singleQuote: true,
+	jsxSingleQuote: false,
+	trailingComma: 'all',
+	bracketSpacing: true,
+	bracketSameLine: false,
+	arrowParens: 'avoid',
+	endOfLine: 'lf',
+	quoteProps: 'as-needed',
+	singleAttributePerLine: false,
+} as const;
 
 type OxfmtOptions = {
 	files: string[];
 	fix: boolean;
-	cwd: string;
 };
 
 export type OxfmtResult = {
 	passed: boolean;
 	unformattedFiles: string[];
+	fixedFiles: string[];
 	duration: number;
 };
 
 export const runOxfmt = async ({
 	files,
 	fix,
-	cwd,
 }: OxfmtOptions): Promise<OxfmtResult> => {
 	const start = performance.now();
+	const format = await lazyFormat();
 
-	if (fix) {
-		// In fix mode, format files in place
-		try {
-			await spawn(oxfmtBin, ['--config', oxfmtConfig, '--write', ...files], { cwd });
-		} catch (error) {
-			const { stderr, stdout } = error as { stderr: string;
-				stdout: string; };
-			throw new Error(`oxfmt format error:\n${stderr || stdout}`);
+	const unformattedFiles: string[] = [];
+	const fixedFiles: string[] = [];
+
+	await Promise.all(files.map(async (file) => {
+		const source = await fs.readFile(file, 'utf8');
+		const result = await format(file, source, formatOptions);
+
+		if (result.code === source) {
+			return;
 		}
 
-		return {
-			passed: true,
-			unformattedFiles: [],
-			duration: performance.now() - start,
-		};
-	}
-
-	// In check mode, use --list-different for clean file list
-	try {
-		await spawn(oxfmtBin, ['--config', oxfmtConfig, '--list-different', ...files], { cwd });
-		// Exit 0 = all files formatted
-		return {
-			passed: true,
-			unformattedFiles: [],
-			duration: performance.now() - start,
-		};
-	} catch (error) {
-		const { stdout, stderr, exitCode } = error as { stdout: string;
-			stderr: string;
-			exitCode: number | undefined; };
-		if (exitCode === 1) {
-			// Exit 1 = some files need formatting, stdout has the list
-			const unformattedFiles = stdout
-				.split('\n')
-				.filter(Boolean);
-			return {
-				passed: false,
-				unformattedFiles,
-				duration: performance.now() - start,
-			};
+		if (fix) {
+			await fs.writeFile(file, result.code);
+			fixedFiles.push(file);
+		} else {
+			unformattedFiles.push(file);
 		}
-		throw new Error(`oxfmt error (exit ${exitCode}):\n${stderr || stdout}`);
-	}
+	}));
+
+	return {
+		passed: unformattedFiles.length === 0,
+		unformattedFiles,
+		fixedFiles,
+		duration: performance.now() - start,
+	};
 };

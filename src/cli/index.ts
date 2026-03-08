@@ -335,14 +335,17 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 		const fmtResult = await runOxfmt({
 			files: oxlintFiles,
 			fix: argv.flags.fix ?? false,
-			cwd,
 		});
 		timings.oxfmt = fmtResult.duration;
 
-		if (!fmtResult.passed && !argv.flags.fix) {
+		if (fmtResult.fixedFiles.length > 0) {
+			console.log(`oxfmt: formatted ${fmtResult.fixedFiles.length} files`);
+		}
+
+		if (!fmtResult.passed) {
 			console.log(`oxfmt: ${fmtResult.unformattedFiles.length} files need formatting`);
 			for (const file of fmtResult.unformattedFiles.slice(0, 10)) {
-				console.log(`  ${file}`);
+				console.log(`  ${path.relative(cwd, file)}`);
 			}
 			if (fmtResult.unformattedFiles.length > 10) {
 				console.log(`  ... and ${fmtResult.unformattedFiles.length - 10} more`);
