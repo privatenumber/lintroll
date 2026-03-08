@@ -32,6 +32,9 @@
 - [x] Draft PR #116
 - [x] `--ignore-pattern` forwarded to oxlint
 - [x] Error handling for config/internal errors
+- [x] Auto-detect git for hybrid mode — no `--git` flag needed
+- [x] Consolidated 4 small JS plugins into combined-plugin.cjs
+- [x] Bridged 11 missing ESLint core rules via eslint-gap wrapper
 
 ## JS Plugins (8 total, 93 rules)
 
@@ -60,6 +63,7 @@ the `eslint-gap-plugin.cjs` wrapper which extracts rules from ESLint's
 - `import/no-useless-path-segments` — stalled PR #14569
 - Markdown code block linting — skipped in hybrid mode (use `--eslint-only`)
 - `no-mixed-operators`, `spaced-comment` — dropped (stylistic, handled by oxfmt)
+- `unicorn/prevent-abbreviations` can't be inlined — uses `context.on()` API not supported by oxlint JS plugin system. Requires full `eslint-plugin-unicorn` as JS plugin.
 
 ## Architecture
 
@@ -76,7 +80,7 @@ lintroll --git .
 |   +-- JSON (jsonc, package-json)
 |   +-- YAML (yml)
 |
-+-- Without --git/--staged: falls through to ESLint-only mode
++-- Auto-detects git: uses hybrid mode in git repos, ESLint-only otherwise
 ```
 
 ## Files Changed
