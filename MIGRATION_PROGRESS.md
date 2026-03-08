@@ -5,11 +5,11 @@
 ### Baseline (ESLint only, `--eslint-only --git .`)
 - **~5.9s wall** on 112 JS/TS + 34 non-JS files (146 total)
 
-### Hybrid v4 (parallel: oxfmt+oxlint || slim ESLint)
-- oxfmt: ~200ms (format check)
-- oxlint: ~1100ms (lint JS/TS files, 295 rules with 6 JS plugins)
-- ESLint (slim): ~100ms (lint JSON/YAML only — no markdown code blocks)
-- **~3.5s wall, ~1.3s internal** (4.5x faster internally)
+### Hybrid v5 (lazy ESLint + parallel: oxfmt+oxlint || slim ESLint)
+- oxfmt: ~350ms (format check)
+- oxlint: ~1000ms (lint JS/TS files, 295 rules with 6 JS plugins)
+- ESLint (slim, lazy-loaded): ~400ms (lint JSON/YAML only)
+- **~1.5s wall, ~1.4s internal** (3.9x faster)
 
 ### Performance breakdown
 | Component | Time | Notes |
@@ -27,6 +27,7 @@
 | Hybrid v3 (full ESLint) | ~4.2s | ~2.2s | 1.4x wall |
 | Hybrid v4 (slim ESLint) | ~3.5s | ~1.3s | 1.7x wall |
 | **Hybrid v5 (lazy ESLint)** | **~1.5s** | **~1.4s** | **3.9x wall, 4.2x internal** |
+| Hybrid v5 (cold cache) | ~2.4s | ~2.3s | 2.5x wall |
 | Theoretical (native only) | ~1.0s | ~0.5s | 12x internal |
 
 ## Done
@@ -51,6 +52,8 @@
 - [x] Disabled import/no-named-as-default-member (oxlint false positives)
 - [x] Fixed oxlint-plugin.cjs abbreviation warnings
 - [x] Lazy ESLint loading (dynamic import) — 3.5s -> 1.5s wall time
+- [x] Forward --ignore-pattern to oxlint
+- [x] Improved error handling for oxfmt/oxlint config errors
 
 ## JS Plugins Summary
 
