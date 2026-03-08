@@ -17,10 +17,7 @@
 	},
 	"files": [
 		"dist",
-		"skills",
-		"oxlint.config.ts",
-		"src/oxlint",
-		"src/custom-rules"
+		"skills"
 	],
 	"type": "module",
 	"bin": "./dist/cli/index.mjs",
@@ -52,11 +49,14 @@
 			"development": "./src/cli/index.ts",
 			"default": "./dist/cli/index.mjs"
 		},
-		"#oxlint-config": "./oxlint.config.ts"
+		"#oxlint-config": {
+			"development": "./oxlint.config.ts",
+			"default": "./dist/oxlintrc.json"
+		}
 	},
 	"packageManager": "pnpm@10.27.0",
 	"scripts": {
-		"build": "pkgroll --export-condition=node --export-condition=development --minify --clean-dist",
+		"build": "pkgroll --export-condition=node --export-condition=development --minify --clean-dist && node -C development src/cli/build-oxlint-config.ts",
 		"type-check": "tsc",
 		"lint": "node -C development ./src/cli/index.ts --git",
 		"dev": "node --watch -C development tests/index.ts",
