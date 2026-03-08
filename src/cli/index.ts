@@ -256,69 +256,63 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 		}
 	}
 
-	// Legacy ESLint-only mode
-	if (argv.flags.eslintOnly) {
+	const hasFileList = argv.flags.git || argv.flags.staged;
+
+	// ESLint-only mode: explicit flag or directory arguments (no file categorization)
+	if (argv.flags.eslintOnly || !hasFileList) {
 		await runEslintOnly(cwd, files);
 		return;
 	}
 
-	// New hybrid mode: oxfmt + oxlint + ESLint (for non-JS files)
-	// oxfmt and oxlint run sequentially (lint formatted code)
-	// ESLint runs in parallel (independent file set)
+	// Hybrid mode: oxfmt + oxlint + ESLint (for non-JS files)
+	// Requires --git or --staged for file categorization
 	let hasErrors = false;
 	const timings: Record<string, number> = {};
 
-	// Categorize files
 	const { oxlintFiles, eslintOnlyFiles } = categorizeFiles(files);
-	const hasFileList = argv.flags.git || argv.flags.staged;
-
-	if (hasFileList) {
-		console.log(`Found ${files.length} files: ${oxlintFiles.length} JS/TS, ${eslintOnlyFiles.length} JSON/YAML/MD\n`);
-	}
+	console.log(`Found ${files.length} files: ${oxlintFiles.length} JS/TS, ${eslintOnlyFiles.length} JSON/YAML/MD\n`);
 
 	// Run oxfmt → oxlint (sequential) in parallel with ESLint (independent)
 	const oxcPipeline = async () => {
-		// Step 1: oxfmt (format check or fix)
-		if (oxlintFiles.length > 0 || !hasFileList) {
-			const fmtTargets = hasFileList ? oxlintFiles : files;
-			const fmtResult = await runOxfmt({
-				files: fmtTargets,
-				fix: argv.flags.fix ?? false,
-				cwd,
-			});
-			timings.oxfmt = fmtResult.duration;
+		if (oxlintFiles.length === 0) {
+			return;
+		}
 
-			if (!fmtResult.passed && !argv.flags.fix) {
-				console.log(`oxfmt: ${fmtResult.unformattedFiles.length} files need formatting`);
-				for (const file of fmtResult.unformattedFiles.slice(0, 10)) {
-					console.log(`  ${file}`);
-				}
-				if (fmtResult.unformattedFiles.length > 10) {
-					console.log(`  ... and ${fmtResult.unformattedFiles.length - 10} more`);
-				}
-				console.log('  Run with --fix to auto-format\n');
-				hasErrors = true;
+		// Step 1: oxfmt (format check or fix)
+		const fmtResult = await runOxfmt({
+			files: oxlintFiles,
+			fix: argv.flags.fix ?? false,
+			cwd,
+		});
+		timings.oxfmt = fmtResult.duration;
+
+		if (!fmtResult.passed && !argv.flags.fix) {
+			console.log(`oxfmt: ${fmtResult.unformattedFiles.length} files need formatting`);
+			for (const file of fmtResult.unformattedFiles.slice(0, 10)) {
+				console.log(`  ${file}`);
 			}
+			if (fmtResult.unformattedFiles.length > 10) {
+				console.log(`  ... and ${fmtResult.unformattedFiles.length - 10} more`);
+			}
+			console.log('  Run with --fix to auto-format\n');
+			hasErrors = true;
 		}
 
 		// Step 2: oxlint (lint JS/TS files)
-		if (oxlintFiles.length > 0 || !hasFileList) {
-			const lintTargets = hasFileList ? oxlintFiles : files;
-			const oxlintResult = await runOxlint({
-				files: lintTargets,
-				fix: argv.flags.fix ?? false,
-				quiet: argv.flags.quiet ?? false,
-				cwd,
-			});
-			timings.oxlint = oxlintResult.duration;
+		const oxlintResult = await runOxlint({
+			files: oxlintFiles,
+			fix: argv.flags.fix ?? false,
+			quiet: argv.flags.quiet ?? false,
+			cwd,
+		});
+		timings.oxlint = oxlintResult.duration;
 
-			if (oxlintResult.output) {
-				console.log(oxlintResult.output);
-			}
+		if (oxlintResult.output) {
+			console.log(oxlintResult.output);
+		}
 
-			if (!oxlintResult.passed) {
-				hasErrors = true;
-			}
+		if (!oxlintResult.passed) {
+			hasErrors = true;
 		}
 	};
 
