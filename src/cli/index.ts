@@ -4,6 +4,7 @@ import { cli } from 'cleye';
 import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
 import { getConfig } from './get-config.ts';
+import { getNonJsConfig } from './get-non-js-config.ts';
 import { getExitCode, countErrors } from './handle-errors.ts';
 import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.ts';
 import { runOxfmt } from './utils/oxfmt.ts';
@@ -77,14 +78,14 @@ const isNodeEnabled = (
 // Normalize paths to forward slashes for consistent cross-platform comparison
 const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 
-// File extensions that need ESLint (oxlint can't handle these)
+// File extensions that need ESLint in hybrid mode (oxlint can't handle these)
+// Note: .md excluded — markdown code block linting requires full ESLint config
 const eslintOnlyExtensions = new Set([
 	'.json',
 	'.json5',
 	'.jsonc',
 	'.yml',
 	'.yaml',
-	'.md',
 ]);
 
 // File extensions that oxlint handles natively
@@ -192,10 +193,19 @@ const runEslintOnly = async (cwd: string, files: string[]) => {
 
 /**
  * Slim ESLint for non-JS files only (JSON, YAML, Markdown)
+ * Uses a minimal config that only loads non-JS plugins.
  */
 const runEslintForNonJs = async (cwd: string, files: string[]) => {
 	const start = performance.now();
-	const eslint = await createEslintInstance(cwd);
+	const eslint = new ESLint({
+		cwd,
+		baseConfig: getNonJsConfig(),
+		overrideConfigFile: true,
+		fix: argv.flags.fix,
+		cache: argv.flags.cache,
+		cacheLocation: argv.flags.cacheLocation,
+		ignorePatterns: argv.flags.ignorePattern,
+	});
 
 	const results = await eslint.lintFiles(files);
 
