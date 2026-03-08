@@ -110,8 +110,10 @@ const oxlintExtensions = new Set([
 // Directories/patterns to exclude in hybrid mode (matching oxlint/ESLint ignores)
 const ignoredPathSegments = ['/dist/', '/node_modules/', '/vendor/', '/.cache/', '/.vitepress/'];
 const ignoredBasenames = new Set([
-	'.oxlintrc.json', '.oxfmtrc.json',
-	'package-lock.json', 'pnpm-lock.yaml',
+	'.oxlintrc.json',
+	'.oxfmtrc.json',
+	'package-lock.json',
+	'pnpm-lock.yaml',
 ]);
 
 const isIgnoredFile = (filePath: string) => {
@@ -142,7 +144,10 @@ const categorizeFiles = (files: string[]) => {
 		}
 	}
 
-	return { oxlintFiles, eslintOnlyFiles };
+	return {
+		oxlintFiles,
+		eslintOnlyFiles,
+	};
 };
 
 const createEslintInstance = async (cwd: string) => {

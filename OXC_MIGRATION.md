@@ -36,21 +36,21 @@ oxfmt replaces the entire `@stylistic/eslint-plugin` config (`src/configs/stylis
 
 ```json
 {
-  "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "printWidth": 100,
-  "tabWidth": 1,
-  "useTabs": true,
-  "semi": true,
-  "singleQuote": true,
-  "jsxSingleQuote": false,
-  "trailingComma": "all",
-  "bracketSpacing": true,
-  "bracketSameLine": false,
-  "arrowParens": "as-needed",
-  "endOfLine": "lf",
-  "quoteProps": "as-needed",
-  "insertFinalNewline": true,
-  "singleAttributePerLine": false
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "printWidth": 100,
+    "tabWidth": 1,
+    "useTabs": true,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "bracketSameLine": false,
+    "arrowParens": "as-needed",
+    "endOfLine": "lf",
+    "quoteProps": "as-needed",
+    "insertFinalNewline": true,
+    "singleAttributePerLine": false
 }
 ```
 
@@ -193,17 +193,19 @@ The JS plugin system is **comprehensive** — nearly full ESLint v9 compatibilit
 
 ```json
 {
-  "jsPlugins": [
-    "eslint-plugin-regexp",
-    { "name": "stylistic", "specifier": "@stylistic/eslint-plugin" },
-    { "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
-    "eslint-plugin-no-use-extend-native",
-    "eslint-plugin-n"
-  ],
-  "rules": {
-    "stylistic/no-mixed-operators": ["error", { ... }],
-    "stylistic/spaced-comment": ["error", "always", { ... }]
-  }
+    "jsPlugins": [
+        "eslint-plugin-regexp",
+        { "name": "stylistic",
+            "specifier": "@stylistic/eslint-plugin" },
+        { "name": "eslint-comments",
+            "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
+        "eslint-plugin-no-use-extend-native",
+        "eslint-plugin-n"
+    ],
+    "rules": {
+        "stylistic/no-mixed-operators": "error",
+        "stylistic/spaced-comment": "error"
+    }
 }
 ```
 
