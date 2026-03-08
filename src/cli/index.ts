@@ -273,12 +273,29 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 		}
 	}
 
-	const hasFileList = argv.flags.git || argv.flags.staged;
-
-	// ESLint-only mode: explicit flag or directory arguments (no file categorization)
-	if (argv.flags.eslintOnly || !hasFileList) {
+	// ESLint-only mode when explicitly requested
+	if (argv.flags.eslintOnly) {
 		await runEslintOnly(cwd, files);
 		return;
+	}
+
+	// Auto-detect git for hybrid mode when directory arguments are used
+	// This enables the 4.5x speedup by default without requiring --git
+	const hasFileList = argv.flags.git || argv.flags.staged;
+	if (!hasFileList) {
+		try {
+			const gitRoot = await getGitRoot();
+			files = await getTrackedFiles(gitRoot, files);
+
+			if (files.length === 0) {
+				console.log('No git-tracked files to lint');
+				return;
+			}
+		} catch {
+			// Not in a git repo — fall back to ESLint-only mode
+			await runEslintOnly(cwd, files);
+			return;
+		}
 	}
 
 	// Hybrid mode: oxfmt + oxlint + ESLint (for non-JS files)
