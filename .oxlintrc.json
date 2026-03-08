@@ -9,12 +9,9 @@
 	],
 	"jsPlugins": [
 		"eslint-plugin-regexp",
-		{ "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
-		"eslint-plugin-no-use-extend-native",
-		"./src/custom-rules/oxlint-plugin.cjs",
 		{ "name": "n", "specifier": "eslint-plugin-n" },
 		{ "name": "unicorn-js", "specifier": "eslint-plugin-unicorn" },
-		"./src/custom-rules/eslint-gap-plugin.cjs"
+		"./src/custom-rules/combined-plugin.cjs"
 	],
 	"categories": {
 		"correctness": "error",
@@ -270,15 +267,15 @@
 		"regexp/strict": "error",
 		"regexp/use-ignore-case": "error",
 
-		"eslint-comments/disable-enable-pair": "error",
-		"eslint-comments/no-aggregating-enable": "error",
-		"eslint-comments/no-duplicate-disable": "error",
-		"eslint-comments/no-unlimited-disable": "error",
-		"eslint-comments/no-unused-enable": "off",
+		"lintroll/comments-disable-enable-pair": "error",
+		"lintroll/comments-no-aggregating-enable": "error",
+		"lintroll/comments-no-duplicate-disable": "error",
+		"lintroll/comments-no-unlimited-disable": "error",
+		"lintroll/comments-no-unused-enable": "off",
 
-		"no-use-extend-native/no-use-extend-native": "error",
+		"lintroll/no-use-extend-native": "error",
 
-		"pvtnbr/prefer-arrow-functions": "error",
+		"lintroll/prefer-arrow-functions": "error",
 
 		"n/global-require": "error",
 		"n/no-mixed-requires": ["error", { "allowCall": true, "grouping": true }],
@@ -296,17 +293,17 @@
 		"n/no-unsupported-features/node-builtins": "warn",
 		"n/prefer-node-protocol": "error",
 
-		"eslint-gap/camelcase": ["error", {
+		"lintroll/camelcase": ["error", {
 			"ignoreDestructuring": false,
 			"ignoreImports": true,
 			"properties": "never"
 		}],
-		"eslint-gap/no-implicit-globals": "error",
-		"eslint-gap/no-octal-escape": "error",
-		"eslint-gap/no-restricted-exports": ["error", {
+		"lintroll/no-implicit-globals": "error",
+		"lintroll/no-octal-escape": "error",
+		"lintroll/no-restricted-exports": ["error", {
 			"restrictedNamedExports": ["then"]
 		}],
-		"eslint-gap/no-restricted-properties": ["error",
+		"lintroll/no-restricted-properties": ["error",
 			{ "message": "arguments.callee is deprecated", "object": "arguments", "property": "callee" },
 			{ "message": "Please use Number.isFinite instead", "object": "global", "property": "isFinite" },
 			{ "message": "Please use Number.isFinite instead", "object": "self", "property": "isFinite" },
@@ -318,12 +315,12 @@
 			{ "message": "Please use Object.defineProperty instead.", "property": "__defineSetter__" },
 			{ "message": "Use the exponentiation operator (**) instead.", "object": "Math", "property": "pow" }
 		],
-		"eslint-gap/no-undef-init": "error",
-		"eslint-gap/no-unreachable-loop": "error",
-		"eslint-gap/object-shorthand": ["error", "always", { "ignoreConstructors": false }],
-		"eslint-gap/one-var": ["error", "never"],
-		"eslint-gap/prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
-		"eslint-gap/prefer-regex-literals": ["error", { "disallowRedundantWrapping": true }],
+		"lintroll/no-undef-init": "error",
+		"lintroll/no-unreachable-loop": "error",
+		"lintroll/object-shorthand": ["error", "always", { "ignoreConstructors": false }],
+		"lintroll/one-var": ["error", "never"],
+		"lintroll/prefer-arrow-callback": ["error", { "allowNamedFunctions": false, "allowUnboundThis": true }],
+		"lintroll/prefer-regex-literals": ["error", { "disallowRedundantWrapping": true }],
 
 		"unicorn-js/prevent-abbreviations": ["error", {
 			"allowList": { "i": true, "j": true },
