@@ -12,7 +12,8 @@
 		{ "name": "eslint-comments", "specifier": "@eslint-community/eslint-plugin-eslint-comments" },
 		"eslint-plugin-no-use-extend-native",
 		"./src/custom-rules/oxlint-plugin.cjs",
-		{ "name": "n", "specifier": "eslint-plugin-n" }
+		{ "name": "n", "specifier": "eslint-plugin-n" },
+		{ "name": "unicorn-js", "specifier": "eslint-plugin-unicorn" }
 	],
 	"categories": {
 		"correctness": "error",
@@ -292,7 +293,31 @@
 		"n/prefer-promises/dns": "error",
 		"n/prefer-promises/fs": "error",
 		"n/no-unsupported-features/node-builtins": "warn",
-		"n/prefer-node-protocol": "error"
+		"n/prefer-node-protocol": "error",
+
+		"unicorn-js/prevent-abbreviations": ["error", {
+			"allowList": { "i": true, "j": true },
+			"replacements": {
+				"args": false,
+				"db": false,
+				"def": false,
+				"dev": false,
+				"dir": false,
+				"dist": false,
+				"docs": false,
+				"env": false,
+				"pkg": false,
+				"temp": false,
+				"prop": false,
+				"props": false,
+				"params": false,
+				"ref": false,
+				"rel": false,
+				"src": false,
+				"utils": false
+			},
+			"ignore": ["\\be2e\\b"]
+		}]
 	},
 	"overrides": [
 		{
