@@ -28,7 +28,7 @@ const loadRules = () => {
 	}
 
 	try {
-		// eslint-disable-next-line n/no-unpublished-import -- bundled by pkgroll
+		// eslint-disable-next-line @typescript-eslint/no-require-imports -- synchronous lazy loading
 		const { builtinRules } = require('eslint/use-at-your-own-risk') as {
 			builtinRules: Map<string, Rule.RuleModule>;
 		};

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- ESLint rule API uses untyped AST nodes */
 /**
  * pvtnbr/prefer-arrow-functions as an oxlint JS plugin rule.
  */
@@ -24,11 +25,9 @@ export default {
 				schema: [],
 				messages,
 			},
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any -- ESLint rule context is complex
 			create(context: any) {
 				const untransformableFunctions = new Set();
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any -- AST node types
 				const isConvertable = (node: any) => {
 					if (node.generator || untransformableFunctions.has(node)) {
 						return false;
@@ -112,7 +111,6 @@ export default {
 					return true;
 				};
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const getNearestFunction = (node: any) => {
 					let scope = context.sourceCode.getScope(node);
 					while (
@@ -125,7 +123,6 @@ export default {
 					return scope && scope.block;
 				};
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const removeFunctionToken = (node: any, fixer: any) => {
 					const functionToken = context.sourceCode.getFirstToken(node, {
 						filter: (token: any) => token.type === 'Keyword' && token.value === 'function',
@@ -136,13 +133,11 @@ export default {
 					return [];
 				};
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const insertArrow = (node: any, fixer: any) => {
 					const parenEnd = context.sourceCode.getTokenBefore(node.body);
 					return [fixer.insertTextAfter(parenEnd, '=>')];
 				};
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const moveAsyncToken = (node: any, fixer: any) => {
 					const asyncToken = context.sourceCode.getFirstToken(node.parent, {
 						filter: (token: any) => token.type === 'Identifier' && token.value === 'async',
@@ -156,28 +151,24 @@ export default {
 					];
 				};
 
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const wrapInParentheses = (node: any, fixer: any) => [
 					fixer.insertTextBefore(node, '('),
 					fixer.insertTextAfter(node, ')'),
 				];
 
 				return {
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					ThisExpression(node: any) {
 						const nearestFunction = getNearestFunction(node);
 						if (nearestFunction) {
 							untransformableFunctions.add(nearestFunction);
 						}
 					},
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					Super(node: any) {
 						const nearestFunction = getNearestFunction(node);
 						if (nearestFunction) {
 							untransformableFunctions.add(nearestFunction);
 						}
 					},
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					MetaProperty(node: any) {
 						if (node.meta.name === 'new' && node.property.name === 'target') {
 							const nearestFunction = getNearestFunction(node);
@@ -186,7 +177,6 @@ export default {
 							}
 						}
 					},
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					'FunctionExpression:exit'(node: any) {
 						if (!isConvertable(node)) {
 							return;
@@ -195,7 +185,6 @@ export default {
 						context.report({
 							node,
 							messageId: 'preferArrowFunction',
-							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							fix(fixer: any) {
 								const fixes = [...insertArrow(node, fixer)];
 								const { parent } = node;
@@ -233,7 +222,6 @@ export default {
 						});
 					},
 
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 					'FunctionDeclaration:exit'(node: any) {
 						if (!isConvertable(node)) {
 							return;
@@ -242,7 +230,6 @@ export default {
 						context.report({
 							node,
 							messageId: 'preferArrowFunction',
-							// eslint-disable-next-line @typescript-eslint/no-explicit-any
 							fix(fixer: any) {
 								const fixes = [
 									...insertArrow(node, fixer),
@@ -296,3 +283,4 @@ export default {
 		},
 	},
 } satisfies ESLint.Plugin;
+/* eslint-enable @typescript-eslint/no-explicit-any */
