@@ -25,8 +25,9 @@
 |------|-----------|----------|---------|
 | ESLint only | ~5.9s | ~5.9s | baseline |
 | Hybrid v3 (full ESLint) | ~4.2s | ~2.2s | 1.4x wall |
-| **Hybrid v4 (slim ESLint)** | **~3.5s** | **~1.3s** | **1.7x wall, 4.5x internal** |
-| Theoretical (native only) | ~2.8s | ~0.5s | 12x internal |
+| Hybrid v4 (slim ESLint) | ~3.5s | ~1.3s | 1.7x wall |
+| **Hybrid v5 (lazy ESLint)** | **~1.5s** | **~1.4s** | **3.9x wall, 4.2x internal** |
+| Theoretical (native only) | ~1.0s | ~0.5s | 12x internal |
 
 ## Done
 
@@ -49,6 +50,7 @@
 - [x] Slim ESLint config (JSON/YAML only, skips markdown code blocks)
 - [x] Disabled import/no-named-as-default-member (oxlint false positives)
 - [x] Fixed oxlint-plugin.cjs abbreviation warnings
+- [x] Lazy ESLint loading (dynamic import) — 3.5s -> 1.5s wall time
 
 ## JS Plugins Summary
 
