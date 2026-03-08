@@ -11,6 +11,7 @@ type OxlintOptions = {
 	files: string[];
 	fix: boolean;
 	quiet: boolean;
+	ignorePatterns: string[];
 	cwd: string;
 };
 
@@ -25,6 +26,7 @@ export const runOxlint = async ({
 	files,
 	fix,
 	quiet,
+	ignorePatterns,
 	cwd,
 }: OxlintOptions): Promise<OxlintResult> => {
 	const start = performance.now();
@@ -36,6 +38,10 @@ export const runOxlint = async ({
 
 	if (quiet) {
 		arguments_.push('--quiet');
+	}
+
+	for (const pattern of ignorePatterns) {
+		arguments_.push('--ignore-pattern', pattern);
 	}
 
 	arguments_.push(...files);

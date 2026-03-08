@@ -320,6 +320,7 @@ const runEslintForNonJs = async (cwd: string, files: string[]) => {
 			files: oxlintFiles,
 			fix: argv.flags.fix ?? false,
 			quiet: argv.flags.quiet ?? false,
+			ignorePatterns: argv.flags.ignorePattern,
 			cwd,
 		});
 		timings.oxlint = oxlintResult.duration;
