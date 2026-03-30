@@ -4,3 +4,4 @@ export const db = 'my-database';
 export const docsPath = './docs';
 export const ColumnDef = { id: 'name' };
 export const relX = 100;
+export const el = 'element';

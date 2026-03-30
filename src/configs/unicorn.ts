@@ -18,6 +18,9 @@ export const unicorn = (
 		// for-loop index
 		i: true,
 		j: true,
+
+		// element (e.g. DOM, HTML builder)
+		el: true,
 	};
 
 	// case insensitive and matches substrings
