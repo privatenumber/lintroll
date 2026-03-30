@@ -36,9 +36,9 @@
 	},
 	"imports": {
 		"#pvtnbr": {
-			"types": "./src/index.ts",
-			"development": "./src/index.ts",
-			"default": "./dist/index.mjs"
+			"types": "./src/eslint-config.ts",
+			"development": "./src/eslint-config.ts",
+			"default": "./dist/eslint-config.mjs"
 		},
 		"#pkg-maps-resolver": {
 			"types": "./src/resolvers/pkg-maps-resolver.ts",
@@ -48,6 +48,14 @@
 		"#cli": {
 			"development": "./src/cli/index.ts",
 			"default": "./dist/cli/index.mjs"
+		},
+		"#oxlint-config": {
+			"development": "./src/oxlint/index.ts",
+			"default": "./dist/oxlint/index.mjs"
+		},
+		"#oxlint-combined-plugin": {
+			"development": "./src/custom-rules/combined-plugin.ts",
+			"default": "./dist/custom-rules/combined-plugin.cjs"
 		}
 	},
 	"packageManager": "pnpm@10.27.0",
@@ -86,6 +94,8 @@
 		"get-tsconfig": "^4.13.1",
 		"globals": "^17.0.0",
 		"nano-spawn": "^2.0.0",
+		"oxfmt": "^0.36.0",
+		"oxlint": "^1.51.0",
 		"resolve-pkg-maps": "^1.0.0",
 		"tsx": "^4.21.0",
 		"vue-eslint-parser": "^10.2.0",
