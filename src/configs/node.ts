@@ -212,6 +212,7 @@ export const node = (
 				],
 				rules: {
 					...autoConfig.rules,
+					...tsOverrides,
 					'n/no-process-exit': 'off',
 				},
 			}),
