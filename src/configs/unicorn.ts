@@ -87,6 +87,8 @@ export const unicorn = (
 				// Might make sense to enable this and turn this off for test/
 				'unicorn/consistent-function-scoping': 'off',
 
+				'unicorn/no-anonymous-default-export': 'off',
+
 				'unicorn/no-array-for-each': 'off',
 
 				/**

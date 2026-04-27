@@ -49,7 +49,6 @@ export const markdown = () => [
 			// Loose on example code
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/prefer-object-from-entries': 'off',
-			'unicorn/no-anonymous-default-export': 'off',
 			'unicorn/no-array-callback-reference': 'off',
 
 			// Style

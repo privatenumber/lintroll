@@ -112,6 +112,8 @@ try {
 // This simulates using a package like 'fdir' with: new fdir()
 const instance = new mockPackage();
 
+export default () => {};
+
 // eslint-disable-next-line no-console
 console.log(
 	readFile,
