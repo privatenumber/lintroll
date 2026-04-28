@@ -108,6 +108,6 @@
 		"react": "^19.2.4",
 		"read-package-up": "^12.0.0",
 		"type-fest": "^5.4.4",
-		"typescript": "^5.9.3"
+		"typescript": "^6.0.3"
 	}
 }
