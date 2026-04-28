@@ -1,21 +1,16 @@
 import path from 'node:path';
 import fs from 'node:fs';
 import { cli } from 'cleye';
-import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
-import { getConfig } from './get-config.ts';
-import { getExitCode, countErrors } from './handle-errors.ts';
-import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.ts';
+import { run } from './run.ts';
 
-/**
- * Reference: ESlint CLI
- * https://github.com/eslint/eslint/blob/main/lib/cli.js
- */
+const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
+
 const argv = cli({
 	name: packageJson.name,
 	parameters: ['[files...]'],
 	help: {
-		description: 'Opinionated ESLint by @privatenumber (Hiroki Osame)',
+		description: 'Opinionated linter by @privatenumber (Hiroki Osame)',
 	},
 	flags: {
 		fix: {
@@ -24,23 +19,15 @@ const argv = cli({
 		},
 		staged: {
 			type: Boolean,
-			description: 'Only lint staged files within the files passed in',
+			description: 'Only lint staged files',
 		},
 		git: {
 			type: Boolean,
-			description: 'Only lint git tracked files within the files passed in',
+			description: 'Only lint git tracked files',
 		},
 		quiet: {
 			type: Boolean,
 			description: 'Report errors only',
-		},
-		cache: {
-			type: Boolean,
-			description: 'Only check changed files',
-		},
-		cacheLocation: {
-			type: String,
-			description: 'Path to the cache file or directory',
 		},
 		ignorePattern: {
 			type: [String],
@@ -48,7 +35,7 @@ const argv = cli({
 		},
 		node: {
 			type: [String],
-			description: 'Enable Node.js rules. Pass in a glob to specify files',
+			description: 'Enable Node.js rules',
 		},
 		allowAbbreviation: {
 			type: [String],
@@ -57,120 +44,25 @@ const argv = cli({
 	},
 });
 
-const isNodeEnabled = (
-	flag: string[],
-) => {
-	if (flag.length === 0) {
-		return false;
-	}
+let { files } = argv._;
+if (files.length === 0) {
+	files = ['.'];
+}
 
-	const globs = flag.filter(glob => glob.length > 0);
-	return (globs.length > 0) ? globs : true;
-};
+const cwd = fs.realpathSync.native(process.cwd());
+files = files.map(f => normalizePath(
+	fs.realpathSync.native(path.resolve(f)),
+));
 
-// Normalize paths to forward slashes for consistent cross-platform comparison
-const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
-
-(async () => {
-	let { files } = argv._;
-	if (files.length === 0) {
-		files = ['.'];
-	}
-
-	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-	files = files.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(filePath))));
-
-	// For --staged flag, we directly pass the staged files to ESLint
-	// This is because staged files are already a specific list that we want to lint
-	if (argv.flags.staged) {
-		const gitRoot = await getGitRoot();
-		files = await getStagedFiles(gitRoot, files);
-
-		if (files.length === 0) {
-			process.exitCode = 0;
-			return;
-		}
-	}
-
-	// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-	// This ensures ESLint's base path matches the canonicalized file paths
-	const cwd = fs.realpathSync.native(process.cwd());
-	const eslint = new ESLint({
-		cwd,
-		baseConfig: await getConfig({
-			cwd,
-			node: isNodeEnabled(argv.flags.node),
-			allowAbbreviations: {
-				exactWords: argv.flags.allowAbbreviation,
-				substrings: argv.flags.allowAbbreviation,
-			},
-		}),
-
-		// Don't look up config file
-		overrideConfigFile: true,
-
-		fix: argv.flags.fix,
-		cache: argv.flags.cache,
-		cacheLocation: argv.flags.cacheLocation,
-		ignorePatterns: argv.flags.ignorePattern,
-	});
-
-	// For --git flag, filter to only git-tracked files that ESLint can lint
-	if (argv.flags.git) {
-		const gitRoot = await getGitRoot();
-		const gitTrackedFiles = await getTrackedFiles(gitRoot, files);
-
-		// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
-		const ignoredChecks = await Promise.all(
-			gitTrackedFiles.map(async file => ({
-				file,
-				isIgnored: await eslint.isPathIgnored(file),
-			})),
-		);
-
-		files = ignoredChecks
-			.filter(({ isIgnored }) => !isIgnored)
-			.map(({ file }) => file);
-
-		if (files.length === 0) {
-			console.log('No git-tracked files to lint');
-			return;
-		}
-
-		console.log(`Linting ${files.length} git-tracked ${files.length === 1 ? 'file' : 'files'}...\n`);
-	}
-
-	const results = await eslint.lintFiles(files);
-
-	if (argv.flags.fix) {
-		await ESLint.outputFixes(results);
-
-		const fixedFiles = results.filter(result => result.output);
-		if (fixedFiles.length > 0) {
-			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
-			console.log(`Applied auto-fixes to ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
-			for (const filePath of relativePaths) {
-				console.log(`  ${filePath}`);
-			}
-			console.log();
-		}
-	}
-
-	let resultsToPrint = results;
-	if (argv.flags.quiet) {
-		resultsToPrint = ESLint.getErrorResults(results);
-	}
-
-	const resultCounts = countErrors(results);
-
-	const formatter = await eslint.loadFormatter();
-	const output = await formatter.format(resultsToPrint);
-	if (output) {
-		console.log(output);
-	}
-
-	process.exitCode = getExitCode(resultCounts);
-})().catch((error) => {
+run({
+	files,
+	fix: argv.flags.fix ?? false,
+	quiet: argv.flags.quiet ?? false,
+	ignorePatterns: argv.flags.ignorePattern,
+	staged: argv.flags.staged ?? false,
+	git: argv.flags.git ?? false,
+	cwd,
+}).catch((error: unknown) => {
 	console.error(`Error: ${(error as Error).message}`);
 	process.exit(1);
 });
