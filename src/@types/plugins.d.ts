@@ -215,7 +215,12 @@ declare module 'eslint-plugin-yml' {
 
 	const plugin: ESLint.Plugin & {
 		configs: {
-			'flat/standard': Linter.Config[];
+			base: ESLint.ConfigData & {
+				rules: Linter.RulesRecord;
+			};
+			standard: ESLint.ConfigData & {
+				rules: Linter.RulesRecord;
+			};
 		};
 	};
 
@@ -225,7 +230,8 @@ declare module 'eslint-plugin-yml' {
 declare module 'yaml-eslint-parser' {
 	import type { Linter } from 'eslint';
 
-	export const parseForESLint: NonNullable<Linter.Parser['parseForESLint']>;
+	const parser: Linter.ParserModule;
+	export default parser;
 }
 
 declare module 'eslint-plugin-package-json' {

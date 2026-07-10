@@ -1,6 +1,6 @@
+import type { Linter } from 'eslint';
 import jsoncPlugin from 'eslint-plugin-jsonc';
 import { defineConfig } from '../utils/define-config.ts';
-import { getRules } from '../utils/get-rules.ts';
 import { stylistic } from './stylistic.ts';
 
 const pick = <T extends Record<string, unknown>, K extends keyof T>(
@@ -30,14 +30,14 @@ const jsoncFiles = [
 const jsoncCommaDangle = stylistic[1].rules['@stylistic/comma-dangle'][1];
 const jsoncConfigs = jsoncPlugin.configs;
 
-const jsoncRecommended = getRules(jsoncConfigs['flat/recommended-with-jsonc']);
+const jsoncRecommended = jsoncConfigs['recommended-with-jsonc'].rules as Linter.RulesRecord;
 
 export const json = defineConfig([
-	...jsoncConfigs['flat/base'],
+	...jsoncConfigs['flat/base'] as Linter.Config[],
 	{
 		files: ['**/*.json'],
 		ignores: jsoncFiles,
-		rules: getRules(jsoncConfigs['flat/recommended-with-json']),
+		rules: jsoncConfigs['recommended-with-json'].rules as Linter.RulesRecord,
 	},
 	{
 		files: [
@@ -52,7 +52,7 @@ export const json = defineConfig([
 	{
 		files: ['**/*.json5'],
 		rules: {
-			...getRules(jsoncConfigs['flat/recommended-with-json5']),
+			...jsoncConfigs['recommended-with-json5'].rules as Linter.RulesRecord,
 			'jsonc/comma-dangle': ['error', jsoncCommaDangle],
 		},
 	},

@@ -14,14 +14,6 @@ export const packageJson = defineConfig([
 			// Not all packages need to declare type - CJS is still valid default
 			'package-json/require-type': 'off',
 
-			// v1's `recommended` newly enforces these fields. Keep them opt-in to
-			// preserve lintroll's permissive stance across app/library/private packages
-			'package-json/require-repository': 'off',
-			'package-json/require-files': 'off',
-			'package-json/require-exports': 'off',
-			'package-json/require-sideEffects': 'off',
-			'package-json/require-attribution': 'off',
-
 			// Skip description requirement for private packages
 			'package-json/require-description': ['error', { ignorePrivate: true }],
 

@@ -6,12 +6,6 @@
 		],
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
-		// TS 6.0 changed the `types` default to `[]`, so @types/node's global
-		// declarations (console, process, URL, import.meta.url) are no longer
-		// auto-included. Opt back in explicitly.
-		"types": [
-			"node",
-		],
 		"allowImportingTsExtensions": true,
 		"allowJs": true,
 		"strict": true,
