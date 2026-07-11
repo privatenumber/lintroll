@@ -83,7 +83,7 @@
 		"eslint-plugin-vue": "^10.9.2",
 		"eslint-plugin-yml": "^3.6.0",
 		"get-conditions": "^1.0.1",
-		"get-tsconfig": "^4.13.1",
+		"get-tsconfig": "^4.14.0",
 		"globals": "^17.7.0",
 		"nano-spawn": "^2.1.0",
 		"resolve-pkg-maps": "^1.0.0",
