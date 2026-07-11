@@ -84,7 +84,7 @@ export const pvtnbr = (
 		eslint,
 		serviceWorkers,
 		eslintComments,
-		...imports,
+		...imports(options?.mode),
 		...unicorn(options),
 		...stylistic,
 		typescript(tsconfig),

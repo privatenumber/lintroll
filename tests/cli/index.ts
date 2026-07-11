@@ -12,12 +12,50 @@ import { createGit } from '../utils/create-git.ts';
 // Normalize path separators for platform (forward slash on Unix, backslash on Windows)
 const slash = (filePath: string) => filePath.replaceAll('/', path.sep);
 
+const threeModuleCycle = {
+	'package.json': JSON.stringify({ type: 'module' }),
+	'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
+	'b.js': "import { c } from './c.js';\n\nexport const b = c;\n",
+	'c.js': "import { a } from './a.js';\n\nexport const c = a;\n",
+};
+
 describe('cli', () => {
 	test('implicitly lints cwd', async () => {
 		const cwd = fileURLToPath(new URL('fixtures/', import.meta.url));
 		const results = await lintroll([], cwd);
 
 		expect(results.output).toContain('fail.js');
+	});
+
+	describe('fast mode', () => {
+		test('limits cycle detection depth', async () => {
+			await using fixture = await createFixture(threeModuleCycle);
+
+			const full = await lintroll([], fixture.path);
+			const fast = await lintroll(['--fast'], fixture.path);
+
+			expect(full.output).toContain('import-x/no-cycle');
+			expect(fast.output).not.toContain('import-x/no-cycle');
+		});
+
+		test('uses LINTROLL_MODE=fast', async () => {
+			await using fixture = await createFixture(threeModuleCycle);
+
+			const result = await lintroll([], fixture.path, { LINTROLL_MODE: 'fast' });
+
+			expect(result.output).not.toContain('import-x/no-cycle');
+		});
+
+		test('rejects explicit config files', async () => {
+			await using fixture = await createFixture({
+				'package.json': JSON.stringify({ type: 'module' }),
+				'eslint.config.js': 'export default []\n',
+			});
+
+			const result = await lintroll(['--fast'], fixture.path);
+
+			expect(result.output).toContain('Fast mode is unavailable with eslint.config.js');
+		});
 	});
 
 	describe('--git flag', () => {

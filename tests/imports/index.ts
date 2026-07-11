@@ -2,12 +2,17 @@ import {
 	describe, test, expect, onTestFail,
 } from 'manten';
 import { ESLint } from 'eslint';
+import { createFixture } from 'fs-fixture';
 import { pvtnbr } from '#pvtnbr';
 import { eslint } from '../utils/eslint.ts';
 
 const orderMessages = (
 	messages: { ruleId: string | null }[],
 ) => messages.filter(message => message.ruleId === 'import-x/order');
+
+const hasCycle = (
+	messages: { ruleId: string | null }[],
+) => messages.some(message => message.ruleId === 'import-x/no-cycle');
 
 /**
  * ESLint instance with internal-regex to classify `@internal/*` as internal imports.
@@ -147,5 +152,76 @@ describe('imports', () => {
 
 			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
 		});
+	});
+
+	test('fast mode detects direct cycles', async () => {
+		await using fixture = await createFixture({
+			'package.json': JSON.stringify({ type: 'module' }),
+			'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
+			'b.js': "import { a } from './a.js';\n\nexport const b = a;\n",
+		});
+
+		const fixtureEslint = new ESLint({
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ mode: 'fast' }),
+			overrideConfigFile: true,
+		});
+		const results = await fixtureEslint.lintFiles([
+			fixture.getPath('a.js'),
+			fixture.getPath('b.js'),
+		]);
+		const messages = results.flatMap(result => result.messages);
+
+		onTestFail(() => {
+			console.log(messages);
+		});
+
+		expect(hasCycle(messages)).toBe(true);
+	});
+
+	test('fast mode does not reuse full mode cache entries', async () => {
+		await using fixture = await createFixture({
+			'package.json': JSON.stringify({ type: 'module' }),
+			'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
+			'b.js': "import { c } from './c.js';\n\nexport const b = c;\n",
+			'c.js': "import { a } from './a.js';\n\nexport const c = a;\n",
+		});
+
+		const files = [
+			fixture.getPath('a.js'),
+			fixture.getPath('b.js'),
+			fixture.getPath('c.js'),
+		];
+		const cacheLocation = fixture.getPath('.eslintcache');
+		const full = new ESLint({
+			cache: true,
+			cacheLocation,
+			cwd: fixture.path,
+			baseConfig: pvtnbr(),
+			overrideConfigFile: true,
+		});
+		const fullResults = await full.lintFiles(files);
+		const fullMessages = fullResults.flatMap(result => result.messages);
+
+		expect(hasCycle(fullMessages)).toBe(true);
+
+		const fast = new ESLint({
+			cache: true,
+			cacheLocation,
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ mode: 'fast' }),
+			overrideConfigFile: true,
+		});
+		const fastResults = await fast.lintFiles(files);
+		const fastMessages = fastResults.flatMap(result => result.messages);
+
+		onTestFail(() => {
+			console.log({
+				fullMessages,
+				fastMessages,
+			});
+		});
+
+		expect(hasCycle(fastMessages)).toBe(false);
 	});
 });

@@ -17,6 +17,7 @@ export const eslint = createEslint();
 export const lintroll = (
 	args: string[],
 	cwd: string,
+	env?: NodeJS.ProcessEnv,
 ) => spawn(
 	process.execPath,
 	[
@@ -25,5 +26,6 @@ export const lintroll = (
 	],
 	{
 		cwd,
+		env,
 	},
 ).catch(error => error as SubprocessError);

@@ -32,6 +32,10 @@ export const getConfig = async (
 	);
 
 	if (configFilePath) {
+		if (options.mode === 'fast') {
+			throw new Error(`Fast mode is unavailable with ${configFilePath}. Use pvtnbr({ mode: 'fast' }) in the config file instead.`);
+		}
+
 		let configModule: ConfigModule = await tsImport(
 			pathToFileURL(configFilePath).toString(),
 			import.meta.url,

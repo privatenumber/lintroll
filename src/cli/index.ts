@@ -54,6 +54,10 @@ const argv = cli({
 			type: [String],
 			description: 'Allow abbreviations',
 		},
+		fast: {
+			type: Boolean,
+			description: 'Skip expensive lint checks',
+		},
 	},
 });
 
@@ -67,6 +71,12 @@ const isNodeEnabled = (
 	const globs = flag.filter(glob => glob.length > 0);
 	return (globs.length > 0) ? globs : true;
 };
+
+const mode = (
+	argv.flags.fast || process.env.LINTROLL_MODE === 'fast'
+)
+	? 'fast'
+	: 'full';
 
 // Normalize paths to forward slashes for consistent cross-platform comparison
 const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
@@ -99,6 +109,7 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 		cwd,
 		baseConfig: await getConfig({
 			cwd,
+			mode,
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
 				exactWords: argv.flags.allowAbbreviation,

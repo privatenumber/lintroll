@@ -1,12 +1,15 @@
 import { fileURLToPath } from 'node:url';
 import importPlugin from 'eslint-plugin-import-x';
+import type { Options } from '../types.ts';
 import { defineConfig } from '../utils/define-config.ts';
 
 const pkgMapsResolver = fileURLToPath(
 	import.meta.resolve('#pkg-maps-resolver'),
 );
 
-export const importsConfig = defineConfig({
+export const importsConfig = (
+	mode: Options['mode'],
+) => defineConfig({
 	plugins: {
 		'import-x': importPlugin,
 	},
@@ -96,7 +99,7 @@ export const importsConfig = defineConfig({
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-cycle.md
 		'import-x/no-cycle': ['error', {
 			ignoreExternal: true,
-			maxDepth: '∞',
+			maxDepth: mode === 'fast' ? 1 : '∞',
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-duplicates.md
@@ -165,8 +168,10 @@ export const importsConfig = defineConfig({
 	},
 });
 
-export const imports = [
-	importsConfig,
+export const imports = (
+	mode: Options['mode'],
+) => [
+	importsConfig(mode),
 
 	// Bundled files
 	defineConfig({
