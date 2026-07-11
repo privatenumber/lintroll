@@ -50,8 +50,6 @@ jobs:
       - name: Lint
         run: pnpm lint
 
-      - name: Test Node.js 20.20.0 runtime
+      - name: Test Node.js 20.20.0
         if: matrix.os == 'ubuntu-latest'
-        run: |
-          pnpm --use-node-version=20.20.0 build
-          pnpm --use-node-version=20.20.0 exec node ./dist/cli/index.mjs --help
+        run: pnpm --use-node-version=20.20.0 tsx tests
