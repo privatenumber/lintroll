@@ -135,6 +135,9 @@ importers:
       manten:
         specifier: 2.0.1
         version: 2.0.1
+      mitata:
+        specifier: ^1.0.34
+        version: 1.0.34
       pkgroll:
         specifier: ^2.27.1
         version: 2.27.1(typescript@6.0.3)
@@ -2346,6 +2349,9 @@ packages:
 
   minimatch@3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
+
+  mitata@1.0.34:
+    resolution: {integrity: sha512-Mc3zrtNBKIMeHSCQ0XqRLo1vbdIx1wvFV9c8NJAiyho6AjNfMY8bVhbS12bwciUdd1t4rj8099CH3N3NFahaUA==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -5327,6 +5333,8 @@ snapshots:
   minimatch@3.1.2:
     dependencies:
       brace-expansion: 1.1.12
+
+  mitata@1.0.34: {}
 
   ms@2.1.3: {}
 
