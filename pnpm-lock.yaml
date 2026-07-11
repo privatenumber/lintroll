@@ -90,7 +90,7 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       tsx:
-        specifier: ^4.21.0
+        specifier: 4.21.0
         version: 4.21.0
       vue-eslint-parser:
         specifier: ^10.4.1
