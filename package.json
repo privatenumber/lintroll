@@ -87,7 +87,7 @@
 		"globals": "^17.7.0",
 		"nano-spawn": "^2.1.0",
 		"resolve-pkg-maps": "^1.0.0",
-		"tsx": "4.21.0",
+		"tsx": "4.21.1",
 		"vue-eslint-parser": "^10.4.1",
 		"yaml-eslint-parser": "^2.1.0"
 	},
