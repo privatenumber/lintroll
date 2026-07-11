@@ -59,6 +59,9 @@
 		"test": "node tests/index.ts",
 		"prepack": "pnpm build && clean-pkg-json"
 	},
+	"engines": {
+		"node": ">=20.20.0"
+	},
 	"dependencies": {
 		"@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
 		"@eslint/js": "^9.39.2",
@@ -83,7 +86,7 @@
 		"eslint-plugin-vue": "^10.9.2",
 		"eslint-plugin-yml": "^3.6.0",
 		"get-conditions": "^1.0.1",
-		"get-tsconfig": "^4.14.0",
+		"get-tsconfig": "5.0.0-beta.5",
 		"globals": "^17.7.0",
 		"nano-spawn": "^2.1.0",
 		"resolve-pkg-maps": "^1.0.0",

@@ -26,7 +26,7 @@ export const pvtnbr = (
 	options?: Options,
 ): Linter.Config[] => {
 	const cwd = options?.cwd ?? process.cwd();
-	const tsconfig = getTsconfig(cwd);
+	const tsconfig = getTsconfig(cwd, { typescriptVersion: false });
 
 	return [
 		defineConfig({

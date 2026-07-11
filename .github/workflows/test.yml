@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Get pnpm store directory
         shell: bash
-        run: echo "PNPM_STORE=$(pnpm store path --silent)" >> $GITHUB_ENV
+        run: echo "PNPM_STORE=$(pnpm store path --silent)" >> "$GITHUB_ENV"
 
       - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
         name: Cache pnpm
@@ -49,3 +49,7 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+      - name: Test Node.js 20.20.0
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm --use-node-version=20.20.0 tsx tests

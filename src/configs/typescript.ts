@@ -3,7 +3,7 @@
  * - https://github.com/import-js/eslint-plugin-import/blob/master/config/typescript.js
  * - https://github.com/xojs/eslint-config-xo-typescript/blob/master/index.js
  */
-import type { TsConfigResult } from 'get-tsconfig';
+import type { TsconfigResult } from 'get-tsconfig';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import-x';
@@ -23,7 +23,7 @@ export const parseTypescript = defineConfig({
 	settings: importPlugin.configs.typescript.settings,
 });
 
-export const typescript = (tsconfig: TsConfigResult | null) => {
+export const typescript = (tsconfig: TsconfigResult | undefined) => {
 	// Check if allowImportingTsExtensions is enabled
 	const hasAllowImportingTsExtensions = (
 		tsconfig?.config?.compilerOptions?.allowImportingTsExtensions === true
