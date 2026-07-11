@@ -50,7 +50,7 @@
 			"default": "./dist/cli/index.mjs"
 		}
 	},
-	"packageManager": "pnpm@10.27.0",
+	"packageManager": "pnpm@10.34.5",
 	"scripts": {
 		"bench": "node --expose-gc bench/lint.ts",
 		"bench:rules": "node bench/rules.ts",
