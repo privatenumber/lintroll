@@ -14,10 +14,6 @@ export const createEslint = (
 
 export const eslint = createEslint();
 
-// Keep tsx loader as file:// URL for cross-platform compatibility
-// Windows requires file:// URLs, not absolute paths
-const tsxLoaderUrl = import.meta.resolve('tsx');
-
 export const lintroll = (
 	args: string[],
 	cwd: string,
@@ -29,9 +25,5 @@ export const lintroll = (
 	],
 	{
 		cwd,
-		env: {
-			...process.env,
-			NODE_OPTIONS: `--import ${tsxLoaderUrl}`,
-		},
 	},
 ).catch(error => error as SubprocessError);
