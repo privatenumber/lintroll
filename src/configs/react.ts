@@ -1,9 +1,9 @@
-import type { TsConfigResult } from 'get-tsconfig';
+import type { TsconfigResult } from 'get-tsconfig';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import { defineConfig } from '../utils/define-config.ts';
 
-export const react = (_tsconfig: TsConfigResult | null) => defineConfig({
+export const react = (_tsconfig: TsconfigResult | undefined) => defineConfig({
 	files: ['**/*.{jsx,tsx}'],
 
 	plugins: {

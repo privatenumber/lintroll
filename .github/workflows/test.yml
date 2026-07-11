@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -49,3 +49,28 @@ jobs:
 
       - name: Lint
         run: pnpm lint
+
+  runtime:
+    name: Runtime (Node 20.20.0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Use Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version: 20.20.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@08c4be7e2e672a47d11bd04269e27e5f3e8529cb # v6
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build and run CLI
+        run: |
+          pnpm build
+          node ./dist/cli/index.mjs --help
