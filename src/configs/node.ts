@@ -25,14 +25,15 @@ const getNodeVersion = (
 	return process.version;
 };
 
+const tsOverrides: Linter.RulesRecord = {
+	// Can't resolve implicit extensionss that are valid in TS. Defer to import plugin
+	'n/no-missing-import': 'off',
+};
+
 const importRuleOverrides: Linter.RulesRecord = {
-	// import-x handles ESM and CommonJS resolution while intentionally allowing devDependencies.
+	// import-x handles extraneous ESM and CommonJS dependencies.
 	'n/no-extraneous-import': 'off',
 	'n/no-extraneous-require': 'off',
-	'n/no-missing-import': 'off',
-	'n/no-missing-require': 'off',
-	'n/no-unpublished-import': 'off',
-	'n/no-unpublished-require': 'off',
 };
 
 const recommendedScript = nodePlugin.configs['flat/recommended-script'];
@@ -59,6 +60,10 @@ const mjs = defineConfig({
 const mts = defineConfig({
 	...mjsConfig,
 	files: ['**/*.mts'],
+	rules: {
+		...mjsConfig.rules,
+		...tsOverrides,
+	},
 });
 
 const cjs = defineConfig({
@@ -69,6 +74,10 @@ const cjs = defineConfig({
 const cts = defineConfig({
 	...cjsConfig,
 	files: ['**/*.cts'],
+	rules: {
+		...cjsConfig.rules,
+		...tsOverrides,
+	},
 });
 
 type Options = {
@@ -128,6 +137,10 @@ export const node = (
 			defineConfig({
 				...autoConfig,
 				files: ['**/*.ts'],
+				rules: {
+					...autoConfig.rules,
+					...tsOverrides,
+				},
 			}),
 			mjs,
 			mts,
@@ -219,6 +232,7 @@ export const node = (
 				],
 				rules: {
 					...autoConfig.rules,
+					...tsOverrides,
 					'n/no-process-exit': 'off',
 				},
 			}),

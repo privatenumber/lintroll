@@ -127,10 +127,11 @@ describe('package-json', () => {
 		// Create isolated fixture with symlinked node_modules
 		await using fixture = await createFixture({
 			'package.json': JSON.stringify({
-				name: 'node-app',
+				name: 'private-app',
 				version: '1.0.0',
 				description: 'Node app fixture',
 				license: 'MIT',
+				private: true,
 				type: 'module',
 				devDependencies: {
 					// manten is listed - importing it should be ALLOWED
@@ -171,11 +172,11 @@ describe('package-json', () => {
 		);
 		expect(hasDevDepError).toBe(false);
 
-		const hasNodeDevDepError = allMessages.some(
-			message => message.ruleId === 'n/no-unpublished-import'
-				&& message.message.includes('manten'),
+		const hasDuplicateMissingDepError = allMessages.some(
+			message => message.ruleId === 'n/no-extraneous-import'
+				&& message.message.includes('fs-fixture'),
 		);
-		expect(hasNodeDevDepError).toBe(false);
+		expect(hasDuplicateMissingDepError).toBe(false);
 	});
 
 	test('no-extraneous-dependencies checks CommonJS requires', async () => {
@@ -185,6 +186,7 @@ describe('package-json', () => {
 				version: '1.0.0',
 				description: 'CommonJS app fixture',
 				license: 'MIT',
+				private: true,
 				type: 'commonjs',
 				devDependencies: {
 					manten: '^1.0.0',
@@ -213,8 +215,8 @@ describe('package-json', () => {
 		]));
 		expect(result.messages).not.toEqual(expect.arrayContaining([
 			expect.objectContaining({
-				ruleId: 'n/no-unpublished-require',
-				message: expect.stringContaining('manten'),
+				ruleId: 'n/no-extraneous-require',
+				message: expect.stringContaining('fs-fixture'),
 			}),
 		]));
 	});
