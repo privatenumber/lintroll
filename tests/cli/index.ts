@@ -20,6 +20,99 @@ describe('cli', () => {
 		expect(results.output).toContain('fail.js');
 	});
 
+	test('--staged exits cleanly when no files are staged', async () => {
+		await using fixture = await createFixture({
+			'file.js': 'const value = 1;\n',
+		});
+		const git = createGit(fixture.path);
+		await git.init();
+
+		const result = await lintroll(['--staged'], fixture.path);
+
+		assert.ok(!('exitCode' in result));
+		expect(result.output).toBe('');
+	});
+
+	test('--staged --git lints only staged tracked files', async () => {
+		await using fixture = await createFixture({
+			'staged.js': "export const staged = 'clean';\n",
+			'unstaged.js': "export const unstaged = 'clean';\n",
+		});
+		const git = createGit(fixture.path);
+		await git.init();
+		await git('add', ['.']);
+		await git('commit', ['-m', 'Initial commit']);
+		await fs.writeFile(fixture.getPath('staged.js'), 'const staged = "changed";\n');
+		await fs.writeFile(fixture.getPath('unstaged.js'), 'const unstaged = "changed";\n');
+		await git('add', ['staged.js']);
+
+		const result = await lintroll(['--staged', '--git'], fixture.path);
+
+		expect(result.output).toContain('staged.js');
+		expect(result.output).not.toContain('unstaged.js');
+	});
+
+	test('--quiet hides warnings without changing a successful exit', async () => {
+		await using fixture = await createFixture({
+			'file.js': "console.log('warning');\n",
+		});
+
+		const regular = await lintroll([], fixture.path);
+		const quiet = await lintroll(['--quiet'], fixture.path);
+
+		expect(regular.output).toContain('no-console');
+		expect(quiet.output).not.toContain('no-console');
+		assert.ok(!('exitCode' in quiet));
+	});
+
+	test('forwards --cache and --cache-location', async () => {
+		await using fixture = await createFixture({
+			'file.js': 'export const value = 1;\n',
+		});
+		const cacheLocation = fixture.getPath('cache/eslint');
+
+		await lintroll(['--cache', '--cache-location', cacheLocation], fixture.path);
+
+		await expect(fs.access(cacheLocation)).resolves.toBeUndefined();
+	});
+
+	test('returns exit code 2 for fatal syntax errors', async () => {
+		await using fixture = await createFixture({
+			'broken.js': 'const =;\n',
+		});
+
+		const result = await lintroll([], fixture.path);
+
+		assert.ok('exitCode' in result);
+		expect(result.exitCode).toBe(2);
+		expect(result.output).toContain('Parsing error');
+	});
+
+	test('prints config, git, fix, and formatter output in order', async () => {
+		await using fixture = await createFixture({
+			'package.json': JSON.stringify({ type: 'module' }),
+			'eslint.config.js': `export { default } from ${JSON.stringify(import.meta.resolve('#pvtnbr'))};\n`,
+			'mixed.js': 'const value = "hello";\n',
+		});
+		const git = createGit(fixture.path);
+		await git.init();
+		await git('add', ['.']);
+
+		const { output } = await lintroll(['--git', '--fix'], fixture.path);
+
+		onTestFail(() => console.log(output));
+
+		const configIndex = output.indexOf('Using config file: eslint.config.js');
+		const gitIndex = output.indexOf('Linting 3 git-tracked files');
+		const fixedIndex = output.indexOf('Applied auto-fixes to ');
+		const formatterIndex = output.indexOf('no-unused-vars');
+
+		expect(configIndex).toBeGreaterThanOrEqual(0);
+		expect(gitIndex).toBeGreaterThan(configIndex);
+		expect(fixedIndex).toBeGreaterThan(gitIndex);
+		expect(formatterIndex).toBeGreaterThan(fixedIndex);
+	});
+
 	describe('--git flag', () => {
 		test('errors when not in a git repository', async () => {
 			await using fixture = await createFixture({
@@ -272,6 +365,18 @@ describe('cli', () => {
 	});
 
 	describe('--ignore-pattern flag', () => {
+		test('ignores matching files', async () => {
+			await using fixture = await createFixture({
+				'included.js': 'const included = "included";\n',
+				'ignored.js': 'const ignored = "ignored";\n',
+			});
+
+			const { output } = await lintroll(['--ignore-pattern', 'ignored.js'], fixture.path);
+
+			expect(output).toContain('included.js');
+			expect(output).not.toContain('ignored.js');
+		});
+
 		test('errors when no value is provided', async () => {
 			await using fixture = await createFixture({
 				'file.js': 'const x = 1;',
