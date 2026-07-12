@@ -118,6 +118,7 @@ export const importsConfig = defineConfig({
 		// 4. This eliminates false positives while still catching missing dependencies
 		'import-x/no-extraneous-dependencies': ['error', {
 			devDependencies: ['**/*'],
+			includeTypes: true,
 			optionalDependencies: false,
 		}],
 

@@ -179,20 +179,17 @@ describe('package-json', () => {
 		expect(hasDuplicateMissingDepError).toBe(false);
 	});
 
-	test('no-extraneous-dependencies checks CommonJS requires', async () => {
+	test('no-extraneous-dependencies checks type-only imports', async () => {
 		await using fixture = await createFixture({
 			'package.json': JSON.stringify({
-				name: 'commonjs-app',
+				name: 'typescript-app',
 				version: '1.0.0',
-				description: 'CommonJS app fixture',
+				description: 'TypeScript app fixture',
 				license: 'MIT',
 				private: true,
-				type: 'commonjs',
-				devDependencies: {
-					manten: '^1.0.0',
-				},
+				type: 'module',
 			}),
-			'app.cjs': "require('manten');\nrequire('fs-fixture');\n",
+			'app.ts': "import type { createFixture } from 'fs-fixture';\n\nexport type Fixture = typeof createFixture;\n",
 			node_modules: ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
 		});
 
@@ -203,7 +200,7 @@ describe('package-json', () => {
 			baseConfig: pvtnbr({ node: true }),
 			overrideConfigFile: true,
 		});
-		const [result] = await fixtureEslint.lintFiles(['app.cjs']);
+		const [result] = await fixtureEslint.lintFiles(['app.ts']);
 
 		onTestFail(() => console.log(result.messages));
 
@@ -213,10 +210,22 @@ describe('package-json', () => {
 				message: expect.stringContaining('fs-fixture'),
 			}),
 		]));
-		expect(result.messages).not.toEqual(expect.arrayContaining([
+	});
+
+	test('Node rules check require.resolve dependencies', async () => {
+		const fixtureEslint = new ESLint({
+			baseConfig: pvtnbr({ node: true }),
+			overrideConfigFile: true,
+		});
+		const [result] = await fixtureEslint.lintText(
+			"require.resolve('missing-package');\n",
+			{ filePath: 'app.cjs' },
+		);
+
+		expect(result.messages).toEqual(expect.arrayContaining([
 			expect.objectContaining({
-				ruleId: 'n/no-extraneous-require',
-				message: expect.stringContaining('fs-fixture'),
+				ruleId: 'n/no-missing-require',
+				message: expect.stringContaining('missing-package'),
 			}),
 		]));
 	});

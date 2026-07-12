@@ -31,9 +31,8 @@ const tsOverrides: Linter.RulesRecord = {
 };
 
 const importRuleOverrides: Linter.RulesRecord = {
-	// import-x handles extraneous ESM and CommonJS dependencies.
+	// import-x handles ESM dependencies, including type-only imports.
 	'n/no-extraneous-import': 'off',
-	'n/no-extraneous-require': 'off',
 };
 
 const recommendedScript = nodePlugin.configs['flat/recommended-script'];
