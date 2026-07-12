@@ -2,12 +2,24 @@ import {
 	describe, test, expect, onTestFail,
 } from 'manten';
 import { ESLint } from 'eslint';
+import { createFixture } from 'fs-fixture';
 import { pvtnbr } from '#pvtnbr';
 import { eslint } from '../utils/eslint.ts';
 
 const orderMessages = (
 	messages: { ruleId: string | null }[],
 ) => messages.filter(message => message.ruleId === 'import-x/order');
+
+const resolutionMessages = (
+	messages: { ruleId: string | null }[],
+) => messages.filter(message => (
+	message.ruleId === 'import-x/extensions'
+	|| message.ruleId === 'import-x/no-unresolved'
+));
+
+const hasCycle = (
+	messages: { ruleId: string | null }[],
+) => messages.some(message => message.ruleId === 'import-x/no-cycle');
 
 /**
  * ESLint instance with internal-regex to classify `@internal/*` as internal imports.
@@ -147,5 +159,83 @@ describe('imports', () => {
 
 			expect(orderMessages(result.messages).length).toBeGreaterThan(0);
 		});
+	});
+
+	test('resolves TypeScript paths and package imports', async () => {
+		await using fixture = await createFixture({
+			'package.json': `${JSON.stringify({
+				name: 'resolution-fixture',
+				version: '1.0.0',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+				imports: {
+					'#package-import': './src/package-import.ts',
+				},
+			}, null, '\t')}\n`,
+			'tsconfig.json': `${JSON.stringify({
+				compilerOptions: {
+					baseUrl: '.',
+					paths: {
+						'@/*': ['./src/*'],
+					},
+				},
+			}, null, '\t')}\n`,
+			'src/index.ts': "import '@/path-alias';\nimport '#package-import';\n",
+			'src/package-import.ts': 'export const packageImport = true;\n',
+			'src/path-alias.ts': 'export const pathAlias = true;\n',
+		});
+
+		const fixtureEslint = new ESLint({
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ cwd: fixture.path }),
+			overrideConfigFile: true,
+		});
+		const [result] = await fixtureEslint.lintFiles(fixture.getPath('src/index.ts'));
+
+		onTestFail(() => {
+			console.log(result.messages);
+		});
+
+		expect(resolutionMessages(result.messages)).toEqual([]);
+	});
+
+	test('detects TypeScript cycles through three modules', async () => {
+		await using fixture = await createFixture({
+			'package.json': `${JSON.stringify({
+				name: 'cycle-fixture',
+				version: '1.0.0',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+			}, null, '\t')}\n`,
+			'tsconfig.json': `${JSON.stringify({
+				compilerOptions: {
+					allowImportingTsExtensions: true,
+					noEmit: true,
+				},
+			}, null, '\t')}\n`,
+			'a.ts': "import { b } from './b.ts';\n\nexport const a = b;\n",
+			'b.ts': "import { c } from './c.ts';\n\nexport const b = c;\n",
+			'c.ts': "import { a } from './a.ts';\n\nexport const c = a;\n",
+		});
+
+		const fixtureEslint = new ESLint({
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ cwd: fixture.path }),
+			overrideConfigFile: true,
+		});
+		const results = await fixtureEslint.lintFiles([
+			fixture.getPath('a.ts'),
+			fixture.getPath('b.ts'),
+			fixture.getPath('c.ts'),
+		]);
+		const messages = results.flatMap(result => result.messages);
+
+		onTestFail(() => {
+			console.log(messages);
+		});
+
+		expect(hasCycle(messages)).toBe(true);
 	});
 });
