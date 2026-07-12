@@ -177,4 +177,45 @@ describe('package-json', () => {
 		);
 		expect(hasNodeDevDepError).toBe(false);
 	});
+
+	test('no-extraneous-dependencies checks CommonJS requires', async () => {
+		await using fixture = await createFixture({
+			'package.json': JSON.stringify({
+				name: 'commonjs-app',
+				version: '1.0.0',
+				description: 'CommonJS app fixture',
+				license: 'MIT',
+				type: 'commonjs',
+				devDependencies: {
+					manten: '^1.0.0',
+				},
+			}),
+			'app.cjs': "require('manten');\nrequire('fs-fixture');\n",
+			node_modules: ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
+		});
+
+		onTestFail(() => console.log('Fixture at:', fixture.path));
+
+		const fixtureEslint = new ESLint({
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ node: true }),
+			overrideConfigFile: true,
+		});
+		const [result] = await fixtureEslint.lintFiles(['app.cjs']);
+
+		onTestFail(() => console.log(result.messages));
+
+		expect(result.messages).toEqual(expect.arrayContaining([
+			expect.objectContaining({
+				ruleId: 'import-x/no-extraneous-dependencies',
+				message: expect.stringContaining('fs-fixture'),
+			}),
+		]));
+		expect(result.messages).not.toEqual(expect.arrayContaining([
+			expect.objectContaining({
+				ruleId: 'n/no-unpublished-require',
+				message: expect.stringContaining('manten'),
+			}),
+		]));
+	});
 });
