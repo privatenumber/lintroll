@@ -59,9 +59,9 @@ Fast mode limits import cycle detection to direct two-module cycles. Full mode r
 lintroll --fast
 ```
 
-Set `LINTROLL_MODE=fast` to enable the same mode through the CLI environment.
+Set `LINTROLL_MODE=fast` to enable the same behavior through the CLI environment.
 
-When using an `eslint.config.*` file, configure `pvtnbr({ mode: 'fast' })` in that file instead of passing `--fast`.
+When using an `eslint.config.*` file, configure `pvtnbr({ fast: true })` in that file instead of passing `--fast`.
 
 #### Lint only staged files
 ```sh
@@ -258,11 +258,11 @@ Default: `false`
 
 Whether to lint Node.js code. When `true`, it will treat all files as Node.js files. You can also pass in an array of glob patterns to specify which files are Node.js files.
 
-#### options.mode
+#### options.fast
 
-Type: `'full' | 'fast'`
+Type: `boolean`
 
-Default: `'full'`
+Default: `false`
 
 Fast mode limits import cycle detection to direct two-module cycles. Full mode detects cycles at any depth.
 

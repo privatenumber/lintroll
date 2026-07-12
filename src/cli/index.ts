@@ -72,11 +72,9 @@ const isNodeEnabled = (
 	return (globs.length > 0) ? globs : true;
 };
 
-const mode = (
+const fast = (
 	argv.flags.fast || process.env.LINTROLL_MODE === 'fast'
-)
-	? 'fast'
-	: 'full';
+);
 
 // Normalize paths to forward slashes for consistent cross-platform comparison
 const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
@@ -109,7 +107,7 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 		cwd,
 		baseConfig: await getConfig({
 			cwd,
-			mode,
+			fast,
 			node: isNodeEnabled(argv.flags.node),
 			allowAbbreviations: {
 				exactWords: argv.flags.allowAbbreviation,

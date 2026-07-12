@@ -1,9 +1,9 @@
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
 
-const mode = process.argv.includes('--fast') ? 'fast' : 'full';
+const fast = process.argv.includes('--fast');
 const eslint = new ESLint({
-	baseConfig: pvtnbr({ mode }),
+	baseConfig: pvtnbr({ fast }),
 	overrideConfigFile: true,
 	stats: true,
 });

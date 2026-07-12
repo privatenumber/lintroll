@@ -2,11 +2,11 @@ import { bench, run } from 'mitata';
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
 
-const mode = process.argv.includes('--fast') ? 'fast' : 'full';
+const fast = process.argv.includes('--fast');
 
-bench(`generated config (${mode})`, async () => {
+bench(`generated config (${fast ? 'fast' : 'full'})`, async () => {
 	const eslint = new ESLint({
-		baseConfig: pvtnbr({ mode }),
+		baseConfig: pvtnbr({ fast }),
 		overrideConfigFile: true,
 	});
 

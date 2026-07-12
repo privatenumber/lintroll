@@ -3,6 +3,6 @@ import type { Options as UnicornOptions } from './configs/unicorn.ts';
 
 export type Options = {
 	cwd?: string;
-	mode?: 'full' | 'fast';
+	fast?: boolean;
 	node?: boolean | Linter.Config['files'];
 } & UnicornOptions;

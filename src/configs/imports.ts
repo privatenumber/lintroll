@@ -8,7 +8,7 @@ const pkgMapsResolver = fileURLToPath(
 );
 
 export const importsConfig = (
-	mode: Options['mode'],
+	fast: Options['fast'],
 ) => defineConfig({
 	plugins: {
 		'import-x': importPlugin,
@@ -99,7 +99,7 @@ export const importsConfig = (
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-cycle.md
 		'import-x/no-cycle': ['error', {
 			ignoreExternal: true,
-			maxDepth: mode === 'fast' ? 1 : '∞',
+			maxDepth: fast ? 1 : '∞',
 		}],
 
 		// https://github.com/import-js/eslint-plugin-import/blob/e6f6018/docs/rules/no-duplicates.md
@@ -169,9 +169,9 @@ export const importsConfig = (
 });
 
 export const imports = (
-	mode: Options['mode'],
+	fast: Options['fast'],
 ) => [
-	importsConfig(mode),
+	importsConfig(fast),
 
 	// Bundled files
 	defineConfig({

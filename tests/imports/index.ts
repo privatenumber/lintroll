@@ -169,7 +169,7 @@ describe('imports', () => {
 
 		const fixtureEslint = new ESLint({
 			cwd: fixture.path,
-			baseConfig: pvtnbr({ mode: 'fast' }),
+			baseConfig: pvtnbr({ fast: true }),
 			overrideConfigFile: true,
 		});
 		const results = await fixtureEslint.lintFiles([
@@ -221,7 +221,7 @@ describe('imports', () => {
 			cache: true,
 			cacheLocation,
 			cwd: fixture.path,
-			baseConfig: pvtnbr({ mode: 'fast' }),
+			baseConfig: pvtnbr({ fast: true }),
 			overrideConfigFile: true,
 		});
 		const fastResults = await fast.lintFiles(files);
