@@ -127,9 +127,10 @@ describe('package-json', () => {
 		// Create isolated fixture with symlinked node_modules
 		await using fixture = await createFixture({
 			'package.json': JSON.stringify({
-				name: 'private-app',
+				name: 'node-app',
 				version: '1.0.0',
-				private: true,
+				description: 'Node app fixture',
+				license: 'MIT',
 				type: 'module',
 				devDependencies: {
 					// manten is listed - importing it should be ALLOWED
@@ -148,7 +149,7 @@ describe('package-json', () => {
 
 		const fixtureEslint = new ESLint({
 			cwd: fixture.path,
-			baseConfig: pvtnbr(),
+			baseConfig: pvtnbr({ node: true }),
 			overrideConfigFile: true,
 		});
 
@@ -169,5 +170,11 @@ describe('package-json', () => {
 				&& message.message.includes('manten'),
 		);
 		expect(hasDevDepError).toBe(false);
+
+		const hasNodeDevDepError = allMessages.some(
+			message => message.ruleId === 'n/no-unpublished-import'
+				&& message.message.includes('manten'),
+		);
+		expect(hasNodeDevDepError).toBe(false);
 	});
 });
