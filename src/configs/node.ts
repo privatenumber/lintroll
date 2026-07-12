@@ -30,8 +30,27 @@ const tsOverrides: Linter.RulesRecord = {
 	'n/no-missing-import': 'off',
 };
 
-const cjsConfig = nodePlugin.configs['flat/recommended-script'];
-const mjsConfig = nodePlugin.configs['flat/recommended-module'];
+const importRuleOverrides: Linter.RulesRecord = {
+	// import-x handles ESM dependencies, including type-only imports.
+	'n/no-extraneous-import': 'off',
+};
+
+const recommendedScript = nodePlugin.configs['flat/recommended-script'];
+const cjsConfig = {
+	...recommendedScript,
+	rules: {
+		...recommendedScript.rules,
+		...importRuleOverrides,
+	},
+};
+const recommendedModule = nodePlugin.configs['flat/recommended-module'];
+const mjsConfig = {
+	...recommendedModule,
+	rules: {
+		...recommendedModule.rules,
+		...importRuleOverrides,
+	},
+};
 const mjs = defineConfig({
 	...mjsConfig,
 	files: ['**/*.mjs'],

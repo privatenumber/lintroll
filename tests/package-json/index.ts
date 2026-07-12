@@ -129,6 +129,8 @@ describe('package-json', () => {
 			'package.json': JSON.stringify({
 				name: 'private-app',
 				version: '1.0.0',
+				description: 'Node app fixture',
+				license: 'MIT',
 				private: true,
 				type: 'module',
 				devDependencies: {
@@ -148,7 +150,7 @@ describe('package-json', () => {
 
 		const fixtureEslint = new ESLint({
 			cwd: fixture.path,
-			baseConfig: pvtnbr(),
+			baseConfig: pvtnbr({ node: true }),
 			overrideConfigFile: true,
 		});
 
@@ -169,5 +171,62 @@ describe('package-json', () => {
 				&& message.message.includes('manten'),
 		);
 		expect(hasDevDepError).toBe(false);
+
+		const hasDuplicateMissingDepError = allMessages.some(
+			message => message.ruleId === 'n/no-extraneous-import'
+				&& message.message.includes('fs-fixture'),
+		);
+		expect(hasDuplicateMissingDepError).toBe(false);
+	});
+
+	test('no-extraneous-dependencies checks type-only imports', async () => {
+		await using fixture = await createFixture({
+			'package.json': JSON.stringify({
+				name: 'typescript-app',
+				version: '1.0.0',
+				description: 'TypeScript app fixture',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+			}),
+			'app.ts': "import type { createFixture } from 'fs-fixture';\n\nexport type Fixture = typeof createFixture;\n",
+			node_modules: ({ symlink }) => symlink(`${process.cwd()}/node_modules`),
+		});
+
+		onTestFail(() => console.log('Fixture at:', fixture.path));
+
+		const fixtureEslint = new ESLint({
+			cwd: fixture.path,
+			baseConfig: pvtnbr({ node: true }),
+			overrideConfigFile: true,
+		});
+		const [result] = await fixtureEslint.lintFiles(['app.ts']);
+
+		onTestFail(() => console.log(result.messages));
+
+		expect(result.messages).toEqual(expect.arrayContaining([
+			expect.objectContaining({
+				ruleId: 'import-x/no-extraneous-dependencies',
+				message: expect.stringContaining('fs-fixture'),
+			}),
+		]));
+	});
+
+	test('Node rules check require.resolve dependencies', async () => {
+		const fixtureEslint = new ESLint({
+			baseConfig: pvtnbr({ node: true }),
+			overrideConfigFile: true,
+		});
+		const [result] = await fixtureEslint.lintText(
+			"require.resolve('missing-package');\n",
+			{ filePath: 'app.cjs' },
+		);
+
+		expect(result.messages).toEqual(expect.arrayContaining([
+			expect.objectContaining({
+				ruleId: 'n/no-missing-require',
+				message: expect.stringContaining('missing-package'),
+			}),
+		]));
 	});
 });
