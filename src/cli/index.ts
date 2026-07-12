@@ -5,7 +5,11 @@ import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
 import { getConfig } from './get-config.ts';
 import { getExitCode, countErrors } from './handle-errors.ts';
-import { getGitRoot, getStagedFiles, getTrackedFiles } from './utils/git.ts';
+import {
+	resolveTargetFiles,
+	selectGitFiles,
+	selectStagedFiles,
+} from './select-files.ts';
 
 /**
  * Reference: ESlint CLI
@@ -68,23 +72,11 @@ const isNodeEnabled = (
 	return (globs.length > 0) ? globs : true;
 };
 
-// Normalize paths to forward slashes for consistent cross-platform comparison
-const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
-
 (async () => {
-	let { files } = argv._;
-	if (files.length === 0) {
-		files = ['.'];
-	}
+	let files = resolveTargetFiles(argv._.files);
 
-	// Use native realpath to resolve Windows 8.3 short paths (RUNNER~1 -> runneradmin)
-	files = files.map(filePath => normalizePath(fs.realpathSync.native(path.resolve(filePath))));
-
-	// For --staged flag, we directly pass the staged files to ESLint
-	// This is because staged files are already a specific list that we want to lint
 	if (argv.flags.staged) {
-		const gitRoot = await getGitRoot();
-		files = await getStagedFiles(gitRoot, files);
+		files = await selectStagedFiles(files);
 
 		if (files.length === 0) {
 			process.exitCode = 0;
@@ -115,22 +107,8 @@ const normalizePath = (filePath: string) => filePath.replaceAll('\\', '/');
 		ignorePatterns: argv.flags.ignorePattern,
 	});
 
-	// For --git flag, filter to only git-tracked files that ESLint can lint
 	if (argv.flags.git) {
-		const gitRoot = await getGitRoot();
-		const gitTrackedFiles = await getTrackedFiles(gitRoot, files);
-
-		// Filter out files that ESLint will ignore (unsupported file types, ignore patterns, etc.)
-		const ignoredChecks = await Promise.all(
-			gitTrackedFiles.map(async file => ({
-				file,
-				isIgnored: await eslint.isPathIgnored(file),
-			})),
-		);
-
-		files = ignoredChecks
-			.filter(({ isIgnored }) => !isIgnored)
-			.map(({ file }) => file);
+		files = await selectGitFiles(eslint, files);
 
 		if (files.length === 0) {
 			console.log('No git-tracked files to lint');
