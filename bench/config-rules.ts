@@ -24,4 +24,4 @@ const output = [...ruleTimes]
 		time,
 	}));
 
-process.stdout.write(`${JSON.stringify(output, null, 2)}\n`);
+console.log(JSON.stringify(output, null, 2));
