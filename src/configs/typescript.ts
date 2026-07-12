@@ -8,10 +8,13 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import importPlugin from 'eslint-plugin-import-x';
+import { importXResolverCompat } from 'eslint-plugin-import-x/utils';
+import * as pkgMapsResolver from '#pkg-maps-resolver';
 import { defineConfig } from '../utils/define-config.ts';
 import { eslint } from './eslint.ts';
 
 export const tsFiles = '**/*.{ts,tsx,mts,cts}';
+const pkgMapsImportResolver = importXResolverCompat(pkgMapsResolver);
 
 export const parseTypescript = defineConfig({
 	files: [tsFiles],
@@ -46,6 +49,7 @@ export const typescript = (tsconfig: TsconfigResult | undefined) => {
 						references: 'auto',
 					},
 				}),
+				pkgMapsImportResolver,
 			],
 		},
 

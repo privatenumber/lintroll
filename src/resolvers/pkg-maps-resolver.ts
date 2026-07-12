@@ -36,18 +36,19 @@ const tryFallback = (
 	}
 
 	return {
-		found: true,
+		found: true as const,
 		path: entryPaths[0],
 	};
 };
 
 export const resolve = (
-	source: `#${string}`,
+	source: string,
 	file: string,
 ) => {
 	if (source[0] !== '#') {
 		return notFound;
 	}
+	const packageImport = source as `#${string}`;
 
 	const packageJsonPath = findUpSync(
 		'package.json',
@@ -65,29 +66,29 @@ export const resolve = (
 		return notFound;
 	}
 
-	if (!(source in imports)) {
+	if (!(packageImport in imports)) {
 		return notFound;
 	}
 
 	const result = resolveImports(
 		imports,
-		source,
+		packageImport,
 		getConditions(),
 	);
 
 	if (!result || result.length === 0) {
-		return tryFallback(imports, source);
+		return tryFallback(imports, packageImport);
 	}
 
 	const foundPath = result[0];
 	const foundPathResolved = path.resolve(packageJsonPath, '..', foundPath);
 
 	if (!fs.existsSync(foundPathResolved)) {
-		return tryFallback(imports, source, foundPath);
+		return tryFallback(imports, packageImport, foundPath);
 	}
 
 	return {
-		found: true,
+		found: true as const,
 		path: foundPath,
 	};
 };

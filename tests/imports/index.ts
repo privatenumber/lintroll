@@ -4,7 +4,7 @@ import {
 import { ESLint } from 'eslint';
 import { createFixture } from 'fs-fixture';
 import { pvtnbr } from '#pvtnbr';
-import { eslint } from '../utils/eslint.ts';
+import { eslint, lintroll } from '../utils/eslint.ts';
 
 const orderMessages = (
 	messages: { ruleId: string | null }[],
@@ -237,5 +237,35 @@ describe('imports', () => {
 		});
 
 		expect(hasCycle(messages)).toBe(true);
+	});
+
+	test('falls back to an existing package import target', async () => {
+		await using fixture = await createFixture({
+			'package.json': `${JSON.stringify({
+				name: 'fallback-fixture',
+				version: '1.0.0',
+				description: 'Package imports fallback fixture',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+				imports: {
+					'#fallback': {
+						development: './src/fallback.ts',
+						default: './dist/fallback.js',
+					},
+				},
+			}, null, '\t')}\n`,
+			'tsconfig.json': '{}\n',
+			'src/fallback.ts': 'export const fallback = true;\n',
+			'src/index.ts': "import { fallback } from '#fallback';\n\nconsole.log(fallback);\n",
+		});
+
+		const result = await lintroll(['src/index.ts'], fixture.path);
+
+		onTestFail(() => {
+			console.log(result.output);
+		});
+
+		expect(result.output).not.toContain('import-x/no-unresolved');
 	});
 });
