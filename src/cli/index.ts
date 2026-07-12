@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { cli } from 'cleye';
 import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
-import { getConfig } from './get-config.ts';
+import { getEslintConfig } from './get-config.ts';
 import { getExitCode, countErrors } from './handle-errors.ts';
 import {
 	resolveTargetFiles,
@@ -87,16 +87,21 @@ const isNodeEnabled = (
 	// Use native realpath for cwd to handle Windows 8.3 short paths (RUNNER~1 -> runneradmin)
 	// This ensures ESLint's base path matches the canonicalized file paths
 	const cwd = fs.realpathSync.native(process.cwd());
+	const { config, configFilePath } = await getEslintConfig({
+		cwd,
+		node: isNodeEnabled(argv.flags.node),
+		allowAbbreviations: {
+			exactWords: argv.flags.allowAbbreviation,
+			substrings: argv.flags.allowAbbreviation,
+		},
+	});
+	if (configFilePath) {
+		console.log(`[${packageJson.name}]: Using config file: ${configFilePath}`);
+	}
+
 	const eslint = new ESLint({
 		cwd,
-		baseConfig: await getConfig({
-			cwd,
-			node: isNodeEnabled(argv.flags.node),
-			allowAbbreviations: {
-				exactWords: argv.flags.allowAbbreviation,
-				substrings: argv.flags.allowAbbreviation,
-			},
-		}),
+		baseConfig: config,
 
 		// Don't look up config file
 		overrideConfigFile: true,

@@ -4,7 +4,6 @@ import { tsImport } from 'tsx/esm/api';
 import type { Linter } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
 import type { Options } from '../types.ts';
-import packageJson from '../../package.json' with { type: 'json' };
 
 const exists = async (
 	path: string,
@@ -14,9 +13,14 @@ type ConfigModule = Linter.Config[] | {
 	default: ConfigModule;
 };
 
-export const getConfig = async (
+type EslintConfig = {
+	config: Linter.Config[];
+	configFilePath?: string;
+};
+
+export const getEslintConfig = async (
 	options: Options,
-): Promise<Linter.Config[]> => {
+): Promise<EslintConfig> => {
 	/**
 	 * Only checks cwd. I considerered find-up,
 	 * but I'm not sure if it's expected to detect config files far up
@@ -46,10 +50,12 @@ export const getConfig = async (
 		}
 
 		if (configModule) {
-			console.log(`[${packageJson.name}]: Using config file: ${configFilePath}`);
-			return configModule as Linter.Config[];
+			return {
+				config: configModule as Linter.Config[],
+				configFilePath,
+			};
 		}
 	}
 
-	return pvtnbr(options);
+	return { config: pvtnbr(options) };
 };
