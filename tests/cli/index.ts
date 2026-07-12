@@ -13,7 +13,13 @@ import { createGit } from '../utils/create-git.ts';
 const slash = (filePath: string) => filePath.replaceAll('/', path.sep);
 
 const threeModuleCycle = {
-	'package.json': JSON.stringify({ type: 'module' }),
+	'package.json': `${JSON.stringify({
+		name: 'cycle-fixture',
+		version: '1.0.0',
+		license: 'MIT',
+		private: true,
+		type: 'module',
+	}, null, '\t')}\n`,
 	'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
 	'b.js': "import { c } from './c.js';\n\nexport const b = c;\n",
 	'c.js': "import { a } from './a.js';\n\nexport const c = a;\n",

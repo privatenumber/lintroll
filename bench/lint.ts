@@ -10,8 +10,6 @@ bench('lintroll --git', async () => {
 	], {
 		stdio: 'ignore',
 	});
-})
-	// Each sample starts a full CLI process. Concurrent samples would contend for CPU and disk.
-	.gc(false);
+});
 
 await run({ throw: true });

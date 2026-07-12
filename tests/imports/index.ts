@@ -156,7 +156,13 @@ describe('imports', () => {
 
 	test('fast mode detects direct cycles', async () => {
 		await using fixture = await createFixture({
-			'package.json': JSON.stringify({ type: 'module' }),
+			'package.json': `${JSON.stringify({
+				name: 'direct-cycle-fixture',
+				version: '1.0.0',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+			}, null, '\t')}\n`,
 			'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
 			'b.js': "import { a } from './a.js';\n\nexport const b = a;\n",
 		});
@@ -181,7 +187,13 @@ describe('imports', () => {
 
 	test('fast mode does not reuse full mode cache entries', async () => {
 		await using fixture = await createFixture({
-			'package.json': JSON.stringify({ type: 'module' }),
+			'package.json': `${JSON.stringify({
+				name: 'cached-cycle-fixture',
+				version: '1.0.0',
+				license: 'MIT',
+				private: true,
+				type: 'module',
+			}, null, '\t')}\n`,
 			'a.js': "import { b } from './b.js';\n\nexport const a = b;\n",
 			'b.js': "import { c } from './c.js';\n\nexport const b = c;\n",
 			'c.js': "import { a } from './a.js';\n\nexport const c = a;\n",

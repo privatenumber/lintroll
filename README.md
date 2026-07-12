@@ -51,6 +51,18 @@ lintroll --fix
 lintroll --cache
 ```
 
+#### Lint faster with direct cycle detection
+
+Fast mode limits import cycle detection to direct two-module cycles. Full mode remains the default and detects cycles at any depth.
+
+```sh
+lintroll --fast
+```
+
+Set `LINTROLL_MODE=fast` to enable the same mode through the CLI environment.
+
+When using an `eslint.config.*` file, configure `pvtnbr({ mode: 'fast' })` in that file instead of passing `--fast`.
+
 #### Lint only staged files
 ```sh
 lintroll --staged
@@ -102,6 +114,7 @@ Usage:
 Flags:
       --cache                          Only check changed files
       --cache-location <string>        Path to the cache file or directory
+      --fast                           Limit import cycle traversal for faster linting
       --fix                            Automatically fix problems
       --git                            Only lint git tracked files within the files passed in
   -h, --help                           Show help
@@ -233,7 +246,7 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 
 ## API
 
-### pvtbr(options)
+### pvtnbr(options)
 
 The main config factory. It takes an object of options and returns a config object.
 
@@ -244,6 +257,14 @@ Type: `boolean | string[]`
 Default: `false`
 
 Whether to lint Node.js code. When `true`, it will treat all files as Node.js files. You can also pass in an array of glob patterns to specify which files are Node.js files.
+
+#### options.mode
+
+Type: `'full' | 'fast'`
+
+Default: `'full'`
+
+Fast mode limits import cycle detection to direct two-module cycles. Full mode detects cycles at any depth.
 
 ### defineConfig(configs)
 

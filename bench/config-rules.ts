@@ -1,7 +1,7 @@
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
 
-const mode = process.env.LINTROLL_MODE === 'fast' ? 'fast' : 'full';
+const mode = process.argv.includes('--fast') ? 'fast' : 'full';
 const eslint = new ESLint({
 	baseConfig: pvtnbr({ mode }),
 	overrideConfigFile: true,

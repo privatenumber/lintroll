@@ -56,7 +56,7 @@ const argv = cli({
 		},
 		fast: {
 			type: Boolean,
-			description: 'Skip expensive lint checks',
+			description: 'Limit import cycle traversal for faster linting',
 		},
 	},
 });
