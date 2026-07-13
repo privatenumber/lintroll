@@ -48,6 +48,11 @@
 		"#cli": {
 			"development": "./src/cli/index.ts",
 			"default": "./dist/cli/index.mjs"
+		},
+		"#oxlint-config": {
+			"types": "./src/oxlint/index.ts",
+			"development": "./src/oxlint/index.ts",
+			"default": "./dist/oxlint/index.mjs"
 		}
 	},
 	"packageManager": "pnpm@10.27.0",
@@ -110,6 +115,7 @@
 		"fs-fixture": "^2.14.0",
 		"manten": "2.0.1",
 		"mitata": "^1.0.34",
+		"oxlint": "1.73.0",
 		"pkgroll": "^2.27.1",
 		"react": "^19.2.7",
 		"read-package-up": "^12.0.0",
