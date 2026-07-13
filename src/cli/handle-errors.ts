@@ -1,39 +1,13 @@
-import type { ESLint } from 'eslint';
-
-type ErrorCount = {
-	errorCount: number;
-	fatalErrorCount: number;
-	warningCount: number;
-};
-
-export const countErrors = (
-	results: ESLint.LintResult[],
-): ErrorCount => {
-	let errorCount = 0;
-	let fatalErrorCount = 0;
-	let warningCount = 0;
-
-	for (const result of results) {
-		errorCount += result.errorCount;
-		fatalErrorCount += result.fatalErrorCount;
-		warningCount += result.warningCount;
-	}
-
-	return {
-		errorCount,
-		fatalErrorCount,
-		warningCount,
-	};
-};
+import type { LintCounts } from './lint-report.ts';
 
 export const getExitCode = (
-	errorCount: ErrorCount,
+	report: LintCounts,
 ) => {
-	if (errorCount.fatalErrorCount > 0) {
+	if (report.fatalErrorCount > 0) {
 		return 2;
 	}
 
-	if (errorCount.errorCount > 0) {
+	if (report.errorCount > 0) {
 		return 1;
 	}
 

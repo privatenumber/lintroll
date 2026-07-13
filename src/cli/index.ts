@@ -4,7 +4,8 @@ import { cli } from 'cleye';
 import { ESLint } from 'eslint';
 import packageJson from '../../package.json' with { type: 'json' };
 import { getEslintConfig } from './get-config.ts';
-import { getExitCode, countErrors } from './handle-errors.ts';
+import { getExitCode } from './handle-errors.ts';
+import { runEslint } from './run-eslint.ts';
 import {
 	resolveTargetFiles,
 	selectGitFiles,
@@ -123,36 +124,25 @@ const isNodeEnabled = (
 		console.log(`Linting ${files.length} git-tracked ${files.length === 1 ? 'file' : 'files'}...\n`);
 	}
 
-	const results = await eslint.lintFiles(files);
+	const report = await runEslint(eslint, files, {
+		fix: argv.flags.fix,
+		quiet: argv.flags.quiet,
+	});
 
-	if (argv.flags.fix) {
-		await ESLint.outputFixes(results);
-
-		const fixedFiles = results.filter(result => result.output);
-		if (fixedFiles.length > 0) {
-			const relativePaths = fixedFiles.map(result => path.relative(cwd, result.filePath));
-			console.log(`Applied auto-fixes to ${fixedFiles.length} ${fixedFiles.length === 1 ? 'file' : 'files'}:`);
-			for (const filePath of relativePaths) {
-				console.log(`  ${filePath}`);
-			}
-			console.log();
+	if (report.fixedFilePaths.length > 0) {
+		const relativePaths = report.fixedFilePaths.map(filePath => path.relative(cwd, filePath));
+		console.log(`Applied auto-fixes to ${report.fixedFilePaths.length} ${report.fixedFilePaths.length === 1 ? 'file' : 'files'}:`);
+		for (const filePath of relativePaths) {
+			console.log(`  ${filePath}`);
 		}
+		console.log();
 	}
 
-	let resultsToPrint = results;
-	if (argv.flags.quiet) {
-		resultsToPrint = ESLint.getErrorResults(results);
+	if (report.output) {
+		console.log(report.output);
 	}
 
-	const resultCounts = countErrors(results);
-
-	const formatter = await eslint.loadFormatter();
-	const output = await formatter.format(resultsToPrint);
-	if (output) {
-		console.log(output);
-	}
-
-	process.exitCode = getExitCode(resultCounts);
+	process.exitCode = getExitCode(report);
 })().catch((error) => {
 	console.error(`Error: ${(error as Error).message}`);
 	process.exit(1);

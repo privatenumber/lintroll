@@ -307,6 +307,30 @@ describe('cli', () => {
 	});
 
 	describe('--fix flag', () => {
+		test('logs a file fixed to empty', async () => {
+			await using fixture = await createFixture({
+				'eslint.config.js': `export default [{
+	plugins: { test: { rules: { remove: {
+		meta: { type: 'problem', fixable: 'code', schema: [] },
+		create: context => ({
+			DebuggerStatement: node => context.report({
+				node,
+				message: 'Remove debugger',
+				fix: fixer => fixer.replaceTextRange([0, context.sourceCode.text.length], ''),
+			}),
+		}),
+	} } } },
+	rules: { 'test/remove': 'error' },
+}];\n`,
+				'empty.js': 'debugger;\n',
+			});
+
+			const { stdout } = await lintroll(['--fix', 'empty.js'], fixture.path);
+
+			expect(stdout).toContain('Applied auto-fixes to 1 file:\n  empty.js');
+			expect(await fs.readFile(fixture.getPath('empty.js'), 'utf8')).toBe('');
+		});
+
 		test('logs single fixed file', async () => {
 			await using fixture = await createFixture({
 				// Double quotes → fixable to single quotes by @stylistic/quotes
