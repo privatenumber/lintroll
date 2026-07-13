@@ -2,12 +2,23 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'manten';
-import type { ESLint } from 'eslint';
+import { ESLint } from 'eslint';
 import { createFixture } from 'fs-fixture';
+import { pvtnbr } from '#pvtnbr';
+import { eslintGapConfig } from '../../bench/eslint-gap-config.ts';
 import { runOxlint } from '../../src/cli/run-oxlint.ts';
 import { createEslint } from '../utils/eslint.ts';
 
 const fixturesDirectory = fileURLToPath(new URL('fixtures/', import.meta.url));
+
+const createGapEslint = () => new ESLint({
+	baseConfig: [
+		...pvtnbr({ node: true }),
+		...eslintGapConfig,
+	],
+	ignore: false,
+	overrideConfigFile: true,
+});
 
 type Diagnostic = {
 	filePath: string;
@@ -277,5 +288,72 @@ describe('linter parity corpus', () => {
 			cwd: process.cwd(),
 			files: ['missing-file.js'],
 		})).rejects.toThrow('No files found');
+	});
+
+	test('leaves only ESLint gap diagnostics', async () => {
+		const eslint = createGapEslint();
+		const results = await eslint.lintFiles([
+			path.join(fixturesDirectory, 'fail/javascript.js'),
+			path.join(fixturesDirectory, 'fail/typescript.ts'),
+			path.join(fixturesDirectory, 'fail/Input.tsx'),
+			path.join(fixturesDirectory, 'fail/node.mjs'),
+		]);
+
+		expect(normalizeDiagnostics(results)).toStrictEqual([
+			{
+				filePath: 'fail/Input.tsx',
+				ruleId: 'react/prop-types',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/javascript.js',
+				ruleId: '@stylistic/quotes',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/javascript.js',
+				ruleId: '@stylistic/semi',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/javascript.js',
+				ruleId: 'import-x/order',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/javascript.js',
+				ruleId: 'regexp/prefer-d',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/node.mjs',
+				ruleId: 'n/prefer-node-protocol',
+				severity: 2,
+			},
+			{
+				filePath: 'fail/node.mjs',
+				ruleId: 'n/prefer-promises/fs',
+				severity: 2,
+			},
+		]);
+	});
+
+	test('does not report migrated directives as unused', async () => {
+		const [result] = await createGapEslint().lintFiles([
+			path.join(fixturesDirectory, '../../base/fixtures/pass.js'),
+		]);
+
+		expect(result.messages.filter(message => (
+			message.ruleId === null && message.message.includes('eslint-disable')
+		))).toStrictEqual([]);
+	});
+
+	test('disables all known Oxlint-owned core overlaps', async () => {
+		const config = await createGapEslint().calculateConfigForFile(
+			path.join(fixturesDirectory, 'fail/javascript.js'),
+		);
+
+		expect(config?.rules['no-implied-eval']?.[0]).toBe(0);
+		expect(config?.rules['prefer-promise-reject-errors']?.[0]).toBe(0);
 	});
 });
