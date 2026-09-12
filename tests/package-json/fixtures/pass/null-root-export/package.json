@@ -1,0 +1,10 @@
+{
+	"name": "cli-package",
+	"version": "1.0.0",
+	"description": "Package that encapsulates its entry points",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": null
+	}
+}

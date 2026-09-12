@@ -44,6 +44,24 @@ describe('package-json', () => {
 		);
 	});
 
+	test('exports-subpaths-style leaves null root exports unchanged', async () => {
+		const [result] = await eslint.lintFiles(
+			fileURLToPath(new URL('fixtures/pass/null-root-export/package.json', import.meta.url)),
+		);
+
+		onTestFail(() => {
+			console.log(result.messages);
+		});
+
+		// `{ ".": null }` encapsulates the package; rewriting it to `null`
+		// would restore legacy resolution (different Node.js semantics)
+		const hasExportsStyleError = result.messages.some(
+			message => message.ruleId === 'package-json/exports-subpaths-style',
+		);
+
+		expect(hasExportsStyleError).toBe(false);
+	});
+
 	test('no-redundant-publishConfig flags unscoped packages', async () => {
 		const [result] = await eslint.lintFiles(
 			fileURLToPath(new URL('fixtures/fail/redundant-publishConfig/package.json', import.meta.url)),

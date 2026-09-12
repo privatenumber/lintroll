@@ -85,7 +85,7 @@
 		"eslint-plugin-jsonc": "^3.4.2",
 		"eslint-plugin-n": "^18.3.0",
 		"eslint-plugin-no-use-extend-native": "0.7.3",
-		"eslint-plugin-package-json": "^1.8.0",
+		"eslint-plugin-package-json": "privatenumber/eslint-plugin-package-json#npm/main",
 		"eslint-plugin-promise": "^7.3.0",
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^7.1.1",

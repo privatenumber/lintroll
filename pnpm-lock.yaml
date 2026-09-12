@@ -209,8 +209,8 @@ importers:
         specifier: 0.7.3
         version: 0.7.3(eslint@9.39.5(supports-color@7.2.0))
       eslint-plugin-package-json:
-        specifier: ^1.8.0
-        version: 1.8.0(eslint@9.39.5(supports-color@7.2.0))
+        specifier: privatenumber/eslint-plugin-package-json#npm/main
+        version: https://codeload.github.com/privatenumber/eslint-plugin-package-json/tar.gz/7e625dd501c5adb154d45b3e5283b24270165e93(eslint@9.39.5(supports-color@7.2.0))
       eslint-plugin-promise:
         specifier: ^7.3.0
         version: 7.3.0(eslint@9.39.5(supports-color@7.2.0))
@@ -1708,8 +1708,9 @@ packages:
     peerDependencies:
       oxlint: ~1.73.0
 
-  eslint-plugin-package-json@1.8.0:
-    resolution: {integrity: sha512-nfWWrak5t8yPgSVchNOHCjdFW/pl3+1135Bxsq0KZKo6PUdWWqUTqOVBrvzw1S+8BNOhhEx5c/YxeeCSYySFog==}
+  eslint-plugin-package-json@https://codeload.github.com/privatenumber/eslint-plugin-package-json/tar.gz/7e625dd501c5adb154d45b3e5283b24270165e93:
+    resolution: {gitHosted: true, integrity: sha512-vgLHDtzx1lbph0z8ldMbxzR4SLebhtRfj+iDyI/qV1QtKQPTD9U3FKFL1DVHOZfT5EB1xGncp5mytdFy0etamQ==, tarball: https://codeload.github.com/privatenumber/eslint-plugin-package-json/tar.gz/7e625dd501c5adb154d45b3e5283b24270165e93}
+    version: 1.8.0
     engines: {node: ^22.22.2 || >=24.15.0}
     peerDependencies:
       '@eslint/json': '>=1.0.0'
@@ -4387,7 +4388,7 @@ snapshots:
       jsonc-parser: 3.3.1
       oxlint: 1.73.0
 
-  eslint-plugin-package-json@1.8.0(eslint@9.39.5(supports-color@7.2.0)):
+  eslint-plugin-package-json@https://codeload.github.com/privatenumber/eslint-plugin-package-json/tar.gz/7e625dd501c5adb154d45b3e5283b24270165e93(eslint@9.39.5(supports-color@7.2.0)):
     dependencies:
       '@altano/repository-tools': 2.1.1
       '@types/estree': 1.0.9
