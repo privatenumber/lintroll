@@ -1,0 +1,6 @@
+# Deny unneeded lifecycle scripts: both packages ship platform binaries
+# as optionalDependencies, so their install scripts are validation-only
+# overhead (ignored builds under pnpm 10).
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false

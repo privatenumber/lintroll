@@ -23,21 +23,9 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@08c4be7e2e672a47d11bd04269e27e5f3e8529cb # v6
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: echo "PNPM_STORE=$(pnpm store path --silent)" >> "$GITHUB_ENV"
-
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
-        name: Cache pnpm
+        uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2
         with:
-          path: ${{ env.PNPM_STORE }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-
-
-      - name: Install dependencies
-        run: pnpm install
+          cache: true
 
       - name: Type check
         run: pnpm type-check
@@ -52,4 +40,4 @@ jobs:
 
       - name: Test Node.js 20.20.0
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm --use-node-version=20.20.0 tsx tests
+        run: pnx node@20.20.0 --import tsx tests/index.ts
