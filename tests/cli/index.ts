@@ -453,6 +453,15 @@ describe('cli', () => {
 			expect(output).not.toContain('@stylistic/semi');
 		});
 
+		test('picks up .ts config that imports an ES module in commonjs context', async () => {
+			const cwd = fileURLToPath(new URL('fixtures/ts-config-commonjs-esm-dep/', import.meta.url));
+			const { output } = await lintroll([], cwd);
+
+			expect(output).toContain('Using config file: eslint.config.ts');
+			expect(output).toContain('no-console');
+			expect(output).not.toContain('@stylistic/semi');
+		});
+
 		test('picks up .cjs config', async () => {
 			const cwd = fileURLToPath(new URL('fixtures/cjs-config/', import.meta.url));
 			const { output } = await lintroll([], cwd);

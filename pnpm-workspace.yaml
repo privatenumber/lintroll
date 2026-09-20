@@ -6,3 +6,4 @@ allowBuilds:
   unrs-resolver: false
 minimumReleaseAgeExclude:
   - eslint-plugin-package-json@1.8.1
+  - tsx@4.23.15
