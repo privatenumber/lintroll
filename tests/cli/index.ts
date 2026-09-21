@@ -8,16 +8,20 @@ import {
 import { createFixture } from 'fs-fixture';
 import { lintroll } from '../utils/eslint.ts';
 import { createGit } from '../utils/create-git.ts';
+import { createPackageJson } from '../utils/json.ts';
 
 // Normalize path separators for platform (forward slash on Unix, backslash on Windows)
 const slash = (filePath: string) => filePath.replaceAll('/', path.sep);
 
 describe('cli', () => {
 	test('implicitly lints cwd', async () => {
-		const cwd = fileURLToPath(new URL('fixtures/', import.meta.url));
-		const results = await lintroll([], cwd);
+		await using fixture = await createFixture({
+			'fail.js': "console.log('hi')",
+		});
 
-		expect(results.output).toContain('fail.js');
+		const result = await lintroll([], fixture.path);
+
+		expect(result.output).toContain('fail.js');
 	});
 
 	test('--staged exits cleanly when no files are staged', async () => {
@@ -417,9 +421,34 @@ describe('cli', () => {
 	});
 
 	describe('config files', () => {
+		// This package, linked into fixtures that resolve it by name
+		const lintrollPackage = fileURLToPath(new URL('../..', import.meta.url));
+
+		/**
+		 * Shared by the config-file tests below. Each config disables
+		 * @stylistic/semi and raises no-console to an error, so the assertions
+		 * prove the config file was found and applied.
+		 */
+		const configBody = `{
+	rules: {
+		'@stylistic/semi': 'off',
+		'no-console': 'error',
+	},
+}`;
+		const esmConfig = `export default ${configBody};\n`;
+		const cjsConfig = `module.exports = ${configBody};\n`;
+
+		const modulePackageJson = createPackageJson({ type: 'module' });
+		const commonjsPackageJson = createPackageJson({ type: 'commonjs' });
+
 		test('picks up .js config in module context', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/js-config-module/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'package.json': modulePackageJson,
+				'eslint.config.js': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.js');
 			expect(output).toContain('no-console');
@@ -427,8 +456,13 @@ describe('cli', () => {
 		});
 
 		test('picks up .js config in commonjs context', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/js-config-commonjs/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'package.json': commonjsPackageJson,
+				'eslint.config.js': cjsConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.js');
 			expect(output).toContain('no-console');
@@ -436,8 +470,13 @@ describe('cli', () => {
 		});
 
 		test('picks up .ts config in module context', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/ts-config-module/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'package.json': modulePackageJson,
+				'eslint.config.ts': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.ts');
 			expect(output).toContain('no-console');
@@ -445,8 +484,13 @@ describe('cli', () => {
 		});
 
 		test('picks up .ts config in commonjs context', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/ts-config-commonjs/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'package.json': commonjsPackageJson,
+				'eslint.config.ts': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.ts');
 			expect(output).toContain('no-console');
@@ -454,8 +498,15 @@ describe('cli', () => {
 		});
 
 		test('picks up .ts config that imports an ES module in commonjs context', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/ts-config-commonjs-esm-dep/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'package.json': commonjsPackageJson,
+				// ES module dependency, resolved through tsx's CJS require(esm) bridge
+				'eslint.config.ts': "export { default } from './config-module.mjs';\n",
+				'config-module.mjs': esmConfig,
+				'fail.js': "console.log('hi')\n",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.ts');
 			expect(output).toContain('no-console');
@@ -463,8 +514,12 @@ describe('cli', () => {
 		});
 
 		test('picks up .cjs config', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/cjs-config/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'eslint.config.cjs': cjsConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.cjs');
 			expect(output).toContain('no-console');
@@ -472,16 +527,37 @@ describe('cli', () => {
 		});
 
 		test('picks up .cjs config that requires lintroll', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/cjs-config-require-lintroll/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			/**
+			 * The fixture is outside this package, so lintroll is linked in to
+			 * resolve it by name. The config lives in a subdirectory because the
+			 * package.json governing it must not be a lint target, mirroring how
+			 * the repository's own package.json sits above the config.
+			 */
+			await using fixture = await createFixture({
+				'package.json': createPackageJson({
+					type: 'module',
+					dependencies: {
+						lintroll: '*',
+					},
+				}),
+				'node_modules/lintroll': ({ symlink }) => symlink(lintrollPackage),
+				'project/eslint.config.cjs': "module.exports = require('lintroll');\n",
+				'project/fail.js': "console.log('hi')\n",
+			});
+
+			const { output } = await lintroll([], fixture.getPath('project'));
 
 			expect(output).toContain('Using config file: eslint.config.cjs');
 			expect(output).toContain('@stylistic/semi');
 		});
 
 		test('picks up .cts config', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/cts-config/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'eslint.config.cts': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.cts');
 			expect(output).toContain('no-console');
@@ -489,8 +565,12 @@ describe('cli', () => {
 		});
 
 		test('picks up .mjs config', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/mjs-config/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'eslint.config.mjs': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.mjs');
 			expect(output).toContain('no-console');
@@ -498,8 +578,12 @@ describe('cli', () => {
 		});
 
 		test('picks up .mts config', async () => {
-			const cwd = fileURLToPath(new URL('fixtures/mts-config/', import.meta.url));
-			const { output } = await lintroll([], cwd);
+			await using fixture = await createFixture({
+				'eslint.config.mts': esmConfig,
+				'fail.js': "console.log('hi')",
+			});
+
+			const { output } = await lintroll([], fixture.path);
 
 			expect(output).toContain('Using config file: eslint.config.mts');
 			expect(output).toContain('no-console');

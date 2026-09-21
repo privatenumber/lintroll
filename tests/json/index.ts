@@ -1,13 +1,32 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
 
 describe('json', () => {
 	test('package.json', async () => {
-		const [results] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/fail/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+  "name": "some-package-json",
+  "description": "",
+  "version": "",
+  "dependencies": {
+    "b": "*",
+    "a": "*",
+    "c": "*"
+  },
+  "devDependencies": {
+    "b": "*",
+    "c": "*",
+    "a": "*"
+  }
+}
+`,
+		});
+
+		const [results] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		expect(results.messages).toEqual(
@@ -33,8 +52,15 @@ describe('json', () => {
 	});
 
 	test('random.json', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/fail/random.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'random.json': `{
+  "key": "value"
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('random.json'),
 		);
 
 		[
@@ -50,8 +76,19 @@ describe('json', () => {
 	});
 
 	test('renovate.json allows comments', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/pass/renovate.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'renovate.json': `{
+	// Comment is allowed in renovate.json
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:base"
+	]
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('renovate.json'),
 		);
 
 		onTestFail(() => {

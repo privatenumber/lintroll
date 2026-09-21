@@ -5,6 +5,7 @@ import { ESLint } from 'eslint';
 import { createFixture } from 'fs-fixture';
 import { pvtnbr } from '#pvtnbr';
 import { eslint, lintroll } from '../utils/eslint.ts';
+import { createPackageJson, createTsconfigJson } from '../utils/json.ts';
 
 const orderMessages = (
 	messages: { ruleId: string | null }[],
@@ -163,7 +164,7 @@ describe('imports', () => {
 
 	test('resolves TypeScript paths and package imports', async () => {
 		await using fixture = await createFixture({
-			'package.json': `${JSON.stringify({
+			'package.json': createPackageJson({
 				name: 'resolution-fixture',
 				version: '1.0.0',
 				license: 'MIT',
@@ -172,15 +173,15 @@ describe('imports', () => {
 				imports: {
 					'#package-import': './src/package-import.ts',
 				},
-			}, null, '\t')}\n`,
-			'tsconfig.json': `${JSON.stringify({
+			}),
+			'tsconfig.json': createTsconfigJson({
 				compilerOptions: {
 					baseUrl: '.',
 					paths: {
 						'@/*': ['./src/*'],
 					},
 				},
-			}, null, '\t')}\n`,
+			}),
 			'src/index.ts': "import '@/path-alias';\nimport '#package-import';\n",
 			'src/package-import.ts': 'export const packageImport = true;\n',
 			'src/path-alias.ts': 'export const pathAlias = true;\n',
@@ -202,19 +203,19 @@ describe('imports', () => {
 
 	test('detects TypeScript cycles through three modules', async () => {
 		await using fixture = await createFixture({
-			'package.json': `${JSON.stringify({
+			'package.json': createPackageJson({
 				name: 'cycle-fixture',
 				version: '1.0.0',
 				license: 'MIT',
 				private: true,
 				type: 'module',
-			}, null, '\t')}\n`,
-			'tsconfig.json': `${JSON.stringify({
+			}),
+			'tsconfig.json': createTsconfigJson({
 				compilerOptions: {
 					allowImportingTsExtensions: true,
 					noEmit: true,
 				},
-			}, null, '\t')}\n`,
+			}),
 			'a.ts': "import { b } from './b.ts';\n\nexport const a = b;\n",
 			'b.ts': "import { c } from './c.ts';\n\nexport const b = c;\n",
 			'c.ts': "import { a } from './a.ts';\n\nexport const c = a;\n",
@@ -241,7 +242,7 @@ describe('imports', () => {
 
 	test('falls back to an existing package import target', async () => {
 		await using fixture = await createFixture({
-			'package.json': `${JSON.stringify({
+			'package.json': createPackageJson({
 				name: 'fallback-fixture',
 				version: '1.0.0',
 				description: 'Package imports fallback fixture',
@@ -254,8 +255,8 @@ describe('imports', () => {
 						default: './dist/fallback.js',
 					},
 				},
-			}, null, '\t')}\n`,
-			'tsconfig.json': '{}\n',
+			}),
+			'tsconfig.json': createTsconfigJson({}),
 			'src/fallback.ts': 'export const fallback = true;\n',
 			'src/index.ts': "import { fallback } from '#fallback';\n\nconsole.log(fallback);\n",
 		});

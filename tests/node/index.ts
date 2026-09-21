@@ -1,28 +1,23 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint, createEslint } from '../utils/eslint.ts';
-
-const eslintNode = createEslint({
-	node: true,
-});
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
+import { commonjsPackageFixture, modulePackageFixture } from './fixtures/package-types.ts';
+import { unsupportedNodeUsageFixture } from './fixtures/unsupported-node-usage.ts';
 
 // TEST: n/no-missing-import only on js,mjs,cjs files
 describe('node', () => {
 	describe('Pass cases', () => {
 		describe('CommonJS', () => {
-			const fixtureDirectoryPath = new URL('fixtures/package-commonjs/', import.meta.url);
-
-			// For linting that requires package.json
-			const eslintCjs = createEslint({
-				node: true,
-				cwd: fileURLToPath(fixtureDirectoryPath),
-			});
-
 			test('.js file', async () => {
-				const fixturePath = fileURLToPath(new URL('pass.js', fixtureDirectoryPath));
-				const [result] = await eslintCjs.lintFiles(fixturePath);
+				await using fixture = await createFixture(commonjsPackageFixture);
+
+				// The fixture's package.json determines the module system
+				const [result] = await createEslint(fixture.path, {
+					node: true,
+					cwd: fixture.path,
+				}).lintFiles(fixture.getPath('pass.js'));
 
 				onTestFail(() => {
 					console.log(result);
@@ -35,8 +30,11 @@ describe('node', () => {
 
 			// CJS files are always treated as Node.js files
 			test('.cjs file', async () => {
-				const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.cjs', import.meta.url));
-				const [result] = await eslint.lintFiles(fixturePath);
+				await using fixture = await createFixture(commonjsPackageFixture);
+
+				const [result] = await createEslint(fixture.path).lintFiles(
+					fixture.getPath('pass.cjs'),
+				);
 
 				onTestFail(() => {
 					console.log(result);
@@ -48,8 +46,11 @@ describe('node', () => {
 			});
 
 			test('.mjs file', async () => {
-				const fixturePath = fileURLToPath(new URL('fixtures/package-commonjs/pass.mjs', import.meta.url));
-				const [result] = await eslintNode.lintFiles(fixturePath);
+				await using fixture = await createFixture(commonjsPackageFixture);
+
+				const [result] = await createEslint(fixture.path, {
+					node: true,
+				}).lintFiles(fixture.getPath('pass.mjs'));
 
 				onTestFail(() => {
 					console.log(result);
@@ -62,17 +63,14 @@ describe('node', () => {
 		});
 
 		describe('Module', () => {
-			const fixtureDirectoryPath = new URL('fixtures/package-module/', import.meta.url);
-
-			// For linting that requires package.json
-			const eslintMjs = createEslint({
-				node: true,
-				cwd: fileURLToPath(fixtureDirectoryPath),
-			});
-
 			test('.js file', async () => {
-				const fixturePath = fileURLToPath(new URL('pass.js', fixtureDirectoryPath));
-				const [result] = await eslintMjs.lintFiles(fixturePath);
+				await using fixture = await createFixture(modulePackageFixture);
+
+				// The fixture's package.json determines the module system
+				const [result] = await createEslint(fixture.path, {
+					node: true,
+					cwd: fixture.path,
+				}).lintFiles(fixture.getPath('pass.js'));
 
 				onTestFail(() => {
 					console.log(result);
@@ -85,8 +83,11 @@ describe('node', () => {
 
 			// CJS files are always treated as Node.js files
 			test('.cjs file', async () => {
-				const fixturePath = fileURLToPath(new URL('fixtures/package-module/pass.cjs', import.meta.url));
-				const [result] = await eslint.lintFiles(fixturePath);
+				await using fixture = await createFixture(modulePackageFixture);
+
+				const [result] = await createEslint(fixture.path).lintFiles(
+					fixture.getPath('pass.cjs'),
+				);
 
 				onTestFail(() => {
 					console.log(result);
@@ -99,8 +100,11 @@ describe('node', () => {
 
 			// CLI files are always treated as Node.js
 			test('CLI file', async () => {
-				const fixturePath = fileURLToPath(new URL('fixtures/package-module/cli.js', import.meta.url));
-				const [result] = await eslint.lintFiles(fixturePath);
+				await using fixture = await createFixture(modulePackageFixture);
+
+				const [result] = await createEslint(fixture.path).lintFiles(
+					fixture.getPath('cli.js'),
+				);
 
 				onTestFail(() => {
 					console.log(result);
@@ -113,8 +117,11 @@ describe('node', () => {
 
 			// Scripts are always treated as Node.js (no-console allowed)
 			test('scripts file', async () => {
-				const fixturePath = fileURLToPath(new URL('fixtures/package-module/scripts/build.js', import.meta.url));
-				const [result] = await eslint.lintFiles(fixturePath);
+				await using fixture = await createFixture(modulePackageFixture);
+
+				const [result] = await createEslint(fixture.path).lintFiles(
+					fixture.getPath('scripts/build.js'),
+				);
 
 				onTestFail(() => {
 					console.log(result);
@@ -129,8 +136,11 @@ describe('node', () => {
 
 	describe('Fail cases', () => {
 		test('cts', async () => {
-			const fixturePath = fileURLToPath(new URL('fixtures/fail.cts', import.meta.url));
-			const [result] = await eslintNode.lintFiles(fixturePath);
+			await using fixture = await createFixture(unsupportedNodeUsageFixture);
+
+			const [result] = await createEslint(fixture.path, {
+				node: true,
+			}).lintFiles(fixture.getPath('fail.cts'));
 
 			onTestFail(() => {
 				console.log(result);
@@ -174,8 +184,11 @@ describe('node', () => {
 		});
 
 		test('mjs', async () => {
-			const fixturePath = fileURLToPath(new URL('fixtures/fail.mjs', import.meta.url));
-			const [result] = await eslintNode.lintFiles(fixturePath);
+			await using fixture = await createFixture(unsupportedNodeUsageFixture);
+
+			const [result] = await createEslint(fixture.path, {
+				node: true,
+			}).lintFiles(fixture.getPath('fail.mjs'));
 
 			onTestFail(() => {
 				console.log(result);
@@ -216,8 +229,11 @@ describe('node', () => {
 		});
 
 		test('mts', async () => {
-			const fixturePath = fileURLToPath(new URL('fixtures/fail.mts', import.meta.url));
-			const [result] = await eslintNode.lintFiles(fixturePath);
+			await using fixture = await createFixture(unsupportedNodeUsageFixture);
+
+			const [result] = await createEslint(fixture.path, {
+				node: true,
+			}).lintFiles(fixture.getPath('fail.mts'));
 
 			onTestFail(() => {
 				console.log(result);

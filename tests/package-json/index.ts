@@ -1,16 +1,28 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
 import { createFixture } from 'fs-fixture';
 import { ESLint } from 'eslint';
 import { pvtnbr } from '#pvtnbr';
-import { eslint } from '../utils/eslint.ts';
+import { createEslint } from '../utils/eslint.ts';
+import { createPackageJson } from '../utils/json.ts';
 
 describe('package-json', () => {
 	test('no empty dependencies objects', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/fail/empty-dependencies/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "test-package",
+	"version": "1.0.0",
+	"description": "Test package",
+	"license": "MIT",
+	"type": "module",
+	"dependencies": {}
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -27,8 +39,22 @@ describe('package-json', () => {
 	});
 
 	test('exports-subpaths-style prefers implicit format', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/fail/explicit-exports/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "test-package",
+	"version": "1.0.0",
+	"description": "Test package",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": "./index.js"
+	}
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -45,8 +71,22 @@ describe('package-json', () => {
 	});
 
 	test('exports-subpaths-style leaves null root exports unchanged', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/pass/null-root-export/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "cli-package",
+	"version": "1.0.0",
+	"description": "Package that encapsulates its entry points",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": null
+	}
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -63,8 +103,25 @@ describe('package-json', () => {
 	});
 
 	test('no-redundant-publishConfig flags unscoped packages', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/fail/redundant-publishConfig/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "test-package",
+	"version": "1.0.0",
+	"description": "Test package",
+	"license": "MIT",
+	"type": "module",
+	"publishConfig": {
+		"access": "public"
+	},
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -81,8 +138,26 @@ describe('package-json', () => {
 	});
 
 	test('valid package.json passes', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/pass/valid/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "@scope/test-package",
+	"version": "1.0.0",
+	"description": "Test package",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"type": "module",
+	"exports": "./index.js",
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -98,8 +173,17 @@ describe('package-json', () => {
 	});
 
 	test('private packages do not require description', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/pass/private-no-description/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "private-package",
+	"version": "1.0.0",
+	"private": true
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -115,8 +199,19 @@ describe('package-json', () => {
 
 	// CJS is still valid - not all packages need "type": "module"
 	test('packages do not require type field', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/pass/no-type/package.json', import.meta.url)),
+		await using fixture = await createFixture({
+			'package.json': `{
+	"name": "cjs-package",
+	"version": "1.0.0",
+	"description": "Package without type field (CJS default)",
+	"license": "MIT",
+	"exports": "./index.js"
+}
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('package.json'),
 		);
 
 		onTestFail(() => {
@@ -144,7 +239,7 @@ describe('package-json', () => {
 	test('no-extraneous-dependencies allows devDeps but catches missing deps', async () => {
 		// Create isolated fixture with symlinked node_modules
 		await using fixture = await createFixture({
-			'package.json': JSON.stringify({
+			'package.json': createPackageJson({
 				name: 'private-app',
 				version: '1.0.0',
 				description: 'Node app fixture',
@@ -199,7 +294,7 @@ describe('package-json', () => {
 
 	test('no-extraneous-dependencies checks type-only imports', async () => {
 		await using fixture = await createFixture({
-			'package.json': JSON.stringify({
+			'package.json': createPackageJson({
 				name: 'typescript-app',
 				version: '1.0.0',
 				description: 'TypeScript app fixture',

@@ -1,19 +1,39 @@
-import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs/promises';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint, createEslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
 
-const passFixtureTs = fileURLToPath(new URL('fixtures/pass.ts', import.meta.url));
-const passFixtureDTs = fileURLToPath(new URL('fixtures/pass.d.ts', import.meta.url));
-const passFixtureMts = fileURLToPath(new URL('fixtures/pass.mts', import.meta.url));
-const failFixture = fileURLToPath(new URL('fixtures/fail.ts', import.meta.url));
-const allowTsExtensionsFixture = fileURLToPath(new URL('fixtures/allow-ts-extensions/allow-ts-extensions.ts', import.meta.url));
+/**
+ * The TypeScript corpus stays in the repository as readable files. Each test
+ * copies only the files it lints, keeping the relative layout the imports need.
+ */
+const createCorpusFixture = async (
+	...names: string[]
+) => createFixture(
+	Object.fromEntries(
+		await Promise.all(
+			names.map(async name => [
+				name,
+				await readFile(new URL(`fixtures/${name}`, import.meta.url), 'utf8'),
+			]),
+		),
+	),
+);
 
 describe('typescript', () => {
 	test('Pass ts', async () => {
-		const results = await eslint.lintFiles(passFixtureTs);
-		const [result] = results;
+		await using fixture = await createCorpusFixture(
+			'pass.ts',
+			'cts.cts',
+			'mts.mts',
+			'some-file.ts',
+		);
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('pass.ts'),
+		);
 
 		onTestFail(() => {
 			console.log(result);
@@ -25,8 +45,11 @@ describe('typescript', () => {
 	});
 
 	test('Pass d.ts', async () => {
-		const results = await eslint.lintFiles(passFixtureDTs);
-		const [result] = results;
+		await using fixture = await createCorpusFixture('pass.d.ts');
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('pass.d.ts'),
+		);
 
 		onTestFail(() => {
 			console.log(result);
@@ -38,8 +61,15 @@ describe('typescript', () => {
 	});
 
 	test('Pass mts', async () => {
-		const results = await eslint.lintFiles(passFixtureMts);
-		const [result] = results;
+		await using fixture = await createCorpusFixture(
+			'pass.mts',
+			'cts.cts',
+			'mts.mts',
+		);
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('pass.mts'),
+		);
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -51,10 +81,18 @@ describe('typescript', () => {
 	});
 
 	test('Pass ts imports with .ts extension when allowImportingTsExtensions is enabled', async () => {
-		const allowTsExtensionsDirectory = fileURLToPath(new URL('fixtures/allow-ts-extensions', import.meta.url));
-		const eslintWithCwd = createEslint({ cwd: allowTsExtensionsDirectory });
-		const results = await eslintWithCwd.lintFiles(allowTsExtensionsFixture);
-		const [result] = results;
+		await using fixture = await createCorpusFixture(
+			'allow-ts-extensions/allow-ts-extensions.ts',
+			'allow-ts-extensions/module.ts',
+			'allow-ts-extensions/tsconfig.json',
+			'some-file.ts',
+		);
+
+		// The fixture's own tsconfig enables allowImportingTsExtensions, so
+		// options.cwd points discovery at it while ESLint is rooted in the fixture
+		const [result] = await createEslint(fixture.path, {
+			cwd: fixture.getPath('allow-ts-extensions'),
+		}).lintFiles(fixture.getPath('allow-ts-extensions/allow-ts-extensions.ts'));
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -65,7 +103,14 @@ describe('typescript', () => {
 	});
 
 	test('Fail cases', async () => {
-		const [result] = await eslint.lintFiles(failFixture);
+		await using fixture = await createCorpusFixture(
+			'fail.ts',
+			'some-file.ts',
+		);
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('fail.ts'),
+		);
 
 		[
 			expect.objectContaining({

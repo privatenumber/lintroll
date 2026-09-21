@@ -1,17 +1,18 @@
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import assert from 'node:assert/strict';
-import { fileURLToPath } from 'node:url';
 import { describe, expect, test } from 'manten';
 import { ESLint } from 'eslint';
 import { createFixture } from 'fs-fixture';
 import { pvtnbr } from '#pvtnbr';
 import { eslintGapConfig } from '../../bench/eslint-gap-config.ts';
 import { runOxlint } from '../../src/cli/run-oxlint.ts';
+import { eslintDirectivesFixture } from '../fixtures/eslint-directives.ts';
 import { createEslint } from '../utils/eslint.ts';
+import { diagnosticCorpusFixture, diagnosticCorpusFiles } from './fixtures/diagnostic-corpus.ts';
 
-const fixturesDirectory = fileURLToPath(new URL('fixtures/', import.meta.url));
-
-const createGapEslint = () => new ESLint({
+const createGapEslint = (cwd: string) => new ESLint({
+	cwd,
 	baseConfig: [
 		...pvtnbr({ node: true }),
 		...eslintGapConfig,
@@ -19,6 +20,9 @@ const createGapEslint = () => new ESLint({
 	ignore: false,
 	overrideConfigFile: true,
 });
+
+// A corpus file with directives that Oxlint-owned rules would otherwise report
+const migratedDirectivesFile = fileURLToPath(new URL('../base/fixtures/pass.js', import.meta.url));
 
 type Diagnostic = {
 	filePath: string;
@@ -28,11 +32,12 @@ type Diagnostic = {
 
 const normalizeDiagnostics = (
 	results: ESLint.LintResult[],
+	fixtureRoot: string,
 ) => {
 	const diagnostics: Diagnostic[] = [];
 
 	for (const result of results) {
-		const filePath = path.relative(fixturesDirectory, result.filePath).replaceAll(path.sep, '/');
+		const filePath = path.relative(fixtureRoot, result.filePath).replaceAll(path.sep, '/');
 		for (const message of result.messages) {
 			assert.ok(message.ruleId);
 			assert.ok(message.severity === 1 || message.severity === 2);
@@ -61,13 +66,13 @@ const normalizeDiagnostics = (
 
 describe('linter parity corpus', () => {
 	test('captures JavaScript, TypeScript, and React diagnostics', async () => {
-		const results = await createEslint().lintFiles([
-			path.join(fixturesDirectory, 'fail/javascript.js'),
-			path.join(fixturesDirectory, 'fail/typescript.ts'),
-			path.join(fixturesDirectory, 'fail/Input.tsx'),
-		]);
+		await using fixture = await createFixture(diagnosticCorpusFixture);
 
-		expect(normalizeDiagnostics(results)).toStrictEqual([
+		const results = await createEslint(fixture.path).lintFiles(
+			diagnosticCorpusFiles.map(filePath => fixture.getPath(filePath)),
+		);
+
+		expect(normalizeDiagnostics(results, fixture.path)).toStrictEqual([
 			{
 				filePath: 'fail/Input.tsx',
 				ruleId: 'react/prop-types',
@@ -137,11 +142,13 @@ describe('linter parity corpus', () => {
 	});
 
 	test('captures Node.js diagnostics', async () => {
-		const results = await createEslint({ node: true }).lintFiles([
-			path.join(fixturesDirectory, 'fail/node.mjs'),
+		await using fixture = await createFixture(diagnosticCorpusFixture);
+
+		const results = await createEslint(fixture.path, { node: true }).lintFiles([
+			fixture.getPath('fail/node.mjs'),
 		]);
 
-		expect(normalizeDiagnostics(results)).toStrictEqual([
+		expect(normalizeDiagnostics(results, fixture.path)).toStrictEqual([
 			{
 				filePath: 'fail/node.mjs',
 				ruleId: 'n/prefer-node-protocol',
@@ -156,15 +163,11 @@ describe('linter parity corpus', () => {
 	});
 
 	test('captures the native Oxlint subset', async () => {
-		const fixturePaths = [
-			'fail/javascript.js',
-			'fail/typescript.ts',
-			'fail/Input.tsx',
-			'fail/node.mjs',
-		].map(filePath => path.relative(process.cwd(), path.join(fixturesDirectory, filePath)));
+		await using fixture = await createFixture(diagnosticCorpusFixture);
+
 		const report = await runOxlint({
-			cwd: process.cwd(),
-			files: fixturePaths,
+			cwd: fixture.path,
+			files: diagnosticCorpusFiles,
 			noIgnore: true,
 		});
 
@@ -174,42 +177,42 @@ describe('linter parity corpus', () => {
 			severity,
 		}))).toStrictEqual([
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'eqeqeq',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'no-console',
 				severity: 1,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'prefer-const',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'promise/no-return-wrap',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'unicorn/no-useless-promise-resolve-reject',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/javascript.js',
+				filePath: 'fail/javascript.js',
 				ruleId: 'unicorn/prefer-number-properties',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/typescript.ts',
+				filePath: 'fail/typescript.ts',
 				ruleId: '@typescript-eslint/consistent-type-definitions',
 				severity: 2,
 			},
 			{
-				filePath: 'tests/parity/fixtures/fail/typescript.ts',
+				filePath: 'fail/typescript.ts',
 				ruleId: '@typescript-eslint/no-explicit-any',
 				severity: 2,
 			},
@@ -217,9 +220,11 @@ describe('linter parity corpus', () => {
 	});
 
 	test('reports unused ESLint directives', async () => {
+		await using fixture = await createFixture(eslintDirectivesFixture);
+
 		const report = await runOxlint({
-			cwd: process.cwd(),
-			files: ['tests/eslint-comments/fixtures/src/fail.js'],
+			cwd: fixture.path,
+			files: ['src/fail.js'],
 			noIgnore: true,
 		});
 
@@ -291,15 +296,13 @@ describe('linter parity corpus', () => {
 	});
 
 	test('leaves only ESLint gap diagnostics', async () => {
-		const eslint = createGapEslint();
-		const results = await eslint.lintFiles([
-			path.join(fixturesDirectory, 'fail/javascript.js'),
-			path.join(fixturesDirectory, 'fail/typescript.ts'),
-			path.join(fixturesDirectory, 'fail/Input.tsx'),
-			path.join(fixturesDirectory, 'fail/node.mjs'),
-		]);
+		await using fixture = await createFixture(diagnosticCorpusFixture);
 
-		expect(normalizeDiagnostics(results)).toStrictEqual([
+		const results = await createGapEslint(fixture.path).lintFiles(
+			diagnosticCorpusFiles.map(filePath => fixture.getPath(filePath)),
+		);
+
+		expect(normalizeDiagnostics(results, fixture.path)).toStrictEqual([
 			{
 				filePath: 'fail/Input.tsx',
 				ruleId: 'react/prop-types',
@@ -339,8 +342,8 @@ describe('linter parity corpus', () => {
 	});
 
 	test('does not report migrated directives as unused', async () => {
-		const [result] = await createGapEslint().lintFiles([
-			path.join(fixturesDirectory, '../../base/fixtures/pass.js'),
+		const [result] = await createGapEslint(process.cwd()).lintFiles([
+			migratedDirectivesFile,
 		]);
 
 		expect(result.messages.filter(message => (
@@ -349,8 +352,10 @@ describe('linter parity corpus', () => {
 	});
 
 	test('disables all known Oxlint-owned core overlaps', async () => {
-		const config = await createGapEslint().calculateConfigForFile(
-			path.join(fixturesDirectory, 'fail/javascript.js'),
+		await using fixture = await createFixture(diagnosticCorpusFixture);
+
+		const config = await createGapEslint(fixture.path).calculateConfigForFile(
+			fixture.getPath('fail/javascript.js'),
 		);
 
 		expect(config?.rules['no-implied-eval']?.[0]).toBe(0);

@@ -1,14 +1,31 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
 
 describe('vue', () => {
 	describe('Pass', () => {
 		test('SFC', async () => {
-			const results = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/PassingComponent.vue', import.meta.url)),
+			await using fixture = await createFixture({
+				'PassingComponent.vue': `<template>
+	<div class="some-class">
+		Hello world
+	</div>
+</template>
+
+<script>
+export default {
+	data: () => ({
+		someData: 1,
+	}),
+};
+</script>
+`,
+			});
+
+			const results = await createEslint(fixture.path).lintFiles(
+				fixture.getPath('PassingComponent.vue'),
 			);
 
 			const [result] = results;
@@ -24,8 +41,21 @@ describe('vue', () => {
 		});
 
 		test('SFC setup', async () => {
-			const results = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/PassSetup.vue', import.meta.url)),
+			await using fixture = await createFixture({
+				'PassSetup.vue': `<script setup lang="ts">
+const name: string = 'world';
+</script>
+
+<template>
+	<div class="some-class">
+		Hello {{ name }}
+	</div>
+</template>
+`,
+			});
+
+			const results = await createEslint(fixture.path).lintFiles(
+				fixture.getPath('PassSetup.vue'),
 			);
 
 			const [result] = results;
@@ -43,8 +73,28 @@ describe('vue', () => {
 
 	describe('Fail', () => {
 		test('SFC', async () => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/fail/fail.vue', import.meta.url)),
+			await using fixture = await createFixture({
+				// Not PascalCase, so unicorn/filename-case reports it
+				'fail.vue': `<template>
+	<!-- eslint-disable-next-line vue/max-attributes-per-line -->
+	<div class='some-class'>
+		Hello world
+	</div>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			someData: 1,
+		};
+	},
+};
+</script>`,
+			});
+
+			const [result] = await createEslint(fixture.path).lintFiles(
+				fixture.getPath('fail.vue'),
 			);
 
 			onTestFail(() => {
@@ -80,8 +130,24 @@ describe('vue', () => {
 		});
 
 		test('SFC setup', async () => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/fail/Setup.vue', import.meta.url)),
+			await using fixture = await createFixture({
+				'Setup.vue': `<template>
+	{{ someData }}
+	{{ missingVar }}
+</template>
+
+<script setup lang="ts">
+const someData = 1
+
+
+defineProps<{ someData: number }>()
+
+</script>
+`,
+			});
+
+			const [result] = await createEslint(fixture.path).lintFiles(
+				fixture.getPath('Setup.vue'),
 			);
 
 			onTestFail(() => {
@@ -120,8 +186,20 @@ describe('vue', () => {
 		});
 
 		test('SFC parsing TS in setup with no lang="ts"', async () => {
-			const [result] = await eslint.lintFiles(
-				fileURLToPath(new URL('fixtures/fail/SetupNoLangTs.vue', import.meta.url)),
+			await using fixture = await createFixture({
+				'SetupNoLangTs.vue': `<script setup>
+defineProps<{ someData: number }>();
+</script>
+
+<template>
+	{{ someData }}
+	{{ missingVar }}
+</template>
+`,
+			});
+
+			const [result] = await createEslint(fixture.path).lintFiles(
+				fixture.getPath('SetupNoLangTs.vue'),
 			);
 
 			onTestFail(() => {

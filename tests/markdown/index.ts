@@ -20,7 +20,7 @@ describe('markdown', () => {
 		});
 
 		test('.js with node', async () => {
-			const [result] = await createEslint({ node: true }).lintFiles(
+			const [result] = await createEslint(process.cwd(), { node: true }).lintFiles(
 				fileURLToPath(new URL('fixtures/pass.js.md', import.meta.url)),
 			);
 

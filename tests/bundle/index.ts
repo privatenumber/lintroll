@@ -1,13 +1,16 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
+import { assetImportFixture } from './fixtures/asset-import.ts';
 
 describe('bundle', () => {
 	test('Pass cases', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/src/pass.js', import.meta.url)),
+		await using fixture = await createFixture(assetImportFixture);
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('src/pass.js'),
 		);
 
 		onTestFail(() => {
@@ -21,8 +24,13 @@ describe('bundle', () => {
 	});
 
 	test('Fail cases', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/src/fail.cjs', import.meta.url)),
+		await using fixture = await createFixture({
+			'src/fail.cjs': `require(Math.random());
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('src/fail.cjs'),
 		);
 
 		onTestFail(() => {
@@ -40,8 +48,13 @@ describe('bundle', () => {
 		);
 	});
 	test('Fail cases .mjs', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/src/fail.mjs', import.meta.url)),
+		await using fixture = await createFixture({
+			'src/fail.mjs': `require(Math.random());
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(
+			fixture.getPath('src/fail.mjs'),
 		);
 
 		onTestFail(() => {

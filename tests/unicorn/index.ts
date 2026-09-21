@@ -1,14 +1,20 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
 
 describe('unicorn', () => {
 	test('allows slice().sort() pattern', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/array-sort.js', import.meta.url)),
-		);
+		await using fixture = await createFixture({
+			'array-sort.js': `// slice().sort() is preferred over toSorted() for ES2022 compatibility
+const numbers = [3, 1, 2];
+const sorted = numbers.slice().sort();
+console.log(sorted);
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('array-sort.js'));
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -24,9 +30,11 @@ describe('unicorn', () => {
 	});
 
 	test('does not check directory names', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/PascalDir/filename-case.js', import.meta.url)),
-		);
+		await using fixture = await createFixture({
+			'PascalDir/filename-case.js': 'export const value = 1;\n',
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('PascalDir/filename-case.js'));
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -36,9 +44,18 @@ describe('unicorn', () => {
 	});
 
 	test('allows certain abbreviations', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/abbreviations.js', import.meta.url)),
-		);
+		await using fixture = await createFixture({
+			'abbreviations.js': `export const tempDir = '/tmp/test';
+export const srcDir = './src';
+export const db = 'my-database';
+export const docsPath = './docs';
+export const ColumnDef = { id: 'name' };
+export const relX = 100;
+export const el = 'element';
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('abbreviations.js'));
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -56,9 +73,17 @@ describe('unicorn', () => {
 	// Disabled due to false positives on string properties named 'size'
 	// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
 	test('explicit-length-check is disabled', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/explicit-length-check.js', import.meta.url)),
-		);
+		await using fixture = await createFixture({
+			'explicit-length-check.js': `// String property named 'size' should not trigger explicit-length-check
+// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1266
+const props = { size: 'medium' };
+const size = props.size || 'large';
+
+export { size };
+`,
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('explicit-length-check.js'));
 
 		onTestFail(() => {
 			console.log(result.messages);

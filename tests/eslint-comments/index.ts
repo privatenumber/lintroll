@@ -1,14 +1,15 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { eslintDirectivesFixture } from '../fixtures/eslint-directives.ts';
+import { createEslint } from '../utils/eslint.ts';
 
 describe('eslint-comments', () => {
 	test('Fail cases', async () => {
-		const [result] = await eslint.lintFiles(
-			fileURLToPath(new URL('fixtures/src/fail.js', import.meta.url)),
-		);
+		await using fixture = await createFixture(eslintDirectivesFixture);
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('src/fail.js'));
 
 		onTestFail(() => {
 			console.log(result);

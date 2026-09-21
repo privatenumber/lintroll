@@ -1,15 +1,15 @@
-import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
-
-const passFixture = fileURLToPath(new URL('fixtures/InputComponent.tsx', import.meta.url));
-const failFixture = fileURLToPath(new URL('fixtures/fail.tsx', import.meta.url));
+import { createFixture } from 'fs-fixture';
+import { createEslint } from '../utils/eslint.ts';
+import { failingComponentFixture, passingComponentFixture } from './fixtures/components.ts';
 
 describe('react', () => {
 	test('Pass cases', async () => {
-		const [result] = await eslint.lintFiles(passFixture);
+		await using fixture = await createFixture(passingComponentFixture);
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('InputComponent.tsx'));
 
 		onTestFail(() => {
 			console.log(result);
@@ -23,7 +23,9 @@ describe('react', () => {
 
 	// React 17+ with new JSX transform doesn't require importing React
 	test('does not require React import for JSX', async () => {
-		const [result] = await eslint.lintFiles(passFixture);
+		await using fixture = await createFixture(passingComponentFixture);
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('InputComponent.tsx'));
 
 		onTestFail(() => {
 			console.log(result.messages);
@@ -37,7 +39,9 @@ describe('react', () => {
 	});
 
 	test('Fail cases', async () => {
-		const [result] = await eslint.lintFiles(failFixture);
+		await using fixture = await createFixture(failingComponentFixture);
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('fail.tsx'));
 
 		[
 			expect.objectContaining({

@@ -4,8 +4,6 @@ export default defineConfig([
 	{
 		ignores: [
 			'tests/*/fixtures/**/fail{.*,/**}',
-			'tests/node/fixtures/package-commonjs/pass.js',
-			'tests/cli/fixtures/js-config-commonjs/',
 			'tests/typescript/fixtures/allow-ts-extensions/',
 		],
 	},

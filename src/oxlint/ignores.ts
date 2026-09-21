@@ -2,8 +2,6 @@ import type { OxlintConfig } from 'oxlint';
 
 export const ignorePatterns = [
 	'tests/*/fixtures/**/fail{.*,/**}',
-	'tests/node/fixtures/package-commonjs/pass.js',
-	'tests/cli/fixtures/js-config-commonjs/',
 	'tests/typescript/fixtures/allow-ts-extensions/',
 	'**/package-lock.json',
 	'**/pnpm-lock.yaml',
