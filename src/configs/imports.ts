@@ -1,10 +1,8 @@
-import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import importPlugin from 'eslint-plugin-import-x';
 import { defineConfig } from '../utils/define-config.ts';
 
-const pkgMapsResolver = fileURLToPath(
-	import.meta.resolve('#pkg-maps-resolver'),
-);
+const pkgMapsResolver = createRequire(import.meta.url).resolve('#pkg-maps-resolver');
 
 export const importsConfig = defineConfig({
 	plugins: {

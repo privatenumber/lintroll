@@ -471,6 +471,14 @@ describe('cli', () => {
 			expect(output).not.toContain('@stylistic/semi');
 		});
 
+		test('picks up .cjs config that requires lintroll', async () => {
+			const cwd = fileURLToPath(new URL('fixtures/cjs-config-require-lintroll/', import.meta.url));
+			const { output } = await lintroll([], cwd);
+
+			expect(output).toContain('Using config file: eslint.config.cjs');
+			expect(output).toContain('@stylistic/semi');
+		});
+
 		test('picks up .cts config', async () => {
 			const cwd = fileURLToPath(new URL('fixtures/cts-config/', import.meta.url));
 			const { output } = await lintroll([], cwd);
