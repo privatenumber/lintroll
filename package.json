@@ -55,7 +55,7 @@
 			"default": "./dist/oxlint/index.mjs"
 		}
 	},
-	"packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c",
+	"packageManager": "pnpm@12.4.2",
 	"scripts": {
 		"bench": "node --expose-gc bench/lint.ts",
 		"bench:hybrid": "node --expose-gc -C development bench/hybrid.ts",
@@ -71,12 +71,12 @@
 		"node": ">=20.20.0"
 	},
 	"dependencies": {
-		"@eslint-community/eslint-plugin-eslint-comments": "^4.8.0",
+		"@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
 		"@eslint/js": "^9.39.5",
 		"@eslint/markdown": "^8.0.3",
 		"@stylistic/eslint-plugin": "^5.10.0",
-		"@typescript-eslint/eslint-plugin": "^8.70.0",
-		"@typescript-eslint/parser": "^8.70.0",
+		"@typescript-eslint/eslint-plugin": "^8.70.1",
+		"@typescript-eslint/parser": "^8.70.1",
 		"cleye": "^2.6.0",
 		"confusing-browser-globals": "^1.0.11",
 		"eslint": "^9.39.5",
@@ -89,9 +89,9 @@
 		"eslint-plugin-promise": "^7.3.0",
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^7.1.1",
-		"eslint-plugin-regexp": "^3.3.0",
+		"eslint-plugin-regexp": "^3.3.1",
 		"eslint-plugin-unicorn": "^63.0.0",
-		"eslint-plugin-vue": "^10.11.0",
+		"eslint-plugin-vue": "^10.11.1",
 		"eslint-plugin-yml": "^3.8.1",
 		"get-conditions": "^1.0.1",
 		"get-tsconfig": "5.0.0-beta.6",
@@ -109,8 +109,8 @@
 		"@types/estree": "^1.0.9",
 		"@types/node": "^26.5.1",
 		"@types/react": "^19.3.0",
-		"@typescript-eslint/rule-tester": "^8.70.0",
-		"@typescript-eslint/utils": "^8.70.0",
+		"@typescript-eslint/rule-tester": "^8.70.1",
+		"@typescript-eslint/utils": "^8.70.1",
 		"clean-pkg-json": "^2.0.0",
 		"eslint-plugin-oxlint": "1.73.0",
 		"find-up-simple": "^1.0.1",
