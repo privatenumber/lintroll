@@ -303,8 +303,8 @@ importers:
         specifier: 1.90.0
         version: 1.90.0
       pkgroll:
-        specifier: ^2.28.1
-        version: 2.28.1(typescript@6.0.3)
+        specifier: ^2.29.0
+        version: 2.29.0(typescript@6.0.3)
       react:
         specifier: ^19.3.0
         version: 19.3.0
@@ -2618,8 +2618,8 @@ packages:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
 
-  pkgroll@2.28.1:
-    resolution: {integrity: sha512-VZsvQZ68y7Z7VxO4am4dK1rfsqaSXDQEOpcx/aPcI1IgHanH1BDMKpyrlW4qjC/CNFvLE52+Mzy2HkyTOFXyPw==}
+  pkgroll@2.29.0:
+    resolution: {integrity: sha512-nTWWA9J9mClHnwzDonKtgpP3iZxWNHo6YH4Jo6BfsRNv54v35GtqNFVG6E+WrsSNLiWu8es6PyjSH/EiBDex1g==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -5616,7 +5616,7 @@ snapshots:
 
   picomatch@4.0.7: {}
 
-  pkgroll@2.28.1(typescript@6.0.3):
+  pkgroll@2.29.0(typescript@6.0.3):
     dependencies:
       '@rollup/plugin-alias': 6.0.0(rollup@4.63.1)
       '@rollup/plugin-commonjs': 29.0.3(rollup@4.63.1)
