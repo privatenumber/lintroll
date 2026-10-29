@@ -1,8 +1,10 @@
 import { readFile } from 'node:fs/promises';
+import { ESLint } from 'eslint';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
 import { createFixture } from 'fs-fixture';
+import { pvtnbr } from '#pvtnbr';
 import { createEslint } from '../utils/eslint.ts';
 
 /**
@@ -23,6 +25,47 @@ const createCorpusFixture = async (
 );
 
 describe('typescript', () => {
+	test('Type literal brace formatting autofixes consistently', async () => {
+		const fixingEslint = new ESLint({
+			baseConfig: pvtnbr(),
+			overrideConfigFile: true,
+			overrideConfig: {
+				rules: {
+					'pvtnbr/prefer-arrow-functions': 'off',
+				},
+			},
+			fix: true,
+		});
+
+		for (const [input, expected] of [
+			[
+				'export class Renderers {\n\tindentText({ text, spaces }: { text: string;\n\t\tspaces: number; }) {\n\t\treturn text.repeat(spaces);\n\t}\n}\n',
+				'export class Renderers {\n\tindentText({ text, spaces }: {\n\t\ttext: string;\n\t\tspaces: number;\n\t}) {\n\t\treturn text.repeat(spaces);\n\t}\n}\n',
+			],
+			[
+				'export type TextOptions = { text: string };\n',
+				'export type TextOptions = { text: string };\n',
+			],
+			[
+				'export type TextOptions = { text: string; spaces: number };\n',
+				'export type TextOptions = {\n\ttext: string;\n\tspaces: number;\n};\n',
+			],
+			[
+				'export type TextOptions = { text: string; spaces: number; prefix: string; suffix: string };\n',
+				'export type TextOptions = {\n\ttext: string;\n\tspaces: number;\n\tprefix: string;\n\tsuffix: string;\n};\n',
+			],
+		]) {
+			const [result] = await fixingEslint.lintText(input, { filePath: 'type-literal.ts' });
+			const output = result.output ?? input;
+			expect(result.messages).toStrictEqual([]);
+			expect(output).toBe(expected);
+
+			const [secondPass] = await fixingEslint.lintText(output, { filePath: 'type-literal.ts' });
+			expect(secondPass.messages).toStrictEqual([]);
+			expect(secondPass.output).toBeUndefined();
+		}
+	});
+
 	test('Pass ts', async () => {
 		await using fixture = await createCorpusFixture(
 			'pass.ts',

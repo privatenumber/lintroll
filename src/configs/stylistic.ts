@@ -293,6 +293,11 @@ export const stylistic = [
 					minProperties: 4,
 					multiline: true,
 				},
+				TSTypeLiteral: {
+					consistent: true,
+					minProperties: 4,
+					multiline: true,
+				},
 			}],
 
 			// require padding inside curly braces
