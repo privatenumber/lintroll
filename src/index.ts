@@ -82,10 +82,10 @@ export const pvtnbr = (
 		parseTypescript,
 
 		eslint,
-		serviceWorkers,
 		eslintComments,
 		...imports,
 		...unicorn(options),
+		serviceWorkers,
 		...stylistic,
 		typescript(tsconfig),
 		regexp,

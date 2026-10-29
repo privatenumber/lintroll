@@ -7,7 +7,7 @@ const sleep = (ms: number) => new Promise((resolve) => {
 });
 
 async function someAsyncFunction(_duration: number) {
-	return await Reflect.apply(sleep, this, arguments);
+	return await Reflect.apply(sleep, undefined, arguments);
 }
 
 type SomeObject = {

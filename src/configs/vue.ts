@@ -100,6 +100,7 @@ export const vue = defineConfig([
 
 			'unicorn/filename-case': ['error', {
 				case: 'pascalCase',
+				checkDirectories: false,
 			}],
 
 			'vue/html-indent': ['error', 'tab'],

@@ -46,6 +46,9 @@ export const markdown = () => [
 			'no-unused-expressions': 'off',
 			'unicorn/filename-case': 'off',
 
+			// Snippets may demonstrate `this` in regular functions
+			'unicorn/no-this-outside-of-class': 'off',
+
 			// Loose on example code
 			'unicorn/no-array-reduce': 'off',
 			'unicorn/prefer-object-from-entries': 'off',

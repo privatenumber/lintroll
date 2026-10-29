@@ -68,7 +68,7 @@ function someFunction(objectValue, sourceValue, ...args) {
 
 // iife
 (function named() {
-	return this;
+	return arguments;
 })();
 (() => {})();
 

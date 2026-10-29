@@ -12,5 +12,8 @@ export const serviceWorkers = defineConfig({
 			'error',
 			...confusingBrowserGlobals.filter(variable => variable !== 'self'),
 		],
+
+		// `self` is the conventional service worker global, and it's allowed above
+		'unicorn/prefer-global-this': 'off',
 	},
 });

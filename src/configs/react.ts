@@ -40,6 +40,7 @@ export const react = (_tsconfig: TsconfigResult | undefined) => defineConfig({
 
 		'unicorn/filename-case': ['error', {
 			case: 'pascalCase',
+			checkDirectories: false,
 			ignore: [
 				String.raw`\.spec\.tsx$`,
 			],

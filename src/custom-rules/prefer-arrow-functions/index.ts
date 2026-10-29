@@ -53,9 +53,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					|| parent.type === 'MethodDefinition'
 				)
 				&& (
-					parent.kind === 'set'
-					|| parent.kind === 'get'
-					|| parent.kind === 'constructor'
+					['set', 'get', 'constructor'].includes(parent.kind)
 				)
 			) {
 				return false;

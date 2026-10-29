@@ -80,9 +80,6 @@ export const unicorn = (
 			rules: {
 				...unicornPlugin.configs['flat/recommended'].rules,
 
-				// Disable in favor of eslint-plugin-regexp
-				'unicorn/better-regex': 'off',
-
 				// Had some test files where I was creating inline functions within a test
 				// Might make sense to enable this and turn this off for test/
 				'unicorn/consistent-function-scoping': 'off',
@@ -113,9 +110,7 @@ export const unicorn = (
 				// ts-node can't load TypeScript's compliation of export-from
 				// https://github.com/privatenumber/esbuild-loader/issues/232#issuecomment-998487005
 				// Disable even warnings because of autofix
-				'unicorn/prefer-export-from': ['off', {
-					ignoreUsedVariables: true,
-				}],
+				'unicorn/prefer-export-from': 'off',
 
 				// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1273#issuecomment-1069506684
 				'unicorn/prefer-json-parse-buffer': 'off',
