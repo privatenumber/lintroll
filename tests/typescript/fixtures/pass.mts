@@ -16,13 +16,15 @@ type SomeObject = {
 
 type _AllowUnused = number;
 
-export type Factory = <
-	A,
-	B,
->() => {
+type FactoryResult<A, B> = {
 	a: A;
 	b: B;
 };
+
+export type Factory = <
+	A,
+	B,
+>() => FactoryResult<A, B>;
 
 const isNumber = (n): n is number => typeof n === 'number';
 

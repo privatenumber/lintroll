@@ -84,6 +84,11 @@ export const typescript = (tsconfig: TsconfigResult | undefined) => {
 			// Enforce type over interface for consistency
 			'@typescript-eslint/consistent-type-definitions': ['error', 'type'],
 
+			'no-restricted-syntax': ['error', {
+				selector: 'TSTypeAnnotation.returnType TSTypeLiteral',
+				message: 'Extract this object return type into a named type alias.',
+			}],
+
 			'@stylistic/member-delimiter-style': 'error',
 
 			// Allow linebreaks after = for TypeScript union/intersection types

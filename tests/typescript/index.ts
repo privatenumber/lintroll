@@ -25,6 +25,45 @@ const createCorpusFixture = async (
 );
 
 describe('typescript', () => {
+	test('Explicit return types require named object types', async () => {
+		const eslint = createEslint(process.cwd());
+		for (const [code, count] of [
+			['function read(): { value: string } { throw new Error(); }', 1],
+			['const read = (): { value: string } => ({ value: "" });', 1],
+			['const read = function (): { value: string } { throw new Error(); };', 1],
+			['class Reader { read(): { value: string } { throw new Error(); } }', 1],
+			['const reader = { read(): { value: string } { throw new Error(); } };', 1],
+			['declare function read(): { value: string };', 1],
+			['type Read = () => { value: string };', 1],
+			['type Reader = { read(): { value: string } };', 1],
+			['type Reader = { (): { value: string } };', 1],
+			['type Reader = { new (): { value: string } };', 1],
+			['declare function read(): Promise<{ value: string }>;', 1],
+			['declare function read(): { value: string }[];', 1],
+			['declare function read(): { value: string } | { error: Error };', 2],
+			['declare function read(): Result & { value: string };', 1],
+			['type Result = { value: string }; declare function read(): Result;', 0],
+			['declare function read(): Promise<Result[]>;', 0],
+			['function read(input: { value: string }) { return input; }', 0],
+			['const read = () => ({ value: "" });', 0],
+		] satisfies [string, number][]) {
+			const [result] = await eslint.lintText(code, { filePath: 'return-types.ts' });
+			expect(result.fatalErrorCount).toBe(0);
+			const restrictions = result.messages.filter(message => message.ruleId === 'no-restricted-syntax');
+			expect(restrictions.map(message => ({
+				message: message.message,
+				nodeType: message.nodeType,
+				severity: message.severity,
+				fix: message.fix,
+			}))).toStrictEqual(Array.from({ length: count }, () => ({
+				message: 'Extract this object return type into a named type alias.',
+				nodeType: 'TSTypeLiteral',
+				severity: 2,
+				fix: undefined,
+			})));
+		}
+	});
+
 	test('Type literal brace formatting autofixes consistently', async () => {
 		const fixingEslint = new ESLint({
 			baseConfig: pvtnbr(),

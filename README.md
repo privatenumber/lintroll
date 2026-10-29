@@ -24,6 +24,8 @@ Powered by ESLint that's enhanced with 12 plugins, covering a wide scope includi
 ### What does the linted code look like?
 Checkout the code fixtures from the passing tests [here](https://github.com/search?q=repo%3Aprivatenumber%2Flintroll+path%3Atests%2F**%2Ffixtures%2Fpass*&type=code).
 
+Explicit TypeScript return types must use named object types, such as `(): Result` rather than `(): { value: string }`. This also applies to objects inside promises, arrays, and unions. Inline parameter types and inferred return types are allowed.
+
 ## Install
 
 ```sh

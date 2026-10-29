@@ -22,13 +22,15 @@ export type List =
 	| 2
 	| 3;
 
-export type Factory = <
-	A,
-	B,
->() => {
+type FactoryResult<A, B> = {
 	a: A;
 	b: B;
 };
+
+export type Factory = <
+	A,
+	B,
+>() => FactoryResult<A, B>;
 
 const anySpread = (...args: any[]) => args;
 
