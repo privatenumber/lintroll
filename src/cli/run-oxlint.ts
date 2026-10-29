@@ -1,11 +1,23 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import spawn, { SubprocessError } from 'nano-spawn';
+import { oxlintConfig } from '#oxlint-config';
 import type { LintDiagnostic, LintDiagnosticsReport } from './lint-report.ts';
 
 const oxlintPackagePath = fileURLToPath(import.meta.resolve('oxlint/package.json'));
 const oxlintBinPath = path.join(path.dirname(oxlintPackagePath), 'bin/oxlint');
 const oxlintConfigPath = fileURLToPath(import.meta.resolve('#oxlint-config'));
+
+/**
+ * Oxlint resolves a config file's `ignorePatterns` against the config file's own
+ * directory, so the patterns in lintroll's packaged config cannot match a project
+ * that lives outside of it. Passing the same patterns as flags resolves them
+ * against the linted project instead, matching how lintroll's ESLint
+ * configuration applies them.
+ */
+const oxlintIgnoreArgs = (oxlintConfig.ignorePatterns ?? []).flatMap(
+	pattern => ['--ignore-pattern', pattern],
+);
 
 type OxlintDiagnostic = {
 	code?: string;
@@ -34,6 +46,7 @@ const runOxlintProcess = (
 	oxlintBinPath,
 	'--config',
 	oxlintConfigPath,
+	...oxlintIgnoreArgs,
 	...args,
 ], { cwd });
 

@@ -259,6 +259,23 @@ describe('linter parity corpus', () => {
 		]);
 	});
 
+	test('applies project-relative ignore patterns to the linted project', async () => {
+		await using fixture = await createFixture({
+			'src/pass.js': 'export const value = 1;\n',
+
+			// The packaged config ignores `tests/*/fixtures/**/fail*`
+			'tests/base/fixtures/fail.js': 'const value = 1;\nif (value == 1) {}\n',
+		});
+
+		const report = await runOxlint({
+			cwd: fixture.path,
+			files: ['.'],
+		});
+
+		expect(report.numberOfFiles).toBe(1);
+		expect(report.diagnostics).toStrictEqual([]);
+	});
+
 	test('preserves warning counts in quiet mode', async () => {
 		await using fixture = await createFixture({
 			'file.js': "console.log('warning');\n",
