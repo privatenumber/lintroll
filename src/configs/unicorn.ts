@@ -80,6 +80,13 @@ export const unicorn = (
 			rules: {
 				...unicornPlugin.configs['flat/recommended'].rules,
 
+				// Keep the recommended kebab-case config, but only check filenames
+				// so directories can follow other conventions (e.g. PascalCase components)
+				'unicorn/filename-case': ['error', {
+					case: 'kebabCase',
+					checkDirectories: false,
+				}],
+
 				// Had some test files where I was creating inline functions within a test
 				// Might make sense to enable this and turn this off for test/
 				'unicorn/consistent-function-scoping': 'off',

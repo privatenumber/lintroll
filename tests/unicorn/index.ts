@@ -23,6 +23,18 @@ describe('unicorn', () => {
 		expect(result.errorCount).toBe(0);
 	});
 
+	test('does not check directory names', async () => {
+		const [result] = await eslint.lintFiles(
+			fileURLToPath(new URL('fixtures/PascalDir/filename-case.js', import.meta.url)),
+		);
+
+		onTestFail(() => {
+			console.log(result.messages);
+		});
+
+		expect(result.messages).toStrictEqual([]);
+	});
+
 	test('allows certain abbreviations', async () => {
 		const [result] = await eslint.lintFiles(
 			fileURLToPath(new URL('fixtures/abbreviations.js', import.meta.url)),
