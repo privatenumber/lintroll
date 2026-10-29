@@ -230,8 +230,8 @@ importers:
         specifier: ^10.12.0
         version: 10.12.0(@stylistic/eslint-plugin@5.10.0(eslint@9.39.5(supports-color@7.2.0)))(@typescript-eslint/parser@8.72.1(eslint@9.39.5(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@9.39.5(supports-color@7.2.0))(vue-eslint-parser@10.4.1(eslint@9.39.5(supports-color@7.2.0))(supports-color@7.2.0))
       eslint-plugin-yml:
-        specifier: ^3.8.1
-        version: 3.8.1(eslint@9.39.5(supports-color@7.2.0))
+        specifier: ^3.9.0
+        version: 3.9.0(eslint@9.39.5(supports-color@7.2.0))
       get-conditions:
         specifier: ^1.0.1
         version: 1.0.1
@@ -270,8 +270,8 @@ importers:
         specifier: ^1.0.9
         version: 1.0.9
       '@types/node':
-        specifier: ^26.5.1
-        version: 26.5.1
+        specifier: ^26.6.5
+        version: 26.6.5
       '@types/react':
         specifier: ^19.3.0
         version: 19.3.0
@@ -306,14 +306,14 @@ importers:
         specifier: ^2.29.0
         version: 2.29.0(typescript@6.0.3)
       react:
-        specifier: ^19.3.0
-        version: 19.3.0
+        specifier: ^19.3.1
+        version: 19.3.1
       read-package-up:
         specifier: ^12.0.0
         version: 12.0.0
       type-fest:
-        specifier: ^5.9.0
-        version: 5.9.0
+        specifier: ^5.10.0
+        version: 5.10.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1073,8 +1073,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@26.5.1':
-    resolution: {integrity: sha512-CzNm2FezW4VR/LjG6yUdiEgLE/rAQ9Slj5gCu/C2VrdcW7I0ahNZ8DRbHT7zOZ6r3ONgd/bsQIeSaoDGrd1C6g==}
+  '@types/node@26.6.5':
+    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -1781,8 +1781,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-yml@3.8.1:
-    resolution: {integrity: sha512-E/70psRwxz5EJ8dBtzrFfqSiiInuSytbdtFCjueb/GcKjsWzPBfxfhtQePImMAPjHwMA/VDurO7DJwStDJ4wWg==}
+  eslint-plugin-yml@3.9.0:
+    resolution: {integrity: sha512-o4ByMVFd/mGc0Q/vJmbG9pz7Kyg/BiKAGnWCzvMLqzpa2KMdpUrLgF5a6yYeL2mf1Br/9dckd0ADl3vw7uF+jA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: '>=9.38.0'
@@ -2682,8 +2682,8 @@ packages:
   react-is@19.3.0:
     resolution: {integrity: sha512-UpMYezM4v5/18F28aC66AEsjXIgE02kyEMH6yLdgLXu/UTfa1Ntwck/nNLrbqJsEXW7gPb0coNO9FQse9WTovA==}
 
-  react@19.3.0:
-    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
     engines: {node: '>=0.10.0'}
 
   read-package-up@12.0.0:
@@ -2939,8 +2939,8 @@ packages:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
 
-  type-fest@5.9.0:
-    resolution: {integrity: sha512-yANm3Jr3GiJ1qgJlxGAVxTOIcEOk1rhQHamlXtnrCK7EHP4HeM9OGxtMg/W7HFdrVzw/ZWJKGVIJusVH85sLtw==}
+  type-fest@5.10.0:
+    resolution: {integrity: sha512-NoSdpq/WEiAg5sjmBkmV/hfxv6HJH4NqPNrqjtSO5CwRmpsDfaf4begxW34KdJykH/l1yHtwBWQkCRdoXO8mPA==}
     engines: {node: '>=20'}
 
   type-flag@4.5.2:
@@ -3389,7 +3389,7 @@ snapshots:
 
   '@jest/pattern@30.5.0':
     dependencies:
-      '@types/node': 26.5.1
+      '@types/node': 26.6.5
       jest-regex-util: 30.5.0
 
   '@jest/schemas@30.5.0':
@@ -3402,7 +3402,7 @@ snapshots:
       '@jest/schemas': 30.5.0
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 26.5.1
+      '@types/node': 26.6.5
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -3691,7 +3691,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@26.5.1':
+  '@types/node@26.6.5':
     dependencies:
       undici-types: 8.9.0
 
@@ -4526,7 +4526,7 @@ snapshots:
       '@stylistic/eslint-plugin': 5.10.0(eslint@9.39.5(supports-color@7.2.0))
       '@typescript-eslint/parser': 8.72.1(eslint@9.39.5(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
 
-  eslint-plugin-yml@3.8.1(eslint@9.39.5(supports-color@7.2.0)):
+  eslint-plugin-yml@3.9.0(eslint@9.39.5(supports-color@7.2.0)):
     dependencies:
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.3
@@ -5019,7 +5019,7 @@ snapshots:
     dependencies:
       '@jest/expect-utils': 30.5.1
       '@jest/types': 30.5.1
-      '@types/node': 26.5.1
+      '@types/node': 26.6.5
       jest-util: 30.5.1
 
   jest-regex-util@30.5.0: {}
@@ -5027,7 +5027,7 @@ snapshots:
   jest-util@30.5.1:
     dependencies:
       '@jest/types': 30.5.1
-      '@types/node': 26.5.1
+      '@types/node': 26.6.5
       chalk: 4.1.2
       ci-info: 4.4.0
       graceful-fs: 4.2.11
@@ -5048,7 +5048,7 @@ snapshots:
   jsdoc-type-pratt-parser@9.2.1:
     dependencies:
       '@types/estree': 1.0.9
-      '@types/node': 26.5.1
+      '@types/node': 26.6.5
 
   jsesc@3.1.0: {}
 
@@ -5681,20 +5681,20 @@ snapshots:
 
   react-is@19.3.0: {}
 
-  react@19.3.0: {}
+  react@19.3.1: {}
 
   read-package-up@12.0.0:
     dependencies:
       find-up-simple: 1.0.1
       read-pkg: 10.1.0
-      type-fest: 5.9.0
+      type-fest: 5.10.0
 
   read-pkg@10.1.0:
     dependencies:
       '@types/normalize-package-data': 2.4.4
       normalize-package-data: 8.0.0
       parse-json: 8.3.0
-      type-fest: 5.9.0
+      type-fest: 5.10.0
       unicorn-magic: 0.4.0
 
   refa@0.12.1:
@@ -6015,7 +6015,7 @@ snapshots:
 
   type-fest@4.41.0: {}
 
-  type-fest@5.9.0:
+  type-fest@5.10.0:
     dependencies:
       tagged-tag: 1.0.0
 

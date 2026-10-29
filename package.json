@@ -92,7 +92,7 @@
 		"eslint-plugin-regexp": "^3.3.1",
 		"eslint-plugin-unicorn": "^65.0.1",
 		"eslint-plugin-vue": "^10.12.0",
-		"eslint-plugin-yml": "^3.8.1",
+		"eslint-plugin-yml": "^3.9.0",
 		"get-conditions": "^1.0.1",
 		"get-tsconfig": "5.0.0-beta.6",
 		"globals": "^17.13.0",
@@ -107,7 +107,7 @@
 		"@types/confusing-browser-globals": "^1.0.3",
 		"@types/eslint": "^9.6.1",
 		"@types/estree": "^1.0.9",
-		"@types/node": "^26.5.1",
+		"@types/node": "^26.6.5",
 		"@types/react": "^19.3.0",
 		"@typescript-eslint/rule-tester": "^8.72.1",
 		"@typescript-eslint/utils": "^8.72.1",
@@ -119,9 +119,9 @@
 		"mitata": "^1.0.34",
 		"oxlint": "1.90.0",
 		"pkgroll": "^2.29.0",
-		"react": "^19.3.0",
+		"react": "^19.3.1",
 		"read-package-up": "^12.0.0",
-		"type-fest": "^5.9.0",
+		"type-fest": "^5.10.0",
 		"typescript": "^6.0.3"
 	}
 }
