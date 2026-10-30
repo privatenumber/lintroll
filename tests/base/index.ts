@@ -2,7 +2,8 @@ import { fileURLToPath } from 'node:url';
 import {
 	describe, test, expect, onTestFail,
 } from 'manten';
-import { eslint } from '../utils/eslint.ts';
+import { createFixture } from 'fs-fixture';
+import { eslint, createEslint } from '../utils/eslint.ts';
 
 describe('base', () => {
 	describe('Pass', () => {
@@ -159,6 +160,26 @@ describe('base', () => {
 		);
 
 		expect(hasCamelcaseError).toBe(false);
+	});
+
+	// JavaScript files use ESLint's scope manager, which differs from TypeScript's
+	test('reports function hoisting in JavaScript', async () => {
+		await using fixture = await createFixture({
+			'file.js': 'export const run = () => helper();\n\nfunction helper() {\n\treturn 1;\n}\n',
+		});
+
+		const [result] = await createEslint(fixture.path).lintFiles(fixture.getPath('file.js'));
+
+		onTestFail(() => {
+			console.log(result.messages);
+		});
+
+		expect(result.messages).toStrictEqual([
+			expect.objectContaining({
+				ruleId: 'pvtnbr/no-function-hoisting',
+				line: 3,
+			}),
+		]);
 	});
 
 	test('Service worker', async () => {

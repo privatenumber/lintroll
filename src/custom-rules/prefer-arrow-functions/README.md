@@ -15,6 +15,7 @@ This rule generates warnings when traditional function syntax (`function () {}`)
 
 
 ### Examples of passing code
+<!-- eslint-disable pvtnbr/no-function-hoisting -->
 ```ts
 // Arrow functions are allowed
 (() => {});
@@ -91,6 +92,7 @@ function overloaded(value: unknown) {}
 
 function withThis(this: Window) {}
 ```
+<!-- eslint-enable pvtnbr/no-function-hoisting -->
 
 
 ### Examples of failing code

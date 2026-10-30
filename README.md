@@ -13,7 +13,7 @@ Powered by ESLint that's enhanced with 12 plugins, covering a wide scope includi
 
 ### Features
 
-- **Streamlined syntax**: Single quotes, semicolons, tabs, and [arrow functions](./src/custom-rules/prefer-arrow-functions/) for a clear & intentional coding style.
+- **Streamlined syntax**: Single quotes, semicolons, tabs, [arrow functions](./src/custom-rules/prefer-arrow-functions/), and [functions declared before use](./src/custom-rules/no-function-hoisting/) for a clear & intentional coding style.
 
 - **Versatile language support**: Lints TypeScript, Vue.js, React, JSON & YAML, and even Markdown code blocks ensuring a wide scope of code.
 
