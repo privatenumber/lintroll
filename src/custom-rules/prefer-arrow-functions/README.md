@@ -147,24 +147,6 @@ function tsx<T>(a: T) {}
 ```
 <!-- eslint-enable pvtnbr/prefer-arrow-functions -->
 
-## Options
-
-### `classMethods`
-
-Type: `boolean`
-
-Default: `false`
-
-Converts class methods to arrow function class fields. This is off by default because the conversion changes behavior: the method moves from the prototype to each instance, so subclasses can no longer override it or call it with `super`.
-
-```js
-export default [{
-    rules: {
-        'pvtnbr/prefer-arrow-functions': ['error', { classMethods: true }]
-    }
-}]
-```
-
 ### Limitations
 This rule will not generate warnings or fixes for traditional functions that use any of the following features:
 
@@ -200,3 +182,108 @@ This rule will not generate warnings or fixes for traditional functions that use
 
 > [!WARNING]  
 > This rule only detects these flags within the file. This may be lead to false positives, for example when the functions are exported and the `.length` property is checked in another file.
+
+## Options
+
+Each boolean option controls whether the rule converts that kind of function. The defaults are shown below.
+
+```js
+export default [{
+    rules: {
+        'pvtnbr/prefer-arrow-functions': ['error', {
+            classMethods: false,
+            objectMethods: true,
+            namedFunctionExpressions: true,
+            exportedFunctions: true,
+            allowedNames: []
+        }]
+    }
+}]
+```
+
+### `classMethods`
+
+Type: `boolean`
+
+Default: `false`
+
+Converts class methods to arrow function class fields. This is off by default because the conversion changes behavior: the method moves from the prototype to each instance, so subclasses can no longer override it or call it with `super`.
+
+<!-- eslint-disable pvtnbr/prefer-arrow-functions -->
+```js
+class Counter {
+    increment() {}
+}
+// Fixed with `classMethods: true`: class Counter { increment = () => {} }
+```
+<!-- eslint-enable pvtnbr/prefer-arrow-functions -->
+
+### `objectMethods`
+
+Type: `boolean`
+
+Default: `true`
+
+Converts object shorthand methods to arrow function properties. Set it to `false` to keep shorthand methods, for example in Vue's Options API.
+
+<!-- eslint-disable pvtnbr/prefer-arrow-functions -->
+```js
+const store = {
+    load() {}
+}
+// Fixed: const store = { load: () => {} }
+```
+<!-- eslint-enable pvtnbr/prefer-arrow-functions -->
+
+### `namedFunctionExpressions`
+
+Type: `boolean`
+
+Default: `true`
+
+Converts function expressions that have their own name. The fix removes the name, so stack traces and debuggers show the function as anonymous. Set it to `false` to keep these names.
+
+<!-- eslint-disable pvtnbr/prefer-arrow-functions, prefer-arrow-callback -->
+```js
+setInterval(function onTick() {}, 1000)
+// Fixed: setInterval(() => {}, 1000)
+```
+<!-- eslint-enable pvtnbr/prefer-arrow-functions, prefer-arrow-callback -->
+
+### `exportedFunctions`
+
+Type: `boolean`
+
+Default: `true`
+
+Converts function declarations that the module exports, including through `export { name }` and `export default name`.
+
+Set it to `false` if your modules import each other in a cycle. A function declaration can be called by another module in the cycle before its own module finishes running. A `const` arrow function throws a `ReferenceError` in that situation.
+
+<!-- eslint-disable pvtnbr/prefer-arrow-functions -->
+```js
+export function parse() {}
+// Fixed: export const parse = () => {}
+```
+<!-- eslint-enable pvtnbr/prefer-arrow-functions -->
+
+### `allowedNames`
+
+Type: `string[]`
+
+Default: `[]`
+
+Names of functions to never convert. A name matches the function's own name, the variable or property it is assigned to, or the method name. Private methods include the `#`.
+
+For example, Angular requires lifecycle methods on the prototype:
+
+```js
+export default [{
+    rules: {
+        'pvtnbr/prefer-arrow-functions': ['error', {
+            classMethods: true,
+            allowedNames: ['ngOnInit', 'ngOnDestroy']
+        }]
+    }
+}]
+```

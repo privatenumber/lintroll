@@ -233,23 +233,70 @@ const createMoveFix = (
 	];
 };
 
-export const noFunctionHoisting = createRule({
+// Same as ESLint's `no-use-before-define`: only synchronous, non-generator IIFEs run immediately
+const isImmediatelyInvoked = (
+	node: TSESTree.Node,
+) => (
+	(node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression')
+	&& !node.async
+	&& !node.generator
+	&& node.parent.type === 'CallExpression'
+	&& node.parent.callee === node
+);
+
+// A reference inside a function body only runs when that function is called
+const isInDeferredFunction = (
+	reference: TSESLint.Scope.Reference,
+	declarationScope: TSESLint.Scope.Scope,
+) => {
+	let scope: TSESLint.Scope.Scope | null = reference.from;
+	while (scope && scope !== declarationScope) {
+		if (scope.type === 'function' && !isImmediatelyInvoked(scope.block)) {
+			return true;
+		}
+		scope = scope.upper;
+	}
+	return false;
+};
+
+type Options = [{
+	allowNamedExports?: boolean;
+	allowInFunctionBodies?: boolean;
+}];
+
+export const noFunctionHoisting = createRule<Options, 'noFunctionHoisting'>({
 	name: 'no-function-hoisting',
 	meta: {
 		messages: {
 			noFunctionHoisting: 'Declare `{{ name }}` before it is used',
 		},
 		type: 'suggestion',
-		schema: [],
+		schema: [{
+			type: 'object',
+			properties: {
+				allowNamedExports: {
+					type: 'boolean',
+					description: 'Allow `export { name }` before the function is declared.',
+				},
+				allowInFunctionBodies: {
+					type: 'boolean',
+					description: 'Allow references inside function bodies, which only run when the function is called. References inside immediately invoked functions are still reported.',
+				},
+			},
+			additionalProperties: false,
+		}],
 		docs: {
 			description: 'Disallow using a function declaration before it is defined',
 		},
 		fixable: 'code',
 	},
 
-	defaultOptions: [],
+	defaultOptions: [{
+		allowNamedExports: false,
+		allowInFunctionBodies: false,
+	}],
 
-	create: context => ({
+	create: (context, [{ allowNamedExports, allowInFunctionBodies }]) => ({
 		FunctionDeclaration: (node) => {
 			// Anonymous `export default function () {}` cannot be referenced
 			if (!node.id) {
@@ -264,6 +311,8 @@ export const noFunctionHoisting = createRule({
 				if (
 					reference.identifier.range[0] > node.range[0]
 					|| isTypeOnlyReference(reference)
+					|| (allowNamedExports && reference.identifier.parent.type === 'ExportSpecifier')
+					|| (allowInFunctionBodies && isInDeferredFunction(reference, functionVariable.scope))
 				) {
 					return false;
 				}

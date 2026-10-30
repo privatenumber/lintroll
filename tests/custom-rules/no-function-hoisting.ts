@@ -217,6 +217,92 @@ describe('no-function-hoisting', () => {
 		],
 	});
 
+	describe('options', () => {
+		ruleTester.run('no-function-hoisting', noFunctionHoisting, {
+			valid: [
+				{
+					name: 'allowNamedExports',
+					code: 'export { a }\nfunction a(){}',
+					options: [{ allowNamedExports: true }],
+				},
+				{
+					name: 'allowNamedExports / renamed',
+					code: 'export { a as default }\nfunction a(){}',
+					options: [{ allowNamedExports: true }],
+				},
+				{
+					name: 'allowInFunctionBodies / arrow function',
+					code: 'export const b = () => a();\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+				{
+					name: 'allowInFunctionBodies / function declaration',
+					code: 'function b(){ a() }\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+				{
+					name: 'allowInFunctionBodies / class method',
+					code: 'class B { c(){ a() } }\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+				{
+					name: 'allowInFunctionBodies / async IIFE',
+					code: '(async () => { a() })();\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+				{
+					name: 'allowInFunctionBodies / nested in an IIFE',
+					code: '(() => { return () => a() })();\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+			],
+			invalid: [
+				{
+					name: 'allowNamedExports does not allow calls',
+					code: 'a();\nexport { a }\nfunction a(){}\n',
+					options: [{ allowNamedExports: true }],
+					errors: [error('a')],
+					output: 'function a(){}\na();\nexport { a }\n',
+				},
+				{
+					name: 'allowInFunctionBodies / top-level call',
+					code: 'a();\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\na();\n',
+				},
+				{
+					name: 'allowInFunctionBodies / IIFE',
+					code: '(() => { a() })();\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\n(() => { a() })();\n',
+				},
+				{
+					name: 'allowInFunctionBodies / function expression IIFE',
+					code: '(function(){ a() })();\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\n(function(){ a() })();\n',
+				},
+				{
+					name: 'allowInFunctionBodies / class static block',
+					code: 'class B { static { a() } }\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\nclass B { static { a() } }\n',
+				},
+				{
+					name: 'allowInFunctionBodies / call argument',
+					code: 'b(a());\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\nb(a());\n',
+				},
+			],
+		});
+	});
+
 	// JavaScript files use ESLint's parser and scope manager, which omit TypeScript-only properties
 	describe('javascript parser', () => {
 		EslintRuleTester.describe = describe;
@@ -227,6 +313,14 @@ describe('no-function-hoisting', () => {
 			valid: [
 				'function a(){}a()',
 				'function a(){b()}\nfunction b(){a()}',
+				{
+					code: 'export const b = () => a();\nfunction a(){}',
+					options: [{ allowInFunctionBodies: true }],
+				},
+				{
+					code: 'export { a }\nfunction a(){}',
+					options: [{ allowNamedExports: true }],
+				},
 			],
 			invalid: [
 				{
@@ -238,6 +332,12 @@ describe('no-function-hoisting', () => {
 					code: 'export{a}\nfunction a(){}',
 					errors: [error('a')],
 					output: 'function a(){}\nexport{a}\n',
+				},
+				{
+					code: '(() => { a() })();\nfunction a(){}\n',
+					options: [{ allowInFunctionBodies: true }],
+					errors: [error('a')],
+					output: 'function a(){}\n(() => { a() })();\n',
 				},
 			],
 		});

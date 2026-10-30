@@ -6,6 +6,10 @@ type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
 type Options = [{
 	classMethods?: boolean;
+	objectMethods?: boolean;
+	namedFunctionExpressions?: boolean;
+	exportedFunctions?: boolean;
+	allowedNames?: string[];
 }];
 
 const disallowedProperties = new Set([
@@ -114,15 +118,15 @@ const hasDecorators = (
 ) => (node.decorators?.length ?? 0) > 0;
 
 // `m`, `'m'`, and `['m']` all name the same method
-const getMethodKey = (
-	method: TSESTree.MethodDefinition,
+const getKeyName = (
+	member: TSESTree.MethodDefinition | TSESTree.Property | TSESTree.PropertyDefinition,
 	sourceCode: Readonly<TSESLint.SourceCode>,
 ) => {
-	const { key } = method;
+	const { key } = member;
 	if (key.type === 'Literal') {
 		return String(key.value);
 	}
-	if (!method.computed && key.type === 'Identifier') {
+	if (!member.computed && key.type === 'Identifier') {
 		return key.name;
 	}
 	if (key.type === 'PrivateIdentifier') {
@@ -137,15 +141,43 @@ const isOverloadedMethod = (
 	method: TSESTree.MethodDefinition,
 	sourceCode: Readonly<TSESLint.SourceCode>,
 ) => {
-	const key = getMethodKey(method, sourceCode);
+	const key = getKeyName(method, sourceCode);
 	return method.parent.body.some(
 		element => (
 			element.type === 'MethodDefinition'
 			&& element.value.type === 'TSEmptyBodyFunctionExpression'
 			&& element.static === method.static
-			&& getMethodKey(element, sourceCode) === key
+			&& getKeyName(element, sourceCode) === key
 		),
 	);
+};
+
+// The name `allowedNames` matches: the function's own name, or the binding it is assigned to
+const getFunctionName = (
+	node: FunctionNode,
+	sourceCode: Readonly<TSESLint.SourceCode>,
+) => {
+	if (node.id) {
+		return node.id.name;
+	}
+
+	const { parent } = node;
+	switch (parent.type) {
+		case 'MethodDefinition':
+		case 'Property':
+		case 'PropertyDefinition': {
+			return getKeyName(parent, sourceCode);
+		}
+		case 'VariableDeclarator': {
+			return parent.id.type === 'Identifier' ? parent.id.name : undefined;
+		}
+		case 'AssignmentExpression': {
+			return parent.left.type === 'Identifier' ? parent.left.name : undefined;
+		}
+		default: {
+			return undefined;
+		}
+	}
 };
 
 const messages = {
@@ -169,6 +201,26 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					type: 'boolean',
 					description: 'Convert class methods to arrow function class fields. This moves the method from the prototype to each instance, which breaks subclass overrides and `super` calls.',
 				},
+				objectMethods: {
+					type: 'boolean',
+					description: 'Convert object shorthand methods such as `{ load() {} }` to arrow function properties.',
+				},
+				namedFunctionExpressions: {
+					type: 'boolean',
+					description: 'Convert named function expressions such as `callback(function onTick() {})`. The name is removed, so stack traces show the function as anonymous.',
+				},
+				exportedFunctions: {
+					type: 'boolean',
+					description: 'Convert exported function declarations. Unlike `const`, function declarations can be used before their module finishes running, which circular imports may rely on.',
+				},
+				allowedNames: {
+					type: 'array',
+					items: {
+						type: 'string',
+					},
+					uniqueItems: true,
+					description: 'Names of functions and methods to never convert.',
+				},
 			},
 			additionalProperties: false,
 		}],
@@ -177,9 +229,19 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 
 	defaultOptions: [{
 		classMethods: false,
+		objectMethods: true,
+		namedFunctionExpressions: true,
+		exportedFunctions: true,
+		allowedNames: [],
 	}],
 
-	create: (context, [{ classMethods }]) => {
+	create: (context, [{
+		classMethods,
+		objectMethods,
+		namedFunctionExpressions,
+		exportedFunctions,
+		allowedNames,
+	}]) => {
 		const untransformableFunctions = new Set<FunctionNode>();
 		const isTsx = context.filename.endsWith('.tsx');
 
@@ -268,6 +330,49 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			return references;
 		};
 
+		const isExported = (
+			node: TSESTree.FunctionDeclaration,
+		) => {
+			if (
+				node.parent.type === 'ExportNamedDeclaration'
+				|| node.parent.type === 'ExportDefaultDeclaration'
+			) {
+				return true;
+			}
+
+			if (!node.id) {
+				return false;
+			}
+
+			// `export { a }` and `export default a`
+			const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
+			return functionNameVariable.references.some(
+				({ identifier }) => (
+					identifier.parent.type === 'ExportSpecifier'
+					|| identifier.parent.type === 'ExportDefaultDeclaration'
+				),
+			);
+		};
+
+		// Preferences from options, as opposed to conversions that would change behavior
+		const isExcludedByOptions = (
+			node: FunctionNode,
+		) => {
+			const { parent } = node;
+			if (
+				(parent.type === 'MethodDefinition' && !classMethods)
+				|| (parent.type === 'Property' && parent.method && !objectMethods)
+				|| (node.type === 'FunctionExpression' && node.id && !namedFunctionExpressions)
+				|| (node.type === 'FunctionDeclaration' && !exportedFunctions && isExported(node))
+			) {
+				return true;
+			}
+
+			const name = getFunctionName(node, context.sourceCode);
+			// `createRule` merges `defaultOptions`, so `allowedNames` is always set
+			return name !== undefined && allowedNames!.includes(name);
+		};
+
 		const isConvertable = (
 			node: FunctionNode,
 		) => {
@@ -275,6 +380,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			if (
 				node.generator
 				|| untransformableFunctions.has(node)
+				|| isExcludedByOptions(node)
 			) {
 				return false;
 			}
@@ -289,8 +395,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				if (
 					parent.type === 'MethodDefinition'
 					&& (
-						!classMethods
-						|| isOverloadedMethod(parent, context.sourceCode)
+						isOverloadedMethod(parent, context.sourceCode)
 
 						// Method and parameter decorators cannot be applied to class fields
 						|| hasDecorators(parent)

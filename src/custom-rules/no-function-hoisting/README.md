@@ -63,3 +63,56 @@ function helper() {}
 - TypeScript overload signatures move together with their implementation, and moved functions are never inserted between another function's signatures and its implementation.
 - Other repeated declarations of the same name, such as a `var` or a merged `namespace`, are reported but not fixed.
 - A declaration is only moved within its own statement list. If the first use is elsewhere, the error is reported without a fix.
+
+## Options
+
+```js
+export default [{
+    rules: {
+        'pvtnbr/no-function-hoisting': ['error', {
+            allowNamedExports: false,
+            allowInFunctionBodies: false
+        }]
+    }
+}]
+```
+
+### `allowNamedExports`
+
+Type: `boolean`
+
+Default: `false`
+
+Allows `export { name }` before the function is declared. This matches the option of the same name in ESLint's [`no-use-before-define`](https://eslint.org/docs/latest/rules/no-use-before-define#allownamedexports).
+
+<!-- eslint-disable pvtnbr/no-function-hoisting, pvtnbr/prefer-arrow-functions -->
+```js
+export { parse }
+
+function parse() {}
+```
+<!-- eslint-enable pvtnbr/no-function-hoisting, pvtnbr/prefer-arrow-functions -->
+
+### `allowInFunctionBodies`
+
+Type: `boolean`
+
+Default: `false`
+
+Allows references inside function bodies, which only run when the function is called. This supports a top-down file layout, where high-level code comes first and helpers follow.
+
+References inside an immediately invoked function, like `(() => helper())()`, are still reported because that body runs right away.
+
+<!-- eslint-disable pvtnbr/no-function-hoisting, pvtnbr/prefer-arrow-functions -->
+```js
+// Still reported: this call runs before the declaration below
+helper()
+
+// Allowed with `allowInFunctionBodies: true`
+export const main = () => helper()
+
+function helper() {}
+```
+<!-- eslint-enable pvtnbr/no-function-hoisting, pvtnbr/prefer-arrow-functions -->
+
+[`prefer-arrow-functions`](../prefer-arrow-functions/) does not convert a function that is used before its declaration, because a `const` cannot be used before it is declared. With this option enabled, helpers declared below their callers stay `function` declarations.

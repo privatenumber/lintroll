@@ -842,6 +842,135 @@ describe('prefer-arrow-functions', () => {
 		],
 	});
 
+	describe('options', () => {
+		ruleTester.run('prefer-arrow-functions', preferArrowFunctions, {
+			valid: [
+				{
+					name: 'objectMethods: false',
+					code: '({ a(b){ return b } })',
+					options: [{ objectMethods: false }],
+				},
+				{
+					name: 'namedFunctionExpressions: false',
+					code: 'a(function b(){})',
+					options: [{ namedFunctionExpressions: false }],
+				},
+				{
+					name: 'exportedFunctions: false / named export',
+					code: 'export function a(){}',
+					options: [{ exportedFunctions: false }],
+				},
+				{
+					name: 'exportedFunctions: false / default export',
+					code: 'export default function a(){}',
+					options: [{ exportedFunctions: false }],
+				},
+				{
+					name: 'exportedFunctions: false / anonymous default export',
+					code: 'export default function(){}',
+					options: [{ exportedFunctions: false }],
+				},
+				{
+					name: 'exportedFunctions: false / export specifier',
+					code: 'function a(){}export { a }',
+					options: [{ exportedFunctions: false }],
+				},
+				{
+					name: 'exportedFunctions: false / export default identifier',
+					code: 'function a(){}export default a',
+					options: [{ exportedFunctions: false }],
+				},
+				{
+					name: 'allowedNames / declaration',
+					code: 'function a(){}',
+					options: [{ allowedNames: ['a'] }],
+				},
+				{
+					name: 'allowedNames / variable',
+					code: 'const a = function(){}',
+					options: [{ allowedNames: ['a'] }],
+				},
+				{
+					name: 'allowedNames / object method',
+					code: '({ a(){} })',
+					options: [{ allowedNames: ['a'] }],
+				},
+				{
+					name: 'allowedNames / object property',
+					code: '({ "a": function(){} })',
+					options: [{ allowedNames: ['a'] }],
+				},
+				{
+					name: 'allowedNames / class method',
+					code: '(class{ ngOnInit(){} })',
+					options: [{
+						classMethods: true,
+						allowedNames: ['ngOnInit'],
+					}],
+				},
+				{
+					name: 'allowedNames / private class method',
+					code: '(class{ #a(){} })',
+					options: [{
+						classMethods: true,
+						allowedNames: ['#a'],
+					}],
+				},
+			],
+			invalid: [
+				{
+					name: 'objectMethods: false still converts property values',
+					code: '({ a: function(){} })',
+					options: [{ objectMethods: false }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: '({ a: ()=>{} })',
+				},
+				{
+					name: 'namedFunctionExpressions: false still converts anonymous expressions',
+					code: 'a(function(){})',
+					options: [{ namedFunctionExpressions: false }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: 'a(()=>{})',
+				},
+				{
+					name: 'namedFunctionExpressions: false still converts methods',
+					code: '({ a(){} })',
+					options: [{ namedFunctionExpressions: false }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: '({ a:()=>{} })',
+				},
+				{
+					name: 'exportedFunctions: false still converts local functions',
+					code: 'function a(){}export const b = 1',
+					options: [{ exportedFunctions: false }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: 'const a= ()=>{};export const b = 1',
+				},
+				{
+					name: 'exportedFunctions: false still converts exported expressions',
+					code: 'export const a = function(){}',
+					options: [{ exportedFunctions: false }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: 'export const a = ()=>{}',
+				},
+				{
+					name: 'allowedNames only matches exact names',
+					code: 'function ab(){}',
+					options: [{ allowedNames: ['a'] }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: 'const ab= ()=>{}',
+				},
+				{
+					name: 'allowedNames does not match a computed key with the same text',
+					code: '({ [a](){} })',
+					options: [{ allowedNames: ['a'] }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: '({ [a]:()=>{} })',
+				},
+			],
+		});
+	});
+
 	// JavaScript files use ESLint's parser and scope manager, which omit TypeScript-only properties
 	describe('javascript parser', () => {
 		EslintRuleTester.describe = describe;
