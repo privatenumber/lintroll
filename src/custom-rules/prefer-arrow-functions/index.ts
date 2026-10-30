@@ -1,9 +1,152 @@
 import type { TSESTree, TSESLint } from '@typescript-eslint/utils';
 import { createRule } from '../utils/create-rule.ts';
+import { isTypeOnlyReference } from '../utils/is-type-only-reference.ts';
 
 type FunctionNode = TSESTree.FunctionDeclaration | TSESTree.FunctionExpression;
 
-type Options = [];
+type Options = [{
+	classMethods?: boolean;
+}];
+
+const disallowedProperties = new Set([
+	'prototype',
+	'name',
+	'length',
+]);
+
+// `const` is only valid where a statement list is allowed
+const declarationContainers = new Set<string>([
+	'Program',
+	'BlockStatement',
+	'StaticBlock',
+	'SwitchCase',
+	'TSModuleBlock',
+	'ExportNamedDeclaration',
+	'ExportDefaultDeclaration',
+]);
+
+// Tokens that would continue the expression on the previous line without a semicolon
+const continuationTokenPattern = /^[([`+\-/<]/;
+
+// Arrow functions have assignment-level precedence, so they can only appear
+// unparenthesized where an AssignmentExpression is accepted
+const acceptsAssignmentExpression = (
+	node: TSESTree.FunctionExpression,
+) => {
+	const { parent } = node;
+	switch (parent.type) {
+		case 'VariableDeclarator': {
+			return parent.init === node;
+		}
+		case 'AssignmentExpression':
+		case 'AssignmentPattern': {
+			return parent.right === node;
+		}
+		case 'Property':
+		case 'PropertyDefinition': {
+			return parent.value === node;
+		}
+		case 'CallExpression':
+		case 'NewExpression': {
+			return parent.arguments.includes(node);
+		}
+		case 'ConditionalExpression': {
+			return parent.test !== node;
+		}
+		case 'ArrowFunctionExpression': {
+			return parent.body === node;
+		}
+		case 'ArrayExpression':
+		case 'ReturnStatement':
+		case 'SpreadElement':
+		case 'YieldExpression':
+		case 'TemplateLiteral':
+		case 'JSXExpressionContainer': {
+			return true;
+		}
+		default: {
+			return false;
+		}
+	}
+};
+
+const isConstructorReference = (
+	node: TSESTree.Identifier | TSESTree.JSXIdentifier | TSESTree.FunctionExpression,
+) => {
+	const { parent } = node;
+	return (
+		(parent.type === 'NewExpression' && parent.callee === node)
+		|| (
+			parent.type === 'BinaryExpression'
+			&& parent.operator === 'instanceof'
+			&& parent.right === node
+		)
+		|| (
+			(parent.type === 'ClassDeclaration' || parent.type === 'ClassExpression')
+			&& parent.superClass === node
+		)
+	);
+};
+
+const isFunctionPropertyReference = (
+	identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
+) => {
+	const { parent } = identifier;
+	if (parent.type !== 'MemberExpression' || parent.object !== identifier) {
+		return false;
+	}
+
+	const { property } = parent;
+	if (parent.computed) {
+		return (
+			property.type === 'Literal'
+			&& typeof property.value === 'string'
+			&& disallowedProperties.has(property.value)
+		);
+	}
+
+	return property.type === 'Identifier' && disallowedProperties.has(property.name);
+};
+
+// ESLint's default JavaScript parser does not set `decorators`
+const hasDecorators = (
+	node: { decorators?: TSESTree.Decorator[] },
+) => (node.decorators?.length ?? 0) > 0;
+
+// `m`, `'m'`, and `['m']` all name the same method
+const getMethodKey = (
+	method: TSESTree.MethodDefinition,
+	sourceCode: Readonly<TSESLint.SourceCode>,
+) => {
+	const { key } = method;
+	if (key.type === 'Literal') {
+		return String(key.value);
+	}
+	if (!method.computed && key.type === 'Identifier') {
+		return key.name;
+	}
+	if (key.type === 'PrivateIdentifier') {
+		return `#${key.name}`;
+	}
+
+	// A computed expression such as `[name]` is compared by its source text
+	return `[${sourceCode.getText(key)}]`;
+};
+
+const isOverloadedMethod = (
+	method: TSESTree.MethodDefinition,
+	sourceCode: Readonly<TSESLint.SourceCode>,
+) => {
+	const key = getMethodKey(method, sourceCode);
+	return method.parent.body.some(
+		element => (
+			element.type === 'MethodDefinition'
+			&& element.value.type === 'TSEmptyBodyFunctionExpression'
+			&& element.static === method.static
+			&& getMethodKey(element, sourceCode) === key
+		),
+	);
+};
 
 const messages = {
 	preferArrowFunction: 'Prefer arrow function',
@@ -19,20 +162,111 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 			description: 'Prefer arrow functions when possible',
 		},
 		fixable: 'code',
-		schema: [],
+		schema: [{
+			type: 'object',
+			properties: {
+				classMethods: {
+					type: 'boolean',
+					description: 'Convert class methods to arrow function class fields. This moves the method from the prototype to each instance, which breaks subclass overrides and `super` calls.',
+				},
+			},
+			additionalProperties: false,
+		}],
 		messages,
 	},
 
-	defaultOptions: [],
+	defaultOptions: [{
+		classMethods: false,
+	}],
 
-	create: (context) => {
+	create: (context, [{ classMethods }]) => {
 		const untransformableFunctions = new Set<FunctionNode>();
+		const isTsx = context.filename.endsWith('.tsx');
 
-		const disallowedProperties = [
-			'prototype',
-			'name',
-			'length',
-		] as const;
+		// Returns `undefined` when the declaration cannot become a `const` binding
+		const getDeclarationReferences = (
+			node: TSESTree.FunctionDeclaration,
+		): TSESLint.Scope.Reference[] | undefined => {
+			// Default export can have anonymous function declarations
+			if (!node.id) {
+				return [];
+			}
+
+			if (!declarationContainers.has(node.parent.type)) {
+				return;
+			}
+
+			const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
+			const { defs, references } = functionNameVariable;
+
+			// Overloads, duplicate declarations, and `var` redeclarations
+			// would become invalid `const` redeclarations
+			if (defs.length > 1) {
+				return;
+			}
+
+			// A `const` binding cannot be reassigned
+			if (references.some(reference => reference.isWrite())) {
+				return;
+			}
+
+			// A `const` binding cannot be used before its declaration
+			const isHoisted = references.some(
+				reference => (
+					reference.identifier.range[0] < node.range[0]
+					&& !isTypeOnlyReference(reference)
+				),
+			);
+			if (isHoisted) {
+				return;
+			}
+
+			return references;
+		};
+
+		const isInsideScope = (
+			parentScope: TSESLint.Scope.Scope,
+			childScope: TSESLint.Scope.Scope,
+		) => {
+			let currentScope: null | TSESLint.Scope.Scope = childScope;
+			while (currentScope && currentScope !== parentScope) {
+				currentScope = currentScope.upper;
+			}
+
+			return currentScope === parentScope;
+		};
+
+		// Returns `undefined` when the expression references itself
+		const getExpressionReferences = (
+			node: TSESTree.FunctionExpression,
+			scope: TSESLint.Scope.Scope,
+		): TSESLint.Scope.Reference[] | undefined => {
+			const references: TSESLint.Scope.Reference[] = [];
+			// Parameters are also declared by the function, so match the function's own name exactly
+			const functionNameVariable = node.id && context.sourceCode.getDeclaredVariables!(node).find(
+				variable => variable.identifiers[0] === node.id,
+			);
+
+			if (functionNameVariable) {
+				const recursiveReference = functionNameVariable.references.some(
+					({ from }) => isInsideScope(scope, from),
+				);
+				if (recursiveReference) {
+					return;
+				}
+
+				references.push(...functionNameVariable.references);
+			}
+
+			if (node.parent.type === 'VariableDeclarator') {
+				const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
+
+				// The first reference is the variable declaration itself
+				references.push(...functionVariable.references.slice(1));
+			}
+
+			return references;
+		};
 
 		const isConvertable = (
 			node: FunctionNode,
@@ -45,17 +279,46 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				return false;
 			}
 
-			// Object/Class getters, setters, and constructors cannot be arrow functions
 			const { parent } = node;
+			if (parent.type === 'Property' || parent.type === 'MethodDefinition') {
+				// Object/Class getters, setters, and constructors cannot be arrow functions
+				if (['set', 'get', 'constructor'].includes(parent.kind)) {
+					return false;
+				}
+
+				if (
+					parent.type === 'MethodDefinition'
+					&& (
+						!classMethods
+						|| isOverloadedMethod(parent, context.sourceCode)
+
+						// Method and parameter decorators cannot be applied to class fields
+						|| hasDecorators(parent)
+						|| node.params.some(hasDecorators)
+					)
+				) {
+					return false;
+				}
+			}
+
+			// Arrow functions cannot be constructed or extended
+			if (node.type === 'FunctionExpression' && isConstructorReference(node)) {
+				return false;
+			}
+
+			// TypeScript only applies `asserts` and `never` return types to control flow analysis
+			// when the callee is a function declaration or an explicitly annotated variable
+			const returnType = node.returnType?.typeAnnotation;
 			if (
-				(
-					parent.type === 'Property'
-					|| parent.type === 'MethodDefinition'
-				)
-				&& (
-					['set', 'get', 'constructor'].includes(parent.kind)
-				)
+				(returnType?.type === 'TSTypePredicate' && returnType.asserts)
+				|| returnType?.type === 'TSNeverKeyword'
 			) {
+				return false;
+			}
+
+			// Arrow functions cannot declare a TypeScript `this` parameter
+			const [firstParameter] = node.params;
+			if (firstParameter?.type === 'Identifier' && firstParameter.name === 'this') {
 				return false;
 			}
 
@@ -65,87 +328,71 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 				return false;
 			}
 
-			let references: TSESLint.Scope.Reference[] = [];
-
-			if (
+			const references = (
 				node.type === 'FunctionDeclaration'
-				// Default export can have anonymous function declarations
-				&& node.id
+					? getDeclarationReferences(node)
+					: getExpressionReferences(node, scope)
+			);
+
+			return references !== undefined && !references.some(
+				({ identifier }) => (
+					isConstructorReference(identifier)
+					|| isFunctionPropertyReference(identifier)
+				),
+			);
+		};
+
+		// In TSX, `<T>(` parses as a JSX element unless the type parameter list has a trailing comma
+		const fixTsxTypeParameters = (
+			node: FunctionNode,
+			fixer: TSESLint.RuleFixer,
+		) => {
+			const typeParameters = node.typeParameters?.params;
+			if (
+				!isTsx
+				|| typeParameters?.length !== 1
+				|| typeParameters[0].constraint
 			) {
-				const [functionNameVariable] = context.sourceCode.getDeclaredVariables!(node);
-				const [firstReference] = functionNameVariable.references;
-				const isHoisted = (
-					firstReference
-					&& node.range[0] > firstReference.identifier.range[0]
-				);
-
-				if (isHoisted) {
-					return false;
-				}
-
-				references = functionNameVariable.references;
-			} else if (node.type === 'FunctionExpression') {
-				const functionNameVariable = context.sourceCode.getDeclaredVariables!(node).find(
-					variable => variable.identifiers[0].parent.type === 'FunctionExpression',
-				);
-
-				if (functionNameVariable) {
-					const isInsideScope = (
-						parentScope: TSESLint.Scope.Scope,
-						childScope: TSESLint.Scope.Scope,
-					) => {
-						let currentScope: null | TSESLint.Scope.Scope = childScope;
-						while (currentScope && currentScope !== parentScope) {
-							currentScope = currentScope.upper;
-						}
-
-						return currentScope === parentScope;
-					};
-					const recursiveReference = functionNameVariable.references.some(
-						({ from }) => isInsideScope(scope, from),
-					);
-					if (recursiveReference) {
-						return false;
-					}
-
-					references.push(...functionNameVariable.references);
-				}
-
-				if (node.parent.type === 'VariableDeclarator') {
-					const [functionVariable] = context.sourceCode.getDeclaredVariables!(node.parent);
-
-					// The first reference is the variable declaration itself
-					references.push(...functionVariable.references.slice(1));
-				}
+				return [];
 			}
 
-			for (const { identifier } of references) {
-				if (
-					identifier.parent.type === 'MemberExpression'
-					&& identifier.parent.property.type === 'Identifier'
-					&& disallowedProperties.includes(identifier.parent.property.name)
-				) {
-					return false;
-				}
-			}
-
-			return true;
+			const closingToken = context.sourceCode.getLastToken(node.typeParameters!)!;
+			const tokenBefore = context.sourceCode.getTokenBefore(closingToken)!;
+			return tokenBefore.value === ',' ? [] : [fixer.insertTextAfter(typeParameters[0], ',')];
 		};
 
 		const getNearestFunction = (
 			node: TSESTree.ThisExpression | TSESTree.Super | TSESTree.MetaProperty,
-		): FunctionNode => {
-			let scope = context.sourceCode.getScope!(node);
+		): FunctionNode | undefined => {
+			let scope: TSESLint.Scope.Scope | null = context.sourceCode.getScope!(node);
 
-			while (
-				scope
-				&& scope.block.type !== 'FunctionDeclaration'
-				&& scope.block.type !== 'FunctionExpression'
-			) {
-				scope = scope.upper!;
+			while (scope) {
+				// `this` in a class field or static block refers to the class, not an outer function
+				if (
+					scope.type === 'class-field-initializer'
+					|| scope.type === 'class-static-block'
+				) {
+					return;
+				}
+
+				if (
+					scope.block.type === 'FunctionDeclaration'
+					|| scope.block.type === 'FunctionExpression'
+				) {
+					return scope.block;
+				}
+
+				scope = scope.upper;
 			}
+		};
 
-			return scope?.block as FunctionNode;
+		const markUntransformable = (
+			node: TSESTree.ThisExpression | TSESTree.Super | TSESTree.MetaProperty,
+		) => {
+			const functionNode = getNearestFunction(node);
+			if (functionNode) {
+				untransformableFunctions.add(functionNode);
+			}
 		};
 
 		const removeFunctionToken = (
@@ -195,18 +442,14 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 		];
 
 		return {
-			ThisExpression: (node) => {
-				untransformableFunctions.add(getNearestFunction(node));
-			},
-			Super: (node) => {
-				untransformableFunctions.add(getNearestFunction(node));
-			},
+			ThisExpression: markUntransformable,
+			Super: markUntransformable,
 			MetaProperty: (node) => {
 				if (
 					node.meta.name === 'new'
 					&& node.property.name === 'target'
 				) {
-					untransformableFunctions.add(getNearestFunction(node));
+					markUntransformable(node);
 				}
 			},
 			'FunctionExpression:exit': (node) => {
@@ -220,6 +463,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 					fix: (fixer) => {
 						const fixes: TSESLint.RuleFix[] = [
 							...insertArrow(node, fixer),
+							...fixTsxTypeParameters(node, fixer),
 						];
 
 						const { parent } = node;
@@ -251,7 +495,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 								fixes.push(fixer.remove(node.id));
 							}
 
-							if (parent.type === 'LogicalExpression') {
+							if (!acceptsAssignmentExpression(node)) {
 								const previousToken = context.sourceCode.getTokenBefore(node);
 								const nextToken = context.sourceCode.getTokenAfter(node);
 
@@ -281,6 +525,7 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 						const fixes: TSESLint.RuleFix[] = [
 							...insertArrow(node, fixer),
 							...removeFunctionToken(node, fixer),
+							...fixTsxTypeParameters(node, fixer),
 						];
 
 						// Default export can have unnamed function declarations
@@ -318,13 +563,16 @@ export const preferArrowFunctions = createRule<Options, MessageIds>({
 							);
 						}
 
-						// Insert semicolon if necessary
-						const nextToken = context.sourceCode.getTokenAfter(node, {
-							includeComments: true,
-						});
+						// Insert a semicolon if the next token would otherwise continue the expression
+						const nextToken = context.sourceCode.getTokenAfter(node);
 						const needsDelimiter = (
 							nextToken
-							&& !context.sourceCode.isSpaceBetween!(node, nextToken!)
+							&& nextToken.value !== ';'
+							&& nextToken.value !== '}'
+							&& (
+								nextToken.loc.start.line === node.loc.end.line
+								|| continuationTokenPattern.test(nextToken.value)
+							)
 						);
 
 						if (needsDelimiter) {

@@ -15,7 +15,7 @@ This rule generates warnings when traditional function syntax (`function () {}`)
 
 
 ### Examples of passing code
-```js
+```ts
 // Arrow functions are allowed
 (() => {});
 (async () => {})
@@ -42,9 +42,11 @@ export default () => {}
     set foo(value) {}
 })
 
-// Class definition
+// Class definition (class methods are only converted with `classMethods: true`)
 class myClass {
     constructor() {}
+
+    method() {}
 
     accessSuper() {
         super.foo()
@@ -67,6 +69,10 @@ myFunction.myFunctype = {}
 myFunction.name
 myFunction.length
 
+// Constructors
+function Constructor() {}
+new Constructor()
+
 // Ignores generators
 function* generator() {}
 async function* asyncGenerator() {}
@@ -74,6 +80,16 @@ async function* asyncGenerator() {}
 // Hoisting
 hoisted()
 function hoisted() {}
+
+// Reassignment
+function reassigned() {}
+reassigned = otherFunction
+
+// TypeScript overloads and `this` parameters
+function overloaded(value: string): void
+function overloaded(value: unknown) {}
+
+function withThis(this: Window) {}
 ```
 
 
@@ -102,24 +118,50 @@ const object = {
 }
 // Fixed: { method: () => {} }
 
-/* Classes */
+/* Classes (with `classMethods: true`) */
 class MyClass {
     method() {}
 }
-// Fixed: class MyClass { method = () => value }
+// Fixed: class MyClass { method = () => {} }
 
 /* Exports */
 export function namedExport() {}
 // Fixed: export const namedExport = () => {}
 
 export default function defaultExport() {}
-// Fixed: export default () => {}
+// Fixed: const defaultExport = () => {}; export default defaultExport
+
+/* Operands are wrapped in parentheses when needed */
+const callback = function () {} as Callback
+// Fixed: const callback = (() => {}) as Callback
 
 /* TypeScript */
 function typescript<T extends string>(a: T) {}
 // Fixed: const typescript = <T extends string>(a: T) => {}
+
+/* TSX: a trailing comma keeps the type parameter from parsing as JSX */
+function tsx<T>(a: T) {}
+// Fixed: const tsx = <T,>(a: T) => {}
 ```
 <!-- eslint-enable pvtnbr/prefer-arrow-functions -->
+
+## Options
+
+### `classMethods`
+
+Type: `boolean`
+
+Default: `false`
+
+Converts class methods to arrow function class fields. This is off by default because the conversion changes behavior: the method moves from the prototype to each instance, so subclasses can no longer override it or call it with `super`.
+
+```js
+export default [{
+    rules: {
+        'pvtnbr/prefer-arrow-functions': ['error', { classMethods: true }]
+    }
+}]
+```
 
 ### Limitations
 This rule will not generate warnings or fixes for traditional functions that use any of the following features:
@@ -136,10 +178,22 @@ This rule will not generate warnings or fixes for traditional functions that use
 - [`length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length)
 - [`prototype`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype)
 
+#### Constructor usage
+- [`new`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new)
+- [`instanceof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)
+- [`extends`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/extends)
+
 #### Declaration style
 - [Hoisting](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function#hoisting)
+- Reassigning the function, or declaring the same name more than once (including `var` and TypeScript overloads)
+- Declarations used as the body of `if` or a label, where `const` is not allowed
 - [`get`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) / [`set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)
 - [`constructor`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/constructor)
+- Class methods, unless `classMethods` is enabled. Overloaded or decorated class methods are never converted.
+
+#### TypeScript
+- [`this` parameters](https://www.typescriptlang.org/docs/handbook/2/functions.html#declaring-this-in-a-function)
+- [Assertion functions](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions) (`asserts value`) and `never` return types. TypeScript only uses them to narrow types and detect unreachable code when the function is a declaration.
 
 
 > [!WARNING]  

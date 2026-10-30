@@ -1,5 +1,6 @@
 import { describe, test, onTestFail } from 'manten';
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester as EslintRuleTester, type Rule } from 'eslint';
 import { preferArrowFunctions } from '../../src/custom-rules/prefer-arrow-functions/index.ts';
 
 describe('prefer-arrow-functions', () => {
@@ -161,6 +162,147 @@ describe('prefer-arrow-functions', () => {
 				name: 'hoisting',
 				code: 'a();function a(){}',
 			},
+
+			// Class methods are opt-in
+			{
+				name: 'class / method / default',
+				code: '(class{ a(){} })',
+			},
+			{
+				name: 'class / method / overload',
+				code: '(class{ a(b: string): void; a(b: any){} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'class / method / overload with string key',
+				code: '(class{ \'a\'(b: string): void; a(b: any){} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'class / method / overload with computed string key',
+				code: '(class{ [\'a\'](b: string): void; a(b: any){} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'class / method / static overload',
+				code: '(class{ static a(b: string): void; static a(b: any){} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'ts / overloads in namespace',
+				code: 'namespace N { function a(b: string): void;function a(b: any){} }',
+			},
+			{
+				name: 'ts / default exported overloads',
+				code: 'export default function a(b: string): void;export default function a(b: any){}',
+			},
+			{
+				name: 'ts / function and namespace merge',
+				code: 'function a(){}namespace a { export const b = 1 }',
+			},
+			{
+				name: 'class / method / decorator',
+				code: '(class{ @b a(){} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'class / method / parameter decorator',
+				code: 'class A { a(@b c){} }',
+				options: [{ classMethods: true }],
+			},
+
+			// Constructors
+			{
+				name: 'constructor / new declaration',
+				code: 'function A(){}new A()',
+			},
+			{
+				name: 'constructor / new expression',
+				code: 'const A = function(){};new A()',
+			},
+			{
+				name: 'constructor / inline new',
+				code: 'new function(){}',
+			},
+			{
+				name: 'constructor / instanceof',
+				code: 'function A(){}a instanceof A',
+			},
+			{
+				name: 'constructor / extends',
+				code: 'function A(){}class B extends A {}',
+			},
+			{
+				name: 'prototype / computed',
+				code: 'function a(){}a["prototype"]={}',
+			},
+
+			// Declarations that cannot become `const`
+			{
+				name: 'declaration / reassigned',
+				code: 'function a(){}a=1',
+			},
+			{
+				name: 'declaration / duplicate',
+				code: 'function a(){}function a(){}',
+			},
+			{
+				name: 'declaration / var redeclaration',
+				code: 'var a;function a(){}',
+			},
+			{
+				name: 'declaration / if body',
+				code: 'if (b) function a(){}',
+			},
+			{
+				name: 'declaration / labeled',
+				code: 'b: function a(){}',
+			},
+			{
+				name: 'ts / overloads',
+				code: 'function a(b: string): void;function a(b: any){}',
+			},
+			{
+				name: 'ts / exported overloads',
+				code: 'export function a(b: string): void;export function a(b: any){}',
+			},
+			{
+				name: 'ts / this parameter',
+				code: 'function a(this: Window){}',
+			},
+			{
+				name: 'ts / assertion function',
+				code: 'function a(b: unknown): asserts b {}',
+			},
+			{
+				name: 'ts / assertion function with type',
+				code: 'function a(b: unknown): asserts b is string {}',
+			},
+			{
+				name: 'ts / assertion method',
+				code: '(class{ a(b: unknown): asserts b {} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'ts / never return type',
+				code: 'function a(): never { throw new Error() }',
+			},
+			{
+				name: 'ts / never return type / expression',
+				code: 'const a = function(): never { throw new Error() }',
+			},
+			{
+				name: 'this / class computed key refers to outer function',
+				code: 'function a(){return class{[this.b] = 1}}',
+			},
+			{
+				name: 'this / class heritage refers to outer function',
+				code: 'function a(){return class extends this.b {}}',
+			},
+			{
+				name: 'hoisting / value reference before type reference',
+				code: 'a();type B = typeof a;function a(){}',
+			},
 		],
 
 		invalid: [
@@ -230,12 +372,84 @@ describe('prefer-arrow-functions', () => {
 				output: 'const a= ()=>{};a()',
 			},
 			{
+				name: 'declaration / inserts semicolon / same line',
+				code: 'function a(){} a()',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{}; a()',
+			},
+			{
+				name: 'declaration / inserts semicolon / next line starts with (',
+				code: 'function a(){}\n(b)',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{};\n(b)',
+			},
+			{
+				name: 'declaration / inserts semicolon / next line starts with [',
+				code: 'function a(){}\n[b]',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{};\n[b]',
+			},
+			{
+				name: 'declaration / no semicolon / next line',
+				code: 'function a(){}\nb()',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{}\nb()',
+			},
+			{
+				name: 'declaration / no semicolon / end of block',
+				code: '{function a(){}}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '{const a= ()=>{}}',
+			},
+			{
+				name: 'declaration / switch case',
+				code: 'switch (b) { case 1: function a(){} }',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'switch (b) { case 1: const a= ()=>{} }',
+			},
+			{
 				name: 'recursive declaration',
 				code: 'function a(){a()}',
 				errors: [{
 					messageId: 'preferArrowFunction',
 				}],
 				output: 'const a= ()=>{a()}',
+			},
+			{
+				name: 'declaration / type-only reference before declaration',
+				code: 'type B = typeof a;function a(){}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'type B = typeof a;const a= ()=>{}',
+			},
+			{
+				name: 'declaration / "this" in nested class field',
+				code: 'function a(){return class{b = this}}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{return class{b = this}}',
+			},
+			{
+				name: 'declaration / "this" in nested static block',
+				code: 'function a(){return class{static{this}}}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= ()=>{return class{static{this}}}',
 			},
 
 			// Function expression
@@ -297,6 +511,72 @@ describe('prefer-arrow-functions', () => {
 					messageId: 'preferArrowFunction',
 				}],
 				output: '(1 && (()=>{}))',
+			},
+			{
+				name: 'expression / unary operand',
+				code: '!function(){}()',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '!(()=>{})()',
+			},
+			{
+				name: 'expression / member object',
+				code: 'a(function(){}.bind(null))',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a((()=>{}).bind(null))',
+			},
+			{
+				name: 'expression / binary operand',
+				code: 'a = function(){} + 1',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a = (()=>{}) + 1',
+			},
+			{
+				name: 'expression / await operand',
+				code: 'async () => await function(){}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'async () => await (()=>{})',
+			},
+			{
+				name: 'expression / ts as expression',
+				code: 'a = function(){} as b',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a = (()=>{}) as b',
+			},
+			{
+				name: 'expression / conditional test',
+				code: 'a = function(){} ? 1 : 2',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a = (()=>{}) ? 1 : 2',
+			},
+			{
+				name: 'expression / no wrap / assignment contexts',
+				code: 'a = [function(){}, b ? function(){} : c, ...function(){}]',
+				errors: [
+					{ messageId: 'preferArrowFunction' },
+					{ messageId: 'preferArrowFunction' },
+					{ messageId: 'preferArrowFunction' },
+				],
+				output: 'a = [()=>{}, b ? ()=>{} : c, ...()=>{}]',
+			},
+			{
+				name: 'expression / no wrap / call argument',
+				code: 'a(function(){})',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a(()=>{})',
 			},
 			{
 				name: 'expression / nested',
@@ -375,6 +655,7 @@ describe('prefer-arrow-functions', () => {
 					messageId: 'preferArrowFunction',
 				}],
 				output: '(class{ _/*a*/=()=>/*b*/{} })',
+				options: [{ classMethods: true }],
 			},
 			{
 				name: 'class / async method',
@@ -383,6 +664,7 @@ describe('prefer-arrow-functions', () => {
 					messageId: 'preferArrowFunction',
 				}],
 				output: '(class{ /*a*/_/*b*/=async()=>/*c*/{} })',
+				options: [{ classMethods: true }],
 			},
 			{
 				name: 'class / private method',
@@ -391,6 +673,7 @@ describe('prefer-arrow-functions', () => {
 					messageId: 'preferArrowFunction',
 				}],
 				output: '(class{ #_/*a*/=()=>/*b*/{} })',
+				options: [{ classMethods: true }],
 			},
 			{
 				name: 'class / static method',
@@ -399,6 +682,16 @@ describe('prefer-arrow-functions', () => {
 					messageId: 'preferArrowFunction',
 				}],
 				output: '(class{ static/*a*/_/*b*/=()=>/*c*/{} })',
+				options: [{ classMethods: true }],
+			},
+			{
+				name: 'class / instance method not overloaded by static signature',
+				code: '(class{ static a(b: string): void; static a(b: any){}; a(){} })',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '(class{ static a(b: string): void; static a(b: any){}; a=()=>{} })',
+				options: [{ classMethods: true }],
 			},
 
 			// Exports
@@ -454,6 +747,91 @@ describe('prefer-arrow-functions', () => {
 				output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 			},
 			{
+				name: 'expression / uses its parameter',
+				code: 'a(function(b){ return b })',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a((b)=>{ return b })',
+			},
+			{
+				name: 'expression / named / uses its parameter',
+				code: 'a(function c(b){ return b })',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a( (b)=>{ return b })',
+			},
+			{
+				name: 'object property / method / uses its parameter',
+				code: '({ a(b){ return b } })',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '({ a:(b)=>{ return b } })',
+			},
+			{
+				name: 'class / method / uses its parameter',
+				code: '(class{ a(b){ return b } })',
+				options: [{ classMethods: true }],
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '(class{ a=(b)=>{ return b } })',
+			},
+			{
+				name: 'class / method / type predicate is converted',
+				code: '(class{ a(b: unknown): b is string { return true } })',
+				options: [{ classMethods: true }],
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: '(class{ a=(b: unknown): b is string=> { return true } })',
+			},
+			{
+				name: 'ts / type predicate (non-asserting) is converted',
+				code: 'function a(b: unknown): b is string { return true }',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= (b: unknown): b is string=> { return true }',
+			},
+			{
+				name: 'tsx / declaration / generic',
+				code: 'function a<T>(b: T){}',
+				filename: 'file.tsx',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= <T,>(b: T)=>{}',
+			},
+			{
+				name: 'tsx / expression / generic',
+				code: 'a(function<T>(b: T){})',
+				filename: 'file.tsx',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'a(<T,>(b: T)=>{})',
+			},
+			{
+				name: 'tsx / constrained generic is unchanged',
+				code: 'function a<T extends string>(b: T){}',
+				filename: 'file.tsx',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= <T extends string>(b: T)=>{}',
+			},
+			{
+				name: 'ts / generic keeps type parameters',
+				code: 'function a<T>(b: T){}',
+				errors: [{
+					messageId: 'preferArrowFunction',
+				}],
+				output: 'const a= <T>(b: T)=>{}',
+			},
+			{
 				name: 'ts / expression / anonymous',
 				code: '(async/*a*/function/*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void/*\ng*/{})',
 				errors: [{
@@ -462,5 +840,32 @@ describe('prefer-arrow-functions', () => {
 				output: '(async/*a*//*b*//*c*/<b extends string>/*d*/(a:b)/*e*/:/*f*/void=>/*\ng*/{})',
 			},
 		],
+	});
+
+	// JavaScript files use ESLint's parser and scope manager, which omit TypeScript-only properties
+	describe('javascript parser', () => {
+		EslintRuleTester.describe = describe;
+		EslintRuleTester.it = test;
+		const eslintRuleTester = new EslintRuleTester();
+
+		eslintRuleTester.run('prefer-arrow-functions', preferArrowFunctions as unknown as Rule.RuleModule, {
+			valid: [
+				'a();function a(){}',
+				'function A(){}new A()',
+			],
+			invalid: [
+				{
+					code: 'function a(){}\n(b)',
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: 'const a= ()=>{};\n(b)',
+				},
+				{
+					code: '(class{ a(b){} })',
+					options: [{ classMethods: true }],
+					errors: [{ messageId: 'preferArrowFunction' }],
+					output: '(class{ a=(b)=>{} })',
+				},
+			],
+		});
 	});
 });
