@@ -119,6 +119,10 @@ export const unicorn = (
 				// Disable even warnings because of autofix
 				'unicorn/prefer-export-from': 'off',
 
+				// No autofix, and the suggested includes() (or a Set) is ~2x slower
+				// than an === chain in hot loops
+				'unicorn/prefer-includes-over-repeated-comparisons': 'off',
+
 				// https://github.com/sindresorhus/eslint-plugin-unicorn/issues/1273#issuecomment-1069506684
 				'unicorn/prefer-json-parse-buffer': 'off',
 

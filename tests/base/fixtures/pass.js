@@ -35,6 +35,9 @@ const ternaryValue = (
 );
 // => 1 or 2
 
+// Repeated === comparisons (faster than includes() in hot loops)
+const isWhitespace = code => code === 9 || code === 10 || code === 32;
+
 OUTERLOOP:
 for (let i = 0; i < 10; i += 1) {
 	if (i < 5) {
@@ -127,6 +130,7 @@ console.log(
 	objectMulti,
 	message,
 	ternaryValue,
+	isWhitespace,
 	someFunction,
 	someRegexp,
 	instance,
