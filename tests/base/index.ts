@@ -176,7 +176,7 @@ describe('base', () => {
 
 		expect(result.messages).toStrictEqual([
 			expect.objectContaining({
-				ruleId: 'pvtnbr/no-function-hoisting',
+				ruleId: 'arrow/no-function-hoisting',
 				line: 3,
 			}),
 		]);

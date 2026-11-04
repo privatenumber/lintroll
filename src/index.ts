@@ -20,7 +20,7 @@ import { noUseExtendNative } from './configs/no-use-extend-native.ts';
 import { unicorn } from './configs/unicorn.ts';
 import { react } from './configs/react.ts';
 import { vue, parseVue } from './configs/vue.ts';
-import { customConfigs } from './configs/custom-configs.ts';
+import { arrow } from './configs/arrow.ts';
 
 export const pvtnbr = (
 	options?: Options,
@@ -107,7 +107,7 @@ export const pvtnbr = (
 		react(tsconfig),
 		...markdown(),
 		jest,
-		customConfigs,
+		arrow,
 	].filter(Boolean);
 };
 

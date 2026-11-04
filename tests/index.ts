@@ -13,7 +13,6 @@ describe('eslint config', async () => {
 	await import('./bundle/index.ts');
 	await import('./unicorn/index.ts');
 	await import('./imports/index.ts');
-	await import('./custom-rules/index.ts');
 	await import('./parity/index.ts');
 	await import('./cli/handle-errors.ts');
 	await import('./cli/index.ts');

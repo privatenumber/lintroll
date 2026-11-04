@@ -5,6 +5,7 @@ allowBuilds:
   esbuild: false
   unrs-resolver: false
 minimumReleaseAgeExclude:
+  - eslint-plugin-arrow@1.0.0
   - eslint-plugin-package-json@1.8.1
   - pkgroll@3.0.0-beta.1
   - tsx@4.23.15

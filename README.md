@@ -13,7 +13,7 @@ Powered by ESLint that's enhanced with 12 plugins, covering a wide scope includi
 
 ### Features
 
-- **Streamlined syntax**: Single quotes, semicolons, tabs, [arrow functions](./src/custom-rules/prefer-arrow-functions/), and [functions declared before use](./src/custom-rules/no-function-hoisting/) for a clear & intentional coding style.
+- **Streamlined syntax**: Single quotes, semicolons, tabs, [arrow functions](https://github.com/privatenumber/eslint-plugin-arrow/blob/master/docs/rules/prefer-arrow-functions.md), and [functions declared before use](https://github.com/privatenumber/eslint-plugin-arrow/blob/master/docs/rules/no-function-hoisting.md) for a clear & intentional coding style.
 
 - **Versatile language support**: Lints TypeScript, Vue.js, React, JSON & YAML, and even Markdown code blocks ensuring a wide scope of code.
 
@@ -231,7 +231,7 @@ Each plugin in this ESLint configuration targets specific aspects of your code, 
 | [markdown](https://www.npmjs.com/package/eslint-plugin-markdown) | Markdown embedded code blocks |
 | [no-use-extend-native](https://www.npmjs.com/package/eslint-plugin-no-use-extend-native) | Native prototype extensions |
 | [unicorn](https://www.npmjs.com/package/eslint-plugin-unicorn) | Miscellaneous code quality rules |
-| [Custom](https://github.com/privatenumber/eslint-config/tree/develop/src/custom-rules) | Custom rules made for this config |
+| [arrow](https://www.npmjs.com/package/eslint-plugin-arrow) | Arrow functions & functions declared before use |
 
 ## API
 

@@ -70,7 +70,7 @@ describe('typescript', () => {
 			overrideConfigFile: true,
 			overrideConfig: {
 				rules: {
-					'pvtnbr/prefer-arrow-functions': 'off',
+					'arrow/prefer-arrow-functions': 'off',
 				},
 			},
 			fix: true,
