@@ -110,12 +110,11 @@ For full API types, see `node_modules/lintroll/dist/index.d.mts`.
 
 ### Private packages
 
-`package-json/restrict-private-properties` reports `dependencies`, `peerDependencies`, and `optionalDependencies` in a package with `"private": true`. A private package is never installed as a dependency, so the split carries no meaning. Fix `package.json` instead of turning the rule off:
+`dependencies` only differs from `devDependencies` when another project installs the package. A `"private": true` package has no such consumer, so `package-json/restrict-private-properties` reports `dependencies`, `peerDependencies`, and `optionalDependencies`. Put them all in `devDependencies`, including runtime dependencies.
 
-- Move every dependency to `devDependencies`, including runtime dependencies of an app or tool that runs from source.
-- If something installs the package as a dependency, it is not private: remove `"private": true`.
+If you want `dependencies`, something installs the package (from npm, git, or a `file:` path), so it is not private. Remove `"private": true` and review its consumer-facing settings, such as `files` and `exports`.
 
-Do not apply the rule's "Remove the field" suggestion. It deletes the dependencies.
+Don't apply the rule's "Remove the field" suggestion. It deletes the dependencies.
 
 ## Gotchas
 
