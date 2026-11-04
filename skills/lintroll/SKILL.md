@@ -108,6 +108,15 @@ For full API types, see `node_modules/lintroll/dist/index.d.mts`.
 - package.json keys auto-sorted: `name → version → description → ... → scripts → dependencies → devDependencies`
 - JSON style: tabs, trailing commas, spaces around braces `{ "key": "value" }`
 
+### Private packages
+
+`package-json/restrict-private-properties` reports `dependencies`, `peerDependencies`, and `optionalDependencies` in a package with `"private": true`. A private package is never installed as a dependency, so the split carries no meaning. Fix `package.json` instead of turning the rule off:
+
+- Move every dependency to `devDependencies`, including runtime dependencies of an app or tool that runs from source.
+- If something installs the package as a dependency, it is not private: remove `"private": true`.
+
+Do not apply the rule's "Remove the field" suggestion. It deletes the dependencies.
+
 ## Gotchas
 
 - **Abbreviation rules disabled in `.d.ts`** — declaration files follow standard conventions
