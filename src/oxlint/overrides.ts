@@ -78,6 +78,14 @@ export const overrides = [
 	},
 	{
 		files: [
+			'**/index.{js,jsx,cjs,mjs,ts,tsx,mts,cts}',
+		],
+		rules: {
+			'import/max-dependencies': 'off',
+		},
+	},
+	{
+		files: [
 			'**/*.{js,jsx,cjs,mjs}',
 			'**/*.{ts,tsx,mts,cts}',
 			'**/*.vue',

@@ -162,6 +162,21 @@ describe('imports', () => {
 		});
 	});
 
+	test('max-dependencies is off for index files only', async () => {
+		const code = [
+			...Array.from({ length: 16 }, (_, index) => `export { value${index} } from './module${index}.ts';`),
+			'',
+		].join('\n');
+		const maxDependenciesMessages = async (filePath: string) => {
+			const [result] = await eslint.lintText(code, { filePath });
+			return result.messages.filter(message => message.ruleId === 'import-x/max-dependencies');
+		};
+
+		expect(await maxDependenciesMessages('src/index.ts')).toStrictEqual([]);
+		expect(await maxDependenciesMessages('tests/index.ts')).toStrictEqual([]);
+		expect(await maxDependenciesMessages('src/registry.ts')).toHaveLength(1);
+	});
+
 	test('resolves TypeScript paths and package imports', async () => {
 		await using fixture = await createFixture({
 			'package.json': createPackageJson({

@@ -176,4 +176,13 @@ export const imports = [
 			'import-x/no-dynamic-require': 'error',
 		},
 	}),
+
+	// Entry files, such as package entries, test entries, and command registries,
+	// import or re-export one module each and grow with the API by design
+	defineConfig({
+		files: ['**/index.{js,jsx,cjs,mjs,ts,tsx,mts,cts}'],
+		rules: {
+			'import-x/max-dependencies': 'off',
+		},
+	}),
 ];
